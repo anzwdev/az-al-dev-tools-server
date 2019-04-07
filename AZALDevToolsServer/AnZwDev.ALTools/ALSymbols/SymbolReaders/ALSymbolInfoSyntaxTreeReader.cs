@@ -73,7 +73,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
 
             //create symbol info
             ALSymbolInformation symbolInfo = new ALSymbolInformation();
-            if (node.GetType().GetProperty("Name") != null)
+            if ((node.GetType().GetProperty("Name") != null) && (node.Name != null))
                 symbolInfo.name = node.Name.ToString();
             symbolInfo.kind = alSymbolKind;
 
@@ -105,7 +105,9 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
 
         protected void ProcessNode(ALSymbolInformation symbol, dynamic node)
         {
-            switch (node.Kind)
+            ConvertedSyntaxKind kind = ALEnumConverters.SyntaxKindConverter.Convert(node.Kind);
+
+            switch (kind)
             {
                 case ConvertedSyntaxKind.ReportDataItem:
                     ProcessReportDataItemNode(symbol, node);
@@ -178,11 +180,12 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
         protected void ProcessMethodOrTriggerDeclarationNode(ALSymbolInformation symbol, dynamic syntax)
         {
             string namePart = "(";
-            if ((syntax.ParameterList != null) && (syntax.ParameterList.Parameters != null))
+            if ((syntax.ParameterList != null))// && (syntax.ParameterList.Parameters != null))
                 namePart = namePart + syntax.ParameterList.Parameters.ToFullString();
             namePart = namePart + ")";
 
-            if ((syntax.ReturnValue != null) && (syntax.ReturnValue.Kind != ConvertedSyntaxKind.None))
+            if ((syntax.ReturnValue != null) && 
+                (ALEnumConverters.SyntaxKindConverter.Convert(syntax.ReturnValue.Kind) != ConvertedSyntaxKind.None))
                 namePart = namePart + " " + syntax.ReturnValue.ToFullString();
                 
             symbol.fullName = symbol.name + namePart;
@@ -191,7 +194,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
         protected void ProcessEventDeclarationNode(ALSymbolInformation symbol, dynamic syntax)
         {
             string namePart = "(";
-            if ((syntax.ParameterList != null) && (syntax.ParameterList.Parameters != null))
+            if ((syntax.ParameterList != null)) // && (syntax.ParameterList.Parameters != null))
                 namePart = namePart + syntax.ParameterList.Parameters.ToFullString();
             namePart = namePart + ")";
 

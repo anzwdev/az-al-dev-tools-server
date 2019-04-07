@@ -68,11 +68,11 @@ namespace AnZwDev.ALTools.ALSymbols
                 case ALSymbolKind.FieldModification: return "FieldModification";
                 case ALSymbolKind.KeyList: return "keys";
                 case ALSymbolKind.Key: return "Key";
-                case ALSymbolKind.FieldGroupList: return "FieldGroupList";
-                case ALSymbolKind.FieldGroup: return "Field Group";
+                case ALSymbolKind.FieldGroupList: return "fieldgroups";
+                case ALSymbolKind.FieldGroup: return "FieldGroup";
                 case ALSymbolKind.PageLayout: return "layout";
                 case ALSymbolKind.PageActionList: return "actions";
-                case ALSymbolKind.GroupActionList: return "GroupActionList";
+                case ALSymbolKind.GroupActionList: return "groupactions";
                 case ALSymbolKind.PageArea: return "Area";
                 case ALSymbolKind.PageGroup: return "Group";
                 case ALSymbolKind.PageField: return "Field";
@@ -107,9 +107,9 @@ namespace AnZwDev.ALTools.ALSymbols
                 
                 case ALSymbolKind.XmlPortSchema: return "schema";
                 case ALSymbolKind.XmlPortTableElement: return "Table";
-                case ALSymbolKind.XmlPortFieldElement: return "Field Element";
+                case ALSymbolKind.XmlPortFieldElement: return "Field";
                 case ALSymbolKind.XmlPortTextElement: return "Text Element";
-                case ALSymbolKind.XmlPortFieldAttribute: return "Field Attribute";
+                case ALSymbolKind.XmlPortFieldAttribute: return "Attribute";
                 case ALSymbolKind.XmlPortTextAttribute: return "Text Attribute";
                 case ALSymbolKind.RequestPage: return "RequestOptionsPage";
 

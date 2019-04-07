@@ -169,7 +169,24 @@ namespace AnZwDev.ALTools.ALSymbols
         EnumObjectList = 50015,
         DotNetPackageList = 50016,
         EnumTypeList = 50017,
-        EnumExtensionTypeList = 50018
+        EnumExtensionTypeList = 50018,
+
+        Namespace = 50019,
+        Package = 50020,
+        Class = 50021,
+        Property = 50022,
+        Constructor = 50023,
+        Interface = 50024,
+        Constant = 50025,
+        String = 50026,
+        Number = 50027,
+        Boolean = 50028,
+        Array = 50029,
+        Null = 50030,
+        Object = 50031,
+        Struct = 50032,
+        Operator = 50033
+
 
     }
 }
