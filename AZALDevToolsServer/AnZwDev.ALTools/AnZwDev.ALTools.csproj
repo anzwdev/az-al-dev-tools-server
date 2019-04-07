@@ -59,6 +59,7 @@
     <Compile Include="ALSymbols\ALPackageSymbolsCache.cs" />
     <Compile Include="ALSymbols\ALPackageSymbolsLibrary.cs" />
     <Compile Include="ALSymbols\ALProjectSymbolsLibrary.cs" />
+    <Compile Include="ALSymbols\ALSyntaxHelper.cs" />
     <Compile Include="ALSymbols\SymbolReaders\ALSymbolInfoPackageReader.cs" />
     <Compile Include="ALSymbols\SymbolReaders\ALSymbolInfoPackageReader_old.cs" />
     <Compile Include="ALSymbols\ALSymbolInformation.cs" />

@@ -106,11 +106,11 @@ namespace AnZwDev.ALTools.ALSymbols
                 case ALSymbolKind.ReportLabelMultilanguage: return "Label";
                 
                 case ALSymbolKind.XmlPortSchema: return "schema";
-                case ALSymbolKind.XmlPortTableElement: return "Table";
+                case ALSymbolKind.XmlPortTableElement: return "TableElement";
                 case ALSymbolKind.XmlPortFieldElement: return "Field";
-                case ALSymbolKind.XmlPortTextElement: return "Text Element";
+                case ALSymbolKind.XmlPortTextElement: return "TextElement";
                 case ALSymbolKind.XmlPortFieldAttribute: return "Attribute";
-                case ALSymbolKind.XmlPortTextAttribute: return "Text Attribute";
+                case ALSymbolKind.XmlPortTextAttribute: return "TextAttribute";
                 case ALSymbolKind.RequestPage: return "RequestOptionsPage";
 
                 case ALSymbolKind.QueryElements: return "elements";
@@ -150,6 +150,7 @@ namespace AnZwDev.ALTools.ALSymbols
                 //case ALSymbolKind.//InvalidAttributeArgument: return "//InvalidAttributeArgument";
 
                 case ALSymbolKind.PrimaryKey: return "Primary Key";
+                case ALSymbolKind.PageRepeater: return "Repeater";
             }
             throw new Exception("Unsupported enum value " + value.ToString());
 

@@ -74,7 +74,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             //create symbol info
             ALSymbolInformation symbolInfo = new ALSymbolInformation();
             if ((node.GetType().GetProperty("Name") != null) && (node.Name != null))
-                symbolInfo.name = node.Name.ToString();
+                symbolInfo.name = ALSyntaxHelper.DecodeName(node.Name.ToString());
             symbolInfo.kind = alSymbolKind;
 
             dynamic lineSpan = syntaxTree.GetLineSpan(node.FullSpan);
@@ -109,6 +109,9 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
 
             switch (kind)
             {
+                case ConvertedSyntaxKind.XmlPortTableElement:
+                    ProcessXmlPortTableElementNode(symbol, node);
+                    break;
                 case ConvertedSyntaxKind.ReportDataItem:
                     ProcessReportDataItemNode(symbol, node);
                     break;
@@ -138,43 +141,64 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                 case ConvertedSyntaxKind.EnumValue:
                     ProcessEnumValueNode(symbol, node);
                     break;
+                case ConvertedSyntaxKind.PageGroup:
+                    ProcessPageGroupNode(symbol, node);
+                    break;
             }
         }
 
+        protected void ProcessPageGroupNode(ALSymbolInformation symbol, dynamic syntax)
+        {
+            dynamic controlKeywordToken = syntax.ControlKeyword;
+            if (controlKeywordToken != null)
+            {
+                ConvertedSyntaxKind controlKind = ALEnumConverters.SyntaxKindConverter.Convert(controlKeywordToken.Kind);
+                if (controlKind == ConvertedSyntaxKind.PageRepeaterKeyword)
+                    symbol.kind = ALSymbolKind.PageRepeater;
+            }
+        }
+
+
         protected void ProcessEnumValueNode(ALSymbolInformation symbol, dynamic syntax)
         {
-            symbol.fullName = symbol.name + " : " + syntax.EnumValueToken.ToFullString();
+            symbol.fullName = ALSyntaxHelper.EncodeName(symbol.name) + ": " + syntax.EnumValueToken.ToFullString();
         }
 
         protected void ProcessReportColumnNode(ALSymbolInformation symbol, dynamic syntax)
         {
-            symbol.fullName = syntax.name + " : " + syntax.SourceExpression.ToFullString();
+            symbol.fullName = ALSyntaxHelper.EncodeName(symbol.name) + ": " + syntax.SourceExpression.ToFullString();
         }
 
+        protected void ProcessXmlPortTableElementNode(ALSymbolInformation symbol, dynamic syntax)
+        {
+            symbol.fullName = symbol.kind.ToName() + " " + 
+                ALSyntaxHelper.EncodeName(symbol.name) + 
+                ": Record " + syntax.SourceTable.ToFullString();
+        }
 
         protected void ProcessReportDataItemNode(ALSymbolInformation symbol, dynamic syntax)
         {
-            symbol.fullName = symbol.name + " : " + syntax.DataItemTable.ToFullString();
+            symbol.fullName = ALSyntaxHelper.EncodeName(symbol.name) + ": Record " + syntax.DataItemTable.ToFullString();
         }
 
         protected void ProcessFieldNode(ALSymbolInformation symbol, dynamic syntax)
         {
-            symbol.fullName = symbol.name + " : " + syntax.Type.ToFullString();
+            symbol.fullName = ALSyntaxHelper.EncodeName(symbol.name) + ": " + syntax.Type.ToFullString();
         }
 
         protected void ProcessParameterNode(ALSymbolInformation symbol, dynamic syntax)
         {
-            symbol.fullName = symbol.name + " : " + syntax.Type.ToFullString();
+            symbol.fullName = ALSyntaxHelper.EncodeName(symbol.name) + ": " + syntax.Type.ToFullString();
         }
 
         protected void ProcessVariableDeclarationNode(ALSymbolInformation symbol, dynamic syntax)
         {
-            symbol.fullName = symbol.name + " : " + syntax.Type.ToFullString();
+            symbol.fullName = ALSyntaxHelper.EncodeName(symbol.name) + ": " + syntax.Type.ToFullString();
         }
 
         protected void ProcessKeyNode(ALSymbolInformation symbol, dynamic syntax)
         {
-            symbol.fullName = symbol.name + " : " + syntax.Fields.ToFullString();
+            symbol.fullName = ALSyntaxHelper.EncodeName(symbol.name) + ": " + syntax.Fields.ToFullString();
         }
 
         protected void ProcessMethodOrTriggerDeclarationNode(ALSymbolInformation symbol, dynamic syntax)
@@ -188,7 +212,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                 (ALEnumConverters.SyntaxKindConverter.Convert(syntax.ReturnValue.Kind) != ConvertedSyntaxKind.None))
                 namePart = namePart + " " + syntax.ReturnValue.ToFullString();
                 
-            symbol.fullName = symbol.name + namePart;
+            symbol.fullName = ALSyntaxHelper.EncodeName(symbol.name) + namePart;
         }
 
         protected void ProcessEventDeclarationNode(ALSymbolInformation symbol, dynamic syntax)
@@ -198,7 +222,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                 namePart = namePart + syntax.ParameterList.Parameters.ToFullString();
             namePart = namePart + ")";
 
-            symbol.fullName = symbol.name + namePart;
+            symbol.fullName = ALSyntaxHelper.EncodeName(symbol.name) + namePart;
         }
 
 
@@ -234,7 +258,17 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                     parent.subtype = node.ToFullString();
                     return true;
                 case ConvertedSyntaxKind.MemberAttribute:
-                    parent.subtype = node.Name.ToString();
+                    string memberAttributeName = node.Name.ToString();
+                    if ((parent.kind == ALSymbolKind.MethodDeclaration) || (parent.kind == ALSymbolKind.LocalMethodDeclaration))
+                    {
+                        ALSymbolKind newKind = this.MemberAttributeToMethodKind(memberAttributeName);
+                        if (newKind != ALSymbolKind.Undefined)
+                        {
+                            parent.kind = newKind;
+                            return true;
+                        }
+                    }
+                    parent.subtype = memberAttributeName;
                     return true;
                 case ConvertedSyntaxKind.ObjectId:
                     parent.id = node.Value.Value;
@@ -247,6 +281,45 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             }
             return false;
         }
+
+        protected ALSymbolKind MemberAttributeToMethodKind(string name)
+        {
+            //events
+            if (name.Equals("IntegrationEvent"))
+                return ALSymbolKind.IntegrationEventDeclaration;
+            if (name.Equals("BusinessEvent"))
+                return ALSymbolKind.BusinessEventDeclaration;
+            if (name.Equals("EventSubscriber"))
+                return ALSymbolKind.EventSubscriberDeclaration;
+            //tests
+            if (name.Equals("Test"))
+                return ALSymbolKind.TestDeclaration;
+            if (name.Equals("ConfirmHandler"))
+                return ALSymbolKind.ConfirmHandlerDeclaration;
+            if (name.Equals("FilterPageHandler"))
+                return ALSymbolKind.FilterPageHandlerDeclaration;
+            if (name.Equals("HyperlinkHandler"))
+                return ALSymbolKind.HyperlinkHandlerDeclaration;
+            if (name.Equals("MessageHandler"))
+                return ALSymbolKind.MessageHandlerDeclaration;
+            if (name.Equals("ModalPageHandler"))
+                return ALSymbolKind.ModalPageHandlerDeclaration;
+            if (name.Equals("PageHandler"))
+                return ALSymbolKind.PageHandlerDeclaration;
+            if (name.Equals("ReportHandler"))
+                return ALSymbolKind.ReportHandlerDeclaration;
+            if (name.Equals("RequestPageHandler"))
+                return ALSymbolKind.RequestPageHandlerDeclaration;
+            if (name.Equals("SendNotificationHandler"))
+                return ALSymbolKind.SendNotificationHandlerDeclaration;
+            if (name.Equals("SessionSettingsHandler"))
+                return ALSymbolKind.SessionSettingsHandlerDeclaration;
+            if (name.Equals("StrMenuHandler"))
+                return ALSymbolKind.StrMenuHandlerDeclaration;
+
+            return ALSymbolKind.Undefined;
+        }
+
 
         protected bool IsValidChildSymbolInformation(ALSymbolInformation symbolInformation)
         {

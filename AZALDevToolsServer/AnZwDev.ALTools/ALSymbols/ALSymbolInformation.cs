@@ -29,7 +29,7 @@ namespace AnZwDev.ALTools.ALSymbols
         {
             this.kind = kindValue;
             this.name = nameValue;
-            this.fullName = nameValue;
+            this.fullName = ALSyntaxHelper.EncodeName(nameValue);
         }
 
         public ALSymbolInformation(ALSymbolKind kindValue, string nameValue, int? idValue) : this(kindValue, nameValue)
@@ -50,7 +50,7 @@ namespace AnZwDev.ALTools.ALSymbols
         public void UpdateFields()
         {
             if (String.IsNullOrWhiteSpace(this.fullName))
-                this.fullName = this.kind.ToName() + " " + this.name;
+                this.fullName = this.kind.ToName() + " " + ALSyntaxHelper.EncodeName(this.name);
 
             if (this.childSymbols != null)
             {

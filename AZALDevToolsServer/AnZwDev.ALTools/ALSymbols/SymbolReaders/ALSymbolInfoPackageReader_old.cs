@@ -101,7 +101,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
         protected ALSymbolInformation ProcessEnumExtensionTypeDefinition(dynamic type)
         {
             ALSymbolInformation container = new ALSymbolInformation(ALSymbolKind.EnumExtensionType, type.Name, type.Id);
-            container.fullName = type.Name + ":" + type.TargetObject;
+            container.fullName = ALSyntaxHelper.EncodeName(type.Name) + ":" + type.TargetObject;
             ProcessEnumValues(container, type.Values);
             return container;
         }
@@ -204,7 +204,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
         protected ALSymbolInformation ProcessDotNetTypeDeclarationDef(dynamic type)
         {
             ALSymbolInformation container = new ALSymbolInformation(ALSymbolKind.DotNetTypeDeclaration, type.AliasName);
-            container.fullName = type.AliasName + ":" + type.TypeName;
+            container.fullName = ALSyntaxHelper.EncodeName(type.AliasName) + ":" + type.TypeName;
             return container;
         }
 
@@ -386,7 +386,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
         {
             ALSymbolInformation container = new ALSymbolInformation(ALSymbolKind.QueryColumn, column.Name);
             if (!String.IsNullOrWhiteSpace(column.SourceColumn))
-                container.fullName = column.Name + ":" + column.SourceColumn;
+                container.fullName = ALSyntaxHelper.EncodeName(column.Name) + ":" + column.SourceColumn;
             return container;
         }
 
@@ -551,7 +551,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             ALSymbolInformation container = new ALSymbolInformation(ControlKindToSybolKind(control.Kind), control.Name);
             if (container.kind == ALSymbolKind.PageField)
             {
-                container.fullName = control.Name + " : " + control.Type;
+                container.fullName = ALSyntaxHelper.EncodeName(control.Name) + " : " + control.Type;
             }
 
             ProcessControls(container, control.Controls);
@@ -855,7 +855,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
         {
             ALSymbolKind kind = isPrimayKey ? ALSymbolKind.PrimaryKey : ALSymbolKind.Key;
             ALSymbolInformation container = new ALSymbolInformation(kind, key.Name);
-            container.fullName = key.Name + " : " + key.FieldNames;
+            container.fullName = ALSyntaxHelper.EncodeName(key.Name) + " : " + key.FieldNames;
             return container;
         }
 
@@ -893,7 +893,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
         protected ALSymbolInformation ProcessFieldGroupDefinition(dynamic fieldGroup)
         {
             ALSymbolInformation container = new ALSymbolInformation(ALSymbolKind.FieldGroup, fieldGroup.Name);
-            container.fullName = fieldGroup.Name + " : " + fieldGroup.FieldNames;
+            container.fullName = ALSyntaxHelper.EncodeName(fieldGroup.Name) + " : " + fieldGroup.FieldNames;
             return container;
         }
 
@@ -917,7 +917,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
         protected ALSymbolInformation ProcessVariableDefinition(dynamic variable)
         {
             ALSymbolInformation container = new ALSymbolInformation(ALSymbolKind.VariableDeclaration, variable.Name);
-            container.fullName = variable.Name + " : " + variable.Type;
+            container.fullName = ALSyntaxHelper.EncodeName(variable.Name) + " : " + variable.Type;
             return container;
         }
 
