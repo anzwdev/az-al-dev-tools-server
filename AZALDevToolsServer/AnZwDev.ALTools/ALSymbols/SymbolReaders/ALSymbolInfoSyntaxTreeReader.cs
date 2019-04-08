@@ -144,7 +144,40 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                 case ConvertedSyntaxKind.PageGroup:
                     ProcessPageGroupNode(symbol, node);
                     break;
+                case ConvertedSyntaxKind.PagePart:
+                    ProcessPagePartNode(symbol, node);
+                    break;
+                case ConvertedSyntaxKind.PageSystemPart:
+                    ProcessPageSystemPartNode(symbol, node);
+                    break;
+                case ConvertedSyntaxKind.PageChartPart:
+                    ProcessPageChartPartNode(symbol, node);
+                    break;
             }
+        }
+
+        protected void ProcessPagePartNode(ALSymbolInformation symbol, dynamic syntax)
+        {
+            string name = symbol.kind.ToName() + " " + ALSyntaxHelper.EncodeName(symbol.name);
+            if (syntax.PartName != null)
+                symbol.fullName = name + ": " + syntax.PartName.ToFullString();
+            symbol.fullName = name;
+        }
+
+        protected void ProcessPageSystemPartNode(ALSymbolInformation symbol, dynamic syntax)
+        {
+            string name = symbol.kind.ToName() + " " + ALSyntaxHelper.EncodeName(symbol.name);
+            if (syntax.SystemPartType != null)
+                symbol.fullName = name + ": " + syntax.SystemPartType.ToFullString();
+            symbol.fullName = name;
+        }
+
+        protected void ProcessPageChartPartNode(ALSymbolInformation symbol, dynamic syntax)
+        {
+            string name = symbol.kind.ToName() + " " + ALSyntaxHelper.EncodeName(symbol.name);
+            if (syntax.ChartPartType != null)
+                symbol.fullName = name + ": " + syntax.ChartPartType.ToFullString();
+            symbol.fullName = name;
         }
 
         protected void ProcessPageGroupNode(ALSymbolInformation symbol, dynamic syntax)
