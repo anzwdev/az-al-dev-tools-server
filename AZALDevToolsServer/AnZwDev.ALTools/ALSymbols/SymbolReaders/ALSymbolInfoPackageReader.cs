@@ -8,11 +8,12 @@ using System.IO;
 using System.IO.Compression;
 using Newtonsoft.Json;
 using System.Dynamic;
+using AnZwDev.ALTools.ALSymbols.ALAppPackages;
 
 namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
 {
-    /*
-    public class ALSymbolInfoPackageReader3
+
+    public class ALSymbolInfoPackageReader
     {
 
         protected ALExtensionProxy ALExtensionProxy { get; }
@@ -22,28 +23,34 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             this.ALExtensionProxy = extensionProxy;
         }
 
-        public ALSymbolInformation ReadSymbols(string packagePath)
+        public ALAppPackage ReadAppPackage(string packagePath)
         {
             try
             {
-                ALSymbolInformation rootSymbol = null;
+                ALAppPackage appPackage = null;
 
                 Stream packageStream = new FileStream(packagePath, FileMode.Open);
                 packageStream.Seek(40, SeekOrigin.Begin);
-                ZipArchive package = new ZipArchive(packageStream, ZipArchiveMode.Read);
+
+                MemoryStream memoryStream = new MemoryStream();
+                packageStream.CopyTo(memoryStream);
+                memoryStream.Seek(0, SeekOrigin.Begin);
+                packageStream.Close();
+                packageStream.Dispose();
+
+                ZipArchive package = new ZipArchive(memoryStream, ZipArchiveMode.Read);
                 ZipArchiveEntry symbols = package.GetEntry("SymbolReference.json");
                 using (Stream symbolsStream = symbols.Open())
                 using (StreamReader streamReader = new StreamReader(symbolsStream))
                 using (JsonReader reader = new JsonTextReader(streamReader))
                 {
                     JsonSerializer serializer = new JsonSerializer();
-                    dynamic symbolsData = serializer.Deserialize(reader);
-                    rootSymbol = this.ReadSymbols(symbolsData);
+                    appPackage = serializer.Deserialize<ALAppPackage>(reader);
                 }
                 package.Dispose();
-                packageStream.Dispose();
+                memoryStream.Dispose();
 
-                return rootSymbol;
+                return appPackage;
             }
             catch (Exception e)
             {
@@ -51,16 +58,13 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             }
         }
 
-        protected ALSymbolInformation ReadSymbols(dynamic symbolsData)
+        public ALSymbolInformation ReadSymbols(string packagePath)
         {
-            ExpandoObject data = symbolsData as ExpandoObject;
-
-            
-
-
+            ALAppPackage alAppPackage = this.ReadAppPackage(packagePath);
+            if (alAppPackage != null)
+                return alAppPackage.ToALSymbol();
+            return null;
         }
 
-
     }
-    */
 }

@@ -8,6 +8,7 @@ using AnZwDev.ALTools.ALProxy;
 
 namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
 {
+    /*
     public class ALSymbolInfoPackageReader
     {
 
@@ -960,4 +961,5 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
         #endregion
 
     }
+    */
 }

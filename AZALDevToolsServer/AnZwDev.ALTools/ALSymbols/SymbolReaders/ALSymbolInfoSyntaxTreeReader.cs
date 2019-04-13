@@ -294,7 +294,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                     string memberAttributeName = node.Name.ToString();
                     if ((parent.kind == ALSymbolKind.MethodDeclaration) || (parent.kind == ALSymbolKind.LocalMethodDeclaration))
                     {
-                        ALSymbolKind newKind = this.MemberAttributeToMethodKind(memberAttributeName);
+                        ALSymbolKind newKind = ALSyntaxHelper.MemberAttributeToMethodKind(memberAttributeName);
                         if (newKind != ALSymbolKind.Undefined)
                         {
                             parent.kind = newKind;
@@ -314,45 +314,6 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             }
             return false;
         }
-
-        protected ALSymbolKind MemberAttributeToMethodKind(string name)
-        {
-            //events
-            if (name.Equals("IntegrationEvent"))
-                return ALSymbolKind.IntegrationEventDeclaration;
-            if (name.Equals("BusinessEvent"))
-                return ALSymbolKind.BusinessEventDeclaration;
-            if (name.Equals("EventSubscriber"))
-                return ALSymbolKind.EventSubscriberDeclaration;
-            //tests
-            if (name.Equals("Test"))
-                return ALSymbolKind.TestDeclaration;
-            if (name.Equals("ConfirmHandler"))
-                return ALSymbolKind.ConfirmHandlerDeclaration;
-            if (name.Equals("FilterPageHandler"))
-                return ALSymbolKind.FilterPageHandlerDeclaration;
-            if (name.Equals("HyperlinkHandler"))
-                return ALSymbolKind.HyperlinkHandlerDeclaration;
-            if (name.Equals("MessageHandler"))
-                return ALSymbolKind.MessageHandlerDeclaration;
-            if (name.Equals("ModalPageHandler"))
-                return ALSymbolKind.ModalPageHandlerDeclaration;
-            if (name.Equals("PageHandler"))
-                return ALSymbolKind.PageHandlerDeclaration;
-            if (name.Equals("ReportHandler"))
-                return ALSymbolKind.ReportHandlerDeclaration;
-            if (name.Equals("RequestPageHandler"))
-                return ALSymbolKind.RequestPageHandlerDeclaration;
-            if (name.Equals("SendNotificationHandler"))
-                return ALSymbolKind.SendNotificationHandlerDeclaration;
-            if (name.Equals("SessionSettingsHandler"))
-                return ALSymbolKind.SessionSettingsHandlerDeclaration;
-            if (name.Equals("StrMenuHandler"))
-                return ALSymbolKind.StrMenuHandlerDeclaration;
-
-            return ALSymbolKind.Undefined;
-        }
-
 
         protected bool IsValidChildSymbolInformation(ALSymbolInformation symbolInformation)
         {

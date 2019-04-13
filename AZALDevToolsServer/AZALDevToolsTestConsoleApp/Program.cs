@@ -1,5 +1,6 @@
 using AnZwDev.ALTools.ALProxy;
 using AnZwDev.ALTools.ALSymbols;
+using AnZwDev.ALTools.ALSymbols.ALAppPackages;
 using AnZwDev.ALTools.ALSymbols.SymbolReaders;
 using System;
 using System.Collections.Generic;
@@ -25,8 +26,20 @@ namespace AZALDevToolsTestConsoleApp
 
             ALSymbolInfoSyntaxTreeReader s = new ALSymbolInfoSyntaxTreeReader(alExtensionProxy);
             //ALSymbolInformation m = s.ProcessSourceFile("C:\\Projects\\Sandboxes\\ALProject5\\New Page.al");
-            ALSymbolInformation m = s.ProcessSourceFile(
-             "C:\\Projects\\Sandboxes\\samplealprojects\\big\\ftest\\CardPageTest02.al");
+            //ALSymbolInformation m = s.ProcessSourceFile(
+            // "C:\\Projects\\Sandboxes\\samplealprojects\\big\\ftest\\CardPageTest02.al");
+
+            DateTime t1 = DateTime.Now;
+            ALSymbolInfoPackageReader appPackageReader = new ALSymbolInfoPackageReader(alExtensionProxy);
+            ALAppPackage package = appPackageReader.ReadAppPackage("C:\\Projects\\Sandboxes\\samplealprojects\\big\\.alpackages\\Microsoft_Application_14.0.29581.0.app");
+            DateTime t2 = DateTime.Now;
+            TimeSpan t = t2 - t1;
+            Console.WriteLine(t.TotalMilliseconds.ToString() + "ms");
+            Console.WriteLine("Package " + package.Name);
+            if (package.Tables != null)
+                Console.WriteLine("Tables: " + package.Tables.Count.ToString());
+
+            ALSymbolInformation symbol = package.ToALSymbol();              
 
             Console.WriteLine("Hello World!");
             Console.ReadKey();
