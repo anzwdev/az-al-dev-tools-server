@@ -28,9 +28,7 @@ namespace AnZwDev.ALTools.ALSymbols
             }
             else
                 symbols = _cache[path];
-
             symbols.Load(forceReload);
-
             return symbols;
         }
 

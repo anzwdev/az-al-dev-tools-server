@@ -10,19 +10,9 @@ namespace AZALDevToolsServer
     {
         static void Main(string[] args)
         {
-            try
-            {
-                ALDevToolsServer host = new ALDevToolsServer(args[0]);
-                host.Initialize();
-                host.Run();
-            }
-            catch (Exception e)
-            {
-                System.IO.StreamWriter w = new System.IO.StreamWriter("c:\\temp\\aaa.txt", true);
-                w.WriteLine(e.Message);
-                w.WriteLine(e.StackTrace);
-                w.Close();
-            }
+            ALDevToolsServer host = new ALDevToolsServer(args[0]);
+            host.Initialize();
+            host.Run();
         }
     }
 }
