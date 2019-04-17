@@ -26,12 +26,13 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                 sourceCode = reader.ReadToEnd();
                 reader.Close();
                 reader.Dispose();
+
+                return ProcessSourceCode(sourceCode);
             }
             catch (Exception e)
             {
-                sourceCode = "";
+                return new ALSymbolInformation(ALSymbolKind.Undefined, "LangServer Error: " + e.Message);
             }
-            return ProcessSourceCode(sourceCode);
         }
 
         public ALSymbolInformation ProcessSourceCode(string source)
@@ -40,10 +41,28 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                 this.ALExtensionProxy.CodeAnalysis,
                 "Microsoft.Dynamics.Nav.CodeAnalysis.Syntax.SyntaxTree");
 
-            //ParseObjectText(string text, string path = null, Encoding encoding = null, ParseOptions options = null, CancellationToken cancellationToken = default(CancellationToken));
+            dynamic sourceTree = null;
 
-            dynamic sourceTree = syntaxTree.CallStaticMethod("ParseObjectText", source, 
-                Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+            if (this.ALExtensionProxy.BCVersion == BCVersion.NAV2018)
+            {
+                try
+                {
+                    //ParseObjectText(string text, string path = null, Encoding encoding = null, CancellationToken cancellationToken = default(CancellationToken));
+                    sourceTree = syntaxTree.CallStaticMethod("ParseObjectText", source,
+                        Type.Missing, Type.Missing, Type.Missing);
+                }
+                catch (Exception)
+                {
+                    sourceTree = null;
+                }
+            }
+
+            if (sourceTree == null)
+            {
+                //ParseObjectText(string text, string path = null, Encoding encoding = null, ParseOptions options = null, CancellationToken cancellationToken = default(CancellationToken));
+                sourceTree = syntaxTree.CallStaticMethod("ParseObjectText", source,
+                    Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+            }
 
             return ProcessSyntaxTree(sourceTree);
         }
@@ -304,7 +323,8 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                     parent.subtype = memberAttributeName;
                     return true;
                 case ConvertedSyntaxKind.ObjectId:
-                    parent.id = node.Value.Value;
+                    if ((node.Value != null) && (node.Value.Value != null))
+                        parent.id = node.Value.Value;
                     return true;
                 case ConvertedSyntaxKind.IdentifierName:
                     dynamic lineSpan = syntaxTree.GetLineSpan(node.Span);

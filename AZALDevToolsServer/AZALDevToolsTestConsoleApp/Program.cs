@@ -19,6 +19,7 @@ namespace AZALDevToolsTestConsoleApp
 
             ALExtensionProxy alExtensionProxy = new ALExtensionProxy();
             alExtensionProxy.Load("C:\\vscode\\preview-al\\data\\extensions\\microsoft.al-2.1.99743\\bin");
+            //alExtensionProxy.Load("C:\\vscode\\al-devtest-multiplealext\\data\\extensions\\microsoft.al-0.12.25327\\bin");
 
             //ALPackageSymbolsLibrary lib = new ALPackageSymbolsLibrary(alExtensionProxy,
             //    "C:\\Projects\\Sandboxes\\samplealprojects\\big\\.alpackages\\Microsoft_Application_11.0.20901.0.app");
@@ -26,9 +27,10 @@ namespace AZALDevToolsTestConsoleApp
 
             ALSymbolInfoSyntaxTreeReader s = new ALSymbolInfoSyntaxTreeReader(alExtensionProxy);
             //ALSymbolInformation m = s.ProcessSourceFile("C:\\Projects\\Sandboxes\\ALProject5\\New Page.al");
-            //ALSymbolInformation m = s.ProcessSourceFile(
-            // "C:\\Projects\\Sandboxes\\samplealprojects\\big\\ftest\\CardPageTest02.al");
+            ALSymbolInformation m = s.ProcessSourceFile(
+                "C:\\Projects\\Sandboxes\\samplealprojects\\big\\ftest\\CardPageTest02.al");
 
+            /*
             DateTime t1 = DateTime.Now;
             ALSymbolInfoPackageReader appPackageReader = new ALSymbolInfoPackageReader(alExtensionProxy);
             ALAppPackage package = appPackageReader.ReadAppPackage("C:\\Projects\\Sandboxes\\samplealprojects\\big\\.alpackages\\Microsoft_Application_14.0.29581.0.app");
@@ -40,6 +42,7 @@ namespace AZALDevToolsTestConsoleApp
                 Console.WriteLine("Tables: " + package.Tables.Count.ToString());
 
             ALSymbolInformation symbol = package.ToALSymbol();              
+            */
 
             Console.WriteLine("Hello World!");
             Console.ReadKey();

@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AnZwDev.ALTools</RootNamespace>
     <AssemblyName>AnZwDev.ALTools</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -48,6 +49,7 @@
     <Compile Include="ALProxy\ALExtensionLibraryProxy.cs" />
     <Compile Include="ALProxy\ALExtensionLibraryTypeProxy.cs" />
     <Compile Include="ALProxy\ALExtensionProxy.cs" />
+    <Compile Include="ALProxy\BCVersion.cs" />
     <Compile Include="ALProxy\ConvertedActionKind.cs" />
     <Compile Include="ALProxy\ConvertedChangeKind.cs" />
     <Compile Include="ALProxy\ConvertedControlKind.cs" />
