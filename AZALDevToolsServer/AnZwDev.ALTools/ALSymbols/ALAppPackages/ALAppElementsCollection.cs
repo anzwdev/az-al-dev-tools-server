@@ -18,6 +18,11 @@ namespace AnZwDev.ALTools.ALSymbols.ALAppPackages
             this.AddToALSymbol(symbol, ALSymbolKind.Undefined, null, ALSymbolKind.Undefined);
         }
 
+        public void AddCollectionToALSymbol(ALSymbolInformation symbol, ALSymbolKind collectionKind)
+        {
+            this.AddToALSymbol(symbol, collectionKind, collectionKind.ToName(), ALSymbolKind.Undefined);
+        }
+
         public void AddToALSymbol(ALSymbolInformation symbol, ALSymbolKind collectionKind, string collectionName)
         {
             this.AddToALSymbol(symbol, collectionKind, collectionName, ALSymbolKind.Undefined);

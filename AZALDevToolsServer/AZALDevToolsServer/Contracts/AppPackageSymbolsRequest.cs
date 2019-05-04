@@ -11,9 +11,5 @@ namespace AZALDevToolsServer.Contracts
 
         public string path { get; set; }
 
-        public AppPackageSymbolsRequest()
-        {
-        }
-
     }
 }

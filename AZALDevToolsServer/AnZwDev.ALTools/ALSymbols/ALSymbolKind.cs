@@ -193,6 +193,7 @@ namespace AnZwDev.ALTools.ALSymbols
         IntegrationEventDeclaration = 50035,
         BusinessEventDeclaration = 50036,
         EventSubscriberDeclaration = 50037,
+        
         //tests
         TestDeclaration = 50038,
         ConfirmHandlerDeclaration = 50039,
@@ -205,7 +206,15 @@ namespace AnZwDev.ALTools.ALSymbols
         RequestPageHandlerDeclaration = 50046,
         SendNotificationHandlerDeclaration = 50047,
         SessionSettingsHandlerDeclaration = 50048,
-        StrMenuHandlerDeclaration = 50049
+        StrMenuHandlerDeclaration = 50049,
+
+        ProjectDefinition = 50050,
+        PackagesList = 50051,
+        Dependencies = 50052,
+        Document = 50053,
+        SymbolGroup = 50054,
+
+        AnyALObject = 50055         //any symbol, used in requests to specify kind of objects
 
     }
 }

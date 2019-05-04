@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 
 namespace AZALDevToolsServer.Contracts
 {
-    public class DocumentSymbolsResponse : BaseSymbolsResponse
+    public class LibrarySymbolsDetailsResponse
     {
+
+        public List<ALSymbolInformation> symbols { get; set; }
 
     }
 }

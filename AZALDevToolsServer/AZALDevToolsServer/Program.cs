@@ -10,7 +10,7 @@ namespace AZALDevToolsServer
     {
         static void Main(string[] args)
         {
-            ALDevToolsServer host = new ALDevToolsServer(args[0]);
+            ALDevToolsServerHost host = new ALDevToolsServerHost(args[0]);
             host.Initialize();
             host.Run();
         }

@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace AZALDevToolsServer.Handlers
 {
-    public class BaseALRequestHandler<TParameters, TResult> : RequestHandler<TParameters, TResult>
+    public abstract class BaseALNotificationHandler<T> : NotificationHandler<T>
     {
 
         public ALDevToolsServer Server { get; }
 
-        public BaseALRequestHandler(ALDevToolsServer server, string name) : base(name)
+        public BaseALNotificationHandler(ALDevToolsServer alDevToolsServer, string name) : base(name)
         {
-            this.Server = server;
+            this.Server = alDevToolsServer;
         }
 
     }

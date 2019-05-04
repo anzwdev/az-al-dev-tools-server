@@ -44,6 +44,14 @@ namespace AZALDevToolsTestConsoleApp
             ALSymbolInformation symbol = package.ToALSymbol();              
             */
 
+            ALPackageSymbolsCache packagesCache = new ALPackageSymbolsCache(alExtensionProxy);
+            ALProjectSymbolsLibrary projectSymbols = new ALProjectSymbolsLibrary(packagesCache, 
+                alExtensionProxy,
+                false,
+                "C:\\Projects\\Sandboxes\\samplealprojects\\big", 
+                ".alpackages");
+            projectSymbols.Load(false);
+
             Console.WriteLine("Hello World!");
             Console.ReadKey();
 

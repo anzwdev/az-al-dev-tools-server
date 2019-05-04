@@ -61,5 +61,41 @@ namespace AnZwDev.ALTools.ALSymbols
             }
         }
 
+        public ALSymbolInformation CreateCopy(bool withChildSymbols)
+        {
+            ALSymbolInformation symbol = new ALSymbolInformation();
+
+            symbol.id = this.id;
+            symbol.name = this.name;
+            symbol.subtype = this.subtype;
+            symbol.fullName = this.fullName;
+            symbol.kind = this.kind;
+            symbol.range = this.range;
+            symbol.selectionRange = this.selectionRange;
+
+            if ((withChildSymbols) && (this.childSymbols != null))
+            {
+                for (int i=0; i<this.childSymbols.Count; i++)
+                {
+                    symbol.AddChildSymbol(this.childSymbols[i].CreateCopy(withChildSymbols));
+                }
+            }
+
+            return symbol;
+        }
+
+        public ALSymbolInformation GetObjectsTree()
+        {
+            ALSymbolInformation symbol = this.CreateCopy(false);
+            if ((!this.kind.IsObjectDefinition()) && (this.childSymbols != null))
+            {
+                for (int i = 0; i < this.childSymbols.Count; i++)
+                {
+                    symbol.AddChildSymbol(this.childSymbols[i].GetObjectsTree());
+                }
+            }
+            return symbol;
+        }
+
     }
 }

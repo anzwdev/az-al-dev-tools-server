@@ -7,14 +7,8 @@ using System.Threading.Tasks;
 
 namespace AZALDevToolsServer.Contracts
 {
-    public class AppPackageSymbolsResponse
+    public class AppPackageSymbolsResponse : BaseOpenSymbolsLibraryResponse
     {
-
-        public ALSymbolInformation root { get; set; }
-
-        public AppPackageSymbolsResponse()
-        {
-        }
 
     }
 }

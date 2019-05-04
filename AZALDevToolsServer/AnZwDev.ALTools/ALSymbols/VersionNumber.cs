@@ -12,6 +12,23 @@ namespace AnZwDev.ALTools.ALSymbols
         public string Version { get; set; }
         public int[] Parts { get; private set; }
 
+        public VersionNumber(params int[] versionNumberParts)
+        {
+            this.Parts = versionNumberParts;
+            string versionText = "";
+            for (int i=0; i< this.Parts.Length;i++)
+            {
+                if (i > 0)
+                    versionText = versionText + ".";
+                versionText = versionText + this.Parts[i].ToString();
+            }
+            this.Version = versionText;
+        }
+
+        public VersionNumber() : this(0,0,0,0)
+        {
+        }
+
         public VersionNumber(string versionText)
         {
             this.Version = versionText;

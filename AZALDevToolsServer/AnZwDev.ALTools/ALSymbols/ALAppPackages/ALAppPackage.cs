@@ -44,20 +44,20 @@ namespace AnZwDev.ALTools.ALSymbols.ALAppPackages
         {
             base.AddChildALSymbols(symbol);
 
-            this.Tables?.AddToALSymbol(symbol, ALSymbolKind.TableObjectList, "Tables");
-            this.Pages?.AddToALSymbol(symbol, ALSymbolKind.PageObjectList, "Pages");
-            this.Reports?.AddToALSymbol(symbol, ALSymbolKind.ReportObjectList, "Reports");
-            this.XmlPorts?.AddToALSymbol(symbol, ALSymbolKind.XmlPortObjectList, "XmlPorts");
-            this.Queries?.AddToALSymbol(symbol, ALSymbolKind.QueryObjectList, "Queries");
-            this.Codeunits?.AddToALSymbol(symbol, ALSymbolKind.CodeunitObjectList, "Codeunits");
-            this.ControlAddIns?.AddToALSymbol(symbol, ALSymbolKind.ControlAddInObjectList, "ControlAddIns");
-            this.PageExtensions?.AddToALSymbol(symbol, ALSymbolKind.PageExtensionObjectList, "PageExtensions");
-            this.TableExtensions?.AddToALSymbol(symbol, ALSymbolKind.TableExtensionObjectList, "TableExtensions");
-            this.Pofiles?.AddToALSymbol(symbol, ALSymbolKind.ProfileObjectList, "Pofiles");
-            this.PageCustomizations?.AddToALSymbol(symbol, ALSymbolKind.PageCustomizationObjectList, "PageCustomizations");
-            this.DotNetPackages?.AddToALSymbol(symbol, ALSymbolKind.DotNetPackageList, "DotNetPackages");
-            this.EnumTypes?.AddToALSymbol(symbol, ALSymbolKind.EnumTypeList, "Enums");
-            this.EnumTypeExtensions?.AddToALSymbol(symbol, ALSymbolKind.EnumExtensionTypeList, "EnumExtensions");
+            this.Tables?.AddCollectionToALSymbol(symbol, ALSymbolKind.TableObjectList);
+            this.Pages?.AddCollectionToALSymbol(symbol, ALSymbolKind.PageObjectList);
+            this.Reports?.AddCollectionToALSymbol(symbol, ALSymbolKind.ReportObjectList);
+            this.XmlPorts?.AddCollectionToALSymbol(symbol, ALSymbolKind.XmlPortObjectList);
+            this.Queries?.AddCollectionToALSymbol(symbol, ALSymbolKind.QueryObjectList);
+            this.Codeunits?.AddCollectionToALSymbol(symbol, ALSymbolKind.CodeunitObjectList);
+            this.ControlAddIns?.AddCollectionToALSymbol(symbol, ALSymbolKind.ControlAddInObjectList);
+            this.PageExtensions?.AddCollectionToALSymbol(symbol, ALSymbolKind.PageExtensionObjectList);
+            this.TableExtensions?.AddCollectionToALSymbol(symbol, ALSymbolKind.TableExtensionObjectList);
+            this.Pofiles?.AddCollectionToALSymbol(symbol, ALSymbolKind.ProfileObjectList);
+            this.PageCustomizations?.AddCollectionToALSymbol(symbol, ALSymbolKind.PageCustomizationObjectList);
+            this.DotNetPackages?.AddCollectionToALSymbol(symbol, ALSymbolKind.DotNetPackageList);
+            this.EnumTypes?.AddCollectionToALSymbol(symbol, ALSymbolKind.EnumTypeList);
+            this.EnumTypeExtensions?.AddCollectionToALSymbol(symbol, ALSymbolKind.EnumExtensionTypeList);
 
         }
 

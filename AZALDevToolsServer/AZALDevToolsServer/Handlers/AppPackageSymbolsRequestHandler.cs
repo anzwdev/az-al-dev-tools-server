@@ -1,4 +1,5 @@
-﻿using AnZwDev.ALTools.ALSymbols;
+﻿using AnZwDev.ALTools;
+using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
 using AZALDevToolsServer.Contracts;
 using System;
@@ -12,11 +13,8 @@ namespace AZALDevToolsServer.Handlers
     public class AppPackageSymbolsRequestHandler : BaseALRequestHandler<AppPackageSymbolsRequest, AppPackageSymbolsResponse>
     {
 
-        protected ALPackageSymbolsCache _appPackagesCache;
-
         public AppPackageSymbolsRequestHandler(ALDevToolsServer server) : base(server, "al/packagesymbols")
         {
-            _appPackagesCache = new ALPackageSymbolsCache(server.ALExtensionProxy);
         }
 
         protected override async Task<AppPackageSymbolsResponse> HandleMessage(AppPackageSymbolsRequest parameters, RequestContext<AppPackageSymbolsResponse> context)
@@ -24,9 +22,12 @@ namespace AZALDevToolsServer.Handlers
             AppPackageSymbolsResponse response = new AppPackageSymbolsResponse();
             try
             {
-                ALPackageSymbolsLibrary library = _appPackagesCache.GetSymbols(parameters.path, false);
+                ALPackageSymbolsLibrary library = this.Server.AppPackagesCache.GetSymbols(parameters.path, false);
                 if (library != null)
-                    response.root = library.Root;
+                {
+                    response.libraryId = this.Server.SymbolsLibraries.AddLibrary(library);
+                    response.root = library.GetObjectsTree(); // .Root;
+                }
             }
             catch (Exception e)
             {

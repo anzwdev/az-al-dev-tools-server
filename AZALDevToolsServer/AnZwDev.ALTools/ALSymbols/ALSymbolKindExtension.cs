@@ -151,9 +151,70 @@ namespace AnZwDev.ALTools.ALSymbols
 
                 case ALSymbolKind.PrimaryKey: return "Primary Key";
                 case ALSymbolKind.PageRepeater: return "Repeater";
-            }
-            throw new Exception("Unsupported enum value " + value.ToString());
 
+                case ALSymbolKind.TableObjectList: return "Tables";
+                case ALSymbolKind.PageObjectList:return "Pages";
+                case ALSymbolKind.ReportObjectList: return "Reports";
+                case ALSymbolKind.XmlPortObjectList: return "XmlPorts";
+                case ALSymbolKind.QueryObjectList: return "Queries";
+                case ALSymbolKind.CodeunitObjectList: return "Codeunits";
+                case ALSymbolKind.ControlAddInObjectList: return "ControlAddIns";
+                case ALSymbolKind.PageExtensionObjectList: return "PageExtensions";
+                case ALSymbolKind.TableExtensionObjectList: return "TableExtensions";
+                case ALSymbolKind.ProfileObjectList: return "Profiles";
+                case ALSymbolKind.PageCustomizationObjectList: return "PageCustomizations";
+                case ALSymbolKind.EnumObjectList: return "Enums";
+                case ALSymbolKind.DotNetPackageList: return "DotNetPackages";
+                case ALSymbolKind.EnumTypeList: return "Enums";
+                case ALSymbolKind.EnumExtensionTypeList: return "EnumExtensions";
+            }
+            //throw new Exception("Unsupported enum value " + value.ToString());
+            return value.ToString();
+        }
+
+        public static ALSymbolKind ToGroupSymbolKind(this ALSymbolKind kind)
+        {
+            switch (kind)
+            {
+                case ALSymbolKind.TableObject: return ALSymbolKind.TableObjectList;
+                case ALSymbolKind.TableExtensionObject: return ALSymbolKind.TableExtensionObjectList;
+                case ALSymbolKind.PageObject: return ALSymbolKind.PageObjectList;
+                case ALSymbolKind.ReportObject: return ALSymbolKind.ReportObjectList;
+                case ALSymbolKind.XmlPortObject: return ALSymbolKind.XmlPortObjectList;
+                case ALSymbolKind.QueryObject: return ALSymbolKind.QueryObjectList;
+                case ALSymbolKind.CodeunitObject: return ALSymbolKind.CodeunitObjectList;
+                case ALSymbolKind.ControlAddInObject: return ALSymbolKind.ControlAddInObjectList;
+                case ALSymbolKind.PageExtensionObject: return ALSymbolKind.PageExtensionObjectList;
+                case ALSymbolKind.ProfileObject: return ALSymbolKind.ProfileObjectList;
+                case ALSymbolKind.PageCustomizationObject: return ALSymbolKind.PageCustomizationObjectList;
+                case ALSymbolKind.DotNetPackage: return ALSymbolKind.DotNetPackageList;
+                case ALSymbolKind.EnumType: return ALSymbolKind.EnumTypeList;
+                case ALSymbolKind.EnumExtensionType: return ALSymbolKind.EnumExtensionTypeList;
+                default: return ALSymbolKind.SymbolGroup;
+            }
+        }
+
+        public static bool IsObjectDefinition(this ALSymbolKind kind)
+        {
+            switch (kind)
+            {
+                case ALSymbolKind.TableObject:
+                case ALSymbolKind.TableExtensionObject:
+                case ALSymbolKind.PageObject:
+                case ALSymbolKind.ReportObject:
+                case ALSymbolKind.XmlPortObject:
+                case ALSymbolKind.QueryObject:
+                case ALSymbolKind.CodeunitObject:
+                case ALSymbolKind.ControlAddInObject:
+                case ALSymbolKind.PageExtensionObject:
+                case ALSymbolKind.ProfileObject:
+                case ALSymbolKind.PageCustomizationObject:
+                case ALSymbolKind.DotNetPackage:
+                case ALSymbolKind.EnumType:
+                case ALSymbolKind.EnumExtensionType:
+                    return true;
+            }
+            return false;
         }
 
     }

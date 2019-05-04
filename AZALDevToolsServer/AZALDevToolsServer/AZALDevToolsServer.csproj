@@ -59,15 +59,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ALDevToolsServer.cs" />
+    <Compile Include="ALDevToolsServerHost.cs" />
     <Compile Include="Contracts\AppPackageSymbolsRequest.cs" />
     <Compile Include="Contracts\AppPackageSymbolsResponse.cs" />
+    <Compile Include="Contracts\BaseOpenSymbolsLibraryResponse.cs" />
+    <Compile Include="Contracts\BaseSymbolsResponse.cs" />
+    <Compile Include="Contracts\CloseSymbolsLibraryRequest.cs" />
     <Compile Include="Contracts\DocumentSymbolsRequest.cs" />
     <Compile Include="Contracts\DocumentSymbolsResponse.cs" />
+    <Compile Include="Contracts\LibrarySymbolsDetailsRequest.cs" />
+    <Compile Include="Contracts\LibrarySymbolsDetailsResponse.cs" />
+    <Compile Include="Contracts\ProjectSymbolsRequest.cs" />
+    <Compile Include="Contracts\ProjectSymbolsResponse.cs" />
     <Compile Include="Handlers\AppPackageSymbolsRequestHandler.cs" />
+    <Compile Include="Handlers\BaseALNotificationHandler.cs" />
     <Compile Include="Handlers\BaseALRequestHandler.cs" />
+    <Compile Include="Handlers\CloseSymbolsLibraryNotificationHandler.cs" />
     <Compile Include="Handlers\DocumentSymbolsRequestHandler.cs" />
     <Compile Include="Handlers\ExitNotificationHandler.cs" />
+    <Compile Include="Handlers\LibrarySymbolsDetailsRequestHandler.cs" />
+    <Compile Include="Handlers\ProjectSymbolsRequestHandler.cs" />
     <Compile Include="Handlers\ShutdownRequestHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
