@@ -54,10 +54,39 @@ namespace AnZwDev.ALTools.ALProxy
                             this.BCVersion = BCVersion.BC_undefined;
                         break;
                 }
-                
+            }
+        }
 
+        public dynamic GetSyntaxTree(string source)
+        {
+            ALExtensionLibraryTypeProxy syntaxTree = new ALExtensionLibraryTypeProxy(
+                this.CodeAnalysis,
+                "Microsoft.Dynamics.Nav.CodeAnalysis.Syntax.SyntaxTree");
+
+            dynamic sourceTree = null;
+
+            if (this.BCVersion == BCVersion.NAV2018)
+            {
+                try
+                {
+                    //ParseObjectText(string text, string path = null, Encoding encoding = null, CancellationToken cancellationToken = default(CancellationToken));
+                    sourceTree = syntaxTree.CallStaticMethod("ParseObjectText", source,
+                        Type.Missing, Type.Missing, Type.Missing);
+                }
+                catch (Exception)
+                {
+                    sourceTree = null;
+                }
             }
 
+            if (sourceTree == null)
+            {
+                //ParseObjectText(string text, string path = null, Encoding encoding = null, ParseOptions options = null, CancellationToken cancellationToken = default(CancellationToken));
+                sourceTree = syntaxTree.CallStaticMethod("ParseObjectText", source,
+                    Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+            }
+
+            return sourceTree;
         }
 
     }

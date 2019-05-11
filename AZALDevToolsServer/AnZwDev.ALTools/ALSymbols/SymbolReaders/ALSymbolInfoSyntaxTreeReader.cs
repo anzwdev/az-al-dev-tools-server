@@ -37,33 +37,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
 
         public ALSymbolInformation ProcessSourceCode(string source)
         {
-            ALExtensionLibraryTypeProxy syntaxTree = new ALExtensionLibraryTypeProxy(
-                this.ALExtensionProxy.CodeAnalysis,
-                "Microsoft.Dynamics.Nav.CodeAnalysis.Syntax.SyntaxTree");
-
-            dynamic sourceTree = null;
-
-            if (this.ALExtensionProxy.BCVersion == BCVersion.NAV2018)
-            {
-                try
-                {
-                    //ParseObjectText(string text, string path = null, Encoding encoding = null, CancellationToken cancellationToken = default(CancellationToken));
-                    sourceTree = syntaxTree.CallStaticMethod("ParseObjectText", source,
-                        Type.Missing, Type.Missing, Type.Missing);
-                }
-                catch (Exception)
-                {
-                    sourceTree = null;
-                }
-            }
-
-            if (sourceTree == null)
-            {
-                //ParseObjectText(string text, string path = null, Encoding encoding = null, ParseOptions options = null, CancellationToken cancellationToken = default(CancellationToken));
-                sourceTree = syntaxTree.CallStaticMethod("ParseObjectText", source,
-                    Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-            }
-
+            dynamic sourceTree = this.ALExtensionProxy.GetSyntaxTree(source);
             return ProcessSyntaxTree(sourceTree);
         }
 
@@ -105,7 +79,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                 lineSpan.StartLinePosition.Line, lineSpan.StartLinePosition.Character);
 
             //additional information
-            ProcessNode(symbolInfo, node);
+            ProcessNode(syntaxTree, symbolInfo, node);
 
             //process child nodes
             IEnumerable<dynamic> list = node.ChildNodes();
@@ -122,7 +96,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
 
         #region Processing special syntax properties
 
-        protected void ProcessNode(ALSymbolInformation symbol, dynamic node)
+        protected void ProcessNode(dynamic syntaxTree, ALSymbolInformation symbol, dynamic node)
         {
             ConvertedSyntaxKind kind = ALEnumConverters.SyntaxKindConverter.Convert(node.Kind);
 
@@ -161,7 +135,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                     ProcessEnumValueNode(symbol, node);
                     break;
                 case ConvertedSyntaxKind.PageGroup:
-                    ProcessPageGroupNode(symbol, node);
+                    ProcessPageGroupNode(syntaxTree, symbol, node);
                     break;
                 case ConvertedSyntaxKind.PagePart:
                     ProcessPagePartNode(symbol, node);
@@ -172,7 +146,16 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                 case ConvertedSyntaxKind.PageChartPart:
                     ProcessPageChartPartNode(symbol, node);
                     break;
+                case ConvertedSyntaxKind.PageField:
+                    ProcessPageFieldNode(symbol, node);
+                    break;
             }
+        }
+
+        protected void ProcessPageFieldNode(ALSymbolInformation symbol, dynamic syntax)
+        {
+            if (syntax.Expression != null)
+                symbol.source = ALSyntaxHelper.DecodeName(syntax.Expression.ToString());
         }
 
         protected void ProcessPagePartNode(ALSymbolInformation symbol, dynamic syntax)
@@ -199,7 +182,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             symbol.fullName = name;
         }
 
-        protected void ProcessPageGroupNode(ALSymbolInformation symbol, dynamic syntax)
+        protected void ProcessPageGroupNode(dynamic syntaxTree, ALSymbolInformation symbol, dynamic syntax)
         {
             dynamic controlKeywordToken = syntax.ControlKeyword;
             if (controlKeywordToken != null)
@@ -207,6 +190,16 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                 ConvertedSyntaxKind controlKind = ALEnumConverters.SyntaxKindConverter.Convert(controlKeywordToken.Kind);
                 if (controlKind == ConvertedSyntaxKind.PageRepeaterKeyword)
                     symbol.kind = ALSymbolKind.PageRepeater;
+            }
+
+            dynamic contentStartToken = syntax.OpenBraceToken;
+            dynamic contentEndToken = syntax.CloseBraceToken;
+            if ((contentStartToken != null) && (contentEndToken != null))
+            {
+                dynamic startSpan = syntaxTree.GetLineSpan(contentStartToken.Span);
+                dynamic endSpan = syntaxTree.GetLineSpan(contentEndToken.Span);
+                symbol.contentRange = new Range(startSpan.EndLinePosition.Line, startSpan.EndLinePosition.Character,
+                    endSpan.StartLinePosition.Line, endSpan.StartLinePosition.Character);
             }
         }
 
@@ -299,11 +292,47 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             }
         }
 
+        protected void ProcessSyntaxNodePropertyList(dynamic syntaxTree, ALSymbolInformation parent, dynamic node)
+        {
+            IEnumerable<dynamic> list = node.ChildNodes();
+            if (list != null)
+            {
+                foreach (dynamic childNode in list)
+                {
+                    ConvertedSyntaxKind kind = ALEnumConverters.SyntaxKindConverter.Convert(childNode.Kind);
+                    if (kind == ConvertedSyntaxKind.Property)
+                    {
+                        string name = childNode.Name.ToString();
+                        string value = childNode.Value.ToString();
+                        this.ProcessSyntaxNodeProperty(syntaxTree, parent, name, value);
+                    }
+                }
+            }
+        }
+
+        protected void ProcessSyntaxNodeProperty(dynamic syntaxTree, ALSymbolInformation parent, string name, string value)
+        {
+            if ((name != null) && (value != null))
+            {
+                name = name.ToLower();
+                switch (parent.kind)
+                {
+                    case ALSymbolKind.PageObject:
+                        if (name == "sourcetable")
+                            parent.source = ALSyntaxHelper.DecodeName(value);
+                        break;
+                }
+            }
+        }
+
         protected bool ProcessSyntaxNodeAttribute(dynamic syntaxTree, ALSymbolInformation parent, dynamic node)
         {
             ConvertedSyntaxKind kind = ALEnumConverters.SyntaxKindConverter.Convert(node.Kind);
             switch (kind)
             {
+                case ConvertedSyntaxKind.PropertyList:
+                    this.ProcessSyntaxNodePropertyList(syntaxTree, parent, node);
+                    return true;
                 case ConvertedSyntaxKind.SimpleTypeReference:
                 case ConvertedSyntaxKind.RecordTypeReference:
                 case ConvertedSyntaxKind.DotNetTypeReference:

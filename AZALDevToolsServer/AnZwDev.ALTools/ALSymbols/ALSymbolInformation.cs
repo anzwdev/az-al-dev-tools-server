@@ -13,16 +13,19 @@ namespace AnZwDev.ALTools.ALSymbols
         public string subtype { get; set; }
         public string fullName { get; set; }
         public ALSymbolKind kind { get; set; }
+        public string source { get; set; }
         public List<ALSymbolInformation> childSymbols { get; set; }
         public Range range { get; set; }
         public Range selectionRange { get; set; }
-
+        public Range contentRange { get; set; }
         public ALSymbolInformation()
         {
             this.id = 0;
             this.childSymbols = null;
             this.fullName = null;
             this.subtype = null;
+            this.source = null;
+            this.contentRange = null;
         }
 
         public ALSymbolInformation(ALSymbolKind kindValue, string nameValue) : this()

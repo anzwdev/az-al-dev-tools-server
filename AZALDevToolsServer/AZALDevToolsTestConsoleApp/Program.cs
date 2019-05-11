@@ -30,6 +30,9 @@ namespace AZALDevToolsTestConsoleApp
             ALSymbolInformation m = s.ProcessSourceFile(
                 "C:\\Projects\\Sandboxes\\samplealprojects\\big\\ftest\\CardPageTest02.al");
 
+
+
+
             /*
             DateTime t1 = DateTime.Now;
             ALSymbolInfoPackageReader appPackageReader = new ALSymbolInfoPackageReader(alExtensionProxy);
