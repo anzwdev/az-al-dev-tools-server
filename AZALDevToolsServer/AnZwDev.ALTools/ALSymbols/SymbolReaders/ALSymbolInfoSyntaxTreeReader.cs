@@ -106,7 +106,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                     ProcessXmlPortTableElementNode(symbol, node);
                     break;
                 case ConvertedSyntaxKind.ReportDataItem:
-                    ProcessReportDataItemNode(symbol, node);
+                    ProcessReportDataItemNode(syntaxTree, symbol, node);
                     break;
                 case ConvertedSyntaxKind.ReportColumn:
                     ProcessReportColumnNode(symbol, node);
@@ -149,7 +149,52 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                 case ConvertedSyntaxKind.PageField:
                     ProcessPageFieldNode(symbol, node);
                     break;
+                case ConvertedSyntaxKind.PageExtensionObject:
+                    ProcessPageExtensionObjectNode(symbol, node);
+                    break;
+                case ConvertedSyntaxKind.ControlAddChange:
+                    ProcessControlAddChangeNode(syntaxTree, symbol, node);
+                    break;
+                case ConvertedSyntaxKind.PageCustomizationObject:
+                    ProcessPageCustomizationObjectNode(symbol, node);
+                    break;
+                case ConvertedSyntaxKind.QueryDataItem:
+                    ProcessQueryDataItemNode(syntaxTree, symbol, node);
+                    break;
+                case ConvertedSyntaxKind.QueryColumn:
+                    ProcessQueryColumnNode(symbol, node);
+                    break;
             }
+        }
+
+        protected void ProcessControlAddChangeNode(dynamic syntaxTree, ALSymbolInformation symbol, dynamic syntax)
+        {
+            this.ProcessNodeContentRange(syntaxTree, symbol, syntax);
+        }
+
+        protected void ProcessQueryColumnNode(ALSymbolInformation symbol, dynamic syntax)
+        {
+            if (syntax.RelatedField != null)
+                symbol.source = ALSyntaxHelper.DecodeName(syntax.RelatedField.ToString());
+        }
+
+        protected void ProcessQueryDataItemNode(dynamic syntaxTree, ALSymbolInformation symbol, dynamic syntax)
+        {
+            if (syntax.DataItemTable != null)
+                symbol.source = ALSyntaxHelper.DecodeName(syntax.DataItemTable.ToString());
+            this.ProcessNodeContentRange(syntaxTree, symbol, syntax);
+        }
+
+        protected void ProcessPageCustomizationObjectNode(ALSymbolInformation symbol, dynamic syntax)
+        {
+            if (syntax.BaseObject != null)
+                symbol.extends = ALSyntaxHelper.DecodeName(syntax.BaseObject.ToString());
+        }
+
+        protected void ProcessPageExtensionObjectNode(ALSymbolInformation symbol, dynamic syntax)
+        {
+            if (syntax.BaseObject != null)
+                symbol.extends = ALSyntaxHelper.DecodeName(syntax.BaseObject.ToString());
         }
 
         protected void ProcessPageFieldNode(ALSymbolInformation symbol, dynamic syntax)
@@ -191,16 +236,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                 if (controlKind == ConvertedSyntaxKind.PageRepeaterKeyword)
                     symbol.kind = ALSymbolKind.PageRepeater;
             }
-
-            dynamic contentStartToken = syntax.OpenBraceToken;
-            dynamic contentEndToken = syntax.CloseBraceToken;
-            if ((contentStartToken != null) && (contentEndToken != null))
-            {
-                dynamic startSpan = syntaxTree.GetLineSpan(contentStartToken.Span);
-                dynamic endSpan = syntaxTree.GetLineSpan(contentEndToken.Span);
-                symbol.contentRange = new Range(startSpan.EndLinePosition.Line, startSpan.EndLinePosition.Character,
-                    endSpan.StartLinePosition.Line, endSpan.StartLinePosition.Character);
-            }
+            this.ProcessNodeContentRange(syntaxTree, symbol, syntax);
         }
 
 
@@ -212,6 +248,8 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
         protected void ProcessReportColumnNode(ALSymbolInformation symbol, dynamic syntax)
         {
             symbol.fullName = ALSyntaxHelper.EncodeName(symbol.name) + ": " + syntax.SourceExpression.ToFullString();
+            if (syntax.SourceExpression != null)
+                symbol.source = ALSyntaxHelper.DecodeName(syntax.SourceExpression.ToString());
         }
 
         protected void ProcessXmlPortTableElementNode(ALSymbolInformation symbol, dynamic syntax)
@@ -221,9 +259,12 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                 ": Record " + syntax.SourceTable.ToFullString();
         }
 
-        protected void ProcessReportDataItemNode(ALSymbolInformation symbol, dynamic syntax)
+        protected void ProcessReportDataItemNode(dynamic syntaxTree, ALSymbolInformation symbol, dynamic syntax)
         {
             symbol.fullName = ALSyntaxHelper.EncodeName(symbol.name) + ": Record " + syntax.DataItemTable.ToFullString();
+            if (syntax.DataItemTable != null)
+                symbol.source = ALSyntaxHelper.DecodeName(syntax.DataItemTable.ToString());
+            this.ProcessNodeContentRange(syntaxTree, symbol, syntax);
         }
 
         protected void ProcessFieldNode(ALSymbolInformation symbol, dynamic syntax)
@@ -270,6 +311,18 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             symbol.fullName = ALSyntaxHelper.EncodeName(symbol.name) + namePart;
         }
 
+        protected void ProcessNodeContentRange(dynamic syntaxTree, ALSymbolInformation symbol, dynamic syntax)
+        {
+            dynamic contentStartToken = syntax.OpenBraceToken;
+            dynamic contentEndToken = syntax.CloseBraceToken;
+            if ((contentStartToken != null) && (contentEndToken != null))
+            {
+                dynamic startSpan = syntaxTree.GetLineSpan(contentStartToken.Span);
+                dynamic endSpan = syntaxTree.GetLineSpan(contentEndToken.Span);
+                symbol.contentRange = new Range(startSpan.EndLinePosition.Line, startSpan.EndLinePosition.Character,
+                    endSpan.StartLinePosition.Line, endSpan.StartLinePosition.Character);
+            }
+        }
 
         #endregion
 

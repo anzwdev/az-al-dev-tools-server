@@ -14,6 +14,7 @@ namespace AnZwDev.ALTools.ALSymbols
         public string fullName { get; set; }
         public ALSymbolKind kind { get; set; }
         public string source { get; set; }
+        public string extends { get; set; }
         public List<ALSymbolInformation> childSymbols { get; set; }
         public Range range { get; set; }
         public Range selectionRange { get; set; }
@@ -25,6 +26,7 @@ namespace AnZwDev.ALTools.ALSymbols
             this.fullName = null;
             this.subtype = null;
             this.source = null;
+            this.extends = null;
             this.contentRange = null;
         }
 
