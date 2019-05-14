@@ -27,8 +27,13 @@ namespace AZALDevToolsTestConsoleApp
 
             ALSymbolInfoSyntaxTreeReader s = new ALSymbolInfoSyntaxTreeReader(alExtensionProxy);
             //ALSymbolInformation m = s.ProcessSourceFile("C:\\Projects\\Sandboxes\\ALProject5\\New Page.al");
+            //ALSymbolInformation m = s.ProcessSourceFile(
+            //    "C:\\Projects\\Sandboxes\\samplealprojects\\big\\ftest\\CardPageTest02.al");
+
             ALSymbolInformation m = s.ProcessSourceFile(
-                "C:\\Projects\\Sandboxes\\samplealprojects\\big\\ftest\\CardPageTest02.al");
+                "C:\\Projects\\Sandboxes\\samplealprojects\\small\\MyQuery.al");
+
+
 
             /*
             DateTime t1 = DateTime.Now;
