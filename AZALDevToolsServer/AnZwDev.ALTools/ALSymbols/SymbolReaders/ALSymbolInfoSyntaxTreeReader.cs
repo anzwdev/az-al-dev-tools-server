@@ -374,6 +374,37 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                         if (name == "sourcetable")
                             parent.source = ALSyntaxHelper.DecodeName(value);
                         break;
+                    case ALSymbolKind.Field:
+                        if ((name == "enabled") && (value != null) && (
+                            (value.Equals("false", StringComparison.CurrentCultureIgnoreCase)) ||
+                            (value == "0")))
+                        {
+                            if ((parent.subtype != null) && (parent.subtype.StartsWith("Obsolete")))
+                            {
+                                int obsoletePos = parent.fullName.LastIndexOf("(Obsolete");
+                                if (obsoletePos > 0)
+                                    parent.fullName = parent.fullName.Substring(0, obsoletePos - 1);
+                            }
+                            parent.subtype = "Disabled";
+                            parent.fullName = parent.fullName + " (Disabled)";
+                        }
+                        else if ((name == "obsoletestate") && (value != null))
+                        {
+                            if (String.IsNullOrEmpty(parent.subtype))
+                            {
+                                if (value.Equals("Pending", StringComparison.CurrentCultureIgnoreCase))
+                                {
+                                    parent.subtype = "ObsoletePending";
+                                    parent.fullName = parent.fullName + " (Obsolete-Pending)";
+                                }
+                                else if (value.Equals("Removed", StringComparison.CurrentCultureIgnoreCase))
+                                {
+                                    parent.subtype = "ObsoleteRemoved";
+                                    parent.fullName = parent.fullName + " (Obsolete-Removed)";
+                                }
+                            }
+                        }
+                        break;
                 }
             }
         }
