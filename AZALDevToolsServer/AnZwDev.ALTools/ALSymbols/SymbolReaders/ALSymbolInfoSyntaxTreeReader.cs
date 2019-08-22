@@ -103,7 +103,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             switch (kind)
             {
                 case ConvertedSyntaxKind.XmlPortTableElement:
-                    ProcessXmlPortTableElementNode(symbol, node);
+                    ProcessXmlPortTableElementNode(syntaxTree, symbol, node);
                     break;
                 case ConvertedSyntaxKind.ReportDataItem:
                     ProcessReportDataItemNode(syntaxTree, symbol, node);
@@ -252,11 +252,13 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                 symbol.source = ALSyntaxHelper.DecodeName(syntax.SourceExpression.ToString());
         }
 
-        protected void ProcessXmlPortTableElementNode(ALSymbolInformation symbol, dynamic syntax)
+        protected void ProcessXmlPortTableElementNode(dynamic syntaxTree, ALSymbolInformation symbol, dynamic syntax)
         {
             symbol.fullName = symbol.kind.ToName() + " " + 
                 ALSyntaxHelper.EncodeName(symbol.name) + 
                 ": Record " + syntax.SourceTable.ToFullString();
+            symbol.source = ALSyntaxHelper.DecodeName(syntax.SourceTable.ToFullString());
+            this.ProcessNodeContentRange(syntaxTree, symbol, syntax);
         }
 
         protected void ProcessReportDataItemNode(dynamic syntaxTree, ALSymbolInformation symbol, dynamic syntax)
