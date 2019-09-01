@@ -53,7 +53,7 @@ namespace AZALDevToolsTestConsoleApp
             ALProjectSymbolsLibrary projectSymbols = new ALProjectSymbolsLibrary(packagesCache, 
                 alExtensionProxy,
                 false,
-                "C:\\Projects\\Sandboxes\\samplealprojects\\big", 
+                "C:\\Projects\\Sandboxes\\samplealprojects\\big",
                 ".alpackages");
             projectSymbols.Load(false);
 

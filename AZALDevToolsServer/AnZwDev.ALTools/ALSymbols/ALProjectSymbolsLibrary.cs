@@ -74,10 +74,10 @@ namespace AnZwDev.ALTools.ALSymbols
                 this.AddPackage(packageFiles, "Microsoft", "Application", projectFile.application, forceReload);
 
             if (!String.IsNullOrWhiteSpace(projectFile.platform))
-                this.AddPackage(packageFiles, "Microsoft", "System", projectFile.application, forceReload);
+                this.AddPackage(packageFiles, "Microsoft", "System", projectFile.platform, forceReload);
 
             if (!String.IsNullOrWhiteSpace(projectFile.test))
-                this.AddPackage(packageFiles, "Microsoft", "Test", projectFile.application, forceReload);
+                this.AddPackage(packageFiles, "Microsoft", "Test", projectFile.test, forceReload);
 
             //collect dependencies
 

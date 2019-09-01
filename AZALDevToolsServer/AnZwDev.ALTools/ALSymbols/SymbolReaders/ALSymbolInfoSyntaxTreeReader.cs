@@ -468,6 +468,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
 
         protected ALSymbolKind SyntaxKindToALSymbolKind(dynamic node)
         {
+            Type nodeType = null;
             ConvertedSyntaxKind kind = ALEnumConverters.SyntaxKindConverter.Convert(node.Kind);
 
             switch (kind)
@@ -490,7 +491,9 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
 
                 //code elements
                 case ConvertedSyntaxKind.MethodDeclaration:
-                    if ((node.LocalKeyword != null) &&
+                    nodeType = node.GetType();
+                    if ((nodeType.GetProperty("LocalKeyword") != null) &&                        
+                        (node.LocalKeyword != null) &&
                         (ALEnumConverters.SyntaxKindConverter.Convert(node.LocalKeyword.Kind) != ConvertedSyntaxKind.None))
                         return ALSymbolKind.LocalMethodDeclaration;
                     else
