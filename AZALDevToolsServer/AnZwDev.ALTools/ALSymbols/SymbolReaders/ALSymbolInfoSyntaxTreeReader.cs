@@ -357,8 +357,8 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                     ConvertedSyntaxKind kind = ALEnumConverters.SyntaxKindConverter.Convert(childNode.Kind);
                     if (kind == ConvertedSyntaxKind.Property)
                     {
-                        string name = childNode.Name.ToString();
-                        string value = childNode.Value.ToString();
+                        string name = (childNode.Name != null)?childNode.Name.ToString():"";
+                        string value = (childNode.Value != null)?childNode.Value.ToString():"";
                         this.ProcessSyntaxNodeProperty(syntaxTree, parent, name, value);
                     }
                 }
