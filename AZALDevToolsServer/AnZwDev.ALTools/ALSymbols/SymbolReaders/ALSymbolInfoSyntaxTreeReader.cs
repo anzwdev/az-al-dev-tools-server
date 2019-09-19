@@ -11,7 +11,6 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
     {
 
         protected ALExtensionProxy ALExtensionProxy { get; }
-
         public ALSymbolInfoSyntaxTreeReader(ALExtensionProxy alExtensionProxy)
         {
             this.ALExtensionProxy = alExtensionProxy;
@@ -271,6 +270,15 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
 
         protected void ProcessFieldNode(ALSymbolInformation symbol, dynamic syntax)
         {
+            Type syntaxType = syntax.GetType();
+            if ((syntaxType.GetProperty("No") != null) && (syntax.No != null))
+            {
+                string idText = syntax.No.ToString();
+                int id = 0;
+                if (Int32.TryParse(idText, out id))
+                    symbol.id = id;
+            }
+
             symbol.fullName = ALSyntaxHelper.EncodeName(symbol.name) + ": " + syntax.Type.ToFullString();
         }
 
