@@ -36,5 +36,10 @@ namespace AnZwDev.ALTools.Helpers
             return mergedText;
         }
 
+        public static bool EqualsOrEmpty(this string value, string value2)
+        {
+            return ((String.IsNullOrWhiteSpace(value)) || (value.Equals(value2, StringComparison.CurrentCultureIgnoreCase)));
+        }
+
     }
 }

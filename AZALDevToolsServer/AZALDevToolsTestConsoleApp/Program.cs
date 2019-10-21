@@ -18,7 +18,7 @@ namespace AZALDevToolsTestConsoleApp
             // Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app.
 
             ALExtensionProxy alExtensionProxy = new ALExtensionProxy();
-            alExtensionProxy.Load("C:\\vscode\\release-al\\data\\extensions\\ms-dynamics-smb.al-3.0.168874\\bin");
+            alExtensionProxy.Load("C:\\vscode\\release-al\\data\\extensions\\ms-dynamics-smb.al-4.0.182565\\bin");
             //alExtensionProxy.Load("C:\\vscode\\al-devtest-multiplealext\\data\\extensions\\microsoft.al-0.12.25327\\bin");
 
             //ALPackageSymbolsLibrary lib = new ALPackageSymbolsLibrary(alExtensionProxy,

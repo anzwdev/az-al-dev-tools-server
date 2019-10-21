@@ -16,12 +16,13 @@ namespace AnZwDev.ALTools.ALSymbols
 
         public ALExtensionProxy ALExtensionProxy { get; }
         public ALPackageSymbolsCache PackageSymbolsCache { get; }
-        public List<ALPackageSymbolsLibrary> Dependencies { get; set; }
+        public List<ALSymbolsLibrary> Dependencies { get; set; }
 
         public bool IncludeDependencies { get; set; }
         public string Path { get; set; }
         public string PackagesPath { get; set; }
         public string FullName { get; set; }
+        public string[] WorkspaceFolders { get; set; }
 
         public ALProjectSymbolsLibrary(ALPackageSymbolsCache cache, ALExtensionProxy proxy, bool includeDependencies, string projectPath, string packagesFolder)
         {
@@ -30,7 +31,8 @@ namespace AnZwDev.ALTools.ALSymbols
             this.IncludeDependencies = includeDependencies;
             this.Path = projectPath;
             this.PackagesPath = System.IO.Path.Combine(this.Path, packagesFolder);
-            this.Dependencies = new List<ALPackageSymbolsLibrary>();
+            this.Dependencies = new List<ALSymbolsLibrary>();
+            this.WorkspaceFolders = null;
         }
 
         public override bool Load(bool forceReload)
@@ -59,13 +61,34 @@ namespace AnZwDev.ALTools.ALSymbols
             ALAppPackageFileInfosCollection packageFiles = new ALAppPackageFileInfosCollection();
             packageFiles.LoadFromFolder(this.PackagesPath);
 
+            //collect list of projects from other folders
+            WorkspaceProjectsCollection workspaceProjects = null;
+            if ((this.WorkspaceFolders != null) && (this.WorkspaceFolders.Length > 1))
+            {
+                workspaceProjects = new WorkspaceProjectsCollection(this.WorkspaceFolders);
+                workspaceProjects.Load();
+            }
+
             //collect packages
             if (projectFile.dependencies != null)
             {
                 for (int i = 0; i < projectFile.dependencies.Length; i++)
                 {
-                    this.AddPackage(packageFiles, projectFile.dependencies[i].publisher,
-                        projectFile.dependencies[i].name, projectFile.dependencies[i].version, forceReload);
+                    bool workspaceProjectFound = false;
+                    if (workspaceProjects != null)
+                    {
+                        WorkspaceProject depProject = workspaceProjects.FindByReference(projectFile.dependencies[i].appId,
+                            projectFile.dependencies[i].publisher, projectFile.dependencies[i].name, projectFile.dependencies[i].version);
+                        if (depProject != null)
+                        {
+                            workspaceProjectFound = true;
+                            this.AddDepProject(depProject);
+                        }
+                    }
+
+                    if (!workspaceProjectFound)
+                        this.AddPackage(packageFiles, projectFile.dependencies[i].publisher,
+                            projectFile.dependencies[i].name, projectFile.dependencies[i].version, forceReload);
                 }
             }
 
@@ -101,6 +124,16 @@ namespace AnZwDev.ALTools.ALSymbols
                 return true;
             }
             return false;
+        }
+
+        protected void AddDepProject(WorkspaceProject depProject)
+        {
+            ALProjectSymbolsLibrary library = new ALProjectSymbolsLibrary(this.PackageSymbolsCache, this.ALExtensionProxy, false,
+                depProject.ProjectPath, this.PackagesPath);
+            library.Load(false);
+            if (library.Root != null)
+                library.Root.kind = ALSymbolKind.Package;
+            this.Dependencies.Add(library);
         }
 
         protected void LoadFromCompiledPackage(ALProjectFile projectFile)
