@@ -504,6 +504,22 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                         (node.LocalKeyword != null) &&
                         (ALEnumConverters.SyntaxKindConverter.Convert(node.LocalKeyword.Kind) != ConvertedSyntaxKind.None))
                         return ALSymbolKind.LocalMethodDeclaration;
+                    else if ((nodeType.GetProperty("AccessModifier") != null) &&
+                        (node.AccessModifier != null))
+                    {
+                        ConvertedSyntaxKind modifiedKind = ALEnumConverters.SyntaxKindConverter.Convert(node.AccessModifier.Kind);
+                        switch (modifiedKind)
+                        {
+                            case ConvertedSyntaxKind.ProtectedKeyword:
+                                return ALSymbolKind.LocalMethodDeclaration;
+                            case ConvertedSyntaxKind.LocalKeyword:
+                                return ALSymbolKind.LocalMethodDeclaration;
+                            case ConvertedSyntaxKind.InternalKeyword:
+                                return ALSymbolKind.LocalMethodDeclaration;
+                            default:
+                                return ALSymbolKind.MethodDeclaration;
+                        }
+                    }
                     else
                         return ALSymbolKind.MethodDeclaration;
 

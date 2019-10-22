@@ -12,6 +12,7 @@ namespace AZALDevToolsServer.Contracts
         public bool includeDependencies { get; set; }
         public string projectPath { get; set; }
         public string packagesFolder { get; set; }
+        public string[] workspaceFolders { get; set; }
 
     }
 }

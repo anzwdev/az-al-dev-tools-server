@@ -106,6 +106,8 @@
     <Compile Include="ALSymbols\ALAppPackages\ALAppTypeDefinition.cs" />
     <Compile Include="ALSymbols\ALAppPackages\ALAppVariable.cs" />
     <Compile Include="ALSymbols\ALAppPackages\ALAppXmlPort.cs" />
+    <Compile Include="ALSymbols\ALAppPackages\WorkspaceProject.cs" />
+    <Compile Include="ALSymbols\ALAppPackages\WorkspaceProjectsCollection.cs" />
     <Compile Include="ALSymbols\ALDocumentSymbolsLibrary.cs" />
     <Compile Include="ALSymbols\ALPackageSymbolsCache.cs" />
     <Compile Include="ALSymbols\ALPackageSymbolsLibrary.cs" />

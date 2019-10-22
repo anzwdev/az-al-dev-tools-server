@@ -28,6 +28,7 @@ namespace AZALDevToolsServer.Handlers
                     parameters.includeDependencies, parameters.projectPath, parameters.packagesFolder);
                 if (library != null)
                 {
+                    library.WorkspaceFolders = parameters.workspaceFolders;
                     library.Load(false);
                     response.libraryId = this.Server.SymbolsLibraries.AddLibrary(library);
                     response.root = library.GetObjectsTree();
