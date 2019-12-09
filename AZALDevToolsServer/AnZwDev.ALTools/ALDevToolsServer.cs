@@ -16,6 +16,7 @@ namespace AnZwDev.ALTools
         public string ExtensionBinPath { get; }
         public ALPackageSymbolsCache AppPackagesCache { get; }
         public ALSymbolLibrariesCollection SymbolsLibraries { get; }
+        public ALSyntaxTreesCollection SyntaxTrees { get; }
 
         public ALDevToolsServer(string extensionPath)
         {
@@ -24,6 +25,7 @@ namespace AnZwDev.ALTools
             this.ALExtensionProxy.Load(this.ExtensionBinPath);
             this.AppPackagesCache = new ALPackageSymbolsCache(this.ALExtensionProxy);
             this.SymbolsLibraries = new ALSymbolLibrariesCollection();
+            this.SyntaxTrees = new ALSyntaxTreesCollection(this.ALExtensionProxy);
         }
 
 

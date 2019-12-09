@@ -116,8 +116,11 @@
     <Compile Include="ALSymbols\ALProjectSymbolsLibrary.cs" />
     <Compile Include="ALSymbols\ALSymbolLibrariesCollection.cs" />
     <Compile Include="ALSymbols\ALSyntaxHelper.cs" />
+    <Compile Include="ALSymbols\ALSyntaxTree.cs" />
+    <Compile Include="ALSymbols\ALSyntaxTreesCollection.cs" />
+    <Compile Include="ALSymbols\ALSyntaxTreeSymbol.cs" />
+    <Compile Include="ALSymbols\PropertyValue.cs" />
     <Compile Include="ALSymbols\SymbolReaders\ALSymbolInfoPackageReader.cs" />
-    <Compile Include="ALSymbols\SymbolReaders\ALSymbolInfoPackageReader_old.cs" />
     <Compile Include="ALSymbols\ALSymbolInformation.cs" />
     <Compile Include="ALSymbols\ALSymbolKind.cs" />
     <Compile Include="ALSymbols\ALSymbolKindExtension.cs" />
@@ -125,6 +128,7 @@
     <Compile Include="ALSymbols\SymbolReaders\ALSymbolInfoSyntaxTreeReader.cs" />
     <Compile Include="ALSymbols\Position.cs" />
     <Compile Include="ALSymbols\Range.cs" />
+    <Compile Include="ALSymbols\SymbolReaders\ALSyntaxTreeSymbolsReader.cs" />
     <Compile Include="ALSymbols\VersionNumber.cs" />
     <Compile Include="Helpers\StringHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

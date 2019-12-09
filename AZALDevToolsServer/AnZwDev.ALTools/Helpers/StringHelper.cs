@@ -41,5 +41,15 @@ namespace AnZwDev.ALTools.Helpers
             return ((String.IsNullOrWhiteSpace(value)) || (value.Equals(value2, StringComparison.CurrentCultureIgnoreCase)));
         }
 
+        public static bool EqualsToOneOf(this string value, params string[] compValues)
+        {
+            for (int i=0; i<compValues.Length; i++)
+            {
+                if (value.Equals(compValues[i]))
+                    return true;
+            }
+            return false;
+        }
+
     }
 }

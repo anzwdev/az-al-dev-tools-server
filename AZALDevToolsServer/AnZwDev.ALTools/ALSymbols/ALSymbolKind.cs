@@ -214,7 +214,12 @@ namespace AnZwDev.ALTools.ALSymbols
         Document = 50053,
         SymbolGroup = 50054,
 
-        AnyALObject = 50055         //any symbol, used in requests to specify kind of objects
+        AnyALObject = 50055,         //any symbol, used in requests to specify kind of objects
+
+        //Syntax tree
+        SyntaxTreeNode = 50056,
+        SyntaxTreeToken = 50057,
+        SyntaxTreeTrivia = 50058
 
     }
 }
