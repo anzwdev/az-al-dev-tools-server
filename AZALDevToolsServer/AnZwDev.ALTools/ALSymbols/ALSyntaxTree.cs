@@ -28,7 +28,7 @@ namespace AnZwDev.ALTools.ALSymbols
         {
             try
             {
-                if (!String.IsNullOrWhiteSpace(content))
+                if (String.IsNullOrWhiteSpace(content))
                     this.RootSymbolWithProperties = this.SyntaxTreeReader.ProcessSourceFile(this.Path);
                 else
                     this.RootSymbolWithProperties = this.SyntaxTreeReader.ProcessSourceCode(content);
