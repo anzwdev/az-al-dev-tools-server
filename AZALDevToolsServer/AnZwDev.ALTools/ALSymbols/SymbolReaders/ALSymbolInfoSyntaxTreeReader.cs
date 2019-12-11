@@ -136,6 +136,9 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                 case ConvertedSyntaxKind.PageGroup:
                     ProcessPageGroupNode(syntaxTree, symbol, node);
                     break;
+                case ConvertedSyntaxKind.PageArea:
+                    ProcessPageAreaNode(syntaxTree, symbol, node);
+                    break;
                 case ConvertedSyntaxKind.PagePart:
                     ProcessPagePartNode(symbol, node);
                     break;
@@ -224,6 +227,11 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             if (syntax.ChartPartType != null)
                 symbol.fullName = name + ": " + syntax.ChartPartType.ToFullString();
             symbol.fullName = name;
+        }
+
+        protected void ProcessPageAreaNode(dynamic syntaxTree, ALSymbolInformation symbol, dynamic syntax)
+        {
+            this.ProcessNodeContentRange(syntaxTree, symbol, syntax);
         }
 
         protected void ProcessPageGroupNode(dynamic syntaxTree, ALSymbolInformation symbol, dynamic syntax)
