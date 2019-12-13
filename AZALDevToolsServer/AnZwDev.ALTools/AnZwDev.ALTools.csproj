@@ -130,6 +130,9 @@
     <Compile Include="ALSymbols\Range.cs" />
     <Compile Include="ALSymbols\SymbolReaders\ALSyntaxTreeSymbolsReader.cs" />
     <Compile Include="ALSymbols\VersionNumber.cs" />
+    <Compile Include="CodeAnalysis\CodeAnalyzerRule.cs" />
+    <Compile Include="CodeAnalysis\CodeAnalyzersLibrariesCollection.cs" />
+    <Compile Include="CodeAnalysis\CodeAnalyzersLibrary.cs" />
     <Compile Include="Helpers\StringHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

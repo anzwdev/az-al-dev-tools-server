@@ -22,7 +22,7 @@ namespace AnZwDev.ALTools.ALProxy
 
         public void Load(string libraryPath)
         {
-            //this.System_Collections_Immutable = new ALExtensionLibraryProxy(Path.Combine(libraryPath, "System.Collections.Immutable.dll"));
+            this.System_Collections_Immutable = new ALExtensionLibraryProxy(Path.Combine(libraryPath, "System.Collections.Immutable.dll"));
             this.CodeAnalysis = new ALExtensionLibraryProxy(Path.Combine(libraryPath, "Microsoft.Dynamics.Nav.CodeAnalysis.dll"));
             this.DetectRuntime();
         }
