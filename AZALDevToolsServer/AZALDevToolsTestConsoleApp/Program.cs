@@ -1,7 +1,9 @@
+using AnZwDev.ALTools;
 using AnZwDev.ALTools.ALProxy;
 using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.ALSymbols.ALAppPackages;
 using AnZwDev.ALTools.ALSymbols.SymbolReaders;
+using AnZwDev.ALTools.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,9 +19,13 @@ namespace AZALDevToolsTestConsoleApp
             // The code provided will print ‘Hello World’ to the console.
             // Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app.
 
-            ALExtensionProxy alExtensionProxy = new ALExtensionProxy();
-            alExtensionProxy.Load("C:\\vscode\\release-al\\data\\extensions\\ms-dynamics-smb.al-4.0.182565\\bin");
-            //alExtensionProxy.Load("C:\\vscode\\al-devtest-multiplealext\\data\\extensions\\microsoft.al-0.12.25327\\bin");
+            ALDevToolsServer server = new ALDevToolsServer("C:\\Users\\azwie\\.vscode\\extensions\\ms-dynamics-smb.al-4.0.209944");
+
+            ALExtensionProxy alExtensionProxy = server.ALExtensionProxy;
+            //alExtensionProxy.Load();
+
+            CodeAnalyzersLibrary library = server.CodeAnalyzersLibraries.GetCodeAnalyzersLibrary("${AppSourceCop}");
+
 
             //ALPackageSymbolsLibrary lib = new ALPackageSymbolsLibrary(alExtensionProxy,
             //    "C:\\Projects\\Sandboxes\\samplealprojects\\big\\.alpackages\\Microsoft_Application_11.0.20901.0.app");
@@ -56,6 +62,9 @@ namespace AZALDevToolsTestConsoleApp
                 "C:\\Projects\\Sandboxes\\samplealprojects\\big",
                 ".alpackages");
             projectSymbols.Load(false);
+
+            
+
 
             Console.WriteLine("Hello World!");
             Console.ReadKey();
