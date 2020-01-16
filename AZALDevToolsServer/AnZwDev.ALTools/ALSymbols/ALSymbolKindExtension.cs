@@ -36,6 +36,7 @@ namespace AnZwDev.ALTools.ALSymbols
                 case ALSymbolKind.ParameterList: return "parameters";
                 //case ALSymbolKind.//MethodBody: return "//MethodBody";
                 case ALSymbolKind.VarSection: return "var";
+                case ALSymbolKind.GlobalVarSection: return "var";
                 case ALSymbolKind.TriggerDeclaration: return "trigger";
                 case ALSymbolKind.EventTriggerDeclaration: return "event trigger";
                 case ALSymbolKind.LocalMethodDeclaration: return "local procedure";

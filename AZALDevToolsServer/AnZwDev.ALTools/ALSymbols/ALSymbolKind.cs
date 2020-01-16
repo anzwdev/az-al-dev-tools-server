@@ -151,6 +151,8 @@ namespace AnZwDev.ALTools.ALSymbols
         //OptionAccessAttributeArgument = 426,
         //InvalidAttributeArgument = 427,
 
+        GlobalVarSection = 428,
+
         LocalMethodDeclaration = 50001,
         PrimaryKey = 50002,
         Module = 50003,

@@ -534,6 +534,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                 case ConvertedSyntaxKind.ParameterList: return ALSymbolKind.ParameterList;
                 case ConvertedSyntaxKind.Parameter: return ALSymbolKind.Parameter;
                 case ConvertedSyntaxKind.VarSection: return ALSymbolKind.VarSection;
+                case ConvertedSyntaxKind.GlobalVarSection: return ALSymbolKind.GlobalVarSection;
                 case ConvertedSyntaxKind.VariableDeclaration: return ALSymbolKind.VariableDeclaration;
                 case ConvertedSyntaxKind.TriggerDeclaration: return ALSymbolKind.TriggerDeclaration;
 
