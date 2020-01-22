@@ -60,6 +60,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ALDevToolsServerHost.cs" />
+    <Compile Include="Contracts\AddAppAreasResponse.cs" />
+    <Compile Include="Contracts\AddAppAreasRequest.cs" />
     <Compile Include="Contracts\AppPackageSymbolsRequest.cs" />
     <Compile Include="Contracts\AppPackageSymbolsResponse.cs" />
     <Compile Include="Contracts\BaseOpenSymbolsLibraryResponse.cs" />
@@ -78,6 +80,7 @@
     <Compile Include="Contracts\LibrarySymbolsDetailsResponse.cs" />
     <Compile Include="Contracts\ProjectSymbolsRequest.cs" />
     <Compile Include="Contracts\ProjectSymbolsResponse.cs" />
+    <Compile Include="Handlers\AddAppAreasRequestHandler.cs" />
     <Compile Include="Handlers\AppPackageSymbolsRequestHandler.cs" />
     <Compile Include="Handlers\BaseALNotificationHandler.cs" />
     <Compile Include="Handlers\BaseALRequestHandler.cs" />

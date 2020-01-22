@@ -1,6 +1,7 @@
 ﻿using AnZwDev.ALTools.ALProxy;
 using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.CodeAnalysis;
+using AnZwDev.ALTools.DynamicTypes;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -19,6 +20,7 @@ namespace AnZwDev.ALTools
         public ALSymbolLibrariesCollection SymbolsLibraries { get; }
         public ALSyntaxTreesCollection SyntaxTrees { get; }
         public CodeAnalyzersLibrariesCollection CodeAnalyzersLibraries { get; set; }
+        public DynamicTypesCache DynamicTypesCache { get; }
 
         public ALDevToolsServer(string extensionPath)
         {
@@ -29,6 +31,7 @@ namespace AnZwDev.ALTools
             this.SymbolsLibraries = new ALSymbolLibrariesCollection();
             this.SyntaxTrees = new ALSyntaxTreesCollection(this.ALExtensionProxy);
             this.CodeAnalyzersLibraries = new CodeAnalyzersLibrariesCollection(this);
+            this.DynamicTypesCache = new DynamicTypesCache();
         }
 
 

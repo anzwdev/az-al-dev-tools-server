@@ -45,6 +45,9 @@ namespace AZALDevToolsServer
             //code analyzers
             this.Dispatcher.RegisterRequestHandler(new GetCodeAnalyzersRulesRequestHandler(this.ALDevToolsServer));
 
+            //code transformations
+            this.Dispatcher.RegisterRequestHandler(new AddAppAreasRequestHandler(this.ALDevToolsServer));
+
             //standard notification handlers
             this.Dispatcher.RegisterNotificationHandler(new ExitNotificationHandler(this));
         }
