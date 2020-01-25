@@ -57,7 +57,7 @@ namespace AZALDevToolsServer.Handlers
             {
                 string source = System.IO.File.ReadAllText(filePath);
                 string newSource = appAreaManager.AddMissingAppAreas(source, appAreaName, out noOfAppAreas);
-                if (newSource != source)
+                if ((newSource != source) && (noOfAppAreas > 0) && (!String.IsNullOrWhiteSpace(newSource)))
                     System.IO.File.WriteAllText(filePath, newSource);
                 return true;
             }
@@ -75,8 +75,11 @@ namespace AZALDevToolsServer.Handlers
                 int noOfFileAppAreas;
                 if (ProcessFile(syntaxRewriter, filePathsList[i], appAreaName, out noOfFileAppAreas))
                 {
-                    noOfAppAreas += noOfFileAppAreas;
-                    noOfFiles++;
+                    if (noOfFileAppAreas > 0)
+                    {
+                        noOfAppAreas += noOfFileAppAreas;
+                        noOfFiles++;
+                    }
                 }
             }
         }
