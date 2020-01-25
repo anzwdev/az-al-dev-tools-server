@@ -1,4 +1,5 @@
 ﻿using AnZwDev.ALTools;
+using AnZwDev.ALTools.CodeTransformations;
 using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
 using AZALDevToolsServer.Contracts;
 using System;
@@ -22,27 +23,24 @@ namespace AZALDevToolsServer.Handlers
             AddAppAreasResponse response = new AddAppAreasResponse();
             try
             {
-                Type appAreaProcessorType = this.Server.DynamicTypesCache.GetTypeFromResource(
-                    "AnZwDev.ALTools.DynamicTypes.Resources.AppAreaSyntaxRewriter.txt",
-                    "AnZwDev.ALTools.DynamicTypes.ResourcesAppAreaSyntaxRewriter");
-
-                Type[] paramTypes = { typeof(bool) };
-                Object[] paramValues = { false };
-                ConstructorInfo constructorInfo = appAreaProcessorType.GetConstructor(paramTypes);
-                dynamic syntaxRewriter = constructorInfo.Invoke(paramValues);
+                AppAreaManager appAreaManager = new AppAreaManager(this.Server.ALExtensionProxy);
+                int noOfFiles = 0;
+                int noOfAppAreas = 0;
+                if (String.IsNullOrWhiteSpace(parameters.appAreaName))
+                    parameters.appAreaName = "All";
 
                 if (!String.IsNullOrWhiteSpace(parameters.source))
                 {
-                    response.source = ProcessSourceCode(syntaxRewriter, parameters.source);
+                    response.source = appAreaManager.AddMissingAppAreas(parameters.source, parameters.appAreaName, out noOfAppAreas);
+                    if (noOfAppAreas > 0)
+                        noOfFiles++;
                 }
                 else if (!String.IsNullOrWhiteSpace(parameters.path))
                 {
-                    int noOfFiles = 0;
-                    int noOfAppAreas = 0;
-                    ProcessDirectory(syntaxRewriter, parameters.path, ref noOfFiles, ref noOfAppAreas);
-                    response.noOfFiles = noOfFiles;
-                    response.noOfAppAreas = noOfAppAreas;
+                    ProcessDirectory(appAreaManager, parameters.path, parameters.appAreaName, ref noOfFiles, ref noOfAppAreas);
                 }
+                response.noOfFiles = noOfFiles;
+                response.noOfAppAreas = noOfAppAreas;
             }
             catch (Exception e)
             {
@@ -52,22 +50,13 @@ namespace AZALDevToolsServer.Handlers
             return response;
         }
 
-        private string ProcessSourceCode(dynamic syntaxRewriter, string source)
+        private bool ProcessFile(AppAreaManager appAreaManager, string filePath, string appAreaName, out int noOfAppAreas)
         {
-            dynamic syntaxTree = this.Server.ALExtensionProxy.GetSyntaxTree(source);
-            dynamic rootNode = syntaxTree.GetRoot();
-            dynamic newRoot = syntaxRewriter.Visit(rootNode);
-            if ((newRoot != rootNode) && (newRoot != null))
-                return newRoot.ToFullString();
-            return "";
-        }
-
-        private bool ProcessFile(dynamic syntaxRewriter, string filePath)
-        {
+            noOfAppAreas = 0;
             try
             {
                 string source = System.IO.File.ReadAllText(filePath);
-                string newSource = ProcessSourceCode(syntaxRewriter, source);
+                string newSource = appAreaManager.AddMissingAppAreas(source, appAreaName, out noOfAppAreas);
                 if (newSource != source)
                     System.IO.File.WriteAllText(filePath, newSource);
                 return true;
@@ -78,13 +67,17 @@ namespace AZALDevToolsServer.Handlers
             }
         }
 
-        private void ProcessDirectory(dynamic syntaxRewriter, string directoryPath, ref int noOfFiles, ref int noOfAppAreas)
+        private void ProcessDirectory(dynamic syntaxRewriter, string directoryPath, string appAreaName, ref int noOfFiles, ref int noOfAppAreas)
         {
             string[] filePathsList = System.IO.Directory.GetFiles(directoryPath, "*.al", System.IO.SearchOption.AllDirectories);
             for (int i=0; i<filePathsList.Length; i++)
             {
-                if (ProcessFile(syntaxRewriter, filePathsList[i]))
+                int noOfFileAppAreas;
+                if (ProcessFile(syntaxRewriter, filePathsList[i], appAreaName, out noOfFileAppAreas))
+                {
+                    noOfAppAreas += noOfFileAppAreas;
                     noOfFiles++;
+                }
             }
         }
 

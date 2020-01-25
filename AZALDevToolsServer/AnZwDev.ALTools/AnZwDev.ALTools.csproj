@@ -133,16 +133,13 @@
     <Compile Include="CodeAnalysis\CodeAnalyzerRule.cs" />
     <Compile Include="CodeAnalysis\CodeAnalyzersLibrariesCollection.cs" />
     <Compile Include="CodeAnalysis\CodeAnalyzersLibrary.cs" />
-    <Compile Include="DynamicTypes\DynamicTypesCache.cs" />
+    <Compile Include="CodeTransformations\AppAreaManager.cs" />
     <Compile Include="Helpers\StringHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="DynamicTypes\Resources\AppAreaSyntaxRewriter.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
