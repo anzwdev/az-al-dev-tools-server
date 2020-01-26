@@ -133,6 +133,7 @@
     <Compile Include="CodeAnalysis\CodeAnalyzerRule.cs" />
     <Compile Include="CodeAnalysis\CodeAnalyzersLibrariesCollection.cs" />
     <Compile Include="CodeAnalysis\CodeAnalyzersLibrary.cs" />
+    <Compile Include="CodeTransformations\AppAreaManager.cs" />
     <Compile Include="Helpers\StringHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
