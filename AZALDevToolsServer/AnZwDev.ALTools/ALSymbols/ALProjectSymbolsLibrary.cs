@@ -165,7 +165,7 @@ namespace AnZwDev.ALTools.ALSymbols
                 parent = this.Root;
 
             //process source files
-            ALSymbolInfoSyntaxTreeReader syntaxTreeReader = new ALSymbolInfoSyntaxTreeReader(this.ALExtensionProxy);
+            ALSymbolInfoSyntaxTreeReader syntaxTreeReader = new ALSymbolInfoSyntaxTreeReader(this.ALExtensionProxy, false);
             string[] files = System.IO.Directory.GetFiles(this.Path, "*.al", SearchOption.AllDirectories);
             for (int i=0; i<files.Length; i++)
             {

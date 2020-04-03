@@ -24,7 +24,7 @@ namespace AZALDevToolsServer.Handlers
             try
             {
                 ALSymbolInfoSyntaxTreeReader symbolTreeBuilder = new ALSymbolInfoSyntaxTreeReader(
-                    this.Server.ALExtensionProxy);
+                    this.Server.ALExtensionProxy, parameters.includeProperties);
                 if (String.IsNullOrWhiteSpace(parameters.source))
                     response.root = symbolTreeBuilder.ProcessSourceFile(parameters.path);
                 else

@@ -11,6 +11,7 @@ namespace AZALDevToolsServer.Contracts
 
         public string source { get; set; }
         public string path { get; set; }
+        public bool includeProperties { get; set; }
 
     }
 }

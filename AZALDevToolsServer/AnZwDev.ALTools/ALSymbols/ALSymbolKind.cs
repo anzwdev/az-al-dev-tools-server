@@ -28,7 +28,7 @@ namespace AnZwDev.ALTools.ALSymbols
 
         CompilationUnit = 227,
 
-        //PropertyList = 228,
+        PropertyList = 228,
 
         //OptionValues = 229,
         //ObjectReference = 230,
