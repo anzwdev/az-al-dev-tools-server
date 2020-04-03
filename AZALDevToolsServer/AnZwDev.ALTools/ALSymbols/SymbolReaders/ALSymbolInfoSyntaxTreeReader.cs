@@ -10,10 +10,14 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
     public class ALSymbolInfoSyntaxTreeReader
     {
 
+        public bool IncludeProperties { get; set; }
+
         protected ALExtensionProxy ALExtensionProxy { get; }
-        public ALSymbolInfoSyntaxTreeReader(ALExtensionProxy alExtensionProxy)
+        
+        public ALSymbolInfoSyntaxTreeReader(ALExtensionProxy alExtensionProxy, bool includeProperties)
         {
             this.ALExtensionProxy = alExtensionProxy;
+            this.IncludeProperties = includeProperties;
         }
 
         public ALSymbolInformation ProcessSourceFile(string path)
@@ -434,7 +438,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             {
                 case ConvertedSyntaxKind.PropertyList:
                     this.ProcessSyntaxNodePropertyList(syntaxTree, parent, node);
-                    return true;
+                    return !this.IncludeProperties;
                 case ConvertedSyntaxKind.SimpleTypeReference:
                 case ConvertedSyntaxKind.RecordTypeReference:
                 case ConvertedSyntaxKind.DotNetTypeReference:
@@ -621,6 +625,11 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                 case ConvertedSyntaxKind.EnumType: return ALSymbolKind.EnumType;
                 case ConvertedSyntaxKind.EnumValue: return ALSymbolKind.EnumValue;
                 case ConvertedSyntaxKind.EnumExtensionType: return ALSymbolKind.EnumExtensionType;
+
+                //properties
+                case ConvertedSyntaxKind.PropertyList: return ALSymbolKind.PropertyList;
+                case ConvertedSyntaxKind.Property: return ALSymbolKind.Property;
+
             }
             return ALSymbolKind.Undefined;
         }

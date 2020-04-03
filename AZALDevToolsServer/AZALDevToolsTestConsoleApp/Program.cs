@@ -40,7 +40,7 @@ namespace AZALDevToolsTestConsoleApp
             //    "C:\\Projects\\Sandboxes\\samplealprojects\\big\\.alpackages\\Microsoft_Application_11.0.20901.0.app");
             //lib.Load(false);
 
-            ALSymbolInfoSyntaxTreeReader s = new ALSymbolInfoSyntaxTreeReader(alExtensionProxy);
+            ALSymbolInfoSyntaxTreeReader s = new ALSymbolInfoSyntaxTreeReader(alExtensionProxy, false);
             //ALSymbolInformation m = s.ProcessSourceFile("C:\\Projects\\Sandboxes\\ALProject5\\New Page.al");
             //ALSymbolInformation m = s.ProcessSourceFile(
             //    "C:\\Projects\\Sandboxes\\samplealprojects\\big\\ftest\\CardPageTest02.al");
