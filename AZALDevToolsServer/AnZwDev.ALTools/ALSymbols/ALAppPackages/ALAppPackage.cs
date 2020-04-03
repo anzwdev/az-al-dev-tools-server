@@ -59,7 +59,7 @@ namespace AnZwDev.ALTools.ALSymbols.ALAppPackages
             this.DotNetPackages?.AddCollectionToALSymbol(symbol, ALSymbolKind.DotNetPackageList);
             this.EnumTypes?.AddCollectionToALSymbol(symbol, ALSymbolKind.EnumTypeList);
             this.EnumTypeExtensions?.AddCollectionToALSymbol(symbol, ALSymbolKind.EnumExtensionTypeList);
-            this.Interfaces.AddCollectionToALSymbol(symbol, ALSymbolKind.InterfaceObjectList);
+            this.Interfaces?.AddCollectionToALSymbol(symbol, ALSymbolKind.InterfaceObjectList);
 
         }
 

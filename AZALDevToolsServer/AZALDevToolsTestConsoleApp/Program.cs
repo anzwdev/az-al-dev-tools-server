@@ -28,6 +28,9 @@ namespace AZALDevToolsTestConsoleApp
                 "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC16\\.alpackages\\Microsoft_Base Application_16.0.11240.12076.app");
             lib.Load(false);
 
+            //ALPackageSymbolsLibrary lib = new ALPackageSymbolsLibrary(alExtensionProxy,
+            //    "C:\\Projects\\Sandboxes\\al-test-projects\\small\\.alpackages\\Microsoft_System_14.0.29487.0.app");
+            //lib.Load(false);
 
 
             CodeAnalyzersLibrary library = server.CodeAnalyzersLibraries.GetCodeAnalyzersLibrary("${AppSourceCop}");
