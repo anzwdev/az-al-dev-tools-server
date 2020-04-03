@@ -58,6 +58,7 @@
     <Compile Include="ALProxy\ALEnumConverters.cs" />
     <Compile Include="ALProxy\ConvertedSyntaxKind.cs" />
     <Compile Include="ALProxy\SyntaxTreeProxy.cs" />
+    <Compile Include="ALSymbols\ALAppPackages\ALAppInterface.cs" />
     <Compile Include="ALSymbols\ALAppPackages\ALAppPackageFileInfosCollection.cs" />
     <Compile Include="ALSymbols\ALAppPackages\ALAppDotNetAssemblyDeclaration.cs" />
     <Compile Include="ALSymbols\ALAppPackages\ALAppAttributeArgument.cs" />

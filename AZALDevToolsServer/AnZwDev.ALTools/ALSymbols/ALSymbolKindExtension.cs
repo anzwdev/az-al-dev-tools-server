@@ -143,6 +143,7 @@ namespace AnZwDev.ALTools.ALSymbols
                 case ALSymbolKind.ProfileObject: return "Profile";
                 case ALSymbolKind.PageCustomizationObject: return "Page Customization";
                 case ALSymbolKind.DotNetPackage: return "DotNet Package";
+                case ALSymbolKind.Interface: return "Interface";
 
                 //case ALSymbolKind.//AttributeArgumentList: return "//AttributeArgumentList";
                 //case ALSymbolKind.//LiteralAttributeArgument: return "//LiteralAttributeArgument";
@@ -168,6 +169,7 @@ namespace AnZwDev.ALTools.ALSymbols
                 case ALSymbolKind.DotNetPackageList: return "DotNetPackages";
                 case ALSymbolKind.EnumTypeList: return "Enums";
                 case ALSymbolKind.EnumExtensionTypeList: return "EnumExtensions";
+                case ALSymbolKind.InterfaceObjectList: return "Interfaces";
             }
             //throw new Exception("Unsupported enum value " + value.ToString());
             return value.ToString();
@@ -191,6 +193,7 @@ namespace AnZwDev.ALTools.ALSymbols
                 case ALSymbolKind.DotNetPackage: return ALSymbolKind.DotNetPackageList;
                 case ALSymbolKind.EnumType: return ALSymbolKind.EnumTypeList;
                 case ALSymbolKind.EnumExtensionType: return ALSymbolKind.EnumExtensionTypeList;
+                case ALSymbolKind.Interface: return ALSymbolKind.InterfaceObjectList;
                 default: return ALSymbolKind.SymbolGroup;
             }
         }
@@ -213,6 +216,7 @@ namespace AnZwDev.ALTools.ALSymbols
                 case ALSymbolKind.DotNetPackage:
                 case ALSymbolKind.EnumType:
                 case ALSymbolKind.EnumExtensionType:
+                case ALSymbolKind.Interface:
                     return true;
             }
             return false;

@@ -172,6 +172,7 @@ namespace AnZwDev.ALTools.ALSymbols
         DotNetPackageList = 50016,
         EnumTypeList = 50017,
         EnumExtensionTypeList = 50018,
+        InterfaceObjectList = 50059,
 
         Namespace = 50019,
         Package = 50020,
@@ -222,6 +223,8 @@ namespace AnZwDev.ALTools.ALSymbols
         SyntaxTreeNode = 50056,
         SyntaxTreeToken = 50057,
         SyntaxTreeTrivia = 50058
+
+        //Next available id 50060
 
     }
 }

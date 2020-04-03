@@ -19,10 +19,16 @@ namespace AZALDevToolsTestConsoleApp
             // The code provided will print ‘Hello World’ to the console.
             // Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app.
 
-            ALDevToolsServer server = new ALDevToolsServer("C:\\Users\\azwie\\.vscode\\extensions\\ms-dynamics-smb.al-4.0.209944");
+            ALDevToolsServer server = new ALDevToolsServer("C:\\Users\\azwie\\.vscode\\extensions\\ms-dynamics-smb.al-5.0.254558");
 
             ALExtensionProxy alExtensionProxy = server.ALExtensionProxy;
             //alExtensionProxy.Load();
+
+            ALPackageSymbolsLibrary lib = new ALPackageSymbolsLibrary(alExtensionProxy,
+                "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC16\\.alpackages\\Microsoft_Base Application_16.0.11240.12076.app");
+            lib.Load(false);
+
+
 
             CodeAnalyzersLibrary library = server.CodeAnalyzersLibraries.GetCodeAnalyzersLibrary("${AppSourceCop}");
 
@@ -37,7 +43,7 @@ namespace AZALDevToolsTestConsoleApp
             //    "C:\\Projects\\Sandboxes\\samplealprojects\\big\\ftest\\CardPageTest02.al");
 
             ALSymbolInformation m = s.ProcessSourceFile(
-                "C:\\Projects\\Sandboxes\\samplealprojects\\small\\tt1.al");
+                "C:\\Projects\\Sandboxes\\AL Previews\\SampleProject\\TestInterface.al");
 
 
 
@@ -59,12 +65,9 @@ namespace AZALDevToolsTestConsoleApp
             ALProjectSymbolsLibrary projectSymbols = new ALProjectSymbolsLibrary(packagesCache, 
                 alExtensionProxy,
                 false,
-                "C:\\Projects\\Sandboxes\\samplealprojects\\big",
+                "C:\\Projects\\Sandboxes\\AL Previews\\SampleProject",
                 ".alpackages");
             projectSymbols.Load(false);
-
-            
-
 
             Console.WriteLine("Hello World!");
             Console.ReadKey();

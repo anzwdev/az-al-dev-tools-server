@@ -504,6 +504,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                 case ConvertedSyntaxKind.ProfileObject: return ALSymbolKind.ProfileObject;
                 case ConvertedSyntaxKind.PageCustomizationObject: return ALSymbolKind.PageCustomizationObject;
                 case ConvertedSyntaxKind.DotNetPackage: return ALSymbolKind.DotNetPackage;
+                case ConvertedSyntaxKind.Interface: return ALSymbolKind.Interface;
 
                 //code elements
                 case ConvertedSyntaxKind.MethodDeclaration:
