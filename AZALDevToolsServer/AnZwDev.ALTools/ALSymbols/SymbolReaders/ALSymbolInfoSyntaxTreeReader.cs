@@ -102,7 +102,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
         protected void ProcessNode(dynamic syntaxTree, ALSymbolInformation symbol, dynamic node)
         {
             ConvertedSyntaxKind kind = ALEnumConverters.SyntaxKindConverter.Convert(node.Kind);
-
+            
             switch (kind)
             {
                 case ConvertedSyntaxKind.XmlPortTableElement:
@@ -385,6 +385,22 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             }
         }
 
+        protected void ProcessVariableListDeclarationNode(dynamic syntaxTree, ALSymbolInformation parent, dynamic node)
+        {
+            string typeName = node.Type.ToFullString();
+            foreach (dynamic nameNode in node.VariableNames)
+            {
+                string variableName = ALSyntaxHelper.DecodeName(nameNode.Name.ToString());
+
+                ALSymbolInformation variableSymbol = CreateSymbolInfo(syntaxTree, nameNode); //new ALSymbolInformation(ALSymbolKind.VariableDeclaration, variableName);
+                variableSymbol.fullName = ALSyntaxHelper.EncodeName(variableSymbol.name) +
+                    ": " + typeName;
+
+                parent.AddChildSymbol(variableSymbol);
+            }
+
+        }
+
         protected void ProcessSyntaxNodeProperty(dynamic syntaxTree, ALSymbolInformation parent, string name, string value)
         {
             if ((name != null) && (value != null))
@@ -466,6 +482,10 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                     parent.selectionRange = new Range(lineSpan.StartLinePosition.Line, lineSpan.StartLinePosition.Character,
                         lineSpan.EndLinePosition.Line, lineSpan.EndLinePosition.Character);
                     return true;
+                case ConvertedSyntaxKind.VariableListDeclaration:
+                    this.ProcessVariableListDeclarationNode(syntaxTree, parent, node);
+                    return true;
+
             }
             return false;
         }
@@ -541,6 +561,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                 case ConvertedSyntaxKind.VarSection: return ALSymbolKind.VarSection;
                 case ConvertedSyntaxKind.GlobalVarSection: return ALSymbolKind.GlobalVarSection;
                 case ConvertedSyntaxKind.VariableDeclaration: return ALSymbolKind.VariableDeclaration;
+                case ConvertedSyntaxKind.VariableDeclarationName: return ALSymbolKind.VariableDeclaration;
                 case ConvertedSyntaxKind.TriggerDeclaration: return ALSymbolKind.TriggerDeclaration;
 
                 //table and table extensions
