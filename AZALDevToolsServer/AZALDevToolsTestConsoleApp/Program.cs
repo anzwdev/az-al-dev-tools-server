@@ -46,7 +46,7 @@ namespace AZALDevToolsTestConsoleApp
             //    "C:\\Projects\\Sandboxes\\samplealprojects\\big\\ftest\\CardPageTest02.al");
 
             ALSymbolInformation m = s.ProcessSourceFile(
-                "C:\\Projects\\Sandboxes\\AL Previews\\SampleProject\\TestInterface.al");
+                "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC16\\Cod50000.MyFileMgt.al");
 
 
 
