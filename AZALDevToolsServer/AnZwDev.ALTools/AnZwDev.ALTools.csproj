@@ -110,6 +110,7 @@
     <Compile Include="ALSymbols\ALAppPackages\WorkspaceProject.cs" />
     <Compile Include="ALSymbols\ALAppPackages\WorkspaceProjectsCollection.cs" />
     <Compile Include="ALSymbols\ALDocumentSymbolsLibrary.cs" />
+    <Compile Include="ALSymbols\ALFullSyntaxTree.cs" />
     <Compile Include="ALSymbols\ALPackageSymbolsCache.cs" />
     <Compile Include="ALSymbols\ALPackageSymbolsLibrary.cs" />
     <Compile Include="ALSymbols\ALProjectFile.cs" />
@@ -118,9 +119,11 @@
     <Compile Include="ALSymbols\ALSymbolLibrariesCollection.cs" />
     <Compile Include="ALSymbols\ALSyntaxHelper.cs" />
     <Compile Include="ALSymbols\ALSyntaxTree.cs" />
+    <Compile Include="ALSymbols\ALFullSyntaxTreeNode.cs" />
     <Compile Include="ALSymbols\ALSyntaxTreesCollection.cs" />
     <Compile Include="ALSymbols\ALSyntaxTreeSymbol.cs" />
     <Compile Include="ALSymbols\PropertyValue.cs" />
+    <Compile Include="ALSymbols\SymbolReaders\ALFullSyntaxTreeReader.cs" />
     <Compile Include="ALSymbols\SymbolReaders\ALSymbolInfoPackageReader.cs" />
     <Compile Include="ALSymbols\ALSymbolInformation.cs" />
     <Compile Include="ALSymbols\ALSymbolKind.cs" />

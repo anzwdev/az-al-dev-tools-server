@@ -72,6 +72,8 @@
     <Compile Include="Contracts\DocumentSymbolsResponse.cs" />
     <Compile Include="Contracts\GetCodeAnalyzersRulesRequest.cs" />
     <Compile Include="Contracts\GetCodeAnalyzersRulesResponse.cs" />
+    <Compile Include="Contracts\GetFullSyntaxTreeRequest.cs" />
+    <Compile Include="Contracts\GetFullSyntaxTreeResponse.cs" />
     <Compile Include="Contracts\GetSyntaxTreeRequest.cs" />
     <Compile Include="Contracts\GetSyntaxTreeResponse.cs" />
     <Compile Include="Contracts\GetSyntaxTreeSymbolRequest.cs" />
@@ -89,6 +91,7 @@
     <Compile Include="Handlers\DocumentSymbolsRequestHandler.cs" />
     <Compile Include="Handlers\ExitNotificationHandler.cs" />
     <Compile Include="Handlers\GetCodeAnalyzersRulesRequestHandler.cs" />
+    <Compile Include="Handlers\GetFullSyntaxTreeRequestHandler.cs" />
     <Compile Include="Handlers\GetSyntaxTreeRequestHandler.cs" />
     <Compile Include="Handlers\GetSyntaxTreeSymbolRequestHandler.cs" />
     <Compile Include="Handlers\LibrarySymbolsDetailsRequestHandler.cs" />
