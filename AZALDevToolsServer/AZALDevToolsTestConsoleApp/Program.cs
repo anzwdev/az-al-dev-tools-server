@@ -36,6 +36,10 @@ namespace AZALDevToolsTestConsoleApp
             CodeAnalyzersLibrary library = server.CodeAnalyzersLibraries.GetCodeAnalyzersLibrary("${AppSourceCop}");
 
 
+
+            ALFullSyntaxTree f = new ALFullSyntaxTree(alExtensionProxy);
+            f.Load(null, "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC16\\Cod50000.MyFileMgt.al");
+
             //ALPackageSymbolsLibrary lib = new ALPackageSymbolsLibrary(alExtensionProxy,
             //    "C:\\Projects\\Sandboxes\\samplealprojects\\big\\.alpackages\\Microsoft_Application_11.0.20901.0.app");
             //lib.Load(false);

@@ -42,6 +42,8 @@ namespace AZALDevToolsServer
             this.Dispatcher.RegisterRequestHandler(new GetSyntaxTreeSymbolRequestHandler(this.ALDevToolsServer));
             this.Dispatcher.RegisterNotificationHandler(new CloseSyntaxTreeNotificationHandler(this.ALDevToolsServer));
 
+            this.Dispatcher.RegisterRequestHandler(new GetFullSyntaxTreeRequestHandler(this.ALDevToolsServer));
+
             //code analyzers
             this.Dispatcher.RegisterRequestHandler(new GetCodeAnalyzersRulesRequestHandler(this.ALDevToolsServer));
 
