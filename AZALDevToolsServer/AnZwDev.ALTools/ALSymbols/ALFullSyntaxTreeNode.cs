@@ -50,8 +50,6 @@ namespace AnZwDev.ALTools.ALSymbols
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string temporary { get; set; }
 
-
-
         public ALFullSyntaxTreeNode()
         {
             this.name = null;

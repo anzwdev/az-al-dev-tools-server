@@ -170,7 +170,16 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                 case ConvertedSyntaxKind.QueryColumn:
                     ProcessQueryColumnNode(symbol, node);
                     break;
+                case ConvertedSyntaxKind.VarSection:
+                case ConvertedSyntaxKind.GlobalVarSection:
+                    ProcessVarSection(syntaxTree, symbol, node);
+                    break;
             }
+        }
+
+        protected void ProcessVarSection(dynamic syntaxTree, ALSymbolInformation symbol, dynamic syntax)
+        {
+            ProcessNodeContentRangeFromChildren(syntaxTree, symbol, syntax);
         }
 
         protected void ProcessControlAddChangeNode(dynamic syntaxTree, ALSymbolInformation symbol, dynamic syntax)
@@ -346,11 +355,36 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             }
         }
 
-        #endregion
+        protected void ProcessNodeContentRangeFromChildren(dynamic syntaxTree, ALSymbolInformation symbol, dynamic syntax)
+        {
+            IEnumerable<dynamic> list = syntax.ChildNodes();
+            if (list != null)
+            {
+                Range totalRange = null;
+                foreach (dynamic childNode in list)
+                {
+                    dynamic lineSpan = syntaxTree.GetLineSpan(childNode.FullSpan);
+                    Range nodeRange = new Range(lineSpan.StartLinePosition.Line, lineSpan.StartLinePosition.Character,
+                        lineSpan.EndLinePosition.Line, lineSpan.EndLinePosition.Character);
+                    if (totalRange == null)
+                        totalRange = nodeRange;
+                    else
+                    {
+                        if (totalRange.start.IsGreater(nodeRange.start))
+                            totalRange.start.Set(nodeRange.start);
+                        if (totalRange.end.IsLower(nodeRange.end))
+                            totalRange.end.Set(nodeRange.end);
+                    }
+                }
+                symbol.contentRange = totalRange;
+            }
+        }
 
-        #region processing child nodes
+            #endregion
 
-        protected void ProcessChildSyntaxNode(dynamic syntaxTree, ALSymbolInformation parent, dynamic node)
+            #region processing child nodes
+
+            protected void ProcessChildSyntaxNode(dynamic syntaxTree, ALSymbolInformation parent, dynamic node)
         {
             //check if node is an attribute of parent symbol
             if (!ProcessSyntaxNodeAttribute(syntaxTree, parent, node))
@@ -390,11 +424,12 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             string typeName = node.Type.ToFullString();
             foreach (dynamic nameNode in node.VariableNames)
             {
-                string variableName = ALSyntaxHelper.DecodeName(nameNode.Name.ToString());
+                //string variableName = ALSyntaxHelper.DecodeName(nameNode.Name.ToString());
 
                 ALSymbolInformation variableSymbol = CreateSymbolInfo(syntaxTree, nameNode); //new ALSymbolInformation(ALSymbolKind.VariableDeclaration, variableName);
                 variableSymbol.fullName = ALSyntaxHelper.EncodeName(variableSymbol.name) +
                     ": " + typeName;
+                variableSymbol.subtype = typeName;
 
                 parent.AddChildSymbol(variableSymbol);
             }
@@ -561,7 +596,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                 case ConvertedSyntaxKind.VarSection: return ALSymbolKind.VarSection;
                 case ConvertedSyntaxKind.GlobalVarSection: return ALSymbolKind.GlobalVarSection;
                 case ConvertedSyntaxKind.VariableDeclaration: return ALSymbolKind.VariableDeclaration;
-                case ConvertedSyntaxKind.VariableDeclarationName: return ALSymbolKind.VariableDeclaration;
+                case ConvertedSyntaxKind.VariableDeclarationName: return ALSymbolKind.VariableDeclarationName;
                 case ConvertedSyntaxKind.TriggerDeclaration: return ALSymbolKind.TriggerDeclaration;
 
                 //table and table extensions
