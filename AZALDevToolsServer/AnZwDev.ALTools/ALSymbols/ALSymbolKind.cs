@@ -153,6 +153,8 @@ namespace AnZwDev.ALTools.ALSymbols
 
         GlobalVarSection = 428,
 
+        VariableDeclarationName = 429,
+
         LocalMethodDeclaration = 50001,
         PrimaryKey = 50002,
         Module = 50003,
