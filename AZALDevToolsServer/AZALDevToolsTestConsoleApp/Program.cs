@@ -53,7 +53,7 @@ namespace AZALDevToolsTestConsoleApp
                 "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC16\\Cod50000.MyFileMgt.al");
 
 
-
+            
             /*
             DateTime t1 = DateTime.Now;
             ALSymbolInfoPackageReader appPackageReader = new ALSymbolInfoPackageReader(alExtensionProxy);

@@ -422,6 +422,10 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
         protected void ProcessVariableListDeclarationNode(dynamic syntaxTree, ALSymbolInformation parent, dynamic node)
         {
             string typeName = node.Type.ToFullString();
+            string elementDataType = typeName;
+            if (node.Type.GetType().GetProperty("DataType") != null)
+                elementDataType = node.Type.DataType.ToString();
+
             foreach (dynamic nameNode in node.VariableNames)
             {
                 //string variableName = ALSyntaxHelper.DecodeName(nameNode.Name.ToString());
@@ -430,6 +434,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                 variableSymbol.fullName = ALSyntaxHelper.EncodeName(variableSymbol.name) +
                     ": " + typeName;
                 variableSymbol.subtype = typeName;
+                variableSymbol.elementsubtype = elementDataType;
 
                 parent.AddChildSymbol(variableSymbol);
             }
@@ -494,6 +499,10 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                 case ConvertedSyntaxKind.RecordTypeReference:
                 case ConvertedSyntaxKind.DotNetTypeReference:
                     parent.subtype = node.ToFullString();
+                    if (node.GetType().GetProperty("DataType") != null)
+                        parent.elementsubtype = node.DataType.ToString();
+                    else
+                        parent.elementsubtype = parent.subtype;
                     return true;
                 case ConvertedSyntaxKind.MemberAttribute:
                     string memberAttributeName = node.Name.ToString();
