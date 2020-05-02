@@ -16,7 +16,10 @@ namespace AnZwDev.ALTools.ALSymbols
         
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string subtype { get; set; }
-        
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public string elementsubtype { get; set; }
+
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string fullName { get; set; }
         
@@ -46,6 +49,7 @@ namespace AnZwDev.ALTools.ALSymbols
             this.childSymbols = null;
             this.fullName = null;
             this.subtype = null;
+            this.elementsubtype = null;
             this.source = null;
             this.extends = null;
             this.contentRange = null;

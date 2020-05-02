@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AnZwDev.ALTools.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -100,6 +101,36 @@ namespace AnZwDev.ALTools.ALSymbols
                 return ALSymbolKind.StrMenuHandlerDeclaration;
 
             return ALSymbolKind.Undefined;
+        }
+
+        public static string RemoveComments(string source)
+        {
+            source = source.Trim();
+            int commentPos = source.IndexOfFirst(0, "//", "/*");
+            while (commentPos >= 0)
+            {
+                int endPos = -1;
+                if (source.Substring(commentPos, 2) == "/*")
+                    endPos = source.IndexOf("*/", commentPos + 2);
+                else
+                {
+                    endPos = source.IndexOfFirst(commentPos + 2, "\n", "\r");
+                    if ((endPos >= 0) && (source.Substring(endPos, 2) == "\r\n"))
+                        endPos++;
+                }
+
+                if ((endPos < 0) || (endPos >= (source.Length - 1)))
+                {
+                    source = source.Substring(0, commentPos);
+                    commentPos = -1;
+                }
+                else
+                {
+                    source = source.Substring(0, commentPos) + source.Substring(endPos + 1);
+                    commentPos = source.IndexOfFirst(commentPos, "//", "/*");
+                }                
+            }
+            return source;
         }
 
 

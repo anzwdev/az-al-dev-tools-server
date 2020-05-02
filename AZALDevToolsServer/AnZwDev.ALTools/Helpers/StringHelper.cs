@@ -51,5 +51,17 @@ namespace AnZwDev.ALTools.Helpers
             return false;
         }
 
+        public static int IndexOfFirst(this string text, int startIndex, params string[] values)
+        {
+            int pos = -1;
+            for (int i=0; i<values.Length; i++)
+            {
+                int partPos = text.IndexOf(values[i], startIndex);
+                if ((partPos >= 0) && ((pos < 0) || (pos > partPos)))
+                    pos = partPos;
+            }
+            return pos;
+        }
+
     }
 }
