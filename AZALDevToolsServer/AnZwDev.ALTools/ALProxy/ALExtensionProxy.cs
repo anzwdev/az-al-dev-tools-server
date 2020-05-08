@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Threading;
 
 namespace AnZwDev.ALTools.ALProxy
 {
@@ -12,6 +13,7 @@ namespace AnZwDev.ALTools.ALProxy
 
         public ALExtensionLibraryProxy CodeAnalysis { get; private set; }
         public ALExtensionLibraryProxy System_Collections_Immutable { get; private set; }
+        public ALExtensionLibraryProxy CompilerServicesUnsafe { get; private set; }
 
         public ALExtensionProxy()
         {
@@ -22,6 +24,8 @@ namespace AnZwDev.ALTools.ALProxy
 
         public void Load(string libraryPath)
         {
+            this.CompilerServicesUnsafe = new ALExtensionLibraryProxy(Path.Combine(libraryPath, "System.Runtime.CompilerServices.Unsafe.dll"));
+
             this.System_Collections_Immutable = new ALExtensionLibraryProxy(Path.Combine(libraryPath, "System.Collections.Immutable.dll"));
             this.CodeAnalysis = new ALExtensionLibraryProxy(Path.Combine(libraryPath, "Microsoft.Dynamics.Nav.CodeAnalysis.dll"));
             this.DetectRuntime();

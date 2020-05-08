@@ -14,14 +14,20 @@ namespace AZALDevToolsTestConsoleApp
 {
     class Program
     {
+
+        static ALExtensionProxy alExtensionProxy = null;
+
         static void Main(string[] args)
         {
             // The code provided will print ‘Hello World’ to the console.
             // Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app.
 
-            ALDevToolsServer server = new ALDevToolsServer("C:\\Users\\azwie\\.vscode\\extensions\\ms-dynamics-smb.al-5.0.254558");
+            AppDomain currentDomain = AppDomain.CurrentDomain;
+            currentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
 
-            ALExtensionProxy alExtensionProxy = server.ALExtensionProxy;
+            ALDevToolsServer server = new ALDevToolsServer("C:\\Users\\azwie\\.vscode\\extensions\\ms-dynamics-smb.al-5.0.270354");
+
+            alExtensionProxy = server.ALExtensionProxy;
             //alExtensionProxy.Load();
 
             ALPackageSymbolsLibrary lib = new ALPackageSymbolsLibrary(alExtensionProxy,
@@ -80,6 +86,16 @@ namespace AZALDevToolsTestConsoleApp
             Console.ReadKey();
 
             // Go to http://aka.ms/dotnet-get-started-console to continue learning how to build a console app! 
+        }
+
+        private static System.Reflection.Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            if (args.Name.Contains("Unsafe"))
+                return alExtensionProxy.CompilerServicesUnsafe.LibraryAssembly;
+            
+            Console.WriteLine(args.Name);
+            //            throw new NotImplementedException();
+            return null;
         }
     }
 }
