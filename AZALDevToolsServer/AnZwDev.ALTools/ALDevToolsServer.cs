@@ -29,8 +29,18 @@ namespace AnZwDev.ALTools
             this.SymbolsLibraries = new ALSymbolLibrariesCollection();
             this.SyntaxTrees = new ALSyntaxTreesCollection(this.ALExtensionProxy);
             this.CodeAnalyzersLibraries = new CodeAnalyzersLibrariesCollection(this);
+
+            //initialize assembly loading
+            AppDomain currentDomain = AppDomain.CurrentDomain;
+            currentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+
         }
 
-
+        private System.Reflection.Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            if (args.Name.Contains("System.Runtime.CompilerServices.Unsafe"))
+                return this.ALExtensionProxy.CompilerServicesUnsafe.LibraryAssembly;
+            return null;
+        }
     }
 }
