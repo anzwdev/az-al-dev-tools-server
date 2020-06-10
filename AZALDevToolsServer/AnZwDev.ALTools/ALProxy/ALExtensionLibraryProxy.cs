@@ -12,11 +12,12 @@ namespace AnZwDev.ALTools.ALProxy
 
         public string Path { get; }
         public Assembly LibraryAssembly { get; }
-
+        
         public ALExtensionLibraryProxy(string path)
         {
             this.Path = path;
-            this.LibraryAssembly = Assembly.LoadFrom(path);
+            if (System.IO.File.Exists(this.Path))
+                this.LibraryAssembly = Assembly.LoadFrom(path);
         }
 
     }
