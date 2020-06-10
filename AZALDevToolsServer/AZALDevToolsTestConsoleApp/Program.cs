@@ -25,7 +25,9 @@ namespace AZALDevToolsTestConsoleApp
             AppDomain currentDomain = AppDomain.CurrentDomain;
             currentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
 
-            ALDevToolsServer server = new ALDevToolsServer("C:\\Users\\azwie\\.vscode\\extensions\\ms-dynamics-smb.al-5.0.270354");
+            ALDevToolsServer server = new ALDevToolsServer(
+                "C:\\Users\\azwie\\Downloads\\VSCode-win32-x64-1.45.1\\data\\extensions\\microsoft.al-0.12.15355");
+                //"C:\\Users\\azwie\\.vscode\\extensions\\ms-dynamics-smb.al-5.0.270354");
 
             alExtensionProxy = server.ALExtensionProxy;
             //alExtensionProxy.Load();
@@ -90,8 +92,8 @@ namespace AZALDevToolsTestConsoleApp
 
         private static System.Reflection.Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
-            if (args.Name.Contains("Unsafe"))
-                return alExtensionProxy.CompilerServicesUnsafe.LibraryAssembly;
+            //!!! if (args.Name.Contains("Unsafe"))
+            //!!!    return alExtensionProxy.CompilerServicesUnsafe.LibraryAssembly;
             
             Console.WriteLine(args.Name);
             //            throw new NotImplementedException();
