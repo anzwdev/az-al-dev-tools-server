@@ -1,4 +1,4 @@
-﻿using AnZwDev.ALTools.Helpers;
+﻿using AnZwDev.ALTools.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,7 +38,7 @@ namespace AnZwDev.ALTools.ALSymbols.ALAppPackages
 
         protected override ALSymbolInformation CreateMainALSymbol()
         {
-            return new ALSymbolInformation(ALSymbolKind.Package, StringHelper.Merge(this.Publisher, this.Name, this.Version));
+            return new ALSymbolInformation(ALSymbolKind.Package, StringExtensions.Merge(this.Publisher, this.Name, this.Version));
         }
 
         protected override void AddChildALSymbols(ALSymbolInformation symbol)

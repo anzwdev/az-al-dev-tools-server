@@ -1,6 +1,7 @@
-﻿using AnZwDev.ALTools.ALProxy;
+﻿using Microsoft.Dynamics.Nav.CodeAnalysis.Diagnostics;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -54,11 +55,11 @@ namespace AnZwDev.ALTools.CodeAnalysis
                     {
                         if (IsAnalyzer(type))
                         {
-                            dynamic analyzer = type.GetConstructor(Type.EmptyTypes).Invoke(null);
-                            dynamic diagnostics = analyzer.SupportedDiagnostics;
+                            DiagnosticAnalyzer analyzer = (DiagnosticAnalyzer)type.GetConstructor(Type.EmptyTypes).Invoke(null);
+                            ImmutableArray<DiagnosticDescriptor> diagnostics = analyzer.SupportedDiagnostics;
                             if (diagnostics != null)
                             {
-                                foreach (dynamic diag in diagnostics)
+                                foreach (DiagnosticDescriptor diag in diagnostics)
                                 {
                                     CodeAnalyzerRule rule = new CodeAnalyzerRule();
                                     rule.id = diag.Id.ToString();

@@ -1,4 +1,6 @@
-﻿using AnZwDev.ALTools.ALProxy;
+﻿using AnZwDev.ALTools.Extensions;
+using Microsoft.Dynamics.Nav.CodeAnalysis;
+using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,10 +12,8 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
     public class ALSyntaxTreeSymbolsReader
     {
 
-        protected ALExtensionProxy ALExtensionProxy { get; }
-        public ALSyntaxTreeSymbolsReader(ALExtensionProxy alExtensionProxy)
+        public ALSyntaxTreeSymbolsReader()
         {
-            this.ALExtensionProxy = alExtensionProxy;
         }
 
         public ALSyntaxTreeSymbol ProcessSourceFile(string path)
@@ -35,19 +35,40 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
         }
 
 
+        protected SyntaxTree ParseObjectText(string source)
+        {
+            return SyntaxTree.ParseObjectText(source);
+        }
+
+        protected SyntaxTree ParseObjectTextNav2018(string source)
+        {
+            return typeof(SyntaxTree).CallStaticMethod<SyntaxTree>("ParseObjectText", source,
+                Type.Missing, Type.Missing, Type.Missing);
+        }
+
         public ALSyntaxTreeSymbol ProcessSourceCode(string source)
         {
-            dynamic syntaxTree = this.ALExtensionProxy.GetSyntaxTree(source);
+            SyntaxTree syntaxTree = null;
+
+            try
+            {
+                syntaxTree = this.ParseObjectText(source);
+            }
+            catch (MissingMethodException e)
+            {
+                syntaxTree = this.ParseObjectTextNav2018(source);
+            }
+
             if (syntaxTree != null)
             {
-                dynamic node = syntaxTree.GetRoot();
+                SyntaxNode node = syntaxTree.GetRoot();
                 if (node != null)
                     return ProcessSyntaxTreeNode(syntaxTree, node);
             }
             return null;
         }
 
-        protected ALSyntaxTreeSymbol ProcessSyntaxTreeNode(dynamic syntaxTree, dynamic node)
+        protected ALSyntaxTreeSymbol ProcessSyntaxTreeNode(SyntaxTree syntaxTree, SyntaxNode node)
         {
             ALSyntaxTreeSymbol symbolInfo = new ALSyntaxTreeSymbol();
             symbolInfo.kind = ALSymbolKind.SyntaxTreeNode;
@@ -56,7 +77,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             symbolInfo.syntaxTreeNode = node;
             symbolInfo.type = node.GetType().Name;
             
-            dynamic lineSpan = syntaxTree.GetLineSpan(node.FullSpan);
+            var lineSpan = syntaxTree.GetLineSpan(node.FullSpan);
             symbolInfo.range = new Range(lineSpan.StartLinePosition.Line, lineSpan.StartLinePosition.Character,
                 lineSpan.EndLinePosition.Line, lineSpan.EndLinePosition.Character);
 
@@ -64,10 +85,10 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             symbolInfo.selectionRange = new Range(lineSpan.StartLinePosition.Line, lineSpan.StartLinePosition.Character,
                 lineSpan.StartLinePosition.Line, lineSpan.StartLinePosition.Character);
             
-            IEnumerable<dynamic> list = node.ChildNodes();
+            IEnumerable<SyntaxNode> list = node.ChildNodes();
             if (list != null)
             {
-                foreach (dynamic childNode in list)
+                foreach (SyntaxNode childNode in list)
                 {
                     symbolInfo.AddChildSymbol(ProcessSyntaxTreeNode(syntaxTree, childNode));
                 }

@@ -1,5 +1,4 @@
-﻿using AnZwDev.ALTools.ALProxy;
-using AnZwDev.ALTools.ALSymbols.SymbolReaders;
+﻿using AnZwDev.ALTools.ALSymbols.SymbolReaders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +13,10 @@ namespace AnZwDev.ALTools.ALSymbols
         public Dictionary<string, ALSyntaxTree> SyntaxTrees { get; }
         protected ALSyntaxTreeSymbolsReader SyntaxTreeReader { get; }
 
-        public ALSyntaxTreesCollection(ALExtensionProxy alExtensionProxy)
+        public ALSyntaxTreesCollection()
         {
             this.SyntaxTrees = new Dictionary<string, ALSyntaxTree>();
-            this.SyntaxTreeReader = new ALSyntaxTreeSymbolsReader(alExtensionProxy);
+            this.SyntaxTreeReader = new ALSyntaxTreeSymbolsReader();
         }
 
         public bool Close(string filePath)

@@ -1,5 +1,4 @@
-﻿using AnZwDev.ALTools.ALProxy;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,11 +15,8 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
     public class ALSymbolInfoPackageReader
     {
 
-        protected ALExtensionProxy ALExtensionProxy { get; }
-
-        public ALSymbolInfoPackageReader(ALExtensionProxy extensionProxy)
+        public ALSymbolInfoPackageReader()
         {
-            this.ALExtensionProxy = extensionProxy;
         }
 
         public ALAppPackage ReadAppPackage(string packagePath)
