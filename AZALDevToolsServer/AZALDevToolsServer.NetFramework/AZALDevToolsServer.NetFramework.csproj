@@ -76,4 +76,11 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>if not exist "$(SolutionDir)..\..\al-code-outline\bin" md "$(SolutionDir)..\..\al-code-outline\bin"
+if not exist "$(SolutionDir)..\..\al-code-outline\bin\netframework" md "$(SolutionDir)..\..\al-code-outline\bin\netframework"
+del "$(SolutionDir)..\..\al-code-outline\bin\netframework\*.*" /Q
+copy "$(TargetDir)*.*" "$(SolutionDir)..\..\al-code-outline\bin\netframework\"
+</PostBuildEvent>
+  </PropertyGroup>
 </Project>
