@@ -1,4 +1,6 @@
-﻿using AnZwDev.ALTools.ALProxy;
+﻿using AnZwDev.ALTools.Extensions;
+using Microsoft.Dynamics.Nav.CodeAnalysis;
+using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,11 +13,8 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
     public class ALFullSyntaxTreeReader
     {
 
-        protected ALExtensionProxy ALExtensionProxy { get; }
-
-        public ALFullSyntaxTreeReader(ALExtensionProxy alExtensionProxy)
+        public ALFullSyntaxTreeReader()
         {
-            this.ALExtensionProxy = alExtensionProxy;
         }
 
         #region Main processing methods
@@ -43,7 +42,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
         {
             try
             {
-                dynamic sourceTree = this.ALExtensionProxy.GetSyntaxTree(source);
+                SyntaxTree sourceTree = SyntaxTree.ParseObjectText(source);
                 return ProcessSyntaxTree(sourceTree);
             }
             catch (Exception e)
@@ -52,9 +51,9 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             }
         }
 
-        public ALFullSyntaxTreeNode ProcessSyntaxTree(dynamic syntaxTree)
+        public ALFullSyntaxTreeNode ProcessSyntaxTree(SyntaxTree syntaxTree)
         {
-            dynamic node = syntaxTree.GetRoot();
+            SyntaxNode node = syntaxTree.GetRoot();
             return ProcessSyntaxTreeNode(syntaxTree, node);
         }
 
@@ -62,7 +61,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
 
         #region Processing nodes
 
-        protected ALFullSyntaxTreeNode ProcessSyntaxTreeNode(dynamic syntaxTree, dynamic node)
+        protected ALFullSyntaxTreeNode ProcessSyntaxTreeNode(SyntaxTree syntaxTree, SyntaxNode node)
         {
             //process node
             ALFullSyntaxTreeNode alNode = CreateALNode(syntaxTree, node);
@@ -70,10 +69,10 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                 return null;
 
             //process child nodes
-            IEnumerable<dynamic> list = node.ChildNodes();
+            IEnumerable<SyntaxNode> list = node.ChildNodes();
             if (list != null)
             {
-                foreach (dynamic childNode in list)
+                foreach (SyntaxNode childNode in list)
                 {
                     ALFullSyntaxTreeNode childALNode = ProcessSyntaxTreeNode(syntaxTree, childNode);
                     if (childALNode != null)
@@ -84,8 +83,11 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             return alNode;
         }
 
-        protected ALFullSyntaxTreeNode CreateALNode(dynamic syntaxTree, dynamic node)
+        protected ALFullSyntaxTreeNode CreateALNode(SyntaxTree syntaxTree, SyntaxNode node)
         {
+            return null;
+            /*
+
             //base syntax node properties
             ALFullSyntaxTreeNode alNode = new ALFullSyntaxTreeNode();
             alNode.kind = node.Kind.ToString();
@@ -112,12 +114,12 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                     alNode.AddAttribute(CreateALNode(syntaxTree, childNode));
                 }
             }
-            
+
             if ((nodeType.GetProperty("OpenBraceToken") != null) && (node.OpenBraceToken != null))
                 alNode.openBraceToken = CreateALNode(syntaxTree, node.OpenBraceToken);
-            
+
             if ((nodeType.GetProperty("CloseBraceToken") != null) && (node.CloseBraceToken != null))
-                alNode.closeBraceToken = CreateALNode(syntaxTree, node.CloseBraceToken);            
+                alNode.closeBraceToken = CreateALNode(syntaxTree, node.CloseBraceToken);
 
             if ((nodeType.GetProperty("VarKeyword") != null) && (node.VarKeyword != null))
                 alNode.varKeyword = CreateALNode(syntaxTree, node.VarKeyword);
@@ -128,19 +130,9 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             alNode.temporary = this.GetStringProperty(node, nodeType, "Temporary");
 
             return alNode;
+            */
         }
 
-        protected string GetStringProperty(dynamic node, Type nodeType, string propertyName)
-        {
-            PropertyInfo propertyInfo = nodeType.GetProperty(propertyName);
-            if (propertyInfo != null)
-            {
-                object value = propertyInfo.GetValue(node);
-                if (value != null)
-                    return value.ToString();
-            }
-            return null;
-        }
 
         #endregion
 

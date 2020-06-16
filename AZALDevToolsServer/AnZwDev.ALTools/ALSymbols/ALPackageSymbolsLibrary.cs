@@ -1,5 +1,4 @@
-﻿using AnZwDev.ALTools.ALProxy;
-using AnZwDev.ALTools.ALSymbols.SymbolReaders;
+﻿using AnZwDev.ALTools.ALSymbols.SymbolReaders;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,8 +10,6 @@ namespace AnZwDev.ALTools.ALSymbols
 {
     public class ALPackageSymbolsLibrary : ALSymbolsLibrary
     {
-        public ALExtensionProxy ALExtensionProxy { get; }
-
         public string Path { get; private set; }
 
         public string PublisherName { get; set; }
@@ -23,9 +20,8 @@ namespace AnZwDev.ALTools.ALSymbols
         protected DateTime _packageFileLastWriteTime;
         protected long _packageFileSize;
 
-        public ALPackageSymbolsLibrary(ALExtensionProxy alExtensionProxy, string filePath)
+        public ALPackageSymbolsLibrary(string filePath)
         {
-            this.ALExtensionProxy = alExtensionProxy;
             this.Path = filePath;
 
             this._packageFileCreationTime = DateTime.Now;
@@ -48,7 +44,7 @@ namespace AnZwDev.ALTools.ALSymbols
                 this._packageFileSize = fileInfo.Length;
                 this._packageFileCreationTime = fileInfo.CreationTime;
 
-                ALSymbolInfoPackageReader reader = new ALSymbolInfoPackageReader(this.ALExtensionProxy);
+                ALSymbolInfoPackageReader reader = new ALSymbolInfoPackageReader();
                 this.Root = reader.ReadSymbols(this.Path);
 
                 return true;
