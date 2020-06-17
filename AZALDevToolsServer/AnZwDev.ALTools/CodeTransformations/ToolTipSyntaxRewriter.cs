@@ -8,10 +8,12 @@ namespace AnZwDev.ALTools.CodeTransformations
 {
   public class ToolTipSyntaxRewriter : ALSyntaxRewriter
   {
-
-
+    public string PageFieldTooltip { get; set; }
+    public string PageActionTooltip { get; set; }
     public ToolTipSyntaxRewriter()
     {
+      PageActionTooltip = "Executes the action %1";
+      PageFieldTooltip = "Specifies the value for the field %1";
     }
 
     protected override SyntaxNode AfterVisitSourceCode(SyntaxNode node)
@@ -28,39 +30,6 @@ namespace AnZwDev.ALTools.CodeTransformations
       this.NoOfChanges++;
       return node.AddPropertyListProperties(this.CreateToolTipProperty(node));
     }
-
-    /* public override SyntaxNode VisitPageUserControl(PageUserControlSyntax node)
-     {
-         if (this.HasToolTip(node))
-             return base.VisitPageUserControl(node);
-         this.NoOfChanges++;
-         return node.AddPropertyListProperties(this.CreateToolTipProperty(node));
-     }*/
-
-    /*public override SyntaxNode VisitPagePart(PagePartSyntax node)
-    {
-        if (this.HasToolTip(node))
-            return base.VisitPagePart(node);
-        this.NoOfChanges++;
-        return node.AddPropertyListProperties(this.CreateToolTipProperty(node));
-    }
-
-    public override SyntaxNode VisitPageSystemPart(PageSystemPartSyntax node)
-    {
-        if (this.HasToolTip(node))
-            return base.VisitPageSystemPart(node);
-        this.NoOfChanges++;
-        return node.AddPropertyListProperties(this.CreateToolTipProperty(node));
-    }
-
-    public override SyntaxNode VisitPageChartPart(PageChartPartSyntax node)
-    {
-        if (this.HasToolTip(node))
-            return base.VisitPageChartPart(node);
-        this.NoOfChanges++;
-        return node.AddPropertyListProperties(this.CreateToolTipProperty(node));
-    }*/
-
     public override SyntaxNode VisitPageAction(PageActionSyntax node)
     {
       if (this.HasToolTip(node))
@@ -98,9 +67,17 @@ namespace AnZwDev.ALTools.CodeTransformations
       string ObjName = node.GetProperty("Caption") != null ? node.GetProperty("Caption").Value.ToString() : node.GetNameStringValue();
       ObjName = ObjName.Replace("'", "");
       if (node.Kind == SyntaxKind.PageAction)
-        ToolTipValue = "Executes the action " + ObjName;
+      {
+        ToolTipValue = PageActionTooltip;
+        if (ToolTipValue.Contains("%1"))
+          ToolTipValue = ToolTipValue.Replace("%1", ObjName);
+      }
       else if (node.Kind == SyntaxKind.PageField)
-        ToolTipValue = "Specifies the value for field " + ObjName;
+      {
+        ToolTipValue = PageFieldTooltip;
+        if (ToolTipValue.Contains("%1"))
+          ToolTipValue = ToolTipValue.Replace("%1", ObjName);
+      }
 
       return SyntaxFactory.PropertyLiteral(PropertyKind.ToolTip, ToolTipValue)
                 .WithLeadingTrivia(leadingTriviaList)
