@@ -24,6 +24,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         protected virtual void RegisterCommands()
         {
             this.RegisterCommand(new AddAppAreasWorkspaceCommand());
+            this.RegisterCommand(new AddToolTipsWorkspaceCommand());
         }
 
         public WorkspaceCommandResult RunCommand(string commandName, string sourceCode, string path, Dictionary<string, string> parameters)
