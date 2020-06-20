@@ -1,4 +1,4 @@
-﻿using AnZwDev.ALTools.Helpers;
+﻿using AnZwDev.ALTools.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,8 +40,9 @@ namespace AnZwDev.ALTools.ALSymbols
                         name = name.Substring(0, name.Length - 1);
                     name = name.Replace("\"\"", "\"");
                 }
+                return name;
             }
-            return name;
+            return "";
         }
 
         public static string EncodeName(string name)

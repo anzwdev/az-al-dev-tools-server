@@ -1,4 +1,5 @@
-﻿using AnZwDev.ALTools.Helpers;
+﻿using AnZwDev.ALTools.Extensions;
+using Microsoft.Dynamics.Nav.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace AnZwDev.ALTools.ALSymbols
 
         public string type { get; set; }
         public List<PropertyValue> properties { get; set; }
-        public dynamic syntaxTreeNode { get; set; }
+        public SyntaxNode syntaxTreeNode { get; set; }
 
         public ALSyntaxTreeSymbol()
         {

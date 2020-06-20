@@ -5,16 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using AnZwDev.ALTools.ALSymbols.ALAppPackages;
-using AnZwDev.ALTools.Helpers;
+using AnZwDev.ALTools.Extensions;
 using AnZwDev.ALTools.ALSymbols.SymbolReaders;
-using AnZwDev.ALTools.ALProxy;
 
 namespace AnZwDev.ALTools.ALSymbols
 {
     public class ALProjectSymbolsLibrary : ALSymbolsLibrary
     {
 
-        public ALExtensionProxy ALExtensionProxy { get; }
         public ALPackageSymbolsCache PackageSymbolsCache { get; }
         public List<ALSymbolsLibrary> Dependencies { get; set; }
 
@@ -24,10 +22,9 @@ namespace AnZwDev.ALTools.ALSymbols
         public string FullName { get; set; }
         public string[] WorkspaceFolders { get; set; }
 
-        public ALProjectSymbolsLibrary(ALPackageSymbolsCache cache, ALExtensionProxy proxy, bool includeDependencies, string projectPath, string packagesFolder)
+        public ALProjectSymbolsLibrary(ALPackageSymbolsCache cache, bool includeDependencies, string projectPath, string packagesFolder)
         {
             this.PackageSymbolsCache = cache;
-            this.ALExtensionProxy = proxy;
             this.IncludeDependencies = includeDependencies;
             this.Path = projectPath;
             this.PackagesPath = System.IO.Path.Combine(this.Path, packagesFolder);
@@ -41,7 +38,7 @@ namespace AnZwDev.ALTools.ALSymbols
 
             //load project information
             ALProjectFile projectFile = ALProjectFile.Load(System.IO.Path.Combine(this.Path, "app.json"));
-            this.FullName = StringHelper.Merge(projectFile.publisher, projectFile.name, projectFile.version);
+            this.FullName = StringExtensions.Merge(projectFile.publisher, projectFile.name, projectFile.version);
 
             this.Root = new ALSymbolInformation(ALSymbolKind.ProjectDefinition, this.FullName);
 
@@ -128,7 +125,7 @@ namespace AnZwDev.ALTools.ALSymbols
 
         protected void AddDepProject(WorkspaceProject depProject)
         {
-            ALProjectSymbolsLibrary library = new ALProjectSymbolsLibrary(this.PackageSymbolsCache, this.ALExtensionProxy, false,
+            ALProjectSymbolsLibrary library = new ALProjectSymbolsLibrary(this.PackageSymbolsCache, false,
                 depProject.ProjectPath, this.PackagesPath);
             library.Load(false);
             if (library.Root != null)
@@ -165,7 +162,7 @@ namespace AnZwDev.ALTools.ALSymbols
                 parent = this.Root;
 
             //process source files
-            ALSymbolInfoSyntaxTreeReader syntaxTreeReader = new ALSymbolInfoSyntaxTreeReader(this.ALExtensionProxy, false);
+            ALSymbolInfoSyntaxTreeReader syntaxTreeReader = new ALSymbolInfoSyntaxTreeReader(false);
             string[] files = System.IO.Directory.GetFiles(this.Path, "*.al", SearchOption.AllDirectories);
             for (int i=0; i<files.Length; i++)
             {

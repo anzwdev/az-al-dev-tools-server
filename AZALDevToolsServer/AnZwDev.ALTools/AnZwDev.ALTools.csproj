@@ -1,149 +1,22 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{9ACC6B7A-D25B-4C6D-A093-3B1361559AE0}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AnZwDev.ALTools</RootNamespace>
-    <AssemblyName>AnZwDev.ALTools</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.Dynamics.Nav.CodeAnalysis">
+      <HintPath>..\..\..\..\..\Users\azwie\.vscode\extensions\ms-dynamics-smb.al-5.0.288712\bin\Microsoft.Dynamics.Nav.CodeAnalysis.dll</HintPath>
+      <Private>false</Private>
     </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.IO.Compression" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System.Collections.Immutable">
+      <HintPath>..\..\..\..\..\Users\azwie\.vscode\extensions\ms-dynamics-smb.al-5.0.288712\bin\System.Collections.Immutable.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="ALDevToolsServer.cs" />
-    <Compile Include="ALProxy\ALExtensionLibraryProxy.cs" />
-    <Compile Include="ALProxy\ALExtensionLibraryTypeProxy.cs" />
-    <Compile Include="ALProxy\ALExtensionProxy.cs" />
-    <Compile Include="ALProxy\BCVersion.cs" />
-    <Compile Include="ALProxy\ConvertedActionKind.cs" />
-    <Compile Include="ALProxy\ConvertedChangeKind.cs" />
-    <Compile Include="ALProxy\ConvertedControlKind.cs" />
-    <Compile Include="ALProxy\EnumConverter.cs" />
-    <Compile Include="ALProxy\ALEnumConverters.cs" />
-    <Compile Include="ALProxy\ConvertedSyntaxKind.cs" />
-    <Compile Include="ALProxy\SyntaxTreeProxy.cs" />
-    <Compile Include="ALSymbols\ALAppPackages\ALAppInterface.cs" />
-    <Compile Include="ALSymbols\ALAppPackages\ALAppPackageFileInfosCollection.cs" />
-    <Compile Include="ALSymbols\ALAppPackages\ALAppDotNetAssemblyDeclaration.cs" />
-    <Compile Include="ALSymbols\ALAppPackages\ALAppAttributeArgument.cs" />
-    <Compile Include="ALSymbols\ALAppPackages\ALAppControlAddIn.cs" />
-    <Compile Include="ALSymbols\ALAppPackages\ALAppDotNetPackage.cs" />
-    <Compile Include="ALSymbols\ALAppPackages\ALAppDotNetTypeDeclaration.cs" />
-    <Compile Include="ALSymbols\ALAppPackages\ALAppElementsCollection.cs" />
-    <Compile Include="ALSymbols\ALAppPackages\ALAppEnum.cs" />
-    <Compile Include="ALSymbols\ALAppPackages\ALAppEnumExtension.cs" />
-    <Compile Include="ALSymbols\ALAppPackages\ALAppEnumValue.cs" />
-    <Compile Include="ALSymbols\ALAppPackages\ALAppExtensions.cs" />
-    <Compile Include="ALSymbols\ALAppPackages\ALAppPackageFileInfo.cs" />
-    <Compile Include="ALSymbols\ALAppPackages\ALAppPageControlChange.cs" />
-    <Compile Include="ALSymbols\ALAppPackages\ALAppPageActionChange.cs" />
-    <Compile Include="ALSymbols\ALAppPackages\ALAppPageCustomization.cs" />
-    <Compile Include="ALSymbols\ALAppPackages\ALAppPageExtension.cs" />
-    <Compile Include="ALSymbols\ALAppPackages\ALAppProfile.cs" />
-    <Compile Include="ALSymbols\ALAppPackages\ALAppProperty.cs" />
-    <Compile Include="ALSymbols\ALAppPackages\ALAppQueryColumn.cs" />
-    <Compile Include="ALSymbols\ALAppPackages\ALAppQueryDataItem.cs" />
-    <Compile Include="ALSymbols\ALAppPackages\ALAppBaseElement.cs" />
-    <Compile Include="ALSymbols\ALAppPackages\ALAppCodeunit.cs" />
-    <Compile Include="ALSymbols\ALAppPackages\ALAppPageActionKind.cs" />
-    <Compile Include="ALSymbols\ALAppPackages\ALAppPageControlKind.cs" />
-    <Compile Include="ALSymbols\ALAppPackages\ALAppElementWithName.cs" />
-    <Compile Include="ALSymbols\ALAppPackages\ALAppElementWithNameId.cs" />
-    <Compile Include="ALSymbols\ALAppPackages\ALAppFieldGroup.cs" />
-    <Compile Include="ALSymbols\ALAppPackages\ALAppMethod.cs" />
-    <Compile Include="ALSymbols\ALAppPackages\ALAppAttribute.cs" />
-    <Compile Include="ALSymbols\ALAppPackages\ALAppMethodParameter.cs" />
-    <Compile Include="ALSymbols\ALAppPackages\ALAppObject.cs" />
-    <Compile Include="ALSymbols\ALAppPackages\ALAppPackage.cs" />
-    <Compile Include="ALSymbols\ALAppPackages\ALAppPage.cs" />
-    <Compile Include="ALSymbols\ALAppPackages\ALAppPageAction.cs" />
-    <Compile Include="ALSymbols\ALAppPackages\ALAppPageControl.cs" />
-    <Compile Include="ALSymbols\ALAppPackages\ALAppQuery.cs" />
-    <Compile Include="ALSymbols\ALAppPackages\ALAppQueryFilter.cs" />
-    <Compile Include="ALSymbols\ALAppPackages\ALAppReport.cs" />
-    <Compile Include="ALSymbols\ALAppPackages\ALAppReportDataItem.cs" />
-    <Compile Include="ALSymbols\ALAppPackages\ALAppRequestPage.cs" />
-    <Compile Include="ALSymbols\ALAppPackages\ALAppSubtypeDefinition.cs" />
-    <Compile Include="ALSymbols\ALAppPackages\ALAppTable.cs" />
-    <Compile Include="ALSymbols\ALAppPackages\ALAppTableExtension.cs" />
-    <Compile Include="ALSymbols\ALAppPackages\ALAppTableField.cs" />
-    <Compile Include="ALSymbols\ALAppPackages\ALAppTableKey.cs" />
-    <Compile Include="ALSymbols\ALAppPackages\ALAppTypeDefinition.cs" />
-    <Compile Include="ALSymbols\ALAppPackages\ALAppVariable.cs" />
-    <Compile Include="ALSymbols\ALAppPackages\ALAppXmlPort.cs" />
-    <Compile Include="ALSymbols\ALAppPackages\WorkspaceProject.cs" />
-    <Compile Include="ALSymbols\ALAppPackages\WorkspaceProjectsCollection.cs" />
-    <Compile Include="ALSymbols\ALDocumentSymbolsLibrary.cs" />
-    <Compile Include="ALSymbols\ALFullSyntaxTree.cs" />
-    <Compile Include="ALSymbols\ALPackageSymbolsCache.cs" />
-    <Compile Include="ALSymbols\ALPackageSymbolsLibrary.cs" />
-    <Compile Include="ALSymbols\ALProjectFile.cs" />
-    <Compile Include="ALSymbols\ALProjectFileDependency.cs" />
-    <Compile Include="ALSymbols\ALProjectSymbolsLibrary.cs" />
-    <Compile Include="ALSymbols\ALSymbolLibrariesCollection.cs" />
-    <Compile Include="ALSymbols\ALSyntaxHelper.cs" />
-    <Compile Include="ALSymbols\ALSyntaxTree.cs" />
-    <Compile Include="ALSymbols\ALFullSyntaxTreeNode.cs" />
-    <Compile Include="ALSymbols\ALSyntaxTreesCollection.cs" />
-    <Compile Include="ALSymbols\ALSyntaxTreeSymbol.cs" />
-    <Compile Include="ALSymbols\PropertyValue.cs" />
-    <Compile Include="ALSymbols\SymbolReaders\ALFullSyntaxTreeReader.cs" />
-    <Compile Include="ALSymbols\SymbolReaders\ALSymbolInfoPackageReader.cs" />
-    <Compile Include="ALSymbols\ALSymbolInformation.cs" />
-    <Compile Include="ALSymbols\ALSymbolKind.cs" />
-    <Compile Include="ALSymbols\ALSymbolKindExtension.cs" />
-    <Compile Include="ALSymbols\ALSymbolsLibrary.cs" />
-    <Compile Include="ALSymbols\SymbolReaders\ALSymbolInfoSyntaxTreeReader.cs" />
-    <Compile Include="ALSymbols\Position.cs" />
-    <Compile Include="ALSymbols\Range.cs" />
-    <Compile Include="ALSymbols\SymbolReaders\ALSyntaxTreeSymbolsReader.cs" />
-    <Compile Include="ALSymbols\VersionNumber.cs" />
-    <Compile Include="CodeAnalysis\CodeAnalyzerRule.cs" />
-    <Compile Include="CodeAnalysis\CodeAnalyzersLibrariesCollection.cs" />
-    <Compile Include="CodeAnalysis\CodeAnalyzersLibrary.cs" />
-    <Compile Include="CodeTransformations\AppAreaManager.cs" />
-    <Compile Include="Helpers\StringHelper.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+
 </Project>

@@ -1,5 +1,4 @@
-﻿using AnZwDev.ALTools.ALProxy;
-using AnZwDev.ALTools.ALSymbols.SymbolReaders;
+﻿using AnZwDev.ALTools.ALSymbols.SymbolReaders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,23 +10,19 @@ namespace AnZwDev.ALTools.ALSymbols
     public class ALFullSyntaxTree
     {
 
-        public ALExtensionProxy ALExtensionProxy { get; }
         public ALFullSyntaxTreeNode Root { get; set; }
 
-        public ALFullSyntaxTree(ALExtensionProxy alExtensionProxy)
+        public ALFullSyntaxTree()
         {
-            this.ALExtensionProxy = alExtensionProxy;
         }
 
         public void Load(string source, string filePath)
         {
-            ALFullSyntaxTreeReader reader = new ALFullSyntaxTreeReader(this.ALExtensionProxy);
+            ALFullSyntaxTreeReader reader = new ALFullSyntaxTreeReader();
             if (!String.IsNullOrEmpty(source))
                 this.Root = reader.ProcessSourceCode(source);
             else
                 this.Root = reader.ProcessSourceFile(filePath);
-                     
-
         }
 
 
