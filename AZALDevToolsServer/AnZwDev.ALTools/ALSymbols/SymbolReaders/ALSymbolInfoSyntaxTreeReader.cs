@@ -287,7 +287,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
         protected void ProcessFieldNode(ALSymbolInformation symbol, FieldSyntax syntax)
         {
             Type syntaxType = syntax.GetType();
-            if ((syntaxType.GetProperty("No") != null) && (syntax.No != null))
+            if (syntax.No != null)
             {
                 string idText = syntax.No.ToString();
                 int id = 0;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
@@ -10,7 +11,7 @@ namespace AnZwDev.ALTools.Extensions
 
         public static string TryGetPropertyValueAsString(this Type nodeType, object obj, string propertyName)
         {
-            object value = nodeType.TryGetPropertyValue<object>(obj, propertyName);
+            object value = nodeType.TryGetPropertyValue(obj, propertyName);
             if (value != null)
                 return value.ToString();
             return null;
@@ -18,10 +19,18 @@ namespace AnZwDev.ALTools.Extensions
 
         public static T TryGetPropertyValue<T>(this Type type, object obj, string propertyName)
         {
+            object value = TryGetPropertyValue(type, obj, propertyName);
+            if (value != null)
+                return (T)value;
+            return default(T);
+        }
+
+        public static object TryGetPropertyValue(this Type type, object obj, string propertyName)
+        {
             PropertyInfo propertyInfo = type.GetProperty(propertyName);
             if (propertyInfo != null)
-                return (T)propertyInfo.GetValue(obj);
-            return default(T);
+                return propertyInfo.GetValue(obj);
+            return null;
         }
 
         public static bool ValidParameterTypes(this Type[] parameterTypes, ParameterInfo[] parameterInfoList)

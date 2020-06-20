@@ -12,8 +12,8 @@ namespace AnZwDev.ALTools.CodeTransformations
     public string PageActionTooltip { get; set; }
     public ToolTipSyntaxRewriter()
     {
-      PageActionTooltip = "Executes the action %1";
-      PageFieldTooltip = "Specifies the value for the field %1";
+      PageActionTooltip = "Executes the %1 action";
+      PageFieldTooltip = "Specifies the value of %1 field";
     }
 
     protected override SyntaxNode AfterVisitSourceCode(SyntaxNode node)

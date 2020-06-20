@@ -40,6 +40,7 @@ namespace AnZwDev.ALTools.ALSymbols
                         name = name.Substring(0, name.Length - 1);
                     name = name.Replace("\"\"", "\"");
                 }
+                return name;
             }
             return "";
         }
