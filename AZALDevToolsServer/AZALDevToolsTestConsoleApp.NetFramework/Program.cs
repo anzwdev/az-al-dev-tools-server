@@ -27,6 +27,9 @@ namespace AZALDevToolsTestConsoleApp.NetFramework
             ALSymbolInfoSyntaxTreeReader syntaxTreeReader = new ALSymbolInfoSyntaxTreeReader(true);
             ALSymbolInformation symbols = syntaxTreeReader.ProcessSourceFile(filePath);
 
+            ALFullSyntaxTree syntaxTree = new ALFullSyntaxTree();
+            syntaxTree.Load("", filePath);
+
             CodeAnalyzersLibrariesCollection caLibCol = new CodeAnalyzersLibrariesCollection(alDevToolsServer);
             CodeAnalyzersLibrary caLib = caLibCol.GetCodeAnalyzersLibrary("${CodeCop}");
 
