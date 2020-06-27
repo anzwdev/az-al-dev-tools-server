@@ -43,6 +43,9 @@ namespace AnZwDev.ALTools.ALSymbols
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public Range contentRange { get; set; }
 
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public bool? containsDiagnostics { get; set; }
+
         public ALSymbolInformation()
         {
             this.id = 0;
@@ -53,6 +56,7 @@ namespace AnZwDev.ALTools.ALSymbols
             this.source = null;
             this.extends = null;
             this.contentRange = null;
+            this.containsDiagnostics = null;
         }
 
         public ALSymbolInformation(ALSymbolKind kindValue, string nameValue) : this()

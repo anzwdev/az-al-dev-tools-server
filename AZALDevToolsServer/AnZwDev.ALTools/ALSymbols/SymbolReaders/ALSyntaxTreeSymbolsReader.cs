@@ -76,7 +76,10 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             symbolInfo.fullName = symbolInfo.name + " " + node.FullSpan.ToString();
             symbolInfo.syntaxTreeNode = node;
             symbolInfo.type = node.GetType().Name;
-            
+
+            if (node.ContainsDiagnostics)
+                symbolInfo.containsDiagnostics = true;
+
             var lineSpan = syntaxTree.GetLineSpan(node.FullSpan);
             symbolInfo.range = new Range(lineSpan.StartLinePosition.Line, lineSpan.StartLinePosition.Character,
                 lineSpan.EndLinePosition.Line, lineSpan.EndLinePosition.Character);

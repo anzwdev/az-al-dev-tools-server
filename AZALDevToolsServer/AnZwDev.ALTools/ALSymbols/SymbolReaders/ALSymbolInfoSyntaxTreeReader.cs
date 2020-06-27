@@ -73,6 +73,9 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             symbolInfo.name = ALSyntaxHelper.DecodeName(nodeType.TryGetPropertyValueAsString(node, "Name"));
             symbolInfo.kind = alSymbolKind;
 
+            if (node.ContainsDiagnostics)
+                symbolInfo.containsDiagnostics = true;
+
             var lineSpan = syntaxTree.GetLineSpan(node.FullSpan);
             symbolInfo.range = new Range(lineSpan.StartLinePosition.Line, lineSpan.StartLinePosition.Character,
                 lineSpan.EndLinePosition.Line, lineSpan.EndLinePosition.Character);

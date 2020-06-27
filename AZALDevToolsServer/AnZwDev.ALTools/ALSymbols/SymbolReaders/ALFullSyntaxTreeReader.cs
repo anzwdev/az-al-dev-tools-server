@@ -121,6 +121,9 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             
             alNode.name = ALSyntaxHelper.DecodeName(nodeType.TryGetPropertyValueAsString(node, "Name"));
 
+            if (node.ContainsDiagnostics)
+                alNode.containsDiagnostics = true;
+
             IEnumerable attributes = nodeType.TryGetPropertyValue<IEnumerable>(node, "Attributes");
             if (attributes != null)
             {
