@@ -66,6 +66,9 @@ namespace AnZwDev.ALTools.ALSymbols
                 workspaceProjects.Load();
             }
 
+            bool baseAppLoaded = false;
+            bool systemAppLoaded = false;
+
             //collect packages
             if (projectFile.dependencies != null)
             {
@@ -86,12 +89,30 @@ namespace AnZwDev.ALTools.ALSymbols
                     if (!workspaceProjectFound)
                         this.AddPackage(packageFiles, projectFile.dependencies[i].publisher,
                             projectFile.dependencies[i].name, projectFile.dependencies[i].version, forceReload);
+
+                    if ((!String.IsNullOrWhiteSpace(projectFile.dependencies[i].publisher)) &&
+                        (!String.IsNullOrWhiteSpace(projectFile.dependencies[i].name)) &&
+                        (projectFile.dependencies[i].publisher.ToLower().Trim().Equals("microsoft")))
+                    {
+                        string appName = projectFile.dependencies[i].name.ToLower().Trim();
+                        if (appName.Equals("system application"))
+                            systemAppLoaded = true;
+                        else if (appName.Equals("base application"))
+                            baseAppLoaded = true;
+                    }
                 }
             }
 
             //collect system packages
             if (!String.IsNullOrWhiteSpace(projectFile.application))
+            {
                 this.AddPackage(packageFiles, "Microsoft", "Application", projectFile.application, forceReload);
+                
+                if (!baseAppLoaded)
+                    this.AddPackage(packageFiles, "Microsoft", "Base Application", projectFile.application, forceReload);
+                if (!systemAppLoaded)
+                    this.AddPackage(packageFiles, "Microsoft", "System Application", projectFile.application, forceReload);
+            }
 
             if (!String.IsNullOrWhiteSpace(projectFile.platform))
                 this.AddPackage(packageFiles, "Microsoft", "System", projectFile.platform, forceReload);

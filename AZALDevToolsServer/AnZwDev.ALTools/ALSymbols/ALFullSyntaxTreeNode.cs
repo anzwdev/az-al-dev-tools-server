@@ -50,6 +50,9 @@ namespace AnZwDev.ALTools.ALSymbols
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string temporary { get; set; }
 
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public bool? containsDiagnostics { get; set; }
+
         public ALFullSyntaxTreeNode()
         {
             this.name = null;
@@ -65,6 +68,7 @@ namespace AnZwDev.ALTools.ALSymbols
             this.identifier = null;
             this.dataType = null;
             this.temporary = null;
+            this.containsDiagnostics = null;
         }
 
         public ALFullSyntaxTreeNode(Exception e): this()
