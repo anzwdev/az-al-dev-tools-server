@@ -20,7 +20,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             T syntaxRewriter = this.CreateSyntaxRewriter(sourceCode, path, parameters);
             
             string newSourceCode = null;
-            if (!String.IsNullOrWhiteSpace(sourceCode))
+            if (!String.IsNullOrEmpty(sourceCode))
                 newSourceCode = syntaxRewriter.RewriteSourceCode(sourceCode);
             else if (!String.IsNullOrWhiteSpace(path))
                 syntaxRewriter.RewriteDirectory(path);

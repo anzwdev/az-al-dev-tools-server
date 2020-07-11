@@ -28,6 +28,24 @@ namespace AnZwDev.ALTools.ALSymbols
             return false;
         }
 
+        public static string DecodeString(string value)
+        {
+            if (value != null)
+            {
+                value = value.Trim();
+                if (value.StartsWith("'"))
+                {
+                    value = value.Substring(1);
+                    if (value.EndsWith("'"))
+                        value = value.Substring(0, value.Length - 1);
+                    value = value.Replace("''", "'");
+                }
+                return value;
+            }
+            return "";
+        }
+
+
         public static string DecodeName(string name)
         {
             if (name != null)

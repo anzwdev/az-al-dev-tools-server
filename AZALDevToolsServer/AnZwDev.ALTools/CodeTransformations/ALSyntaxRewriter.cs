@@ -64,7 +64,7 @@ namespace AnZwDev.ALTools.CodeTransformations
             }
         }
 
-        public void RewriteDirectory(string directoryPath)
+        public virtual void RewriteDirectory(string directoryPath)
         {
             string[] filePathsList = System.IO.Directory.GetFiles(directoryPath, "*.al", System.IO.SearchOption.AllDirectories);
             for (int i = 0; i < filePathsList.Length; i++)
