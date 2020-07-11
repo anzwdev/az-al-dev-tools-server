@@ -44,7 +44,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
         {
             try
             {
-                SyntaxTree sourceTree = SyntaxTree.ParseObjectText(source);
+                SyntaxTree sourceTree = SyntaxTreeExtensions.SafeParseObjectText(source);
                 return ProcessSyntaxTree(sourceTree);
             }
             catch (Exception e)

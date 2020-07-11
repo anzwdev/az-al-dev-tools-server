@@ -1,4 +1,5 @@
-﻿using Microsoft.Dynamics.Nav.CodeAnalysis;
+﻿using AnZwDev.ALTools.Extensions;
+using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Packaging;
 using Microsoft.Dynamics.Nav.CodeAnalysis.SymbolReference;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
@@ -29,7 +30,7 @@ namespace AnZwDev.ALTools.CodeTransformations
             BeforeVisitSourceCode();
 
             //parse source code
-            SyntaxTree syntaxTree = SyntaxTree.ParseObjectText(source);
+            SyntaxTree syntaxTree = SyntaxTreeExtensions.SafeParseObjectText(source);
 
             //fix nodes
             SyntaxNode node = this.Visit(syntaxTree.GetRoot());

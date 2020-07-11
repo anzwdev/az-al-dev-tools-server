@@ -35,29 +35,10 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
         }
 
 
-        protected SyntaxTree ParseObjectText(string source)
-        {
-            return SyntaxTree.ParseObjectText(source);
-        }
-
-        protected SyntaxTree ParseObjectTextNav2018(string source)
-        {
-            return typeof(SyntaxTree).CallStaticMethod<SyntaxTree>("ParseObjectText", source,
-                Type.Missing, Type.Missing, Type.Missing);
-        }
 
         public ALSyntaxTreeSymbol ProcessSourceCode(string source)
         {
-            SyntaxTree syntaxTree = null;
-
-            try
-            {
-                syntaxTree = this.ParseObjectText(source);
-            }
-            catch (MissingMethodException e)
-            {
-                syntaxTree = this.ParseObjectTextNav2018(source);
-            }
+            SyntaxTree syntaxTree = SyntaxTreeExtensions.SafeParseObjectText(source);
 
             if (syntaxTree != null)
             {
