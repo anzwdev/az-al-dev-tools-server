@@ -1,4 +1,5 @@
-﻿using Microsoft.Dynamics.Nav.CodeAnalysis;
+﻿using AnZwDev.ALTools.Extensions;
+using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Packaging;
 using Microsoft.Dynamics.Nav.CodeAnalysis.SymbolReference;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
@@ -29,7 +30,7 @@ namespace AnZwDev.ALTools.CodeTransformations
             BeforeVisitSourceCode();
 
             //parse source code
-            SyntaxTree syntaxTree = SyntaxTree.ParseObjectText(source);
+            SyntaxTree syntaxTree = SyntaxTreeExtensions.SafeParseObjectText(source);
 
             //fix nodes
             SyntaxNode node = this.Visit(syntaxTree.GetRoot());
@@ -63,7 +64,7 @@ namespace AnZwDev.ALTools.CodeTransformations
             }
         }
 
-        public void RewriteDirectory(string directoryPath)
+        public virtual void RewriteDirectory(string directoryPath)
         {
             string[] filePathsList = System.IO.Directory.GetFiles(directoryPath, "*.al", System.IO.SearchOption.AllDirectories);
             for (int i = 0; i < filePathsList.Length; i++)
