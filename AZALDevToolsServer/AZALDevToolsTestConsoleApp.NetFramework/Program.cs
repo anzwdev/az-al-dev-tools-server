@@ -32,10 +32,12 @@ namespace AZALDevToolsTestConsoleApp.NetFramework
             ALFullSyntaxTree syntaxTree = new ALFullSyntaxTree();
             syntaxTree.Load("", filePath);
 
-
-
             CodeAnalyzersLibrariesCollection caLibCol = new CodeAnalyzersLibrariesCollection(alDevToolsServer);
             CodeAnalyzersLibrary caLib = caLibCol.GetCodeAnalyzersLibrary("${CodeCop}");
+
+            filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC16\\AnZwDev_Small but great AZ AL Extension_1.0.0.0.app";
+            ALSymbolInfoPackageReader packageReader = new ALSymbolInfoPackageReader();
+            packageReader.ReadAppPackage(filePath);
 
             Console.WriteLine("Done");
         }
