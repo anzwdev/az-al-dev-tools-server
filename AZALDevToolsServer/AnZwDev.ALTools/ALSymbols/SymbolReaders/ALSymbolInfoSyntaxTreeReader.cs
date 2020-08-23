@@ -138,8 +138,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                     ProcessParameterNode(symbol, (ParameterSyntax)node);
                     break;
                 case ConvertedSyntaxKind.EnumValue:
-                    //Safe call as enums are not supported by Nav 2018
-                    SafeProcessEnumValueNode(symbol, node);
+                    ProcessEnumValueNode(symbol, (EnumValueSyntax)node);
                     break;
                 case ConvertedSyntaxKind.PageGroup:
                     ProcessPageGroupNode(syntaxTree, symbol, (PageGroupSyntax)node);
@@ -161,6 +160,12 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                     break;
                 case ConvertedSyntaxKind.PageExtensionObject:
                     ProcessPageExtensionObjectNode(symbol, (PageExtensionSyntax)node);
+                    break;
+                case ConvertedSyntaxKind.TableExtensionObject:
+                    ProcessTableExtensionObjectNode(symbol, (TableExtensionSyntax)node);
+                    break;
+                case ConvertedSyntaxKind.EnumExtensionType:
+                    ProcessEnumExtensionTypeNode(symbol, (EnumExtensionTypeSyntax)node);
                     break;
                 case ConvertedSyntaxKind.ControlAddChange:
                     ProcessControlAddChangeNode(syntaxTree, symbol, (ControlAddChangeSyntax)node);
@@ -212,6 +217,18 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
         }
 
         protected void ProcessPageExtensionObjectNode(ALSymbolInformation symbol, PageExtensionSyntax syntax)
+        {
+            if (syntax.BaseObject != null)
+                symbol.extends = ALSyntaxHelper.DecodeName(syntax.BaseObject.ToString());
+        }
+
+        protected void ProcessTableExtensionObjectNode(ALSymbolInformation symbol, TableExtensionSyntax syntax)
+        {
+            if (syntax.BaseObject != null)
+                symbol.extends = ALSyntaxHelper.DecodeName(syntax.BaseObject.ToString());
+        }
+
+        protected void ProcessEnumExtensionTypeNode(ALSymbolInformation symbol, EnumExtensionTypeSyntax syntax)
         {
             if (syntax.BaseObject != null)
                 symbol.extends = ALSyntaxHelper.DecodeName(syntax.BaseObject.ToString());
@@ -272,7 +289,14 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
 
         protected void ProcessEnumValueNode(ALSymbolInformation symbol, EnumValueSyntax syntax)
         {
-            symbol.fullName = ALSyntaxHelper.EncodeName(symbol.name) + ": " + syntax.EnumValueToken.ToFullString();
+            string idText = syntax.Id.ToString();
+            if (!String.IsNullOrWhiteSpace(idText)) 
+            {
+                int id;
+                if (Int32.TryParse(idText, out id))
+                    symbol.id = id;
+            }
+            symbol.fullName = ALSyntaxHelper.EncodeName(symbol.name); // + ": " + syntax.EnumValueToken.ToFullString();
         }
 
         protected void ProcessReportColumnNode(ALSymbolInformation symbol, ReportColumnSyntax syntax)

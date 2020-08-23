@@ -9,7 +9,7 @@ namespace AnZwDev.ALTools.ALSymbols
 {
     public class ALSymbolInformation
     {
-        public int id { get; set; }
+        public int? id { get; set; }
         
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string name { get; set; }
