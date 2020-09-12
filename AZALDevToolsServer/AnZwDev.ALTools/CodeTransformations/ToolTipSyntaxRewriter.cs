@@ -106,21 +106,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         protected PropertySyntax CreateToolTipProperty(SyntaxNode node, string caption = null)
         {
-            //calculate indent
-            int indentLength = 4;
-            string indent;
-            SyntaxTriviaList leadingTrivia = node.GetLeadingTrivia();
-            if (leadingTrivia != null)
-            {
-                indent = leadingTrivia.ToString();
-                int newLinePos = indent.LastIndexOf("/n");
-                if (newLinePos >= 0)
-                    indent = indent.Substring(newLinePos + 1);
-                indentLength += indent.Length;
-            }
-            indent = "".PadLeft(indentLength);
-
-            SyntaxTriviaList leadingTriviaList = SyntaxFactory.ParseLeadingTrivia(indent, 0);
+            SyntaxTriviaList leadingTriviaList = node.CreateChildNodeIdentTrivia();
             SyntaxTriviaList trailingTriviaList = SyntaxFactory.ParseTrailingTrivia("\r\n", 0);
 
             //get caption from control

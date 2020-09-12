@@ -29,7 +29,7 @@ namespace AnZwDev.ALTools.ALSymbols.ALAppPackages
         public ALAppElementsCollection<ALAppDotNetPackage> DotNetPackages { get; set; }
         //public ALAppElementsCollection<ALAppEnum> Enums { get; set; }
         public ALAppElementsCollection<ALAppEnum> EnumTypes { get; set; }
-        public ALAppElementsCollection<ALAppEnumExtension> EnumTypeExtensions { get; set; }
+        public ALAppElementsCollection<ALAppEnumExtension> EnumExtensionTypes { get; set; }
         public ALAppElementsCollection<ALAppInterface> Interfaces { get; set; }
 
         public ALAppPackage()
@@ -58,7 +58,7 @@ namespace AnZwDev.ALTools.ALSymbols.ALAppPackages
             this.PageCustomizations?.AddCollectionToALSymbol(symbol, ALSymbolKind.PageCustomizationObjectList);
             this.DotNetPackages?.AddCollectionToALSymbol(symbol, ALSymbolKind.DotNetPackageList);
             this.EnumTypes?.AddCollectionToALSymbol(symbol, ALSymbolKind.EnumTypeList);
-            this.EnumTypeExtensions?.AddCollectionToALSymbol(symbol, ALSymbolKind.EnumExtensionTypeList);
+            this.EnumExtensionTypes?.AddCollectionToALSymbol(symbol, ALSymbolKind.EnumExtensionTypeList);
             this.Interfaces?.AddCollectionToALSymbol(symbol, ALSymbolKind.InterfaceObjectList);
 
         }
