@@ -56,5 +56,24 @@ namespace AnZwDev.ALTools.Nav2018.Extensions
             return name;
         }
 
+        public static SyntaxTriviaList CreateChildNodeIdentTrivia(this SyntaxNode node)
+        {
+            //calculate indent
+            int indentLength = 4;
+            string indent;
+            SyntaxTriviaList leadingTrivia = node.GetLeadingTrivia();
+            if (leadingTrivia != null)
+            {
+                indent = leadingTrivia.ToString();
+                int newLinePos = indent.LastIndexOf("/n");
+                if (newLinePos >= 0)
+                    indent = indent.Substring(newLinePos + 1);
+                indentLength += indent.Length;
+            }
+            indent = "".PadLeft(indentLength);
+
+            return SyntaxFactory.ParseLeadingTrivia(indent, 0);
+        }
+
     }
 }

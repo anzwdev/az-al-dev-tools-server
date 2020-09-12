@@ -30,6 +30,7 @@ namespace AnZwDev.ALTools.Nav2018.WorkspaceCommands
         {
             this.RegisterCommand(new AddAppAreasWorkspaceCommand());
             this.RegisterCommand(new AddToolTipsWorkspaceCommand());
+            this.RegisterCommand(new AddDataClassificationWorkspaceCommand());
         }
 
         public WorkspaceCommandResult RunCommand(string commandName, string sourceCode, string path, Dictionary<string, string> parameters)

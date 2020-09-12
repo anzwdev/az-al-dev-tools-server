@@ -140,6 +140,7 @@
     <Compile Include="CodeAnalysis\CodeAnalyzersLibrary.cs" />
     <Compile Include="CodeTransformations\ALSyntaxRewriter.cs" />
     <Compile Include="CodeTransformations\AppAreaSyntaxRewriter.cs" />
+    <Compile Include="CodeTransformations\DataClassificationSyntaxRewriter.cs" />
     <Compile Include="CodeTransformations\ToolTipSyntaxRewriter.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\MethodInfoExtensions.cs" />
@@ -154,6 +155,7 @@
     <Compile Include="TypeInformation\TypeInformation.cs" />
     <Compile Include="TypeInformation\TypeInformationCollector.cs" />
     <Compile Include="WorkspaceCommands\AddAppAreasWorkspaceCommand.cs" />
+    <Compile Include="WorkspaceCommands\AddDataClassificationWorkspaceCommand.cs" />
     <Compile Include="WorkspaceCommands\AddToolTipsWorkspaceCommand.cs" />
     <Compile Include="WorkspaceCommands\SyntaxRewriterWorkspaceCommand.cs" />
     <Compile Include="WorkspaceCommands\WorkspaceCommand.cs" />
