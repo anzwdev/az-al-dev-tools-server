@@ -47,23 +47,27 @@ namespace AnZwDev.ALTools.Nav2018.CodeTransformations
 
         public override SyntaxNode VisitField(FieldSyntax node)
         {
-            PropertySyntax propertySyntax = node.GetProperty("DataClassification");
-            if (propertySyntax == null)
+            PropertyValueSyntax fieldClass = node.GetPropertyValue("FieldClass");
+            if ((fieldClass == null) || (fieldClass.ToString().Equals("Normal", StringComparison.CurrentCultureIgnoreCase)))
             {
-                NoOfChanges++;
-                return node.AddPropertyListProperties(
-                    this.CreateDataClassificationProperty(node));
-            } else
-            {
-                string valueText = propertySyntax.Value.ToString();
-                if ((String.IsNullOrWhiteSpace(valueText)) ||
-                    (valueText.Equals("ToBeClassified", StringComparison.CurrentCultureIgnoreCase)))
+                PropertySyntax propertySyntax = node.GetProperty("DataClassification");
+                if (propertySyntax == null)
                 {
                     NoOfChanges++;
-                    return node.ReplaceNode(propertySyntax, this.CreateDataClassificationProperty(node));
+                    return node.AddPropertyListProperties(
+                        this.CreateDataClassificationProperty(node));
+                }
+                else
+                {
+                    string valueText = propertySyntax.Value.ToString();
+                    if ((String.IsNullOrWhiteSpace(valueText)) ||
+                        (valueText.Equals("ToBeClassified", StringComparison.CurrentCultureIgnoreCase)))
+                    {
+                        NoOfChanges++;
+                        return node.ReplaceNode(propertySyntax, this.CreateDataClassificationProperty(node));
+                    }
                 }
             }
-
             return base.VisitField(node);
         }
 
