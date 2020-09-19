@@ -24,6 +24,23 @@ namespace AnZwDev.ALTools.CodeTransformations
             this.TotalNoOfChanges = 0;
         }
 
+        public override SyntaxNode Visit(SyntaxNode node)
+        {
+            this.NoOfChanges = 0;
+            node = base.Visit(node);
+            node = this.AfterVisitNode(node);
+
+            if (node != null)
+            {
+                this.TotalNoOfChanges += this.NoOfChanges;
+                if (this.NoOfChanges > 0)
+                    this.NoOfChangedFiles++;
+            }
+
+            return node;
+        }
+
+        /*
         public virtual string RewriteSourceCode(string source)
         {
             this.NoOfChanges = 0;
@@ -76,8 +93,9 @@ namespace AnZwDev.ALTools.CodeTransformations
         protected virtual void BeforeVisitSourceCode()
         {
         }
+        */
 
-        protected virtual SyntaxNode AfterVisitSourceCode(SyntaxNode node)
+        protected virtual SyntaxNode AfterVisitNode(SyntaxNode node)
         {
             return node;
         }
