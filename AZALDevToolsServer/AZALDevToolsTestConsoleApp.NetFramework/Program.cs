@@ -42,15 +42,6 @@ namespace AZALDevToolsTestConsoleApp.NetFramework
             ALSymbolInfoPackageReader packageReader = new ALSymbolInfoPackageReader();
             packageReader.ReadAppPackage(filePath);
 
-
-            WorkspaceCommandsManager m = new WorkspaceCommandsManager();
-            filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\small\\Pag50001.rewgegerg.al";
-            string sourceCode = System.IO.File.ReadAllText(filePath);
-            Dictionary<string, string> parameters = new Dictionary<string, string>();
-            parameters.Add("appArea", "All");
-
-            WorkspaceCommandResult f = m.RunCommand("addAppAreas", sourceCode, filePath, new Dictionary<string, string>());
-
             Console.WriteLine("Done");
         }
     }

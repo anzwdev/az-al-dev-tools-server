@@ -81,7 +81,7 @@ namespace AnZwDev.ALTools.Nav2018.CodeTransformations
                     .WithTrailingTrivia(SyntaxFactory.ParseTrailingTrivia(" ")),
                 SyntaxFactory.EnumPropertyValue(SyntaxFactory.IdentifierName(this.DataClassification))
                     .WithLeadingTrivia(SyntaxFactory.ParseLeadingTrivia(" ")))
-                .WithLeadingTrivia(leadingTriviaList)                
+                .WithLeadingTrivia(leadingTriviaList)
                 .WithTrailingTrivia(trailingTriviaList);
         }
 

@@ -20,7 +20,7 @@ namespace AnZwDev.ALTools.Nav2018.CodeTransformations
         public int NoOfChanges { get; set; }
         public int TotalNoOfChanges { get; set; }
         public int NoOfChangedFiles { get; set; }
-        
+
 
         public ALSyntaxRewriter()
         {
@@ -29,60 +29,23 @@ namespace AnZwDev.ALTools.Nav2018.CodeTransformations
             this.TotalNoOfChanges = 0;
         }
 
-        public virtual string RewriteSourceCode(string source)
+        public SyntaxNode ProcessNode(SyntaxNode node)
         {
             this.NoOfChanges = 0;
-            BeforeVisitSourceCode();
+            node = this.Visit(node);
+            node = this.AfterVisitNode(node);
 
-            //parse source code
-            SyntaxTree syntaxTree = SyntaxTreeExtensions.SafeParseObjectText(source);
-
-            //fix nodes
-            SyntaxNode node = this.Visit(syntaxTree.GetRoot());
-            node = this.AfterVisitSourceCode(node);
-
-            //return new source code
-            if (node == null)
-                return null;
-
-            //update statistics only if node exists
-            this.TotalNoOfChanges += this.NoOfChanges;
-            if (this.NoOfChanges > 0)
-                this.NoOfChangedFiles++;
-
-            return node.ToFullString();
-        }
-
-        public bool RewriteFile(string filePath)
-        {
-            try
+            if (node != null)
             {
-                string source = System.IO.File.ReadAllText(filePath);
-                string newSource = this.RewriteSourceCode(source);
-                if ((newSource != source) && (this.NoOfChanges > 0) && (!String.IsNullOrWhiteSpace(newSource)))
-                    System.IO.File.WriteAllText(filePath, newSource);
-                return true;
+                this.TotalNoOfChanges += this.NoOfChanges;
+                if (this.NoOfChanges > 0)
+                    this.NoOfChangedFiles++;
             }
-            catch (Exception e)
-            {
-                return false;
-            }
+
+            return node;
         }
 
-        public virtual void RewriteDirectory(string directoryPath)
-        {
-            string[] filePathsList = System.IO.Directory.GetFiles(directoryPath, "*.al", System.IO.SearchOption.AllDirectories);
-            for (int i = 0; i < filePathsList.Length; i++)
-            {
-                this.RewriteFile(filePathsList[i]);
-            }
-        }
-
-        protected virtual void BeforeVisitSourceCode()
-        {
-        }
-
-        protected virtual SyntaxNode AfterVisitSourceCode(SyntaxNode node)
+        protected virtual SyntaxNode AfterVisitNode(SyntaxNode node)
         {
             return node;
         }

@@ -1,25 +1,26 @@
-﻿/****************************************************************
- *                                                              *
- * Legacy version of the library maintained to support Nav 2018 *
- *                                                              *
- ****************************************************************/
-using AnZwDev.ALTools.Nav2018.CodeTransformations;
+﻿using AnZwDev.ALTools.Nav2018.CodeTransformations;
+using Microsoft.Dynamics.Nav.CodeAnalysis;
+using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace AnZwDev.ALTools.Nav2018.WorkspaceCommands
 {
-    public class SyntaxRewriterWorkspaceCommand<T> : WorkspaceCommand where T: ALSyntaxRewriter, new()
+    public class SyntaxRewriterWorkspaceCommand<T> : SyntaxTreeWorkspaceCommand where T: ALSyntaxRewriter, new()
     {
 
         public static string NoOfChangesParameterName = "noOfChanges";
         public static string NoOfChangedFilesParameterName = "noOfChangedFiles";
 
+        public T SyntaxRewriter { get; }
+
         public SyntaxRewriterWorkspaceCommand(string name): base(name)
         {
+            this.SyntaxRewriter = new T();
         }
 
+        /*
         public override WorkspaceCommandResult Run(string sourceCode, string path, Dictionary<string, string> parameters)
         {
             T syntaxRewriter = this.CreateSyntaxRewriter(sourceCode, path, parameters);
@@ -32,21 +33,26 @@ namespace AnZwDev.ALTools.Nav2018.WorkspaceCommands
 
             return this.CreateResult(syntaxRewriter, newSourceCode, path, parameters);
         }
+        */
 
-        protected virtual T CreateSyntaxRewriter(string sourceCode, string path, Dictionary<string, string> parameters)
+        public override WorkspaceCommandResult Run(string sourceCode, string path, Dictionary<string, string> parameters)
         {
-            return new T();
-        }
-
-        protected virtual WorkspaceCommandResult CreateResult(T syntaxRewriter, string newSourceCode, string path, Dictionary<string, string> parameters)
-        {
-            WorkspaceCommandResult result = new WorkspaceCommandResult(newSourceCode);
-            result.SetParameter(NoOfChangesParameterName, syntaxRewriter.TotalNoOfChanges.ToString());
-            result.SetParameter(NoOfChangedFilesParameterName, syntaxRewriter.NoOfChangedFiles.ToString());
+            WorkspaceCommandResult result = base.Run(sourceCode, path, parameters);
+            result.SetParameter(NoOfChangesParameterName, this.SyntaxRewriter.TotalNoOfChanges.ToString());
+            result.SetParameter(NoOfChangedFilesParameterName, this.SyntaxRewriter.NoOfChangedFiles.ToString());
             return result;
         }
 
+        public override SyntaxNode ProcessSyntaxNode(SyntaxNode node, string sourceCode, string path, Dictionary<string, string> parameters)
+        {
+            this.SetParameters(sourceCode, path, parameters);
+            node = this.SyntaxRewriter.ProcessNode(node);
+            return base.ProcessSyntaxNode(node, sourceCode, path, parameters);
+        }
 
+        protected virtual void SetParameters(string sourceCode, string path, Dictionary<string, string> parameters)
+        {
+        }
 
     }
 }

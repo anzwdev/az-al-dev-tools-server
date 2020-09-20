@@ -141,6 +141,11 @@
     <Compile Include="CodeTransformations\ALSyntaxRewriter.cs" />
     <Compile Include="CodeTransformations\AppAreaSyntaxRewriter.cs" />
     <Compile Include="CodeTransformations\DataClassificationSyntaxRewriter.cs" />
+    <Compile Include="CodeTransformations\SortProceduresSyntaxRewriter.cs" />
+    <Compile Include="CodeTransformations\SortPropertiesSyntaxRewriter.cs" />
+    <Compile Include="CodeTransformations\SortReportColumnsSyntaxRewriter.cs" />
+    <Compile Include="CodeTransformations\SortVariablesSyntaxRewriter.cs" />
+    <Compile Include="CodeTransformations\SyntaxNodeSortInfo.cs" />
     <Compile Include="CodeTransformations\ToolTipSyntaxRewriter.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\MethodInfoExtensions.cs" />
@@ -157,7 +162,13 @@
     <Compile Include="WorkspaceCommands\AddAppAreasWorkspaceCommand.cs" />
     <Compile Include="WorkspaceCommands\AddDataClassificationWorkspaceCommand.cs" />
     <Compile Include="WorkspaceCommands\AddToolTipsWorkspaceCommand.cs" />
+    <Compile Include="WorkspaceCommands\SortProceduresWorkspaceCommand.cs" />
+    <Compile Include="WorkspaceCommands\SortPropertiesWorkspaceCommand.cs" />
+    <Compile Include="WorkspaceCommands\SortReportColumnsWorkspaceCommand.cs" />
+    <Compile Include="WorkspaceCommands\SortVariablesWorkspaceCommand.cs" />
     <Compile Include="WorkspaceCommands\SyntaxRewriterWorkspaceCommand.cs" />
+    <Compile Include="WorkspaceCommands\SyntaxTreeWorkspaceCommand.cs" />
+    <Compile Include="WorkspaceCommands\SyntaxTreeWorkspaceCommandsGroup.cs" />
     <Compile Include="WorkspaceCommands\WorkspaceCommand.cs" />
     <Compile Include="WorkspaceCommands\WorkspaceCommandResult.cs" />
     <Compile Include="WorkspaceCommands\WorkspaceCommandsManager.cs" />
