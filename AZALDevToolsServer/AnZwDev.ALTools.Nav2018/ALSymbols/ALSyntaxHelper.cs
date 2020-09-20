@@ -123,6 +123,8 @@ namespace AnZwDev.ALTools.Nav2018.ALSymbols
                 return ALSymbolKind.SessionSettingsHandlerDeclaration;
             if (name.Equals("StrMenuHandler", StringComparison.CurrentCultureIgnoreCase))
                 return ALSymbolKind.StrMenuHandlerDeclaration;
+            if (name.Equals("Local", StringComparison.CurrentCultureIgnoreCase))
+                return ALSymbolKind.LocalMethodDeclaration;
 
             return ALSymbolKind.Undefined;
         }

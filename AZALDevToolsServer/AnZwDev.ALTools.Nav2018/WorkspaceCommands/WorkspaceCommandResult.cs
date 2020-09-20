@@ -1,9 +1,4 @@
-﻿/****************************************************************
- *                                                              *
- * Legacy version of the library maintained to support Nav 2018 *
- *                                                              *
- ****************************************************************/
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 

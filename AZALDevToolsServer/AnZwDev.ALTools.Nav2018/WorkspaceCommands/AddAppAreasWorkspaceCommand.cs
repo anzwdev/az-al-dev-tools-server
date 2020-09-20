@@ -1,9 +1,4 @@
-﻿/****************************************************************
- *                                                              *
- * Legacy version of the library maintained to support Nav 2018 *
- *                                                              *
- ****************************************************************/
-using AnZwDev.ALTools.Nav2018.CodeTransformations;
+﻿using AnZwDev.ALTools.Nav2018.CodeTransformations;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -19,14 +14,13 @@ namespace AnZwDev.ALTools.Nav2018.WorkspaceCommands
         {
         }
 
-        protected override AppAreaSyntaxRewriter CreateSyntaxRewriter(string sourceCode, string path, Dictionary<string, string> parameters)
+        protected override void SetParameters(string sourceCode, string path, Dictionary<string, string> parameters)
         {
-            AppAreaSyntaxRewriter syntaxRewriter = base.CreateSyntaxRewriter(sourceCode, path, parameters);
+            base.SetParameters(sourceCode, path, parameters);
             if (parameters.ContainsKey(AppAreaParameterName))
-                syntaxRewriter.ApplicationAreaName = parameters[AppAreaParameterName];
-            if (String.IsNullOrWhiteSpace(syntaxRewriter.ApplicationAreaName))
-                syntaxRewriter.ApplicationAreaName = "All";
-            return syntaxRewriter;
+                this.SyntaxRewriter.ApplicationAreaName = parameters[AppAreaParameterName];
+            if (String.IsNullOrWhiteSpace(this.SyntaxRewriter.ApplicationAreaName))
+                this.SyntaxRewriter.ApplicationAreaName = "All";
         }
 
     }

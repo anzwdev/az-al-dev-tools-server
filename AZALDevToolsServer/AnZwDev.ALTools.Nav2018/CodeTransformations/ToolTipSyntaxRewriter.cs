@@ -59,11 +59,11 @@ namespace AnZwDev.ALTools.Nav2018.CodeTransformations
             }
         }
 
-        protected override SyntaxNode AfterVisitSourceCode(SyntaxNode node)
+        protected override SyntaxNode AfterVisitNode(SyntaxNode node)
         {
             if (this.NoOfChanges == 0)
                 return null;
-            return base.AfterVisitSourceCode(node);
+            return base.AfterVisitNode(node);
         }
 
         public override SyntaxNode VisitPageField(PageFieldSyntax node)
@@ -111,21 +111,7 @@ namespace AnZwDev.ALTools.Nav2018.CodeTransformations
 
         protected PropertySyntax CreateToolTipProperty(SyntaxNode node, string caption = null)
         {
-            //calculate indent
-            int indentLength = 4;
-            string indent;
-            SyntaxTriviaList leadingTrivia = node.GetLeadingTrivia();
-            if (leadingTrivia != null)
-            {
-                indent = leadingTrivia.ToString();
-                int newLinePos = indent.LastIndexOf("/n");
-                if (newLinePos >= 0)
-                    indent = indent.Substring(newLinePos + 1);
-                indentLength += indent.Length;
-            }
-            indent = "".PadLeft(indentLength);
-
-            SyntaxTriviaList leadingTriviaList = SyntaxFactory.ParseLeadingTrivia(indent, 0);
+            SyntaxTriviaList leadingTriviaList = node.CreateChildNodeIdentTrivia();
             SyntaxTriviaList trailingTriviaList = SyntaxFactory.ParseTrailingTrivia("\r\n", 0);
 
             //get caption from control
@@ -140,7 +126,7 @@ namespace AnZwDev.ALTools.Nav2018.CodeTransformations
                 caption = node.GetNameStringValue();
 
 
-            string toolTipValue = "";          
+            string toolTipValue = "";
             switch (node.Kind.ConvertToLocalType())
             {
                 case ConvertedSyntaxKind.PageField:

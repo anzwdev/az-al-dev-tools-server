@@ -17,21 +17,19 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         {
         }
 
-        protected override ToolTipSyntaxRewriter CreateSyntaxRewriter(string sourceCode, string path, Dictionary<string, string> parameters)
+        protected override void SetParameters(string sourceCode, string path, Dictionary<string, string> parameters)
         {
-            ToolTipSyntaxRewriter syntaxRewriter = base.CreateSyntaxRewriter(sourceCode, path, parameters);
+            base.SetParameters(sourceCode, path, parameters);
             if (parameters.ContainsKey(FieldTooltipParameterName))
-                syntaxRewriter.PageFieldTooltip = parameters[FieldTooltipParameterName];
+                this.SyntaxRewriter.PageFieldTooltip = parameters[FieldTooltipParameterName];
             if (parameters.ContainsKey(ActionTooltipParameterName))
-                syntaxRewriter.PageActionTooltip = parameters[ActionTooltipParameterName];
+                this.SyntaxRewriter.PageActionTooltip = parameters[ActionTooltipParameterName];
 
             if ((!String.IsNullOrWhiteSpace(sourceCode)) && (parameters != null) &&
                 (parameters.ContainsKey("table")))
-                syntaxRewriter.TypeInformationCollector.VisitFile(parameters["table"]);
+                this.SyntaxRewriter.TypeInformationCollector.VisitFile(parameters["table"]);
             else if (!String.IsNullOrWhiteSpace(path))
-                syntaxRewriter.TypeInformationCollector.VisitDirectory(path);
-
-            return syntaxRewriter;
+                this.SyntaxRewriter.TypeInformationCollector.VisitDirectory(path);
         }
 
     }

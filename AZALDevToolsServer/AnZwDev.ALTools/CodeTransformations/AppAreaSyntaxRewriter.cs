@@ -16,11 +16,11 @@ namespace AnZwDev.ALTools.CodeTransformations
             this.ApplicationAreaName = null;
         }
 
-        protected override SyntaxNode AfterVisitSourceCode(SyntaxNode node)
+        protected override SyntaxNode AfterVisitNode(SyntaxNode node)
         {
             if (this.NoOfChanges == 0)
                 return null;
-            return base.AfterVisitSourceCode(node);
+            return base.AfterVisitNode(node);
         }
 
         public override SyntaxNode VisitPageField(PageFieldSyntax node)

@@ -14,14 +14,13 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         {
         }
 
-        protected override AppAreaSyntaxRewriter CreateSyntaxRewriter(string sourceCode, string path, Dictionary<string, string> parameters)
+        protected override void SetParameters(string sourceCode, string path, Dictionary<string, string> parameters)
         {
-            AppAreaSyntaxRewriter syntaxRewriter = base.CreateSyntaxRewriter(sourceCode, path, parameters);
+            base.SetParameters(sourceCode, path, parameters);
             if (parameters.ContainsKey(AppAreaParameterName))
-                syntaxRewriter.ApplicationAreaName = parameters[AppAreaParameterName];
-            if (String.IsNullOrWhiteSpace(syntaxRewriter.ApplicationAreaName))
-                syntaxRewriter.ApplicationAreaName = "All";
-            return syntaxRewriter;
+                this.SyntaxRewriter.ApplicationAreaName = parameters[AppAreaParameterName];
+            if (String.IsNullOrWhiteSpace(this.SyntaxRewriter.ApplicationAreaName))
+                this.SyntaxRewriter.ApplicationAreaName = "All";
         }
 
     }
