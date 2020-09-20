@@ -17,32 +17,21 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         protected class VariableComparer : IComparer<VariableDeclarationBaseSyntax>
         {
-            protected static Dictionary<string, int> _typePriority;
+            protected static string[] _typePriority = {"record ", "report", "codeunit", "xmlport", "page", "query", "notification",
+                    "bigtext", "dateformula", "recordid", "recordref", "fieldref", "filterpagebuilder" };
 
             public VariableComparer()
             {
-                InitTypePriority();
-            }
-
-            private void InitTypePriority()
-            {
-                if (_typePriority == null)
-                {
-                    string[] typeNames = {"record ", "report", "codeunit", "xmlport", "page", "query", "notification",
-                    "bigtext", "dateformula", "recordid", "recordref", "fieldref", "filterpagebuilder" };
-                    _typePriority = new Dictionary<string, int>();
-                    for (int i = 0; i < typeNames.Length; i++)
-                    {
-                        _typePriority.Add(typeNames[i], i);
-                    }
-                }
             }
 
             protected int GetDataTypePriority(string dataTypeName)
             {
-                if (_typePriority.ContainsKey(dataTypeName))
-                    return _typePriority[dataTypeName];
-                return _typePriority.Count;
+                for (int i=0; i<_typePriority.Length; i++)
+                {
+                    if (dataTypeName.StartsWith(_typePriority[i]))
+                        return i;
+                }
+                return _typePriority.Length;
             }
 
             protected string GetDataTypeName(VariableDeclarationBaseSyntax node)
@@ -50,8 +39,8 @@ namespace AnZwDev.ALTools.CodeTransformations
                 if (node.Type != null)
                 {
                     if (node.Type.DataType != null)
-                        return node.Type.DataType.ToString().ToLower();
-                    return node.Type.ToString().ToLower();
+                        return node.Type.DataType.ToString().ToLower().Trim();
+                     return node.Type.ToString().ToLower().Trim();
                 }
                 return "";
             }

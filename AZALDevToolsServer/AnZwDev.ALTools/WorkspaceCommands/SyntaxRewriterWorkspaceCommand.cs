@@ -46,7 +46,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         public override SyntaxNode ProcessSyntaxNode(SyntaxNode node, string sourceCode, string path, Dictionary<string, string> parameters)
         {
             this.SetParameters(sourceCode, path, parameters);
-            node = this.SyntaxRewriter.Visit(node);
+            node = this.SyntaxRewriter.ProcessNode(node);
             return base.ProcessSyntaxNode(node, sourceCode, path, parameters);
         }
 

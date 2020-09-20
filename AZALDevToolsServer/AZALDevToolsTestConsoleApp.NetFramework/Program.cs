@@ -18,8 +18,9 @@ namespace AZALDevToolsTestConsoleApp.NetFramework
     {
         static void Main(string[] args)
         {
-            string extensionPath = "C:\\Users\\azwie\\.vscode\\extensions\\ms-dynamics-smb.al-5.0.329509";
+            //string extensionPath = "C:\\Users\\azwie\\.vscode\\extensions\\ms-dynamics-smb.al-5.0.329509";
             //string extensionPath = "C:\\Users\\azwie\\Downloads\\VSCode-win32-x64-1.45.1\\data\\extensions\\microsoft.al-0.13.82793";
+            string extensionPath = "C:\\Projects\\MicrosoftALVersions\\LatestBC";
 
             ALDevToolsServerHost host = new ALDevToolsServerHost(extensionPath);
             host.Initialize();
@@ -40,6 +41,15 @@ namespace AZALDevToolsTestConsoleApp.NetFramework
             filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC16\\AnZwDev_Small but great AZ AL Extension_1.0.0.0.app";
             ALSymbolInfoPackageReader packageReader = new ALSymbolInfoPackageReader();
             packageReader.ReadAppPackage(filePath);
+
+
+            WorkspaceCommandsManager m = new WorkspaceCommandsManager();
+            filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\small\\Pag50001.rewgegerg.al";
+            string sourceCode = System.IO.File.ReadAllText(filePath);
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("appArea", "All");
+
+            WorkspaceCommandResult f = m.RunCommand("addAppAreas", sourceCode, filePath, new Dictionary<string, string>());
 
             Console.WriteLine("Done");
         }
