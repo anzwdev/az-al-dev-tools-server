@@ -1,4 +1,5 @@
-﻿using AnZwDev.ALTools.CodeTransformations;
+﻿using AnZwDev.ALTools.ALSymbols;
+using AnZwDev.ALTools.CodeTransformations;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,9 +15,9 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         {
         }
 
-        protected override void SetParameters(string sourceCode, string path, Dictionary<string, string> parameters)
+        protected override void SetParameters(string sourceCode, string path, Range range, Dictionary<string, string> parameters)
         {
-            base.SetParameters(sourceCode, path, parameters);
+            base.SetParameters(sourceCode, path, range, parameters);
             if (parameters.ContainsKey(AppAreaParameterName))
                 this.SyntaxRewriter.ApplicationAreaName = parameters[AppAreaParameterName];
             if (String.IsNullOrWhiteSpace(this.SyntaxRewriter.ApplicationAreaName))

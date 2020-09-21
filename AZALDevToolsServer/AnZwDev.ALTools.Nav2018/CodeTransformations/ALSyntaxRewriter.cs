@@ -3,6 +3,7 @@
  * Legacy version of the library maintained to support Nav 2018 *
  *                                                              *
  ****************************************************************/
+using AnZwDev.ALTools.Nav2018.ALSymbols;
 using AnZwDev.ALTools.Nav2018.Extensions;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Packaging;
@@ -20,13 +21,14 @@ namespace AnZwDev.ALTools.Nav2018.CodeTransformations
         public int NoOfChanges { get; set; }
         public int TotalNoOfChanges { get; set; }
         public int NoOfChangedFiles { get; set; }
-
+        public Range Range { get; set; }
 
         public ALSyntaxRewriter()
         {
             this.NoOfChanges = 0;
             this.NoOfChangedFiles = 0;
             this.TotalNoOfChanges = 0;
+            this.Range = null;
         }
 
         public SyntaxNode ProcessNode(SyntaxNode node)

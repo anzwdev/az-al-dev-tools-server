@@ -1,4 +1,5 @@
-﻿using AnZwDev.ALTools.Extensions;
+﻿using AnZwDev.ALTools.ALSymbols;
+using AnZwDev.ALTools.Extensions;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Packaging;
 using Microsoft.Dynamics.Nav.CodeAnalysis.SymbolReference;
@@ -15,13 +16,14 @@ namespace AnZwDev.ALTools.CodeTransformations
         public int NoOfChanges { get; set; }
         public int TotalNoOfChanges { get; set; }
         public int NoOfChangedFiles { get; set; }
-        
+        public Range Range { get; set; }
 
         public ALSyntaxRewriter()
         {
             this.NoOfChanges = 0;
             this.NoOfChangedFiles = 0;
             this.TotalNoOfChanges = 0;
+            this.Range = null;
         }
 
         public SyntaxNode ProcessNode(SyntaxNode node)

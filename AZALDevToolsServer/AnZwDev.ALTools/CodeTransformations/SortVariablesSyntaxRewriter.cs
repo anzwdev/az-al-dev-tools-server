@@ -47,11 +47,19 @@ namespace AnZwDev.ALTools.CodeTransformations
 
             public int Compare(VariableDeclarationBaseSyntax x, VariableDeclarationBaseSyntax y)
             {
+                string xTypeName = this.GetDataTypeName(x);
+                string yTypeName = this.GetDataTypeName(y);
+                
                 //check type
-                int xTypePriority = this.GetDataTypePriority(this.GetDataTypeName(x));
-                int yTypePriority = this.GetDataTypePriority(this.GetDataTypeName(y));
+                int xTypePriority = this.GetDataTypePriority(xTypeName);
+                int yTypePriority = this.GetDataTypePriority(yTypeName);
                 if (xTypePriority != yTypePriority)
                     return xTypePriority - yTypePriority;
+
+                int value = xTypeName.CompareTo(yTypeName);
+                if (value != 0)
+                    return value;
+
                 string xName = x.GetNameStringValue().ToLower();
                 string yName = y.GetNameStringValue().ToLower();
                 return xName.CompareTo(yName);

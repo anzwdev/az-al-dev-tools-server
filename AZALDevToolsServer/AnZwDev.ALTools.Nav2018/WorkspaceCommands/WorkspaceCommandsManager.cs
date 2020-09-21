@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AnZwDev.ALTools.Nav2018.ALSymbols;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml.Serialization;
@@ -37,10 +38,10 @@ namespace AnZwDev.ALTools.Nav2018.WorkspaceCommands
             this.RegisterCommand(groupCommand);
         }
 
-        public WorkspaceCommandResult RunCommand(string commandName, string sourceCode, string path, Dictionary<string, string> parameters)
+        public WorkspaceCommandResult RunCommand(string commandName, string sourceCode, string path, Range range, Dictionary<string, string> parameters)
         {
             if (_commands.ContainsKey(commandName))
-                return _commands[commandName].Run(sourceCode, path, parameters);
+                return _commands[commandName].Run(sourceCode, path, range, parameters);
             else
                 throw new Exception($"Workspace command {commandName} not found.");
         }

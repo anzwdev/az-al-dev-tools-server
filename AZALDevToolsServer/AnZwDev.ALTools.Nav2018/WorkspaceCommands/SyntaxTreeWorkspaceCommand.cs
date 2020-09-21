@@ -1,4 +1,5 @@
-﻿using AnZwDev.ALTools.Nav2018.Extensions;
+﻿using AnZwDev.ALTools.Nav2018.ALSymbols;
+using AnZwDev.ALTools.Nav2018.Extensions;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using System;
@@ -14,24 +15,24 @@ namespace AnZwDev.ALTools.Nav2018.WorkspaceCommands
         {
         }
 
-        public override WorkspaceCommandResult Run(string sourceCode, string path, Dictionary<string, string> parameters)
+        public override WorkspaceCommandResult Run(string sourceCode, string path, Range range, Dictionary<string, string> parameters)
         {
             string newSourceCode = null;
             if (!String.IsNullOrEmpty(sourceCode))
-                newSourceCode = this.ProcessSourceCode(sourceCode, path, parameters);
+                newSourceCode = this.ProcessSourceCode(sourceCode, path, range, parameters);
             else if (!String.IsNullOrWhiteSpace(path))
                 this.ProcessDirectory(path, parameters);
 
             return new WorkspaceCommandResult(newSourceCode);
         }
 
-        protected string ProcessSourceCode(string sourceCode, string path, Dictionary<string, string> parameters)
+        protected string ProcessSourceCode(string sourceCode, string path, Range range, Dictionary<string, string> parameters)
         {
             //parse source code
             SyntaxTree syntaxTree = SyntaxTreeExtensions.SafeParseObjectText(sourceCode);
 
             //fix nodes
-            SyntaxNode node = this.ProcessSyntaxNode(syntaxTree.GetRoot(), sourceCode, path, parameters);
+            SyntaxNode node = this.ProcessSyntaxNode(syntaxTree.GetRoot(), sourceCode, path, range, parameters);
 
             //return new source code
             if (node == null)
@@ -54,7 +55,7 @@ namespace AnZwDev.ALTools.Nav2018.WorkspaceCommands
             try
             {
                 string source = System.IO.File.ReadAllText(path);
-                string newSource = this.ProcessSourceCode(source, path, parameters);
+                string newSource = this.ProcessSourceCode(source, path, null, parameters);
                 if ((newSource != source) && (!String.IsNullOrWhiteSpace(newSource)))
                     System.IO.File.WriteAllText(path, newSource);
             }
@@ -63,7 +64,7 @@ namespace AnZwDev.ALTools.Nav2018.WorkspaceCommands
             }
         }
 
-        public virtual SyntaxNode ProcessSyntaxNode(SyntaxNode node, string sourceCode, string path, Dictionary<string, string> parameters)
+        public virtual SyntaxNode ProcessSyntaxNode(SyntaxNode node, string sourceCode, string path, Range range, Dictionary<string, string> parameters)
         {
             return node;
         }
