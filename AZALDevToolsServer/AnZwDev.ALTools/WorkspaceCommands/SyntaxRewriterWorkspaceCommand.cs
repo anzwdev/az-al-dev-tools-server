@@ -11,9 +11,6 @@ namespace AnZwDev.ALTools.WorkspaceCommands
     public class SyntaxRewriterWorkspaceCommand<T> : SyntaxTreeWorkspaceCommand where T: ALSyntaxRewriter, new()
     {
 
-        public static string NoOfChangesParameterName = "noOfChanges";
-        public static string NoOfChangedFilesParameterName = "noOfChangedFiles";
-
         public T SyntaxRewriter { get; }
 
         public SyntaxRewriterWorkspaceCommand(string name): base(name)

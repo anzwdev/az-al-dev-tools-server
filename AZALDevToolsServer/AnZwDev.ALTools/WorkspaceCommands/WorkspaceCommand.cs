@@ -8,6 +8,9 @@ namespace AnZwDev.ALTools.WorkspaceCommands
     public class WorkspaceCommand
     {
 
+        public static string NoOfChangesParameterName = "noOfChanges";
+        public static string NoOfChangedFilesParameterName = "noOfChangedFiles";
+
         public string Name { get; set; }
 
         public WorkspaceCommand(string newName)

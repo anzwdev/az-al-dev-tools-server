@@ -31,6 +31,8 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             this.RegisterCommand(new AddToolTipsWorkspaceCommand());
             this.RegisterCommand(new AddDataClassificationWorkspaceCommand());
 
+            this.RegisterCommand(new RemoveWithWorkspaceCommand());
+
             this.RegisterCommand(groupCommand.AddCommand(new SortProceduresWorkspaceCommand()));
             this.RegisterCommand(groupCommand.AddCommand(new SortVariablesWorkspaceCommand()));
             this.RegisterCommand(groupCommand.AddCommand(new SortPropertiesWorkspaceCommand()));
