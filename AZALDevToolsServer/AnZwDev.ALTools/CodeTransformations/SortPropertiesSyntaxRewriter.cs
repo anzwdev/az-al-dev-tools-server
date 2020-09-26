@@ -36,7 +36,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         public override SyntaxNode VisitPropertyList(PropertyListSyntax node)
         {
-            if ((node.Properties != null) && (node.Properties.Count > 0))
+            if ((this.NodeInSpan(node)) && (node.Properties != null) && (node.Properties.Count > 0) && (!node.ContainsDiagnostics))
             {
                 List<SyntaxNodeSortInfo<PropertySyntaxOrEmpty>> list =
                     SyntaxNodeSortInfo<PropertySyntaxOrEmpty>.FromSyntaxList(node.Properties);

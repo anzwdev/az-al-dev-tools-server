@@ -79,7 +79,8 @@ namespace AnZwDev.ALTools.Nav2018.CodeTransformations
 
         public override SyntaxNode VisitVarSection(VarSectionSyntax node)
         {
-            node = node.WithVariables(this.SortVariables(node.Variables));
+            if ((this.NodeInSpan(node)) && (!node.ContainsDiagnostics))
+                node = node.WithVariables(this.SortVariables(node.Variables));
             return base.VisitVarSection(node);
         }
 

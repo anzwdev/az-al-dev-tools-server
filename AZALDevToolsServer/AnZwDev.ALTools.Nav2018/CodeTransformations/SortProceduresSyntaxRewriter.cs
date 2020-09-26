@@ -161,70 +161,70 @@ namespace AnZwDev.ALTools.Nav2018.CodeTransformations
 
         public override SyntaxNode VisitTable(TableSyntax node)
         {
-            if ((node.Members != null) && (node.Members.Count > 0))
+            if ((this.NodeInSpan(node)) && (node.Members != null) && (node.Members.Count > 0) && (!node.ContainsDiagnostics))
                 node = node.WithMembers(this.Sort(node.Members));
             return base.VisitTable(node);
         }
 
         public override SyntaxNode VisitPage(PageSyntax node)
         {
-            if ((node.Members != null) && (node.Members.Count > 0))
+            if ((this.NodeInSpan(node)) && (node.Members != null) && (node.Members.Count > 0) && (!node.ContainsDiagnostics))
                 node = node.WithMembers(this.Sort(node.Members));
             return base.VisitPage(node);
         }
 
         public override SyntaxNode VisitReport(ReportSyntax node)
         {
-            if ((node.Members != null) && (node.Members.Count > 0))
+            if ((this.NodeInSpan(node)) && (node.Members != null) && (node.Members.Count > 0) && (!node.ContainsDiagnostics))
                 node = node.WithMembers(this.Sort(node.Members));
             return base.VisitReport(node);
         }
 
         public override SyntaxNode VisitXmlPort(XmlPortSyntax node)
         {
-            if ((node.Members != null) && (node.Members.Count > 0))
+            if ((this.NodeInSpan(node)) && (node.Members != null) && (node.Members.Count > 0) && (!node.ContainsDiagnostics))
                 node = node.WithMembers(this.Sort(node.Members));
             return base.VisitXmlPort(node);
         }
 
         public override SyntaxNode VisitCodeunit(CodeunitSyntax node)
         {
-            if ((node.Members != null) && (node.Members.Count > 0))
+            if ((this.NodeInSpan(node)) && (node.Members != null) && (node.Members.Count > 0) && (!node.ContainsDiagnostics))
                 node = node.WithMembers(this.Sort(node.Members));
             return base.VisitCodeunit(node);
         }
 
         public override SyntaxNode VisitQuery(QuerySyntax node)
         {
-            if ((node.Members != null) && (node.Members.Count > 0))
+            if ((this.NodeInSpan(node)) && (node.Members != null) && (node.Members.Count > 0) && (!node.ContainsDiagnostics))
                 node = node.WithMembers(this.Sort(node.Members));
             return base.VisitQuery(node);
         }
 
         public override SyntaxNode VisitTableExtension(TableExtensionSyntax node)
         {
-            if ((node.Members != null) && (node.Members.Count > 0))
+            if ((this.NodeInSpan(node)) && (node.Members != null) && (node.Members.Count > 0) && (!node.ContainsDiagnostics))
                 node = node.WithMembers(this.Sort(node.Members));
             return base.VisitTableExtension(node);
         }
 
         public override SyntaxNode VisitPageExtension(PageExtensionSyntax node)
         {
-            if ((node.Members != null) && (node.Members.Count > 0))
+            if ((this.NodeInSpan(node)) && (node.Members != null) && (node.Members.Count > 0) && (!node.ContainsDiagnostics))
                 node = node.WithMembers(this.Sort(node.Members));
             return base.VisitPageExtension(node);
         }
 
         public override SyntaxNode VisitPageCustomization(PageCustomizationSyntax node)
         {
-            if ((node.Members != null) && (node.Members.Count > 0))
+            if ((this.NodeInSpan(node)) && (node.Members != null) && (node.Members.Count > 0) && (!node.ContainsDiagnostics))
                 node = node.WithMembers(this.Sort(node.Members));
             return base.VisitPageCustomization(node);
         }
 
         public override SyntaxNode VisitProfile(ProfileSyntax node)
         {
-            if ((node.Members != null) && (node.Members.Count > 0))
+            if ((this.NodeInSpan(node)) && (node.Members != null) && (node.Members.Count > 0) && (!node.ContainsDiagnostics))
                 node = node.WithMembers(this.Sort(node.Members));
             return base.VisitProfile(node);
         }
@@ -235,56 +235,56 @@ namespace AnZwDev.ALTools.Nav2018.CodeTransformations
 
         public override SyntaxNode VisitField(FieldSyntax node)
         {
-            if ((node.Triggers != null) && (node.Triggers.Count > 0))
+            if ((this.NodeInSpan(node)) && (node.Triggers != null) && (node.Triggers.Count > 0) && (!node.ContainsDiagnostics))
                 node = node.WithTriggers(this.Sort(node.Triggers));
             return base.VisitField(node);
         }
 
         public override SyntaxNode VisitPageField(PageFieldSyntax node)
         {
-            if ((node.Triggers != null) && (node.Triggers.Count > 0))
+            if ((this.NodeInSpan(node)) && (node.Triggers != null) && (node.Triggers.Count > 0) && (!node.ContainsDiagnostics))
                 node = node.WithTriggers(this.Sort(node.Triggers));
             return base.VisitPageField(node);
         }
 
         public override SyntaxNode VisitPageAction(PageActionSyntax node)
         {
-            if ((node.Triggers != null) && (node.Triggers.Count > 0))
+            if ((this.NodeInSpan(node)) && (node.Triggers != null) && (node.Triggers.Count > 0) && (!node.ContainsDiagnostics))
                 node = node.WithTriggers(this.Sort(node.Triggers));
             return base.VisitPageAction(node);
         }
 
         public override SyntaxNode VisitXmlPortFieldAttribute(XmlPortFieldAttributeSyntax node)
         {
-            if ((node.Triggers != null) && (node.Triggers.Count > 0))
+            if ((this.NodeInSpan(node)) && (node.Triggers != null) && (node.Triggers.Count > 0) && (!node.ContainsDiagnostics))
                 node = node.WithTriggers(this.Sort(node.Triggers));
             return base.VisitXmlPortFieldAttribute(node);
         }
 
         public override SyntaxNode VisitXmlPortFieldElement(XmlPortFieldElementSyntax node)
         {
-            if ((node.Triggers != null) && (node.Triggers.Count > 0))
+            if ((this.NodeInSpan(node)) && (node.Triggers != null) && (node.Triggers.Count > 0) && (!node.ContainsDiagnostics))
                 node = node.WithTriggers(this.Sort(node.Triggers));
             return base.VisitXmlPortFieldElement(node);
         }
 
         public override SyntaxNode VisitXmlPortTableElement(XmlPortTableElementSyntax node)
         {
-            if ((node.Triggers != null) && (node.Triggers.Count > 0))
+            if ((this.NodeInSpan(node)) && (node.Triggers != null) && (node.Triggers.Count > 0) && (!node.ContainsDiagnostics))
                 node = node.WithTriggers(this.Sort(node.Triggers));
             return base.VisitXmlPortTableElement(node);
         }
 
         public override SyntaxNode VisitXmlPortTextAttribute(XmlPortTextAttributeSyntax node)
         {
-            if ((node.Triggers != null) && (node.Triggers.Count > 0))
+            if ((this.NodeInSpan(node)) && (node.Triggers != null) && (node.Triggers.Count > 0) && (!node.ContainsDiagnostics))
                 node = node.WithTriggers(this.Sort(node.Triggers));
             return base.VisitXmlPortTextAttribute(node);
         }
 
         public override SyntaxNode VisitXmlPortTextElement(XmlPortTextElementSyntax node)
         {
-            if ((node.Triggers != null) && (node.Triggers.Count > 0))
+            if ((this.NodeInSpan(node)) && (node.Triggers != null) && (node.Triggers.Count > 0) && (!node.ContainsDiagnostics))
                 node = node.WithTriggers(this.Sort(node.Triggers));
             return base.VisitXmlPortTextElement(node);
         }

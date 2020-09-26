@@ -2,6 +2,7 @@
 using AnZwDev.ALTools.Extensions;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
+using Microsoft.Dynamics.Nav.CodeAnalysis.Text;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -29,10 +30,19 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         protected string ProcessSourceCode(string sourceCode, string path, Range range, Dictionary<string, string> parameters)
         {
             //parse source code
-            SyntaxTree syntaxTree = SyntaxTreeExtensions.SafeParseObjectText(sourceCode);
+            SourceText sourceText = SourceText.From(sourceCode);
+            SyntaxTree syntaxTree = SyntaxTree.ParseObjectText(sourceText);
+
+            //convert range to TextSpan
+            TextSpan span = new TextSpan(0, 0);
+            if (range != null)
+            {
+                LinePositionSpan srcRange = new LinePositionSpan(new LinePosition(range.start.line, range.start.character), new LinePosition(range.end.line, range.end.character));
+                span = sourceText.Lines.GetTextSpan(srcRange);
+            }
 
             //fix nodes
-            SyntaxNode node = this.ProcessSyntaxNode(syntaxTree.GetRoot(), sourceCode, path, range, parameters);
+            SyntaxNode node = this.ProcessSyntaxNode(syntaxTree.GetRoot(), sourceCode, path, span, parameters);
 
             //return new source code
             if (node == null)
@@ -64,7 +74,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             }
         }
 
-        public virtual SyntaxNode ProcessSyntaxNode(SyntaxNode node, string sourceCode, string path, Range range, Dictionary<string, string> parameters)
+        public virtual SyntaxNode ProcessSyntaxNode(SyntaxNode node, string sourceCode, string path, TextSpan span, Dictionary<string, string> parameters)
         {
             return node;
         }

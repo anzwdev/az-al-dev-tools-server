@@ -24,7 +24,7 @@ namespace AnZwDev.ALTools.Nav2018.WorkspaceCommands
             return command;
         }
 
-        public override SyntaxNode ProcessSyntaxNode(SyntaxNode node, string sourceCode, string path, Range range, Dictionary<string, string> parameters)
+        public override SyntaxNode ProcessSyntaxNode(SyntaxNode node, string sourceCode, string path, TextSpan span, Dictionary<string, string> parameters)
         {
             string commandsParameterValue = parameters["commandsList"];
             char[] sep = { ',' };
@@ -32,9 +32,9 @@ namespace AnZwDev.ALTools.Nav2018.WorkspaceCommands
             for (int i=0;i<commandsList.Length; i++)
             {
                 if (this._commands.ContainsKey(commandsList[i]))
-                    node = this._commands[commandsList[i]].ProcessSyntaxNode(node, sourceCode, path, range, parameters);
+                    node = this._commands[commandsList[i]].ProcessSyntaxNode(node, sourceCode, path, span, parameters);
             }
-            return base.ProcessSyntaxNode(node, sourceCode, path, range, parameters);
+            return base.ProcessSyntaxNode(node, sourceCode, path, span, parameters);
         }
 
 

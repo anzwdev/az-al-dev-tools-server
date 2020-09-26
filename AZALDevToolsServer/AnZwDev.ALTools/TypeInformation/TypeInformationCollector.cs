@@ -57,7 +57,7 @@ namespace AnZwDev.ALTools.TypeInformation
             SyntaxTree syntaxTree = SyntaxTreeExtensions.SafeParseObjectText(sourceCode);
             if (syntaxTree != null)
             {
-                SyntaxNode node = syntaxTree.GetCompilationUnitRoot();
+                SyntaxNode node = syntaxTree.GetRoot();
                 if (node != null)
                     this.Visit(node);
             }

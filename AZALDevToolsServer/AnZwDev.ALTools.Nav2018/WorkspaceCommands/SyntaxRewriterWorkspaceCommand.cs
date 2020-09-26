@@ -29,16 +29,16 @@ namespace AnZwDev.ALTools.Nav2018.WorkspaceCommands
             return result;
         }
 
-        public override SyntaxNode ProcessSyntaxNode(SyntaxNode node, string sourceCode, string path, Range range, Dictionary<string, string> parameters)
+        public override SyntaxNode ProcessSyntaxNode(SyntaxNode node, string sourceCode, string path, TextSpan span, Dictionary<string, string> parameters)
         {
-            this.SetParameters(sourceCode, path, range, parameters);
+            this.SetParameters(sourceCode, path, span, parameters);
             node = this.SyntaxRewriter.ProcessNode(node);
-            return base.ProcessSyntaxNode(node, sourceCode, path, range, parameters);
+            return base.ProcessSyntaxNode(node, sourceCode, path, span, parameters);
         }
 
-        protected virtual void SetParameters(string sourceCode, string path, Range range, Dictionary<string, string> parameters)
+        protected virtual void SetParameters(string sourceCode, string path, TextSpan span, Dictionary<string, string> parameters)
         {
-            this.SyntaxRewriter.Range = range;
+            this.SyntaxRewriter.Span = span;
         }
 
     }

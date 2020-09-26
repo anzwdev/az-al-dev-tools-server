@@ -21,14 +21,14 @@ namespace AnZwDev.ALTools.Nav2018.CodeTransformations
         public int NoOfChanges { get; set; }
         public int TotalNoOfChanges { get; set; }
         public int NoOfChangedFiles { get; set; }
-        public Range Range { get; set; }
+        public TextSpan Span { get; set; }
 
         public ALSyntaxRewriter()
         {
             this.NoOfChanges = 0;
             this.NoOfChangedFiles = 0;
             this.TotalNoOfChanges = 0;
-            this.Range = null;
+            this.Span = new TextSpan(0, 0);
         }
 
         public SyntaxNode ProcessNode(SyntaxNode node)
@@ -50,6 +50,11 @@ namespace AnZwDev.ALTools.Nav2018.CodeTransformations
         protected virtual SyntaxNode AfterVisitNode(SyntaxNode node)
         {
             return node;
+        }
+
+        protected bool NodeInSpan(SyntaxNode node)
+        {
+            return ((this.Span.IsEmpty) || (this.Span.Contains(node.FullSpan)));
         }
 
     }
