@@ -20,36 +20,38 @@ namespace AnZwDev.ALTools.WorkspaceCommands
 
         public override WorkspaceCommandResult Run(string sourceCode, string path, Range range, Dictionary<string, string> parameters)
         {
+            SyntaxTree sourceSyntaxTree = null;
             WorkspaceCommandResult outVal = null;
+            string sourcePath = null;
+            if (parameters.ContainsKey("sourceFilePath"))
+                sourcePath = parameters["sourceFilePath"];
 
             //load project
             List<SyntaxTree> syntaxTrees = new List<SyntaxTree>();
-            Compilation compilation = this.LoadProject(path, syntaxTrees);
+            Compilation compilation = this.LoadProject(path, syntaxTrees, sourceCode, sourcePath, out sourceSyntaxTree);
 
             if (!String.IsNullOrEmpty(sourceCode))
             {
-                string newSourceCode = this.ProcessSourceCode(sourceCode, compilation, range, parameters);
+                string newSourceCode = this.ProcessSourceCode(sourceCode, sourceSyntaxTree, compilation, range, parameters);
                 outVal = new WorkspaceCommandResult(newSourceCode);
             }
-            else if (!String.IsNullOrWhiteSpace(path))
+            else
             {
                 int noOfModifiedFiles = this.ProcessFiles(syntaxTrees, compilation, parameters);
                 outVal = new WorkspaceCommandResult(null);
                 outVal.SetParameter(NoOfChangedFilesParameterName, noOfModifiedFiles.ToString());
             }
-            else
-                outVal = new WorkspaceCommandResult();
 
             return outVal;
         }
 
         #region Project loading
 
-        protected Compilation LoadProject(string projectPath, List<SyntaxTree> syntaxTrees)
+        protected Compilation LoadProject(string projectPath, List<SyntaxTree> syntaxTrees, string sourceCode, string sourcePath, out SyntaxTree sourceSyntaxTree)
         {
             //load all syntax trees
             syntaxTrees.Clear();
-            this.LoadProjectALFiles(projectPath, syntaxTrees);
+            this.LoadProjectALFiles(projectPath, syntaxTrees, sourceCode, sourcePath, out sourceSyntaxTree);
 
             List<Diagnostic> diagnostics = new List<Diagnostic>();
 
@@ -88,14 +90,27 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             return (LocalCacheSymbolReferenceLoader)constructors[0].Invoke(parametersValues);
         }
 
-        protected void LoadProjectALFiles(string projectPath, List<SyntaxTree> syntaxTrees)
+        protected void LoadProjectALFiles(string projectPath, List<SyntaxTree> syntaxTrees, string sourceCode, string sourcePath, out SyntaxTree sourceSyntaxTree)
         {
+            bool useSource = (!String.IsNullOrWhiteSpace(sourcePath));
+            if (useSource)
+                sourcePath = Path.GetFullPath(sourcePath);
+            sourceSyntaxTree = null;
+
             string[] filePaths = Directory.GetFiles(projectPath, "*.al", SearchOption.AllDirectories);
             for (int i = 0; i < filePaths.Length; i++)
             {
-                string content = File.ReadAllText(filePaths[i]);
+                bool sourceFile = ((useSource) && (sourcePath.Equals(Path.GetFullPath(filePaths[i]))));
+                string content;
+                if (sourceFile)
+                    content = sourceCode;
+                else
+                    content = File.ReadAllText(filePaths[i]);
                 SyntaxTree syntaxTree = SyntaxTree.ParseObjectText(content, filePaths[i]);
                 syntaxTrees.Add(syntaxTree);
+
+                if (sourceFile)
+                    sourceSyntaxTree = syntaxTree;
             }
         }
 
@@ -130,11 +145,11 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             return syntaxTree.GetRoot();
         }
 
-        protected string ProcessSourceCode(string sourceCode, Compilation compilation, Range range, Dictionary<string, string> parameters)
+        protected string ProcessSourceCode(string sourceCode, SyntaxTree sourceSyntaxTree, Compilation compilation, Range range, Dictionary<string, string> parameters)
         {
-            SyntaxTree syntaxTree = SyntaxTree.ParseObjectText(sourceCode);
-            SemanticModel semanticModel = compilation.GetSemanticModel(syntaxTree);
-            SyntaxNode newRootNode = this.ProcessFile(syntaxTree, semanticModel, null, parameters);
+            //SyntaxTree syntaxTree = SyntaxTree.ParseObjectText(sourceCode);
+            SemanticModel semanticModel = compilation.GetSemanticModel(sourceSyntaxTree);
+            SyntaxNode newRootNode = this.ProcessFile(sourceSyntaxTree, semanticModel, null, parameters);
             if (newRootNode != null)
                 return newRootNode.ToFullString();
             return null;
