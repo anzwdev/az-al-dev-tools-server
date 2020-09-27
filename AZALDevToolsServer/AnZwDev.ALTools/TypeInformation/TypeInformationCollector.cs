@@ -9,7 +9,7 @@ using System.Text;
 
 namespace AnZwDev.ALTools.TypeInformation
 {
-    public class TypeInformationCollector: SyntaxWalker
+    public class TypeInformationCollector
     {
 
         public ProjectTypesInformation ProjectTypesInformation { get; }
@@ -19,31 +19,34 @@ namespace AnZwDev.ALTools.TypeInformation
             this.ProjectTypesInformation = new ProjectTypesInformation();
         }
 
-        public override void Visit(SyntaxNode node)
+        public void Clear()
+        {
+            this.ProjectTypesInformation.Clear();
+        }
+
+        public void Visit(SyntaxNode node)
+        {
+            if (VisitNode(node))
+            {
+                foreach (SyntaxNode childNode in node.ChildNodes())
+                {
+                    Visit(childNode);
+                }
+            }
+        }
+
+        protected bool VisitNode(SyntaxNode node)
         {
             ConvertedSyntaxKind kind = node.Kind.ConvertToLocalType();
-
             switch (kind)
             {
                 case ConvertedSyntaxKind.TableObject:
                     this.ProjectTypesInformation.Add(new TableTypeInformation((TableSyntax)node));
                     break;
-                case ConvertedSyntaxKind.PageObject:
-                case ConvertedSyntaxKind.PageExtensionObject:
-                case ConvertedSyntaxKind.TableExtensionObject:
-                case ConvertedSyntaxKind.ReportObject:
-                case ConvertedSyntaxKind.XmlPortObject:
-                case ConvertedSyntaxKind.CodeunitObject:
-                case ConvertedSyntaxKind.EnumType:
-                case ConvertedSyntaxKind.EnumExtensionType:
-                case ConvertedSyntaxKind.ProfileObject:
-                case ConvertedSyntaxKind.PageCustomizationObject:
-                case ConvertedSyntaxKind.Interface:
-                    break;
-                default:
-                    base.Visit(node);
-                    break;
+                case ConvertedSyntaxKind.CompilationUnit:
+                    return true;
             }
+            return false;
         }
 
         public void VisitFile(string fileName)

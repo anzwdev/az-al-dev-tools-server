@@ -71,7 +71,10 @@ namespace AnZwDev.ALTools.CodeTransformations
             string caption = null;
             if (node.Expression != null)
             {
-                string source = ALSyntaxHelper.DecodeName(node.Expression.ToString());
+                string source = node.Expression.ToString().Trim();
+                if (source.StartsWith("Rec.", StringComparison.CurrentCultureIgnoreCase))
+                    source = source.Substring(4).Trim();
+                source = ALSyntaxHelper.DecodeName(source);
                 if (!String.IsNullOrWhiteSpace(source))
                 {
                     if (this.CurrentTable != null)
