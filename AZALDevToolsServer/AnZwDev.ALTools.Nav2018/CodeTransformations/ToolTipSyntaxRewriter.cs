@@ -140,7 +140,18 @@ namespace AnZwDev.ALTools.Nav2018.CodeTransformations
             if (toolTipValue.Contains("%1"))
                 toolTipValue = toolTipValue.Replace("%1", caption);
 
-            return SyntaxFactory.PropertyLiteral(PropertyKind.ToolTip, toolTipValue)
+            //try to convert from string to avoid issues with enum ids changed between AL compiler versions
+            PropertyKind propertyKind;
+            try
+            {
+                propertyKind = (PropertyKind)Enum.Parse(typeof(PropertyKind), "ToolTip", true);
+            }
+            catch (Exception)
+            {
+                propertyKind = PropertyKind.ToolTip;
+            }
+
+            return SyntaxFactory.PropertyLiteral(propertyKind, toolTipValue)
                 .WithLeadingTrivia(leadingTriviaList)
                 .WithTrailingTrivia(trailingTriviaList);
         }

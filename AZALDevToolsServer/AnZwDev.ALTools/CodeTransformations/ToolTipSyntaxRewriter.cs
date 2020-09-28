@@ -71,7 +71,10 @@ namespace AnZwDev.ALTools.CodeTransformations
             string caption = null;
             if (node.Expression != null)
             {
-                string source = ALSyntaxHelper.DecodeName(node.Expression.ToString());
+                string source = node.Expression.ToString().Trim();
+                if (source.StartsWith("Rec.", StringComparison.CurrentCultureIgnoreCase))
+                    source = source.Substring(4).Trim();
+                source = ALSyntaxHelper.DecodeName(source);
                 if (!String.IsNullOrWhiteSpace(source))
                 {
                     if (this.CurrentTable != null)
@@ -135,7 +138,18 @@ namespace AnZwDev.ALTools.CodeTransformations
             if (toolTipValue.Contains("%1"))
                 toolTipValue = toolTipValue.Replace("%1", caption);
 
-            return SyntaxFactory.PropertyLiteral(PropertyKind.ToolTip, toolTipValue)
+            //try to convert from string to avoid issues with enum ids changed between AL compiler versions
+            PropertyKind propertyKind;
+            try
+            {
+                propertyKind = (PropertyKind)Enum.Parse(typeof(PropertyKind), "ToolTip", true);
+            }
+            catch (Exception)
+            {
+                propertyKind = PropertyKind.ToolTip;
+            }
+
+            return SyntaxFactory.PropertyLiteral(propertyKind, toolTipValue)
                 .WithLeadingTrivia(leadingTriviaList)
                 .WithTrailingTrivia(trailingTriviaList);
         }

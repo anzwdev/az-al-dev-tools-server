@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AnZwDev.ALTools.ALSymbols;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml.Serialization;
@@ -30,6 +31,8 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             this.RegisterCommand(new AddToolTipsWorkspaceCommand());
             this.RegisterCommand(new AddDataClassificationWorkspaceCommand());
 
+            this.RegisterCommand(new RemoveWithWorkspaceCommand());
+
             this.RegisterCommand(groupCommand.AddCommand(new SortProceduresWorkspaceCommand()));
             this.RegisterCommand(groupCommand.AddCommand(new SortVariablesWorkspaceCommand()));
             this.RegisterCommand(groupCommand.AddCommand(new SortPropertiesWorkspaceCommand()));
@@ -37,10 +40,10 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             this.RegisterCommand(groupCommand);
         }
 
-        public WorkspaceCommandResult RunCommand(string commandName, string sourceCode, string path, Dictionary<string, string> parameters)
+        public WorkspaceCommandResult RunCommand(string commandName, string sourceCode, string path, Range range, Dictionary<string, string> parameters)
         {
             if (_commands.ContainsKey(commandName))
-                return _commands[commandName].Run(sourceCode, path, parameters);
+                return _commands[commandName].Run(sourceCode, path, range, parameters);
             else
                 throw new Exception($"Workspace command {commandName} not found.");
         }

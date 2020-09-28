@@ -29,7 +29,7 @@ namespace AnZwDev.ALTools.Server.Nav2018.Handlers
             WorkspaceCommandResponse response = new WorkspaceCommandResponse();
             try
             {
-                WorkspaceCommandResult commandResult = this.Server.WorkspaceCommandsManager.RunCommand(parameters.command, parameters.source, parameters.path, parameters.parameters);
+                WorkspaceCommandResult commandResult = this.Server.WorkspaceCommandsManager.RunCommand(parameters.command, parameters.source, parameters.path, parameters.range, parameters.parameters);
 
                 response.source = commandResult.Source;
                 response.parameters = commandResult.Parameters;

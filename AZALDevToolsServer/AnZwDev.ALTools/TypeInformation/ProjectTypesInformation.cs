@@ -14,6 +14,11 @@ namespace AnZwDev.ALTools.TypeInformation
             this.Tables = new Dictionary<string, TableTypeInformation>();
         }
 
+        public void Clear()
+        {
+            this.Tables.Clear();
+        }
+
         public void Add(TableTypeInformation table)
         {
             if (!this.Tables.ContainsKey(table.Name.ToLower()))

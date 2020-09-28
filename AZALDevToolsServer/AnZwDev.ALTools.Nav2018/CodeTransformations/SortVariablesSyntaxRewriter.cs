@@ -52,11 +52,19 @@ namespace AnZwDev.ALTools.Nav2018.CodeTransformations
 
             public int Compare(VariableDeclarationSyntax x, VariableDeclarationSyntax y)
             {
+                string xTypeName = this.GetDataTypeName(x);
+                string yTypeName = this.GetDataTypeName(y);
+
                 //check type
-                int xTypePriority = this.GetDataTypePriority(this.GetDataTypeName(x));
-                int yTypePriority = this.GetDataTypePriority(this.GetDataTypeName(y));
+                int xTypePriority = this.GetDataTypePriority(xTypeName);
+                int yTypePriority = this.GetDataTypePriority(yTypeName);
                 if (xTypePriority != yTypePriority)
                     return xTypePriority - yTypePriority;
+
+                int value = xTypeName.CompareTo(yTypeName);
+                if (value != 0)
+                    return value;
+
                 string xName = x.GetNameStringValue().ToLower();
                 string yName = y.GetNameStringValue().ToLower();
                 return xName.CompareTo(yName);
@@ -71,7 +79,8 @@ namespace AnZwDev.ALTools.Nav2018.CodeTransformations
 
         public override SyntaxNode VisitVarSection(VarSectionSyntax node)
         {
-            node = node.WithVariables(this.SortVariables(node.Variables));
+            if ((this.NodeInSpan(node)) && (!node.ContainsDiagnostics))
+                node = node.WithVariables(this.SortVariables(node.Variables));
             return base.VisitVarSection(node);
         }
 

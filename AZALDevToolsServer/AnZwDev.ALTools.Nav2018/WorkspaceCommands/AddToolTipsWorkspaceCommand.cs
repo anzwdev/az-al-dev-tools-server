@@ -1,4 +1,5 @@
-﻿using AnZwDev.ALTools.Nav2018.CodeTransformations;
+﻿using AnZwDev.ALTools.Nav2018.ALSymbols;
+using AnZwDev.ALTools.Nav2018.CodeTransformations;
 using AnZwDev.ALTools.Nav2018.TypeInformation;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using System;
@@ -17,9 +18,9 @@ namespace AnZwDev.ALTools.Nav2018.WorkspaceCommands
         {
         }
 
-        protected override void SetParameters(string sourceCode, string path, Dictionary<string, string> parameters)
+        protected override void SetParameters(string sourceCode, string path, TextSpan span, Dictionary<string, string> parameters)
         {
-            base.SetParameters(sourceCode, path, parameters);
+            base.SetParameters(sourceCode, path, span, parameters);
             if (parameters.ContainsKey(FieldTooltipParameterName))
                 this.SyntaxRewriter.PageFieldTooltip = parameters[FieldTooltipParameterName];
             if (parameters.ContainsKey(ActionTooltipParameterName))

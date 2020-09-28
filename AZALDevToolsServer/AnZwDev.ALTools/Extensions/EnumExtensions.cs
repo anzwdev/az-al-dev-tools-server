@@ -27,6 +27,11 @@ namespace AnZwDev.ALTools.Extensions
             return source.Convert<SyntaxKind, ConvertedSyntaxKind>();
         }
 
+        internal static ConvertedOperationKind ConvertToLocalType(this OperationKind source)
+        {
+            return source.Convert<OperationKind, ConvertedOperationKind>();
+        }
+
         internal static ConvertedControlKind ConvertToLocalType(this ControlKind source)
         {
             return source.Convert<ControlKind, ConvertedControlKind>();

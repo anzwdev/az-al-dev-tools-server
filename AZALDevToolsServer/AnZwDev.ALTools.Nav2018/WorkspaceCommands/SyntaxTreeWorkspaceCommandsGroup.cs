@@ -1,4 +1,5 @@
-﻿using Microsoft.Dynamics.Nav.CodeAnalysis;
+﻿using AnZwDev.ALTools.Nav2018.ALSymbols;
+using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,7 @@ namespace AnZwDev.ALTools.Nav2018.WorkspaceCommands
             return command;
         }
 
-        public override SyntaxNode ProcessSyntaxNode(SyntaxNode node, string sourceCode, string path, Dictionary<string, string> parameters)
+        public override SyntaxNode ProcessSyntaxNode(SyntaxNode node, string sourceCode, string path, TextSpan span, Dictionary<string, string> parameters)
         {
             string commandsParameterValue = parameters["commandsList"];
             char[] sep = { ',' };
@@ -31,9 +32,9 @@ namespace AnZwDev.ALTools.Nav2018.WorkspaceCommands
             for (int i=0;i<commandsList.Length; i++)
             {
                 if (this._commands.ContainsKey(commandsList[i]))
-                    node = this._commands[commandsList[i]].ProcessSyntaxNode(node, sourceCode, path, parameters);
+                    node = this._commands[commandsList[i]].ProcessSyntaxNode(node, sourceCode, path, span, parameters);
             }
-            return base.ProcessSyntaxNode(node, sourceCode, path, parameters);
+            return base.ProcessSyntaxNode(node, sourceCode, path, span, parameters);
         }
 
 
