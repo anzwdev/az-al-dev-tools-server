@@ -91,6 +91,7 @@ namespace AnZwDev.ALTools.CodeTransformations
         protected class MethodSortInfoComparer<T> : IComparer<MethodSortInfo<T>> where T: SyntaxNode
         {
             protected static Dictionary<ALSymbolKind, int> _typePriority;
+            protected static AlphanumComparatorFast _stringComparer = new AlphanumComparatorFast();
             protected static int UndefinedPriority = -1;
 
             public MethodSortInfoComparer()
@@ -148,7 +149,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                 //for known types check name
                 if (yTypePriority != UndefinedPriority)
                 {
-                    int val = x.Name.CompareTo(y.Name);
+                    int val = _stringComparer.Compare(x.Name, y.Name);
                     if (val != 0)
                         return val;
                 }

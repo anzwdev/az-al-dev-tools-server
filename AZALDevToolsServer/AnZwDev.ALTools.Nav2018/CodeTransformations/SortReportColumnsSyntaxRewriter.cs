@@ -4,6 +4,7 @@
  *                                                              *
  ****************************************************************/
 using AnZwDev.ALTools.Nav2018.ALSymbols.Internal;
+using AnZwDev.ALTools.Nav2018.Extensions;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using System;
@@ -17,6 +18,7 @@ namespace AnZwDev.ALTools.Nav2018.CodeTransformations
 
         protected class ReportElementComparer : IComparer<SyntaxNodeSortInfo<ReportDataItemElementSyntax>>
         {
+            protected static AlphanumComparatorFast _stringComparer = new AlphanumComparatorFast();
 
             public ReportElementComparer()
             {
@@ -25,7 +27,7 @@ namespace AnZwDev.ALTools.Nav2018.CodeTransformations
             public int Compare(SyntaxNodeSortInfo<ReportDataItemElementSyntax> x, SyntaxNodeSortInfo<ReportDataItemElementSyntax> y)
             {
                 if ((x.Kind == y.Kind) && (x.Kind == ConvertedSyntaxKind.ReportColumn))
-                    return x.Name.CompareTo(y.Name);
+                    return _stringComparer.Compare(x.Name, y.Name);
                 if (x.Kind == ConvertedSyntaxKind.ReportColumn)
                     return -1;
                 if (y.Kind == ConvertedSyntaxKind.ReportColumn)

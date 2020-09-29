@@ -24,6 +24,7 @@ namespace AnZwDev.ALTools.Nav2018.CodeTransformations
         {
             protected static string[] _typePriority = {"record ", "report", "codeunit", "xmlport", "page", "query", "notification",
                     "bigtext", "dateformula", "recordid", "recordref", "fieldref", "filterpagebuilder" };
+            protected static AlphanumComparatorFast _stringComparer = new AlphanumComparatorFast();
 
             public VariableComparer()
             {
@@ -44,8 +45,8 @@ namespace AnZwDev.ALTools.Nav2018.CodeTransformations
                 if (node.Type != null)
                 {
                     if (node.Type.DataType != null)
-                        return node.Type.DataType.ToString().ToLower().Trim();
-                     return node.Type.ToString().ToLower().Trim();
+                        return node.Type.DataType.ToString().Replace("\"", "").ToLower().Trim();
+                    return node.Type.ToString().ToLower().Replace("\"", "").Trim();
                 }
                 return "";
             }
@@ -61,13 +62,13 @@ namespace AnZwDev.ALTools.Nav2018.CodeTransformations
                 if (xTypePriority != yTypePriority)
                     return xTypePriority - yTypePriority;
 
-                int value = xTypeName.CompareTo(yTypeName);
+                int value = _stringComparer.Compare(xTypeName, yTypeName);
                 if (value != 0)
                     return value;
 
                 string xName = x.GetNameStringValue().ToLower();
                 string yName = y.GetNameStringValue().ToLower();
-                return xName.CompareTo(yName);
+                return _stringComparer.Compare(xName, yName);
             }
         }
 
