@@ -147,6 +147,7 @@
     <Compile Include="CodeTransformations\SortVariablesSyntaxRewriter.cs" />
     <Compile Include="CodeTransformations\SyntaxNodeSortInfo.cs" />
     <Compile Include="CodeTransformations\ToolTipSyntaxRewriter.cs" />
+    <Compile Include="Extensions\AlphanumComparatorFast .cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\MethodInfoExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
