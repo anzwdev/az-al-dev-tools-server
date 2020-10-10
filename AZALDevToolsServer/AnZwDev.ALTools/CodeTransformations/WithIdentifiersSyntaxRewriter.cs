@@ -22,6 +22,29 @@ namespace AnZwDev.ALTools.CodeTransformations
                 (node.Parent.Kind.ConvertToLocalType() == ConvertedSyntaxKind.PageField) &&
                 (((PageFieldSyntax)node.Parent).Name == node);
 
+            //check if it is field access parameter that should not have record variable name at the fromt
+            //i.e. Rec.Setrange(FieldName, ...);
+            if (node.Parent.Kind == SyntaxKind.ArgumentList)
+            {
+                //get parameter index
+                ArgumentListSyntax argumentList = (ArgumentListSyntax)node.Parent;
+                if (argumentList.Arguments.Contains(node))
+                {
+                    int parameterIndex = argumentList.Arguments.IndexOf(node);
+                    IOperation methodOperation = this.SemanticModel.GetOperation(argumentList.Parent);
+                    if ((methodOperation != null) && (methodOperation.Kind == OperationKind.InvocationExpression))
+                    {
+                        IInvocationExpression invocationExpression = methodOperation as IInvocationExpression;
+                        if ((invocationExpression.TargetMethod != null) && (invocationExpression.TargetMethod.Parameters.Length > parameterIndex))
+                        {
+                            IParameterSymbol parameter = invocationExpression.TargetMethod.Parameters[parameterIndex];
+                            if (parameter.MemberMustBeOnSame)
+                                skip = true;
+                        }
+                    }
+                }
+            }
+
             if (!skip)
             {
 
