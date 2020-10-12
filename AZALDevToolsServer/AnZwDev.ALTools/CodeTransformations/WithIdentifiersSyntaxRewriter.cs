@@ -35,6 +35,11 @@ namespace AnZwDev.ALTools.CodeTransformations
                     if ((methodOperation != null) && (methodOperation.Kind == OperationKind.InvocationExpression))
                     {
                         IInvocationExpression invocationExpression = methodOperation as IInvocationExpression;
+                        if (parameterIndex >= invocationExpression.TargetMethod.Parameters.Length)
+                            parameterIndex = invocationExpression.TargetMethod.Parameters.Length - 1;
+                        if (parameterIndex < 0)
+                            parameterIndex = 0;
+
                         if ((invocationExpression.TargetMethod != null) && (invocationExpression.TargetMethod.Parameters.Length > parameterIndex))
                         {
                             IParameterSymbol parameter = invocationExpression.TargetMethod.Parameters[parameterIndex];
