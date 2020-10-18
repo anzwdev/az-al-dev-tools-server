@@ -83,24 +83,27 @@ namespace AnZwDev.ALTools.CodeTransformations
                     {
                         BlockSyntax newWithBlock = (BlockSyntax)newWithNode;
 
-                        int newStartIdx = newStatementsList.Count;
-                        newStatementsList.AddRange(newWithBlock.Statements);
+                        if (newWithBlock.Statements.Count > 0)
+                        {
+                            int newStartIdx = newStatementsList.Count;
+                            newStatementsList.AddRange(newWithBlock.Statements);
 
-                        //copy leading and trailing trivia from block to the first and last block statements
-                        //as they might contain important information
-                        newStatementsList[newStartIdx] = newStatementsList[newStartIdx]
-                            .WithLeadingTrivia(
-                                newWithBlock.GetLeadingTrivia()
-                                .AddRange(newStatementsList[newStartIdx].GetLeadingTrivia())
-                                .NormalizeSyntaxTriviaList());
-                        int newEndIdx = newStatementsList.Count - 1;
+                            //copy leading and trailing trivia from block to the first and last block statements
+                            //as they might contain important information
+                            newStatementsList[newStartIdx] = newStatementsList[newStartIdx]
+                                .WithLeadingTrivia(
+                                    newWithBlock.GetLeadingTrivia()
+                                    .AddRange(newStatementsList[newStartIdx].GetLeadingTrivia())
+                                    .NormalizeSyntaxTriviaList());
+                            int newEndIdx = newStatementsList.Count - 1;
 
-                        newStatementsList[newEndIdx] = newStatementsList[newEndIdx]
-                            .WithTrailingTrivia(
-                                newStatementsList[newEndIdx].GetTrailingTrivia()
-                                .AddRange(newWithBlock.EndKeywordToken.LeadingTrivia)
-                                .AddRange(newWithBlock.GetTrailingTrivia())
-                                .NormalizeSyntaxTriviaList());
+                            newStatementsList[newEndIdx] = newStatementsList[newEndIdx]
+                                .WithTrailingTrivia(
+                                    newStatementsList[newEndIdx].GetTrailingTrivia()
+                                    .AddRange(newWithBlock.EndKeywordToken.LeadingTrivia)
+                                    .AddRange(newWithBlock.GetTrailingTrivia())
+                                    .NormalizeSyntaxTriviaList());
+                        }
                     }
                     else
                         newStatementsList.Add((StatementSyntax)newWithNode);
