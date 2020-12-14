@@ -23,6 +23,17 @@ namespace AnZwDev.ALTools.CodeTransformations
             return base.AfterVisitNode(node);
         }
 
+        public override SyntaxNode VisitPage(PageSyntax node)
+        {
+            if ((this.HasProperty(node, "UsageCategory")) && (!this.HasApplicationArea(node)))
+            {
+                NoOfChanges++;
+                node = node.AddPropertyListProperties(this.CreateApplicationAreaProperty(node));
+            }
+
+            return base.VisitPage(node);
+        }
+
         public override SyntaxNode VisitPageField(PageFieldSyntax node)
         {
             if (this.HasApplicationArea(node))
@@ -73,8 +84,13 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         protected bool HasApplicationArea(SyntaxNode node)
         {
-            PropertySyntax appAreaProperty = node.GetProperty("ApplicationArea");
-            return ((appAreaProperty != null) && (!String.IsNullOrWhiteSpace(appAreaProperty.Value.ToString())));
+            return this.HasProperty(node, "ApplicationArea");
+        }
+
+        protected bool HasProperty(SyntaxNode node, string propertyName)
+        {
+            PropertySyntax nodeProperty = node.GetProperty(propertyName);
+            return ((nodeProperty != null) && (!String.IsNullOrWhiteSpace(nodeProperty.Value.ToString())));
         }
 
         protected PropertySyntax CreateApplicationAreaProperty(SyntaxNode node)

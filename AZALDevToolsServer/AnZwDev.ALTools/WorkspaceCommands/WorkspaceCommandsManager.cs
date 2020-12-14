@@ -30,6 +30,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             this.RegisterCommand(new AddAppAreasWorkspaceCommand());
             this.RegisterCommand(new AddToolTipsWorkspaceCommand());
             this.RegisterCommand(new AddDataClassificationWorkspaceCommand());
+            this.RegisterCommand(new AddFieldCaptionsWorkspaceCommand());
 
             this.RegisterCommand(new RemoveWithWorkspaceCommand());
 
