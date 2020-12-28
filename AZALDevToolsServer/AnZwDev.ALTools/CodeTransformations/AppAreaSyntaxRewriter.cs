@@ -1,4 +1,5 @@
-﻿using Microsoft.Dynamics.Nav.CodeAnalysis;
+﻿using AnZwDev.ALTools.Extensions;
+using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         public override SyntaxNode VisitPage(PageSyntax node)
         {
-            if ((this.HasProperty(node, "UsageCategory")) && (!this.HasApplicationArea(node)))
+            if ((node.HasProperty("UsageCategory")) && (!this.HasApplicationArea(node)))
             {
                 NoOfChanges++;
                 node = node.AddPropertyListProperties(this.CreateApplicationAreaProperty(node));
@@ -84,13 +85,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         protected bool HasApplicationArea(SyntaxNode node)
         {
-            return this.HasProperty(node, "ApplicationArea");
-        }
-
-        protected bool HasProperty(SyntaxNode node, string propertyName)
-        {
-            PropertySyntax nodeProperty = node.GetProperty(propertyName);
-            return ((nodeProperty != null) && (!String.IsNullOrWhiteSpace(nodeProperty.Value.ToString())));
+            return node.HasProperty("ApplicationArea");
         }
 
         protected PropertySyntax CreateApplicationAreaProperty(SyntaxNode node)
