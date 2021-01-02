@@ -110,5 +110,31 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         #endregion
 
+        public void SortSyntaxNodes(IComparer<T> comparer)
+        {
+            if (this.SyntaxNodes.Count > 1)
+                this.SyntaxNodes.Sort(comparer);
+            foreach (SyntaxNodesGroup<T> group in this.ChildGroups)
+            {
+                group.SortSyntaxNodes(comparer);
+            }
+        }
+
+        public void SortSyntaxNodesWithSortInfo(IComparer<SyntaxNodeSortInfo<T>> comparer)
+        {
+            if (this.SyntaxNodes.Count > 1)
+            {
+                List<SyntaxNodeSortInfo<T>> list = SyntaxNodeSortInfo<T>.FromNodesList(this.SyntaxNodes);
+                list.Sort(comparer);
+                this.SyntaxNodes = SyntaxNodeSortInfo<T>.ToNodesList(list);
+            }
+
+            foreach (SyntaxNodesGroup<T> group in this.ChildGroups)
+            {
+                group.SortSyntaxNodesWithSortInfo(comparer);
+            }
+        }
+
+
     }
 }

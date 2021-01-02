@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
+using AnZwDev.ALTools.Extensions;
+using AnZwDev.ALTools.ALSymbols.Internal;
 
 namespace AnZwDev.ALTools.CodeTransformations
 {
@@ -47,9 +50,11 @@ namespace AnZwDev.ALTools.CodeTransformations
                 foreach (SyntaxTrivia trivia in triviaList)
                 {
                     triviaCache.Add(trivia);
-                    switch (trivia.Kind)
+                    ConvertedSyntaxKind localTriviaKind = trivia.Kind.ConvertToLocalType();
+
+                    switch (localTriviaKind)
                     {
-                        case SyntaxKind.RegionDirectiveTrivia:
+                        case ConvertedSyntaxKind.RegionDirectiveTrivia:
                             SyntaxNodesGroup<T> childGroup = new SyntaxNodesGroup<T>();
                             childGroup.LeadingTrivia = triviaCache;
                             group.AddGroup(childGroup);
@@ -57,13 +62,18 @@ namespace AnZwDev.ALTools.CodeTransformations
                             triviaCache = new List<SyntaxTrivia>();
                             hasGroups = true;
                             break;
-                        case SyntaxKind.EndRegionDirectiveTrivia:
+                        case ConvertedSyntaxKind.EndRegionDirectiveTrivia:
                             group.TrailingTrivia = triviaCache;
                             group = group.ParentGroup;
                             if (group == null)
                                 return null;
                             triviaCache = new List<SyntaxTrivia>();
                             hasGroups = true;
+                            break;
+                        default:
+                            //do not sort if code contains other directives
+                            if (trivia.IsDirective)
+                                return null;
                             break;
                     }
                 }
@@ -75,7 +85,7 @@ namespace AnZwDev.ALTools.CodeTransformations
             group.SyntaxNodes.Add(node);
             return group;
         }
-
+        
         #endregion
 
         public SyntaxList<T> CreateSyntaxList()
@@ -92,6 +102,70 @@ namespace AnZwDev.ALTools.CodeTransformations
                 this.Root.GetAllGroups(list);
             return list;
         }
+
+        public void SortSyntaxNodes(IComparer<T> comparer)
+        {
+            if (this.Root != null)
+                this.Root.SortSyntaxNodes(comparer);
+        }
+
+        public void SortSyntaxNodesWithSortInfo(IComparer<SyntaxNodeSortInfo<T>> comparer)
+        {
+            if (this.Root != null)
+                this.Root.SortSyntaxNodesWithSortInfo(comparer);
+        }
+
+        public static SyntaxList<T> SortSyntaxList(SyntaxList<T> syntaxList, IComparer<T> comparer)
+        {
+            if (syntaxList.Count < 2)
+                return syntaxList;
+
+            //build list with regions
+            SyntaxNodesGroupsTree<T> nodesGroupsTree = new SyntaxNodesGroupsTree<T>();
+            nodesGroupsTree.AddNodes(syntaxList);
+
+            //somethis went wrong - do not sort
+            if (nodesGroupsTree.Root == null)
+                return syntaxList;
+
+            //does not have any child groups
+            if (!nodesGroupsTree.Root.HasChildGroups)
+            {
+                List<T> list = syntaxList.ToList();
+                list.Sort(comparer);
+                return SyntaxFactory.List(list);
+            }
+
+            nodesGroupsTree.SortSyntaxNodes(comparer);
+            return nodesGroupsTree.CreateSyntaxList();
+        }
+
+        public static SyntaxList<T> SortSyntaxListWithSortInfo(SyntaxList<T> syntaxList, IComparer<SyntaxNodeSortInfo<T>> comparer)
+        {
+            if (syntaxList.Count < 2)
+                return syntaxList;
+
+            //build list with regions
+            SyntaxNodesGroupsTree<T> nodesGroupsTree = new SyntaxNodesGroupsTree<T>();
+            nodesGroupsTree.AddNodes(syntaxList);
+
+            //somethis went wrong - do not sort
+            if (nodesGroupsTree.Root == null)
+                return syntaxList;
+
+            //does not have any child groups
+            if (!nodesGroupsTree.Root.HasChildGroups)
+            {
+                List<SyntaxNodeSortInfo<T>> list =
+                    SyntaxNodeSortInfo<T>.FromSyntaxList(syntaxList);
+                list.Sort(comparer);
+                return SyntaxNodeSortInfo<T>.ToSyntaxList(list);
+            }
+
+            nodesGroupsTree.SortSyntaxNodesWithSortInfo(comparer);
+            return nodesGroupsTree.CreateSyntaxList();
+        }
+
 
     }
 }
