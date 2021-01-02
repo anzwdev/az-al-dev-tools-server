@@ -38,6 +38,27 @@ namespace AnZwDev.ALTools.CodeTransformations
             return SyntaxFactory.List<T>(list);
         }
 
+        public static List<SyntaxNodeSortInfo<T>> FromNodesList(List<T> syntaxList)
+        {
+            List<SyntaxNodeSortInfo<T>> list = new List<SyntaxNodeSortInfo<T>>();
+            for (int i = 0; i < syntaxList.Count; i++)
+            {
+                list.Add(new SyntaxNodeSortInfo<T>(syntaxList[i], i));
+            }
+            return list;
+        }
+
+        public static List<T> ToNodesList(List<SyntaxNodeSortInfo<T>> sortInfoList)
+        {
+            List<T> list = new List<T>();
+            for (int i = 0; i < sortInfoList.Count; i++)
+            {
+                list.Add(sortInfoList[i].Node);
+            }
+            return list;
+        }
+
+
         public SyntaxNodeSortInfo()
         {
         }

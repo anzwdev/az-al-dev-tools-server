@@ -10,48 +10,15 @@ using System.Text;
 
 namespace AnZwDev.ALTools.CodeTransformations
 {
-    public class ToolTipSyntaxRewriter : ALSyntaxRewriter
+    public class ToolTipSyntaxRewriter : BasePageWithSourceSyntaxRewriter
     {
         public string PageFieldTooltip { get; set; }
         public string PageActionTooltip { get; set; }
-        public TypeInformationCollector TypeInformationCollector { get; }
-        public TableTypeInformation CurrentTable { get; set; }
 
         public ToolTipSyntaxRewriter()
         {
             PageActionTooltip = "Executes the %1 action.";
             PageFieldTooltip = "Specifies the value of %1 field.";
-            this.TypeInformationCollector = new TypeInformationCollector();
-        }
-
-        public override SyntaxNode VisitRequestPage(RequestPageSyntax node)
-        {
-            this.CheckSourceTableProperty(node);
-            return base.VisitRequestPage(node);
-        }
-
-        public override SyntaxNode VisitPageExtension(PageExtensionSyntax node)
-        {
-            this.CurrentTable = null;
-            return base.VisitPageExtension(node);
-        }
-
-        public override SyntaxNode VisitPage(PageSyntax node)
-        {
-            this.CheckSourceTableProperty(node);
-            return base.VisitPage(node);
-        }
-
-        private void CheckSourceTableProperty(SyntaxNode node)
-        {
-            //try to find current table
-            this.CurrentTable = null;
-            PropertyValueSyntax sourceTablePropertyValue = node.GetPropertyValue("SourceTable");
-            if (sourceTablePropertyValue != null)
-            {
-                string sourceTable = ALSyntaxHelper.DecodeName(sourceTablePropertyValue.ToString());
-                this.CurrentTable = this.TypeInformationCollector.ProjectTypesInformation.GetTable(sourceTable);
-            }
         }
 
         protected override SyntaxNode AfterVisitNode(SyntaxNode node)
@@ -68,27 +35,7 @@ namespace AnZwDev.ALTools.CodeTransformations
             this.NoOfChanges++;
 
             //try to find source field caption
-            string caption = null;
-            if (node.Expression != null)
-            {
-                string source = node.Expression.ToString().Trim();
-                if (source.StartsWith("Rec.", StringComparison.CurrentCultureIgnoreCase))
-                    source = source.Substring(4).Trim();
-                source = ALSyntaxHelper.DecodeName(source);
-                if (!String.IsNullOrWhiteSpace(source))
-                {
-                    if (this.CurrentTable != null)
-                    {
-                        TableFieldTypeInformation tableField = this.CurrentTable.GetField(source);
-                        if ((tableField != null) && (!String.IsNullOrWhiteSpace(tableField.Caption)))
-                            caption = tableField.Caption;
-                    }
-                    if (String.IsNullOrWhiteSpace(caption))
-                        caption = source.Replace("\"", "");
-                }
-            }
-
-
+            string caption = this.GetFieldCaption(node);
 
             return node.AddPropertyListProperties(this.CreateToolTipProperty(node, caption));
         }

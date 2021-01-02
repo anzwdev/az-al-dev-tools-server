@@ -89,9 +89,8 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         protected SyntaxList<VariableDeclarationBaseSyntax> SortVariables(SyntaxList<VariableDeclarationBaseSyntax> variables)
         {
-            List<VariableDeclarationBaseSyntax> list = variables.ToList();
-            list.Sort(new VariableComparer());
-            return SyntaxFactory.List(list);
+            return SyntaxNodesGroupsTree<VariableDeclarationBaseSyntax>.SortSyntaxList(
+                variables, new VariableComparer());            
         }
 
     }

@@ -37,20 +37,12 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         public override SyntaxNode VisitReportDataItem(ReportDataItemSyntax node)
         {
-            if ((this.NodeInSpan(node)) && (!node.ContainsDiagnostics))
+            if ((this.NodeInSpan(node)) && (!node.ContainsDiagnostics) && (node.Elements != null) && (node.Elements.Count > 1))
             {
-                List<SyntaxNodeSortInfo<ReportDataItemElementSyntax>> list =
-                SyntaxNodeSortInfo<ReportDataItemElementSyntax>.FromSyntaxList(node.Elements);
-                if (list.Count > 1)
-                {
-                    list.Sort(new ReportElementComparer());
-                    List<ReportDataItemElementSyntax> elementsList = new List<ReportDataItemElementSyntax>();
-                    for (int i = 0; i < list.Count; i++)
-                    {
-                        elementsList.Add(list[i].Node);
-                    }
-                    node = node.WithElements(SyntaxFactory.List<ReportDataItemElementSyntax>(elementsList));
-                }
+                SyntaxList<ReportDataItemElementSyntax> elements =
+                    SyntaxNodesGroupsTree<ReportDataItemElementSyntax>.SortSyntaxListWithSortInfo(
+                        node.Elements, new ReportElementComparer());
+                node = node.WithElements(elements);
             }
             return base.VisitReportDataItem(node);
         }

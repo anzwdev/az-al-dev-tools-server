@@ -26,7 +26,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             WithRemoveSyntaxRewriter withRemoveSyntaxRewriter = new WithRemoveSyntaxRewriter();
             newNode = withRemoveSyntaxRewriter.Visit(newNode);
 
-            return newNode;
+            return this.FormatSyntaxNode(newNode);
         }
 
     }

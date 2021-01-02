@@ -1320,7 +1320,11 @@ namespace AnZwDev.ALTools.ALSymbols.Internal
         LiteralAttributeArgument = 439,
         MethodReferenceAttributeArgument = 440,
         OptionAccessAttributeArgument = 441,
-        InvalidAttributeArgument = 442
+        InvalidAttributeArgument = 442,
+
+
+        RegionDirectiveTrivia = 500,
+        EndRegionDirectiveTrivia = 501
 
     }
 }

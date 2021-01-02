@@ -5,7 +5,6 @@ using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Text;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace AnZwDev.ALTools.WorkspaceCommands
 {
@@ -76,7 +75,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
 
         public virtual SyntaxNode ProcessSyntaxNode(SyntaxNode node, string sourceCode, string path, TextSpan span, Dictionary<string, string> parameters)
         {
-            return node;
+            return FormatSyntaxNode(node);
         }
 
     }
