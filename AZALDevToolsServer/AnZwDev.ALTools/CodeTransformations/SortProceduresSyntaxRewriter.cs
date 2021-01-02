@@ -72,6 +72,17 @@ namespace AnZwDev.ALTools.CodeTransformations
                 return list;
             }
 
+            public static List<MethodSortInfo<T>> FromNodesList(List<T> nodeList)
+            {
+                List<MethodSortInfo<T>> list = new List<MethodSortInfo<T>>();
+                for (int i = 0; i < nodeList.Count; i++)
+                {
+                    list.Add(new MethodSortInfo<T>(nodeList[i], i));
+                }
+                return list;
+            }
+
+
             public static SyntaxList<T> ToSyntaxList(List<MethodSortInfo<T>> sortInfoList)
             {
                 List<T> nodeList = new List<T>();
@@ -80,6 +91,16 @@ namespace AnZwDev.ALTools.CodeTransformations
                     nodeList.Add(sortInfoList[i].Node);
                 }
                 return SyntaxFactory.List<T>(nodeList);
+            }
+
+            public static List<T> ToNodesList(List<MethodSortInfo<T>> sortInfoList)
+            {
+                List<T> nodeList = new List<T>();
+                for (int i = 0; i < sortInfoList.Count; i++)
+                {
+                    nodeList.Add(sortInfoList[i].Node);
+                }
+                return nodeList;
             }
 
         }
@@ -308,9 +329,39 @@ namespace AnZwDev.ALTools.CodeTransformations
         
         private SyntaxList<T> Sort<T>(SyntaxList<T> members) where T: SyntaxNode
         {
-            List<MethodSortInfo<T>> list = MethodSortInfo<T>.FromSyntaxList(members);
-            list.Sort(new MethodSortInfoComparer<T>());
-            return MethodSortInfo<T>.ToSyntaxList(list);
+            if (members.Count <= 1)
+                return members;
+
+            //build list with regions
+            SyntaxNodesGroupsTree<T> nodesGroupsTree = new SyntaxNodesGroupsTree<T>();
+            nodesGroupsTree.AddNodes(members);
+
+            //somethis went wrong - do not sort
+            if (nodesGroupsTree.Root == null)
+                return members;
+
+            //does not have any child groups
+            if (!nodesGroupsTree.Root.HasChildGroups)
+            {
+                List<MethodSortInfo<T>> list = MethodSortInfo<T>.FromSyntaxList(members);
+                list.Sort(new MethodSortInfoComparer<T>());
+                return MethodSortInfo<T>.ToSyntaxList(list);
+            }
+
+            //has child groups - sort them separately
+            List<SyntaxNodesGroup<T>> allGroups = nodesGroupsTree.GetAllGroups();
+            foreach (SyntaxNodesGroup<T> nodesGroup in allGroups)
+            {
+                if (nodesGroup.SyntaxNodes.Count > 1)
+                {
+                    List<MethodSortInfo<T>> list = MethodSortInfo<T>.FromNodesList(nodesGroup.SyntaxNodes);
+                    list.Sort(new MethodSortInfoComparer<T>());
+                    nodesGroup.SyntaxNodes = MethodSortInfo<T>.ToNodesList(list);
+                }
+            }
+
+            //return sorted nodes
+            return nodesGroupsTree.CreateSyntaxList();
         }
 
     }
