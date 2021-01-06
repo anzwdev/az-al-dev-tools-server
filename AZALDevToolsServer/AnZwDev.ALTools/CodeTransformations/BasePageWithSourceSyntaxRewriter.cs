@@ -51,10 +51,11 @@ namespace AnZwDev.ALTools.CodeTransformations
             }
         }
 
-        protected string GetFieldCaption(PageFieldSyntax node)
+        protected string GetFieldCaption(PageFieldSyntax node, out bool hasCaptionProperty)
         {
             //try to find source field caption
             string caption = null;
+            hasCaptionProperty = false;
             if (node.Expression != null)
             {
                 string source = node.Expression.ToString().Trim();
@@ -67,7 +68,10 @@ namespace AnZwDev.ALTools.CodeTransformations
                     {
                         TableFieldTypeInformation tableField = this.CurrentTable.GetField(source);
                         if ((tableField != null) && (!String.IsNullOrWhiteSpace(tableField.Caption)))
+                        {
                             caption = tableField.Caption;
+                            hasCaptionProperty = true;
+                        }
                     }
                     if (String.IsNullOrWhiteSpace(caption))
                         caption = source.Replace("\"", "");

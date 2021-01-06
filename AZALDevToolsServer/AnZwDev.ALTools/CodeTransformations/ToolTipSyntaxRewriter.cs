@@ -35,7 +35,7 @@ namespace AnZwDev.ALTools.CodeTransformations
             this.NoOfChanges++;
 
             //try to find source field caption
-            string caption = this.GetFieldCaption(node);
+            string caption = this.GetFieldCaption(node, out _);
 
             return node.AddPropertyListProperties(this.CreateToolTipProperty(node, caption));
         }

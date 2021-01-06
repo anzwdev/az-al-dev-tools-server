@@ -26,8 +26,10 @@ namespace AnZwDev.ALTools.CodeTransformations
             if ((propertySyntax == null) || (String.IsNullOrWhiteSpace(propertySyntax.Value.ToString())))
             {
                 //try to find source field caption
-                string caption = this.GetFieldCaption(node);
-                if (!String.IsNullOrWhiteSpace(caption))
+                bool hasCaptionProperty;
+                string caption = this.GetFieldCaption(node, out hasCaptionProperty);
+                if ((!String.IsNullOrWhiteSpace(caption)) && 
+                    ((hasCaptionProperty) || (this.UseNameIfNoCaption)))
                 {
                     PropertySyntax newPropertySyntax = this.CreateCaptionProperty(node, caption);
                     NoOfChanges++;
