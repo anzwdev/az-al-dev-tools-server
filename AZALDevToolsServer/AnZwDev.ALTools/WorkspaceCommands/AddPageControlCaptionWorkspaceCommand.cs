@@ -47,7 +47,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
 
         private bool GetBoolParameter(Dictionary<string, string> parameters, string value)
         {
-            return ((parameters.ContainsKey(value)) && (parameters[value] == "true"));
+            return ((parameters.ContainsKey(value)) && (parameters[value].ToLower() == "true"));
         }
 
     }
