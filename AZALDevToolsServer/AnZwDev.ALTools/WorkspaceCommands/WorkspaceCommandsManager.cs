@@ -34,6 +34,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             this.RegisterCommand(new AddFieldCaptionsWorkspaceCommand());
 
             this.RegisterCommand(new RemoveWithWorkspaceCommand());
+            this.RegisterCommand(new RemoveVariableWorkspaceCommand());
 
             this.RegisterCommand(groupCommand.AddCommand(new SortProceduresWorkspaceCommand()));
             this.RegisterCommand(groupCommand.AddCommand(new SortVariablesWorkspaceCommand()));
