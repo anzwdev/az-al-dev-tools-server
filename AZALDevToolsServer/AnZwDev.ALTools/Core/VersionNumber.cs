@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AnZwDev.ALTools.ALSymbols
+namespace AnZwDev.ALTools.Core
 {
     public class VersionNumber
     {
