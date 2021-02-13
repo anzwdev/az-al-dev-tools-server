@@ -19,6 +19,11 @@ namespace AnZwDev.ALTools.Nav2018.TypeInformation
             this.Tables = new Dictionary<string, TableTypeInformation>();
         }
 
+        public void Clear()
+        {
+            this.Tables.Clear();
+        }
+
         public void Add(TableTypeInformation table)
         {
             if (!this.Tables.ContainsKey(table.Name.ToLower()))
@@ -37,6 +42,7 @@ namespace AnZwDev.ALTools.Nav2018.TypeInformation
         {
             return this.Tables.Values;
         }
+
 
     }
 }
