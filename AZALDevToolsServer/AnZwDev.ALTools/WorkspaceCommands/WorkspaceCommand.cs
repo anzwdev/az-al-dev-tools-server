@@ -27,6 +27,8 @@ namespace AnZwDev.ALTools.WorkspaceCommands
 
         protected SyntaxNode FormatSyntaxNode(SyntaxNode node)
         {
+            if (node == null)
+                return node;
             return Formatter.Format(node, this.GetWorkspace());
         }
 

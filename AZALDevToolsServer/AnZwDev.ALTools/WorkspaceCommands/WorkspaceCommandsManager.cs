@@ -34,11 +34,13 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             this.RegisterCommand(new AddFieldCaptionsWorkspaceCommand());
 
             this.RegisterCommand(new RemoveWithWorkspaceCommand());
+            this.RegisterCommand(new RemoveVariableWorkspaceCommand());
 
             this.RegisterCommand(groupCommand.AddCommand(new SortProceduresWorkspaceCommand()));
             this.RegisterCommand(groupCommand.AddCommand(new SortVariablesWorkspaceCommand()));
             this.RegisterCommand(groupCommand.AddCommand(new SortPropertiesWorkspaceCommand()));
             this.RegisterCommand(groupCommand.AddCommand(new SortReportColumnsWorkspaceCommand()));
+            this.RegisterCommand(groupCommand.AddCommand(new SortTableFieldsWorkspaceCommand()));
             this.RegisterCommand(groupCommand);
         }
 

@@ -4,6 +4,7 @@ using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using AnZwDev.ALTools.ALSymbols;
 
 namespace AnZwDev.ALTools.CodeTransformations
 {
@@ -26,7 +27,15 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         public override SyntaxNode VisitPage(PageSyntax node)
         {
-            if ((node.HasProperty("UsageCategory")) && (!this.HasApplicationArea(node)))
+            PropertySyntax usageCategoryProperty = node.GetProperty("UsageCategory");
+            bool hasUsageCategory = ((usageCategoryProperty != null) && (usageCategoryProperty.Value != null));
+            if (hasUsageCategory)
+            {
+                string usageCategory = ALSyntaxHelper.DecodeName(usageCategoryProperty.Value.ToString());
+                hasUsageCategory = ((!String.IsNullOrWhiteSpace(usageCategory)) && (usageCategory.ToLower() != "none"));
+            }
+
+            if ((hasUsageCategory) && (!this.HasApplicationArea(node)))
             {
                 NoOfChanges++;
                 node = node.AddPropertyListProperties(this.CreateApplicationAreaProperty(node));
