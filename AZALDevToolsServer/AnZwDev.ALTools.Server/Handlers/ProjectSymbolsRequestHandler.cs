@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AnZwDev.ALTools.Workspace;
 
 namespace AnZwDev.ALTools.Server.Handlers
 {
@@ -22,13 +23,11 @@ namespace AnZwDev.ALTools.Server.Handlers
             ProjectSymbolsResponse response = new ProjectSymbolsResponse();
             try
             {
-                //collect project symbols
-                ALProjectSymbolsLibrary library = new ALProjectSymbolsLibrary(this.Server.AppPackagesCache,
-                    parameters.includeDependencies, parameters.projectPath, parameters.packagesFolder);
-                if (library != null)
+                //find project
+                ALProject project = this.Server.Workspace.FindProject(parameters.projectPath);
+                if (project != null)
                 {
-                    library.WorkspaceFolders = parameters.workspaceFolders;
-                    library.Load(false);
+                    ALSymbolsLibrary library = project.CreateSymbolsLibrary(parameters.includeDependencies);
                     response.libraryId = this.Server.SymbolsLibraries.AddLibrary(library);
                     response.root = library.GetObjectsTree();
                 }

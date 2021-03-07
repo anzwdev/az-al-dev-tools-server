@@ -1,5 +1,6 @@
 ﻿using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.Extensions;
+using AnZwDev.ALTools.Workspace;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Packaging;
 using Microsoft.Dynamics.Nav.CodeAnalysis.SymbolReference;
@@ -17,6 +18,7 @@ namespace AnZwDev.ALTools.CodeTransformations
         public int TotalNoOfChanges { get; set; }
         public int NoOfChangedFiles { get; set; }
         public TextSpan Span { get; set; }
+        public ALProject Project { get; set; }
 
         public ALSyntaxRewriter()
         {

@@ -1,5 +1,6 @@
 ﻿using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.CodeAnalysis;
+using AnZwDev.ALTools.Workspace;
 using AnZwDev.ALTools.WorkspaceCommands;
 using System;
 using System.Collections.Generic;
@@ -16,11 +17,11 @@ namespace AnZwDev.ALTools
     {
 
         public string ExtensionBinPath { get; }
-        public ALPackageSymbolsCache AppPackagesCache { get; }
         public ALSymbolLibrariesCollection SymbolsLibraries { get; }
         public ALSyntaxTreesCollection SyntaxTrees { get; }
         public CodeAnalyzersLibrariesCollection CodeAnalyzersLibraries { get; set; }
         public WorkspaceCommandsManager WorkspaceCommandsManager { get; }
+        public ALWorkspace Workspace { get; }
         public string PlatformSpecificFolder { get; }
 
         public ALDevToolsServer(string extensionPath)
@@ -30,11 +31,11 @@ namespace AnZwDev.ALTools
             currentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
 
             this.ExtensionBinPath = Path.Combine(extensionPath, "bin");
-            this.AppPackagesCache = new ALPackageSymbolsCache();
             this.SymbolsLibraries = new ALSymbolLibrariesCollection();
             this.SyntaxTrees = new ALSyntaxTreesCollection();
             this.CodeAnalyzersLibraries = new CodeAnalyzersLibrariesCollection(this);
-            this.WorkspaceCommandsManager = new WorkspaceCommandsManager();
+            this.WorkspaceCommandsManager = new WorkspaceCommandsManager(this);
+            this.Workspace = new ALWorkspace();
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
                 this.PlatformSpecificFolder = "darwin";

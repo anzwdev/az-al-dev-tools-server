@@ -54,55 +54,59 @@ namespace AnZwDev.ALTools.Workspace.Serialization
 
             #endregion
 
-            #region Conversion to ALProjectMetadata
+            #region Dependencies
 
-            public ALProjectProperties ToALProjectMetadata()
-            {
-                ALProjectProperties metadata = new ALProjectProperties();
-                this.CopyProperties(metadata);
-                this.CopyDependencies(metadata);
-                this.CopyIdRanges(metadata);
-                return metadata;
-            }
-
-            private void CopyProperties(ALProjectProperties targetMetadata)
-            {
-                targetMetadata.Id = this.Id;
-                targetMetadata.Name = this.Name;
-                targetMetadata.Publisher = this.Publisher;
-                targetMetadata.Version = new Core.VersionNumber(this.Version);
-            }
-
-            private void CopyDependencies(ALProjectProperties targetMetadata)
+            public void PopulateDependencies(ALProjectDependenciesCollection projectDependencies)
             {
                 //copy dependencies properties
                 if (!String.IsNullOrWhiteSpace(this.Platform))
-                    targetMetadata.Platform = targetMetadata.AddDependency(null, "Platform", "Microsoft", this.Platform);
+                    projectDependencies.Platform = new ALProjectDependency(null, "System", "Microsoft", this.Platform);
                 if (!String.IsNullOrWhiteSpace(this.Application))
-                    targetMetadata.Application = targetMetadata.AddDependency(null, "Application", "Microsoft", this.Platform);
+                    projectDependencies.Application = new ALProjectDependency(null, "Application", "Microsoft", this.Application);
                 if (!String.IsNullOrWhiteSpace(this.Test))
-                    targetMetadata.Test = targetMetadata.AddDependency(null, "Test", "Microsoft", this.Platform);
+                    projectDependencies.Test = new ALProjectDependency(null, "Test", "Microsoft", this.Test);
+                
                 //copy other dependencies
                 if (this.Dependencies != null)
                 {
-                    for (int i=0; i<this.Dependencies.Length; i++)
+                    for (int i = 0; i < this.Dependencies.Length; i++)
                     {
                         ProjectDependencyMetadata dependency = this.Dependencies[i];
-                        targetMetadata.AddDependency(dependency.Id, dependency.Name, dependency.Publisher, dependency.Version);
+                        projectDependencies.Add(new ALProjectDependency(dependency.Id, dependency.Name, dependency.Publisher, dependency.Version));
                     }
                 }
             }
 
-            private void CopyIdRanges(ALProjectProperties targetMetadata)
+            #endregion
+
+            #region Conversion to ALProjectMetadata
+
+            public ALProjectProperties ToALProjectProperties()
+            {
+                ALProjectProperties properties = new ALProjectProperties();
+                this.CopyProperties(properties);
+                this.CopyIdRanges(properties);
+                return properties;
+            }
+
+            private void CopyProperties(ALProjectProperties targetProperties)
+            {
+                targetProperties.Id = this.Id;
+                targetProperties.Name = this.Name;
+                targetProperties.Publisher = this.Publisher;
+                targetProperties.Version = new Core.VersionNumber(this.Version);
+            }
+
+            private void CopyIdRanges(ALProjectProperties targetProperties)
             {
                 if (this.Range != null)
-                    targetMetadata.AddIdRange(this.Range.From, this.Range.To);
+                    targetProperties.AddIdRange(this.Range.From, this.Range.To);
                 if (this.Ranges != null)
                 {
                     for (int i=0; i<this.Ranges.Length; i++)
                     {
                         ProjectIdRangeMetadata idRange = this.Ranges[i];
-                        targetMetadata.AddIdRange(idRange.From, idRange.To);
+                        targetProperties.AddIdRange(idRange.From, idRange.To);
                     }
                 }
             }
@@ -110,7 +114,6 @@ namespace AnZwDev.ALTools.Workspace.Serialization
             #endregion
 
         }
-
 
     }
 }

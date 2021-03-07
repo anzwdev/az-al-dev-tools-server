@@ -9,7 +9,17 @@ namespace AnZwDev.ALTools.Core
     public class VersionNumber
     {
 
-        public string Version { get; set; }
+        private string _version;
+        public string Version 
+        { 
+            get { return _version; }
+            set
+            {
+                _version = value;
+                this.ParseVersion();
+            }
+        }
+
         public int[] Parts { get; private set; }
 
         public VersionNumber(params int[] versionNumberParts)
@@ -32,7 +42,6 @@ namespace AnZwDev.ALTools.Core
         public VersionNumber(string versionText)
         {
             this.Version = versionText;
-            this.ParseVersion(); 
         }
 
         private void ParseVersion()

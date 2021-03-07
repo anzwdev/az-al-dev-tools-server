@@ -1,11 +1,12 @@
 ﻿using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.ALSymbols.Internal;
 using AnZwDev.ALTools.Extensions;
-using AnZwDev.ALTools.TypeInformation;
+using AnZwDev.ALTools.Workspace.SymbolsInformation;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace AnZwDev.ALTools.CodeTransformations
@@ -13,12 +14,17 @@ namespace AnZwDev.ALTools.CodeTransformations
     public class BasePageWithSourceSyntaxRewriter : ALSyntaxRewriter
     {
 
-        public TypeInformationCollector TypeInformationCollector { get; }
-        public TableTypeInformation CurrentTable { get; set; }
+        //public TypeInformationCollector TypeInformationCollector { get; }
+        //public TableTypeInformation CurrentTable { get; set; }
+
+        protected TableInformationProvider TableInformationProvider { get; }
+        protected List<TableFieldInformaton> TableFields { get; set; }
 
         public BasePageWithSourceSyntaxRewriter()
         {
-            this.TypeInformationCollector = new TypeInformationCollector();
+            //this.TypeInformationCollector = new TypeInformationCollector();
+            this.TableInformationProvider = new TableInformationProvider();
+            this.TableFields = null;
         }
 
         public override SyntaxNode VisitRequestPage(RequestPageSyntax node)
@@ -29,7 +35,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         public override SyntaxNode VisitPageExtension(PageExtensionSyntax node)
         {
-            this.CurrentTable = null;
+            this.TableFields = null;
             return base.VisitPageExtension(node);
         }
 
@@ -42,12 +48,13 @@ namespace AnZwDev.ALTools.CodeTransformations
         protected void CheckSourceTableProperty(SyntaxNode node)
         {
             //try to find current table
-            this.CurrentTable = null;
+            this.TableFields = null;
             PropertyValueSyntax sourceTablePropertyValue = node.GetPropertyValue("SourceTable");
             if (sourceTablePropertyValue != null)
             {
                 string sourceTable = ALSyntaxHelper.DecodeName(sourceTablePropertyValue.ToString());
-                this.CurrentTable = this.TypeInformationCollector.ProjectTypesInformation.GetTable(sourceTable);
+                if (!String.IsNullOrWhiteSpace(sourceTable))
+                    this.TableFields = this.TableInformationProvider.GetTableFields(this.Project, sourceTable);
             }
         }
 
@@ -64,9 +71,9 @@ namespace AnZwDev.ALTools.CodeTransformations
                 source = ALSyntaxHelper.DecodeName(source);
                 if (!String.IsNullOrWhiteSpace(source))
                 {
-                    if (this.CurrentTable != null)
+                    if (this.TableFields != null)
                     {
-                        TableFieldTypeInformation tableField = this.CurrentTable.GetField(source);
+                        TableFieldInformaton tableField = this.TableFields.Where(p => (source.Equals(p.Name, StringComparison.CurrentCultureIgnoreCase))).FirstOrDefault();
                         if ((tableField != null) && (!String.IsNullOrWhiteSpace(tableField.Caption)))
                         {
                             caption = tableField.Caption;

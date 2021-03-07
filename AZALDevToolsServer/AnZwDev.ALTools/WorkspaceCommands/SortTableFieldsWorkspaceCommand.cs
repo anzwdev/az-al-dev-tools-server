@@ -8,7 +8,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
     public class SortTableFieldsWorkspaceCommand : SyntaxRewriterWorkspaceCommand<SortTableFieldsSyntaxRewriter>
     {
 
-        public SortTableFieldsWorkspaceCommand() : base("sortTableFields")
+        public SortTableFieldsWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "sortTableFields")
         {
         }
 

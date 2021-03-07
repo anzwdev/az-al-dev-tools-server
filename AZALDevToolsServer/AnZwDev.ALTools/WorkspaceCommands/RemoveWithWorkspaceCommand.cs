@@ -11,7 +11,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
     public class RemoveWithWorkspaceCommand: SemanticModelWorkspaceCommand
     {
 
-        public RemoveWithWorkspaceCommand() : base("removeWith")
+        public RemoveWithWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "removeWith")
         {
         }
 

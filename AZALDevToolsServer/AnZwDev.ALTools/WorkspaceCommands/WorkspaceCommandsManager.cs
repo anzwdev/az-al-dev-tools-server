@@ -9,10 +9,13 @@ namespace AnZwDev.ALTools.WorkspaceCommands
     public class WorkspaceCommandsManager
     {
 
+        public ALDevToolsServer ALDevToolsServer { get; }
+
         private Dictionary<string, WorkspaceCommand> _commands;
 
-        public WorkspaceCommandsManager()
+        public WorkspaceCommandsManager(ALDevToolsServer alDevToolsServer)
         {
+            this.ALDevToolsServer = alDevToolsServer;
             _commands = new Dictionary<string, WorkspaceCommand>();
             RegisterCommands();
         }
@@ -25,22 +28,22 @@ namespace AnZwDev.ALTools.WorkspaceCommands
 
         protected virtual void RegisterCommands()
         {
-            SyntaxTreeWorkspaceCommandsGroup groupCommand = new SyntaxTreeWorkspaceCommandsGroup("runMultiple");
+            SyntaxTreeWorkspaceCommandsGroup groupCommand = new SyntaxTreeWorkspaceCommandsGroup(this.ALDevToolsServer, "runMultiple");
 
-            this.RegisterCommand(new AddAppAreasWorkspaceCommand());
-            this.RegisterCommand(new AddToolTipsWorkspaceCommand());
-            this.RegisterCommand(new AddPageControlCaptionWorkspaceCommand());
-            this.RegisterCommand(new AddDataClassificationWorkspaceCommand());
-            this.RegisterCommand(new AddFieldCaptionsWorkspaceCommand());
+            this.RegisterCommand(new AddAppAreasWorkspaceCommand(this.ALDevToolsServer));
+            this.RegisterCommand(new AddToolTipsWorkspaceCommand(this.ALDevToolsServer));
+            this.RegisterCommand(new AddPageControlCaptionWorkspaceCommand(this.ALDevToolsServer));
+            this.RegisterCommand(new AddDataClassificationWorkspaceCommand(this.ALDevToolsServer));
+            this.RegisterCommand(new AddFieldCaptionsWorkspaceCommand(this.ALDevToolsServer));
 
-            this.RegisterCommand(new RemoveWithWorkspaceCommand());
-            this.RegisterCommand(new RemoveVariableWorkspaceCommand());
+            this.RegisterCommand(new RemoveWithWorkspaceCommand(this.ALDevToolsServer));
+            this.RegisterCommand(new RemoveVariableWorkspaceCommand(this.ALDevToolsServer));
 
-            this.RegisterCommand(groupCommand.AddCommand(new SortProceduresWorkspaceCommand()));
-            this.RegisterCommand(groupCommand.AddCommand(new SortVariablesWorkspaceCommand()));
-            this.RegisterCommand(groupCommand.AddCommand(new SortPropertiesWorkspaceCommand()));
-            this.RegisterCommand(groupCommand.AddCommand(new SortReportColumnsWorkspaceCommand()));
-            this.RegisterCommand(groupCommand.AddCommand(new SortTableFieldsWorkspaceCommand()));
+            this.RegisterCommand(groupCommand.AddCommand(new SortProceduresWorkspaceCommand(this.ALDevToolsServer)));
+            this.RegisterCommand(groupCommand.AddCommand(new SortVariablesWorkspaceCommand(this.ALDevToolsServer)));
+            this.RegisterCommand(groupCommand.AddCommand(new SortPropertiesWorkspaceCommand(this.ALDevToolsServer)));
+            this.RegisterCommand(groupCommand.AddCommand(new SortReportColumnsWorkspaceCommand(this.ALDevToolsServer)));
+            this.RegisterCommand(groupCommand.AddCommand(new SortTableFieldsWorkspaceCommand(this.ALDevToolsServer)));
             this.RegisterCommand(groupCommand);
         }
 

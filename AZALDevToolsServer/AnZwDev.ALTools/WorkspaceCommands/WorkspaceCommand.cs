@@ -13,10 +13,12 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         public static string NoOfChangesParameterName = "noOfChanges";
         public static string NoOfChangedFilesParameterName = "noOfChangedFiles";
 
+        public ALDevToolsServer ALDevToolsServer { get; }
         public string Name { get; set; }
 
-        public WorkspaceCommand(string newName)
+        public WorkspaceCommand(ALDevToolsServer alDevToolsServer, string newName)
         {
+            this.ALDevToolsServer = alDevToolsServer;
             Name = newName;
         }
 

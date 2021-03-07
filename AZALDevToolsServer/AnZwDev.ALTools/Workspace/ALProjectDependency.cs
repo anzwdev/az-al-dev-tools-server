@@ -4,6 +4,7 @@ using System.Text;
 using Newtonsoft.Json;
 using AnZwDev.ALTools.Core;
 using AnZwDev.ALTools.ALSymbols.ALAppPackages;
+using AnZwDev.ALTools.ALSymbolReferences.Serialization;
 
 namespace AnZwDev.ALTools.Workspace
 {
@@ -14,13 +15,15 @@ namespace AnZwDev.ALTools.Workspace
         public string Name { get; set; }
         public string Publisher { get; set; }
         public VersionNumber Version { get; set; }
+        public bool Propagated { get; set; }
 
         public ALProject SourceProject { get; set; }
-        public ALProjectAppPackageFile SourceAppPackage { get; set; }
-        public ALAppPackage Symbols { get; set; }
+        public AppPackageInformation SourceAppFile { get; set; }
+        public ALAppSymbolReference Symbols { get; set; }
 
         public ALProjectDependency()
         {
+            this.Propagated = false;
         }
 
         public ALProjectDependency(string id, string name, string publisher, string version)
@@ -29,10 +32,7 @@ namespace AnZwDev.ALTools.Workspace
             this.Name = name;
             this.Publisher = publisher;
             this.Version = new VersionNumber(version);
-        }
-
-        public void LoadSymbols()
-        {
+            this.Propagated = false;
         }
 
     }

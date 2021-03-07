@@ -11,7 +11,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
     public class SyntaxTreeWorkspaceCommand : WorkspaceCommand
     {
 
-        public SyntaxTreeWorkspaceCommand(string name) : base(name)
+        public SyntaxTreeWorkspaceCommand(ALDevToolsServer alDevToolsServer, string name) : base(alDevToolsServer, name)
         {
         }
 

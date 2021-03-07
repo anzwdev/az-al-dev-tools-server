@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AnZwDev.ALTools.ALSymbols.ALAppPackages;
 
 namespace AnZwDev.ALTools.Server.Handlers
 {
@@ -22,7 +23,14 @@ namespace AnZwDev.ALTools.Server.Handlers
             AppPackageSymbolsResponse response = new AppPackageSymbolsResponse();
             try
             {
-                ALPackageSymbolsLibrary library = this.Server.AppPackagesCache.GetSymbols(parameters.path, false);
+                ALAppSymbolReference symbolReference = this.Server.Workspace.SymbolReferencesCache.GetSymbolReference(parameters.path);
+                ALSymbolsLibrary library;
+                if (symbolReference != null)
+                    library = symbolReference.ToALSymbolsLibrary();
+                else
+                    library = new ALSymbolsLibrary();
+
+                //ALPackageSymbolsLibrary library = this.Server.AppPackagesCache.GetSymbols(parameters.path, false);
                 if (library != null)
                 {
                     response.libraryId = this.Server.SymbolsLibraries.AddLibrary(library);

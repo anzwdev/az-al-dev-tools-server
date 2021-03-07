@@ -11,7 +11,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
     {
         public static string DataClassificationParameterName = "dataClassification";
         
-        public AddDataClassificationWorkspaceCommand() : base("addDataClassification")
+        public AddDataClassificationWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "addDataClassification")
         {
         }
 

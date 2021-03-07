@@ -14,7 +14,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
     public class SemanticModelWorkspaceCommand: WorkspaceCommand
     {
 
-        public SemanticModelWorkspaceCommand(string name) : base(name)
+        public SemanticModelWorkspaceCommand(ALDevToolsServer alDevToolsServer, string name) : base(alDevToolsServer, name)
         {
         }
 

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using AnZwDev.ALTools.ALSymbols.ALAppPackages;
+using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 
 namespace AnZwDev.ALTools.Workspace
 {
@@ -11,27 +13,45 @@ namespace AnZwDev.ALTools.Workspace
         #region Public properties
 
         public ALProject Project { get; set; }
-
-        private string _relativePath;
-        public virtual string RelativePath 
-        { 
-            get { return _relativePath; }
-            set 
-            {
-                if (_relativePath != value)
-                {
-                    _relativePath = value;
-                    OnRelativePathChanged();
-                }
-            }
-        }
+        public string RelativePath { get; private set; }
 
         public string FullPath
         {
             get { return (this.Project != null) ? Path.Combine(this.Project.RootPath, this.RelativePath) : this.RelativePath; }
         }
 
+        private List<ALAppObject> _symbols;
+        public List<ALAppObject> Symbols
+        {
+            get { return _symbols; }
+            set
+            {
+                if (_symbols != value)
+                {
+                    if (_symbols != null)
+                        this.Project.Symbols.RemoveObjects(_symbols);
+                    _symbols = value;
+                    if (_symbols != null)
+                        this.Project.Symbols.AddObjects(_symbols);
+                }
+            }
+        }
+
+        private bool _isDirty;
+        public bool IsDirty 
+        { 
+            get { return _isDirty; }
+            set
+            {
+                _isDirty = value;
+                if (!_isDirty)
+                    _syntaxTree = null;
+            }
+        }
+
         #endregion
+
+        protected SyntaxTree _syntaxTree;
 
         #region Initialization
 
@@ -43,6 +63,8 @@ namespace AnZwDev.ALTools.Workspace
         {
             this.Project = project;
             this.RelativePath = relativePath;
+            this.IsDirty = false;
+            _syntaxTree = null;
         }
 
         #endregion
@@ -61,8 +83,66 @@ namespace AnZwDev.ALTools.Workspace
 
         #endregion
 
-        protected virtual void OnRelativePathChanged()
+        #region Symbols compilation
+
+        public void CompileSymbolReferences()
         {
+            if ((this.IsDirty) && (_syntaxTree != null))
+            {
+                this.Symbols = this.Project.Workspace.SymbolReferenceCompiler.CreateObjectsList(_syntaxTree);
+                this.IsDirty = false;
+            }
+            else
+                this.CompileSymbolReferences(this.ReadAllText());
+        }
+
+        public void CompileSymbolReferences(string source)
+        {
+            this.Symbols = this.Project.Workspace.SymbolReferenceCompiler.CreateObjectsList(source);
+            this.IsDirty = false;
+        }
+
+        #endregion
+
+        public void OnAdd()
+        {
+            this.IsDirty = false;
+            this.CompileSymbolReferences();
+        }
+
+        public void OnOpen()
+        {
+        }
+
+        public void OnClose()
+        {
+            this.IsDirty = false;
+            this.CompileSymbolReferences();
+        }
+
+        public void OnChange(string content)
+        {
+            this.IsDirty = true;
+            if (content == null)
+                content = this.ReadAllText();
+            _syntaxTree = SyntaxTree.ParseObjectText(content);
+        }
+
+        public void OnSave()
+        {
+            this.IsDirty = false;
+            this.CompileSymbolReferences();
+        }
+
+        public void OnDelete()
+        {
+            this.IsDirty = false;
+            this.Symbols = null;
+        }
+
+        public void OnRename(string newRelativePath)
+        {
+            this.RelativePath = newRelativePath;
         }
 
     }

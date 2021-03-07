@@ -10,7 +10,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
     public class AddFieldCaptionsWorkspaceCommand : SyntaxRewriterWorkspaceCommand<FieldCaptionSyntaxRewriter>
     {
 
-        public AddFieldCaptionsWorkspaceCommand() : base("addFieldCaptions")
+        public AddFieldCaptionsWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "addFieldCaptions")
         {
         }
 

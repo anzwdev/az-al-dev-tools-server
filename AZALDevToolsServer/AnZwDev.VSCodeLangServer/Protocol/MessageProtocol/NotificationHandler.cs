@@ -25,7 +25,17 @@ namespace AnZwDev.VSCodeLangServer.Protocol.MessageProtocol
                 typedParams = notificationMessage.Contents.ToObject<TParams>();
             }
 
-            await HandleNotification(typedParams, notificationContext);
+            try
+            {
+                await HandleNotification(typedParams, notificationContext);
+            }
+            catch (Exception e)
+            {
+                //System.IO.File.AppendAllText("c:\\temp\\aaaa.txt", 
+                //    "Message: " + notificationMessage.Id + "\n" +
+                //    "Error: " + e.Message + "\n" +
+                //    "Call Stack: " + e.StackTrace + "\n");
+            }
         }
 
         public abstract Task HandleNotification(TParams parameters, NotificationContext context);

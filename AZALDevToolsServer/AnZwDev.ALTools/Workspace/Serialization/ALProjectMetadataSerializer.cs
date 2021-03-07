@@ -14,20 +14,22 @@ namespace AnZwDev.ALTools.Workspace.Serialization
         {
         }
 
-        public static ALProjectProperties DeserializeFromFile(string path)
+        public static void LoadFromFile(ALProject project, string path)
         {
-            return DeserializeFromJson(File.ReadAllText(path));
+            LoadFromJson(project, File.ReadAllText(path));
         }
 
-        public static ALProjectProperties DeserializeFromJson(string jsonContent)
+        public static void LoadFromJson(ALProject project, string jsonContent)
         {
+            project.Dependencies.Clear();
+
             //deserialize to internal structures
             ProjectMetadata metadata = JsonConvert.DeserializeObject<ProjectMetadata>(jsonContent);
 
-            //return metadata
-            return metadata.ToALProjectMetadata();
+            //update project
+            project.Properties = metadata.ToALProjectProperties();
+            metadata.PopulateDependencies(project.Dependencies);
         }
-
 
     }
 }

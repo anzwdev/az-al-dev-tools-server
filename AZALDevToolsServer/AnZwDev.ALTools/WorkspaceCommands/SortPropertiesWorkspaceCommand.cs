@@ -8,7 +8,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
     public class SortPropertiesWorkspaceCommand : SyntaxRewriterWorkspaceCommand<SortPropertiesSyntaxRewriter>
     {
 
-        public SortPropertiesWorkspaceCommand(): base("sortProperties")
+        public SortPropertiesWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "sortProperties")
         {
         }
 

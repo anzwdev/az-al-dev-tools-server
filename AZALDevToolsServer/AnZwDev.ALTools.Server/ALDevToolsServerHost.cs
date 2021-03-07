@@ -8,6 +8,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AnZwDev.ALTools.Server.Handlers.ChangeTracking;
+using AnZwDev.ALTools.Server.Handlers.SymbolsInformation;
 
 namespace AnZwDev.ALTools.Server
 {
@@ -49,8 +51,32 @@ namespace AnZwDev.ALTools.Server
             //code transformations
             this.Dispatcher.RegisterRequestHandler(new WorkspaceCommandRequestHandler(this.ALDevToolsServer));
 
+            //symbols information
+            this.Dispatcher.RegisterRequestHandler(new GetTablesListRequestHandler(this.ALDevToolsServer));
+            this.Dispatcher.RegisterRequestHandler(new GetTableFieldsListRequestHandler(this.ALDevToolsServer));
+            this.Dispatcher.RegisterRequestHandler(new GetCodeunitsListRequestHandler(this.ALDevToolsServer));
+            this.Dispatcher.RegisterRequestHandler(new GetInterfacesListRequestHandler(this.ALDevToolsServer));
+            this.Dispatcher.RegisterRequestHandler(new GetEnumsListRequestHandler(this.ALDevToolsServer));
+            this.Dispatcher.RegisterRequestHandler(new GetPageDetailsRequestHandler(this.ALDevToolsServer));
+
             //standard notification handlers
             this.Dispatcher.RegisterNotificationHandler(new ExitNotificationHandler(this));
+
+            //document tracking notification handlers
+            this.Dispatcher.RegisterNotificationHandler(new WorkspaceFoldersChangeNotificationHandler(this.ALDevToolsServer));
+            this.Dispatcher.RegisterNotificationHandler(new DocumentOpenNotificationHandler(this.ALDevToolsServer));
+            this.Dispatcher.RegisterNotificationHandler(new DocumentChangeNotificationHandler(this.ALDevToolsServer));
+            this.Dispatcher.RegisterNotificationHandler(new DocumentCloseNotificationHandler(this.ALDevToolsServer));
+
+            //this file change handlers are not used by vs code:
+            //this.Dispatcher.RegisterNotificationHandler(new DocumentSaveNotificationHandler(this.ALDevToolsServer));
+            //this.Dispatcher.RegisterNotificationHandler(new FileCreateNotificationHandler(this.ALDevToolsServer));
+            //this.Dispatcher.RegisterNotificationHandler(new FileDeleteNotificationHandler(this.ALDevToolsServer));
+            //this.Dispatcher.RegisterNotificationHandler(new FileRenameNotificationHandler(this.ALDevToolsServer));
+
+            this.Dispatcher.RegisterNotificationHandler(new FileSystemFileCreateNotificationHandler(this.ALDevToolsServer));
+            this.Dispatcher.RegisterNotificationHandler(new FileSystemFileDeleteNotificationHandler(this.ALDevToolsServer));
+            this.Dispatcher.RegisterNotificationHandler(new FileSystemFileChangeNotificationHandler(this.ALDevToolsServer));
         }
 
     }

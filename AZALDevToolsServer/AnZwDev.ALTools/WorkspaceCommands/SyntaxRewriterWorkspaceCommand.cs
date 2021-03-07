@@ -13,7 +13,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
 
         public T SyntaxRewriter { get; }
 
-        public SyntaxRewriterWorkspaceCommand(string name): base(name)
+        public SyntaxRewriterWorkspaceCommand(ALDevToolsServer alDevToolsServer, string name): base(alDevToolsServer, name)
         {
             this.SyntaxRewriter = new T();
         }
@@ -40,6 +40,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
 
         protected virtual void SetParameters(string sourceCode, string path, TextSpan span, Dictionary<string, string> parameters)
         {
+            this.SyntaxRewriter.Project = this.ALDevToolsServer.Workspace.FindProject(path, true);
             this.SyntaxRewriter.Span = span;
         }
 
