@@ -44,44 +44,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ALDevToolsServerHost.cs" />
-    <Compile Include="Contracts\AppPackageSymbolsRequest.cs" />
-    <Compile Include="Contracts\AppPackageSymbolsResponse.cs" />
-    <Compile Include="Contracts\BaseOpenSymbolsLibraryResponse.cs" />
-    <Compile Include="Contracts\BaseSymbolsResponse.cs" />
-    <Compile Include="Contracts\CloseSymbolsLibraryRequest.cs" />
-    <Compile Include="Contracts\CloseSyntaxTreeRequest.cs" />
-    <Compile Include="Contracts\DocumentSymbolsRequest.cs" />
-    <Compile Include="Contracts\DocumentSymbolsResponse.cs" />
-    <Compile Include="Contracts\GetCodeAnalyzersRulesRequest.cs" />
-    <Compile Include="Contracts\GetCodeAnalyzersRulesResponse.cs" />
-    <Compile Include="Contracts\GetFullSyntaxTreeRequest.cs" />
-    <Compile Include="Contracts\GetFullSyntaxTreeResponse.cs" />
-    <Compile Include="Contracts\GetSyntaxTreeRequest.cs" />
-    <Compile Include="Contracts\GetSyntaxTreeResponse.cs" />
-    <Compile Include="Contracts\GetSyntaxTreeSymbolRequest.cs" />
-    <Compile Include="Contracts\GetSyntaxTreeSymbolResponse.cs" />
-    <Compile Include="Contracts\LibrarySymbolsDetailsRequest.cs" />
-    <Compile Include="Contracts\LibrarySymbolsDetailsResponse.cs" />
-    <Compile Include="Contracts\ProjectSymbolsRequest.cs" />
-    <Compile Include="Contracts\ProjectSymbolsResponse.cs" />
-    <Compile Include="Contracts\WorkspaceCommandRequest.cs" />
-    <Compile Include="Contracts\WorkspaceCommandResponse.cs" />
-    <Compile Include="Handlers\AppPackageSymbolsRequestHandler.cs" />
-    <Compile Include="Handlers\BaseALNotificationHandler.cs" />
-    <Compile Include="Handlers\BaseALRequestHandler.cs" />
-    <Compile Include="Handlers\CloseSymbolsLibraryNotificationHandler.cs" />
-    <Compile Include="Handlers\CloseSyntaxTreeNotificationHandler.cs" />
-    <Compile Include="Handlers\DocumentSymbolsRequestHandler.cs" />
-    <Compile Include="Handlers\ExitNotificationHandler.cs" />
-    <Compile Include="Handlers\GetCodeAnalyzersRulesRequestHandler.cs" />
-    <Compile Include="Handlers\GetFullSyntaxTreeRequestHandler.cs" />
-    <Compile Include="Handlers\GetSyntaxTreeRequestHandler.cs" />
-    <Compile Include="Handlers\GetSyntaxTreeSymbolRequestHandler.cs" />
-    <Compile Include="Handlers\LibrarySymbolsDetailsRequestHandler.cs" />
-    <Compile Include="Handlers\ProjectSymbolsRequestHandler.cs" />
-    <Compile Include="Handlers\ShutdownRequestHandler.cs" />
-    <Compile Include="Handlers\WorkspaceCommandRequestHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -97,5 +59,6 @@
       <Name>AnZwDev.VSCodeLangServer</Name>
     </ProjectReference>
   </ItemGroup>
+  <Import Project="..\Shared.AnZwDev.ALTools.Server\Shared.AnZwDev.ALTools.Server.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -3,7 +3,7 @@
  * Legacy version of the language server maintained to support Nav 2018 *
  *                                                                      *
  ************************************************************************/
-using AnZwDev.ALTools.Server.Nav2018;
+using AnZwDev.ALTools.Server;
 using System;
 using System.Collections.Generic;
 using System.Linq;
