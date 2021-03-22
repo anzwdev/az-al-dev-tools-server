@@ -14,19 +14,19 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         {
         }
 
-        public virtual ALSymbolInformation ToALSymbol()
+        public virtual ALSymbol ToALSymbol()
         {
-            ALSymbolInformation symbol = this.CreateMainALSymbol();
+            ALSymbol symbol = this.CreateMainALSymbol();
             this.AddChildALSymbols(symbol);
             return symbol;
         }
 
-        protected virtual ALSymbolInformation CreateMainALSymbol()
+        protected virtual ALSymbol CreateMainALSymbol()
         {
-            return new ALSymbolInformation();
+            return new ALSymbol();
         }
 
-        protected virtual void AddChildALSymbols(ALSymbolInformation symbol)
+        protected virtual void AddChildALSymbols(ALSymbol symbol)
         {
         }
 

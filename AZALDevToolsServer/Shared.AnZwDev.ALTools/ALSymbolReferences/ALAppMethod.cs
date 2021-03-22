@@ -37,9 +37,9 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return ALSymbolKind.MethodDeclaration;
         }
 
-        protected override ALSymbolInformation CreateMainALSymbol()
+        protected override ALSymbol CreateMainALSymbol()
         {
-            ALSymbolInformation symbol = base.CreateMainALSymbol();
+            ALSymbol symbol = base.CreateMainALSymbol();
 
             //build full name
             string fullName = ALSyntaxHelper.EncodeName(this.Name) + "(";
@@ -60,7 +60,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return symbol;
         }
 
-        protected override void AddChildALSymbols(ALSymbolInformation symbol)
+        protected override void AddChildALSymbols(ALSymbol symbol)
         {
             this.Parameters?.AddToALSymbol(symbol, ALSymbolKind.ParameterList, "parameters");
             base.AddChildALSymbols(symbol);

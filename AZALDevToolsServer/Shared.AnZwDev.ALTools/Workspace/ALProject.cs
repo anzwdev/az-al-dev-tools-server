@@ -9,6 +9,8 @@ using AnZwDev.ALTools.Core;
 using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.Extensions;
 using AnZwDev.ALTools.ALSymbolReferences;
+using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
+using AnZwDev.ALTools.CodeAnalysis;
 
 namespace AnZwDev.ALTools.Workspace
 {
@@ -32,6 +34,10 @@ namespace AnZwDev.ALTools.Workspace
             }
         }
 
+        public List<string> MandatoryPrefixes { get; set; }
+        public List<string> MandatorySuffixes { get; set; }
+        public List<string> MandatoryAffixes { get; set; }
+
         public ALProjectDependenciesCollection Dependencies { get; }
         public ALAppSymbolReference Symbols { get; set; }
 
@@ -45,6 +51,8 @@ namespace AnZwDev.ALTools.Workspace
 
         public ALProject(ALWorkspace workspace, string rootPath)
         {
+            this.MandatoryPrefixes = null;
+            this.MandatorySuffixes = null;
             this.Workspace = workspace;
             this.RootPath = rootPath;
             this.Files = new ALProjectFilesCollection(this);
@@ -64,6 +72,7 @@ namespace AnZwDev.ALTools.Workspace
 
         protected void Load(bool reloadFiles)
         {
+            //load app.json
             string projectManifestPath = Path.Combine(this.RootPath, "app.json");
             if (File.Exists(projectManifestPath))
             {
@@ -80,6 +89,8 @@ namespace AnZwDev.ALTools.Workspace
                 this.Files.Clear();
                 this.Dependencies.Clear();
             }
+            //load AppSourceCop.json
+            this.LoadAppSourceCopSettings();
         }
 
         protected void ReloadProjectManifest()
@@ -97,6 +108,26 @@ namespace AnZwDev.ALTools.Workspace
                 this.Load(false);
                 if (this.Properties != null)
                     this.Workspace.ResolveDependencies();
+            }
+        }
+
+        protected void LoadAppSourceCopSettings()
+        {
+            this.MandatoryAffixes = null;
+            this.MandatoryPrefixes = null;
+            this.MandatorySuffixes = null;
+
+            AppSourceCopSettings appSourceCopSettings = AppSourceCopSettings.FromFile(Path.Combine(this.RootPath, "AppSourceCop.json"));
+            if (appSourceCopSettings != null)
+            {
+                if ((appSourceCopSettings.MandatoryAffixes != null) && (appSourceCopSettings.MandatoryAffixes.Length > 0))
+                    this.MandatoryAffixes = new List<string>(appSourceCopSettings.MandatoryAffixes);
+
+                if (!String.IsNullOrWhiteSpace(appSourceCopSettings.MandatoryPrefix))
+                    this.MandatoryPrefixes = appSourceCopSettings.MandatoryPrefix.ToSingleElementList();
+                
+                if (!String.IsNullOrWhiteSpace(appSourceCopSettings.MandatorySuffix))
+                    this.MandatorySuffixes = appSourceCopSettings.MandatorySuffix.ToSingleElementList();
             }
         }
 
@@ -219,6 +250,9 @@ namespace AnZwDev.ALTools.Workspace
                 string relativePath = this.GetRelativePath(path);
                 if (relativePath.Equals("app.json", StringComparison.CurrentCultureIgnoreCase))
                     return ALProjectFileType.AppJson;
+
+                if (relativePath.Equals("AppSourceCop.json", StringComparison.CurrentCultureIgnoreCase))
+                    return ALProjectFileType.AppSourceCopJson;
             }
 
             if (ext.Equals(".app", StringComparison.CurrentCultureIgnoreCase))
@@ -253,7 +287,7 @@ namespace AnZwDev.ALTools.Workspace
             }
         }
 
-        public void OnDocumentChange(string path, string content)
+        public ALSymbol OnDocumentChange(string path, string content, bool returnSymbols)
         {
             ALProjectFileType fileType = this.GetFileType(path);
             switch (fileType)
@@ -261,9 +295,10 @@ namespace AnZwDev.ALTools.Workspace
                 case ALProjectFileType.AL:
                     ALProjectFile file = this.Files.FindByRelativePath(this.GetRelativePath(path));
                     if (file != null)
-                        file.OnChange(content);
+                        return file.OnChange(content, returnSymbols);
                     break;
             }
+            return null;
         }
         
         public void OnDocumentSave(string path)
@@ -297,6 +332,9 @@ namespace AnZwDev.ALTools.Workspace
                     case ALProjectFileType.AppJson:
                         this.ReloadProjectManifest();
                         break;
+                    case ALProjectFileType.AppSourceCopJson:
+                        this.LoadAppSourceCopSettings();
+                        break;
                     case ALProjectFileType.AppPackage:
                         if (PathUtils.ContainsPath(this.GetALPackagesPath(), path))
                         {
@@ -328,6 +366,9 @@ namespace AnZwDev.ALTools.Workspace
                         break;
                     case ALProjectFileType.AppJson:
                         this.ReloadProjectManifest();
+                        break;
+                    case ALProjectFileType.AppSourceCopJson:
+                        this.LoadAppSourceCopSettings();
                         break;
                     case ALProjectFileType.AppPackage:
                         if (PathUtils.ContainsPath(this.GetALPackagesPath(), path))
@@ -362,6 +403,9 @@ namespace AnZwDev.ALTools.Workspace
                     break;
                 case ALProjectFileType.AppJson:
                     this.ReloadProjectManifest();
+                    break;
+                case ALProjectFileType.AppSourceCopJson:
+                    this.LoadAppSourceCopSettings();
                     break;
             }
 
@@ -422,14 +466,14 @@ namespace AnZwDev.ALTools.Workspace
 
         public ALSymbolsLibrary CreateSymbolsLibrary(bool includeDependencies)
         {
-            ALSymbolInformation rootSymbol;
+            ALSymbol rootSymbol;
                       
             if ((includeDependencies) && (this.Dependencies.Count > 0))
             {
-                rootSymbol = new ALSymbolInformation(ALSymbolKind.ProjectDefinition, this.GetFullName());
+                rootSymbol = new ALSymbol(ALSymbolKind.ProjectDefinition, this.GetFullName());
 
                 //add dependencies
-                ALSymbolInformation dependenciesListSymbol = new ALSymbolInformation(ALSymbolKind.Dependencies, "Dependencies");
+                ALSymbol dependenciesListSymbol = new ALSymbol(ALSymbolKind.Dependencies, "Dependencies");
                 foreach (ALProjectDependency dependency in this.Dependencies)
                 {
                     if (dependency.Symbols != null)
@@ -460,7 +504,6 @@ namespace AnZwDev.ALTools.Workspace
                 this.Symbols.Version = (this.Properties.Version != null)?this.Properties.Version.Version:"";
             }
         }
-
 
     }
 }

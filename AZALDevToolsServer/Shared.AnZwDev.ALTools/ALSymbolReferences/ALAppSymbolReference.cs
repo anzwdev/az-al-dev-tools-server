@@ -32,7 +32,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         public ALAppElementsCollection<ALAppEnumExtension> EnumExtensionTypes { get; set; }
         public ALAppElementsCollection<ALAppInterface> Interfaces { get; set; }
 
-        private ALSymbolInformation _alSymbolCache = null;
+        private ALSymbol _alSymbolCache = null;
 
         public ALAppSymbolReference()
         {
@@ -158,19 +158,19 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return new ALSymbolsLibrary(this.ToALSymbol());
         }
 
-        public override ALSymbolInformation ToALSymbol()
+        public override ALSymbol ToALSymbol()
         {
             if (_alSymbolCache == null)
                 _alSymbolCache = base.ToALSymbol();
             return _alSymbolCache;
         }
 
-        protected override ALSymbolInformation CreateMainALSymbol()
+        protected override ALSymbol CreateMainALSymbol()
         {
-            return new ALSymbolInformation(ALSymbolKind.Package, StringExtensions.Merge(this.Publisher, this.Name, this.Version));
+            return new ALSymbol(ALSymbolKind.Package, StringExtensions.Merge(this.Publisher, this.Name, this.Version));
         }
 
-        protected override void AddChildALSymbols(ALSymbolInformation symbol)
+        protected override void AddChildALSymbols(ALSymbol symbol)
         {
             base.AddChildALSymbols(symbol);
 

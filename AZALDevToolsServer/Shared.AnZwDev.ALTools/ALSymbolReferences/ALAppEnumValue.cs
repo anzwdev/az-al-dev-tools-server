@@ -21,9 +21,9 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return ALSymbolKind.EnumValue;
         }
 
-        protected override ALSymbolInformation CreateMainALSymbol()
+        protected override ALSymbol CreateMainALSymbol()
         {
-            return new ALSymbolInformation(this.GetALSymbolKind(), this.Name, this.Ordinal);
+            return new ALSymbol(this.GetALSymbolKind(), this.Name, this.Ordinal);
         }
 
     }

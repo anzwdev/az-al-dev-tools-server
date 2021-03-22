@@ -23,14 +23,14 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return this.Kind.ToALSymbolKind();
         }
 
-        protected override ALSymbolInformation CreateMainALSymbol()
+        protected override ALSymbol CreateMainALSymbol()
         {
-            ALSymbolInformation symbol = base.CreateMainALSymbol();
+            ALSymbol symbol = base.CreateMainALSymbol();
             symbol.fullName = symbol.kind.ToName() + " " + ALSyntaxHelper.EncodeName(this.Name);
             return symbol;
         }
 
-        protected override void AddChildALSymbols(ALSymbolInformation symbol)
+        protected override void AddChildALSymbols(ALSymbol symbol)
         {
             this.Actions?.AddToALSymbol(symbol);
             base.AddChildALSymbols(symbol);

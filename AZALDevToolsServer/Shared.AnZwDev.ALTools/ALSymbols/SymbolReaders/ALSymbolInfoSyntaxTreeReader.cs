@@ -22,7 +22,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
 
         #region Main processing
 
-        public ALSymbolInformation ProcessSourceFile(string path)
+        public ALSymbol ProcessSourceFile(string path)
         {
             string sourceCode;
             try
@@ -36,20 +36,20 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             }
             catch (Exception e)
             {
-                return new ALSymbolInformation(ALSymbolKind.Undefined, "LangServer Error: " + e.Message);
+                return new ALSymbol(ALSymbolKind.Undefined, "LangServer Error: " + e.Message);
             }
         }
 
-        public ALSymbolInformation ProcessSourceCode(string source)
+        public ALSymbol ProcessSourceCode(string source)
         {
             SyntaxTree sourceTree = SyntaxTreeExtensions.SafeParseObjectText(source);
             return ProcessSyntaxTree(sourceTree);
         }
 
-        public ALSymbolInformation ProcessSyntaxTree(SyntaxTree syntaxTree)
+        public ALSymbol ProcessSyntaxTree(SyntaxTree syntaxTree)
         {
             SyntaxNode node = syntaxTree.GetRoot();
-            ALSymbolInformation root = new ALSymbolInformation();
+            ALSymbol root = new ALSymbol();
             ProcessChildSyntaxNode(syntaxTree, root, node);
 
             root.UpdateFields();
@@ -60,7 +60,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             return root;
         }
 
-        protected ALSymbolInformation CreateSymbolInfo(SyntaxTree syntaxTree, SyntaxNode node)
+        protected ALSymbol CreateSymbolInfo(SyntaxTree syntaxTree, SyntaxNode node)
         {
             //Detect symbol type
             ALSymbolKind alSymbolKind = SyntaxKindToALSymbolKind(node);
@@ -69,7 +69,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
 
             //create symbol info
             Type nodeType = node.GetType();
-            ALSymbolInformation symbolInfo = new ALSymbolInformation();
+            ALSymbol symbolInfo = new ALSymbol();
             symbolInfo.name = ALSyntaxHelper.DecodeName(nodeType.TryGetPropertyValueAsString(node, "Name"));
             symbolInfo.kind = alSymbolKind;
 
@@ -104,7 +104,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
 
         #region Processing special syntax properties
 
-        protected void ProcessNode(SyntaxTree syntaxTree, ALSymbolInformation symbol, SyntaxNode node)
+        protected void ProcessNode(SyntaxTree syntaxTree, ALSymbol symbol, SyntaxNode node)
         {
             switch (node.Kind.ConvertToLocalType())
             {
@@ -193,62 +193,62 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             }
         }
 
-        protected void ProcessVarSection(SyntaxTree syntaxTree, ALSymbolInformation symbol, SyntaxNode syntax)
+        protected void ProcessVarSection(SyntaxTree syntaxTree, ALSymbol symbol, SyntaxNode syntax)
         {
             ProcessNodeContentRangeFromChildren(syntaxTree, symbol, syntax);
         }
 
-        protected void ProcessControlAddChangeNode(SyntaxTree syntaxTree, ALSymbolInformation symbol, ControlAddChangeSyntax syntax)
+        protected void ProcessControlAddChangeNode(SyntaxTree syntaxTree, ALSymbol symbol, ControlAddChangeSyntax syntax)
         {
             this.ProcessNodeContentRange(syntaxTree, symbol, syntax, syntax.OpenBraceToken, syntax.CloseBraceToken);
         }
 
-        protected void ProcessQueryColumnNode(ALSymbolInformation symbol, QueryColumnSyntax syntax)
+        protected void ProcessQueryColumnNode(ALSymbol symbol, QueryColumnSyntax syntax)
         {
             if (syntax.RelatedField != null)
                 symbol.source = ALSyntaxHelper.DecodeName(syntax.RelatedField.ToString());
         }
 
-        protected void ProcessQueryDataItemNode(SyntaxTree syntaxTree, ALSymbolInformation symbol, QueryDataItemSyntax syntax)
+        protected void ProcessQueryDataItemNode(SyntaxTree syntaxTree, ALSymbol symbol, QueryDataItemSyntax syntax)
         {
             if (syntax.DataItemTable != null)
                 symbol.source = ALSyntaxHelper.DecodeName(syntax.DataItemTable.ToString());
             this.ProcessNodeContentRange(syntaxTree, symbol, syntax, syntax.OpenBraceToken, syntax.CloseBraceToken);
         }
 
-        protected void ProcessPageCustomizationObjectNode(ALSymbolInformation symbol, PageCustomizationSyntax syntax)
+        protected void ProcessPageCustomizationObjectNode(ALSymbol symbol, PageCustomizationSyntax syntax)
         {
             if (syntax.BaseObject != null)
                 symbol.extends = ALSyntaxHelper.DecodeName(syntax.BaseObject.ToString());
         }
 
-        protected void ProcessPageExtensionObjectNode(ALSymbolInformation symbol, PageExtensionSyntax syntax)
+        protected void ProcessPageExtensionObjectNode(ALSymbol symbol, PageExtensionSyntax syntax)
         {
             if (syntax.BaseObject != null)
                 symbol.extends = ALSyntaxHelper.DecodeName(syntax.BaseObject.ToString());
         }
 
-        protected void ProcessTableExtensionObjectNode(ALSymbolInformation symbol, TableExtensionSyntax syntax)
+        protected void ProcessTableExtensionObjectNode(ALSymbol symbol, TableExtensionSyntax syntax)
         {
             if (syntax.BaseObject != null)
                 symbol.extends = ALSyntaxHelper.DecodeName(syntax.BaseObject.ToString());
         }
 
 #if BC
-        protected void ProcessEnumExtensionTypeNode(ALSymbolInformation symbol, EnumExtensionTypeSyntax syntax)
+        protected void ProcessEnumExtensionTypeNode(ALSymbol symbol, EnumExtensionTypeSyntax syntax)
         {
             if (syntax.BaseObject != null)
                 symbol.extends = ALSyntaxHelper.DecodeName(syntax.BaseObject.ToString());
         }
 #endif
 
-        protected void ProcessPageFieldNode(ALSymbolInformation symbol, PageFieldSyntax syntax)
+        protected void ProcessPageFieldNode(ALSymbol symbol, PageFieldSyntax syntax)
         {
             if (syntax.Expression != null)
                 symbol.source = ALSyntaxHelper.DecodeName(syntax.Expression.ToString());
         }
 
-        protected void ProcessPagePartNode(ALSymbolInformation symbol, PagePartSyntax syntax)
+        protected void ProcessPagePartNode(ALSymbol symbol, PagePartSyntax syntax)
         {
             string name = symbol.kind.ToName() + " " + ALSyntaxHelper.EncodeName(symbol.name);
             if (syntax.PartName != null)
@@ -256,7 +256,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             symbol.fullName = name;
         }
 
-        protected void ProcessPageSystemPartNode(ALSymbolInformation symbol, PageSystemPartSyntax syntax)
+        protected void ProcessPageSystemPartNode(ALSymbol symbol, PageSystemPartSyntax syntax)
         {
             string name = symbol.kind.ToName() + " " + ALSyntaxHelper.EncodeName(symbol.name);
             if (syntax.SystemPartType != null)
@@ -265,12 +265,12 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
         }
 
 #if BC
-        protected void SafeProcessPageChartPartNode(ALSymbolInformation symbol, SyntaxNode syntax)
+        protected void SafeProcessPageChartPartNode(ALSymbol symbol, SyntaxNode syntax)
         {
             this.ProcessPageChartPartNode(symbol, (PageChartPartSyntax)syntax);
         }
 
-        protected void ProcessPageChartPartNode(ALSymbolInformation symbol, PageChartPartSyntax syntax)
+        protected void ProcessPageChartPartNode(ALSymbol symbol, PageChartPartSyntax syntax)
         {
             string name = symbol.kind.ToName() + " " + ALSyntaxHelper.EncodeName(symbol.name);
             if (syntax.ChartPartType != null)
@@ -279,12 +279,12 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
         }
 #endif
 
-        protected void ProcessPageAreaNode(SyntaxTree syntaxTree, ALSymbolInformation symbol, PageAreaSyntax syntax)
+        protected void ProcessPageAreaNode(SyntaxTree syntaxTree, ALSymbol symbol, PageAreaSyntax syntax)
         {
             this.ProcessNodeContentRange(syntaxTree, symbol, syntax, syntax.OpenBraceToken, syntax.CloseBraceToken);
         }
 
-        protected void ProcessPageGroupNode(SyntaxTree syntaxTree, ALSymbolInformation symbol, PageGroupSyntax syntax)
+        protected void ProcessPageGroupNode(SyntaxTree syntaxTree, ALSymbol symbol, PageGroupSyntax syntax)
         {
             SyntaxToken controlKeywordToken = syntax.ControlKeyword;
             if ((controlKeywordToken != null) && (controlKeywordToken.Kind.ConvertToLocalType() == ConvertedSyntaxKind.PageRepeaterKeyword))
@@ -293,12 +293,12 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
         }
 
 #if BC
-        protected void SafeProcessEnumValueNode(ALSymbolInformation symbol, SyntaxNode node)
+        protected void SafeProcessEnumValueNode(ALSymbol symbol, SyntaxNode node)
         {
             ProcessEnumValueNode(symbol, (EnumValueSyntax)node);
         }
 
-        protected void ProcessEnumValueNode(ALSymbolInformation symbol, EnumValueSyntax syntax)
+        protected void ProcessEnumValueNode(ALSymbol symbol, EnumValueSyntax syntax)
         {
             string idText = syntax.Id.ToString();
             if (!String.IsNullOrWhiteSpace(idText)) 
@@ -311,14 +311,14 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
         }
 #endif
 
-        protected void ProcessReportColumnNode(ALSymbolInformation symbol, ReportColumnSyntax syntax)
+        protected void ProcessReportColumnNode(ALSymbol symbol, ReportColumnSyntax syntax)
         {
             symbol.fullName = ALSyntaxHelper.EncodeName(symbol.name) + ": " + syntax.SourceExpression.ToFullString();
             if (syntax.SourceExpression != null)
                 symbol.source = ALSyntaxHelper.DecodeName(syntax.SourceExpression.ToString());
         }
 
-        protected void ProcessXmlPortTableElementNode(SyntaxTree syntaxTree, ALSymbolInformation symbol, XmlPortTableElementSyntax syntax)
+        protected void ProcessXmlPortTableElementNode(SyntaxTree syntaxTree, ALSymbol symbol, XmlPortTableElementSyntax syntax)
         {
             symbol.fullName = symbol.kind.ToName() + " " +
                 ALSyntaxHelper.EncodeName(symbol.name) +
@@ -327,7 +327,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             this.ProcessNodeContentRange(syntaxTree, symbol, syntax, syntax.OpenBraceToken, syntax.CloseBraceToken);
         }
 
-        protected void ProcessReportDataItemNode(SyntaxTree syntaxTree, ALSymbolInformation symbol, ReportDataItemSyntax syntax)
+        protected void ProcessReportDataItemNode(SyntaxTree syntaxTree, ALSymbol symbol, ReportDataItemSyntax syntax)
         {
             symbol.fullName = ALSyntaxHelper.EncodeName(symbol.name) + ": Record " + syntax.DataItemTable.ToFullString();
             if (syntax.DataItemTable != null)
@@ -335,7 +335,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             this.ProcessNodeContentRange(syntaxTree, symbol, syntax, syntax.OpenBraceToken, syntax.CloseBraceToken);
         }
 
-        protected void ProcessFieldNode(ALSymbolInformation symbol, FieldSyntax syntax)
+        protected void ProcessFieldNode(ALSymbol symbol, FieldSyntax syntax)
         {
             Type syntaxType = syntax.GetType();
             if (syntax.No != null)
@@ -349,22 +349,22 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             symbol.fullName = ALSyntaxHelper.EncodeName(symbol.name) + ": " + syntax.Type.ToFullString();
         }
 
-        protected void ProcessParameterNode(ALSymbolInformation symbol, ParameterSyntax syntax)
+        protected void ProcessParameterNode(ALSymbol symbol, ParameterSyntax syntax)
         {
             symbol.fullName = ALSyntaxHelper.EncodeName(symbol.name) + ": " + syntax.Type.ToFullString();
         }
 
-        protected void ProcessVariableDeclarationNode(ALSymbolInformation symbol, VariableDeclarationSyntax syntax)
+        protected void ProcessVariableDeclarationNode(ALSymbol symbol, VariableDeclarationSyntax syntax)
         {
             symbol.fullName = ALSyntaxHelper.EncodeName(symbol.name) + ": " + syntax.Type.ToFullString();
         }
 
-        protected void ProcessKeyNode(ALSymbolInformation symbol, KeySyntax syntax)
+        protected void ProcessKeyNode(ALSymbol symbol, KeySyntax syntax)
         {
             symbol.fullName = ALSyntaxHelper.EncodeName(symbol.name) + ": " + syntax.Fields.ToFullString();
         }
 
-        protected void ProcessMethodOrTriggerDeclarationNode(ALSymbolInformation symbol, MethodOrTriggerDeclarationSyntax syntax)
+        protected void ProcessMethodOrTriggerDeclarationNode(ALSymbol symbol, MethodOrTriggerDeclarationSyntax syntax)
         {
             string namePart = "(";
             if ((syntax.ParameterList != null))// && (syntax.ParameterList.Parameters != null))
@@ -377,7 +377,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             symbol.fullName = ALSyntaxHelper.EncodeName(symbol.name) + namePart;
         }
 
-        protected void ProcessEventDeclarationNode(ALSymbolInformation symbol, EventDeclarationSyntax syntax)
+        protected void ProcessEventDeclarationNode(ALSymbol symbol, EventDeclarationSyntax syntax)
         {
             string namePart = "(";
             if ((syntax.ParameterList != null)) // && (syntax.ParameterList.Parameters != null))
@@ -387,7 +387,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             symbol.fullName = ALSyntaxHelper.EncodeName(symbol.name) + namePart;
         }
 
-        protected void ProcessNodeContentRange(SyntaxTree syntaxTree, ALSymbolInformation symbol, SyntaxNode node,
+        protected void ProcessNodeContentRange(SyntaxTree syntaxTree, ALSymbol symbol, SyntaxNode node,
             SyntaxToken contentStartToken, SyntaxToken contentEndToken)
         {
             if ((contentStartToken != null) && (contentEndToken != null))
@@ -399,7 +399,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             }
         }
 
-        protected void ProcessNodeContentRangeFromChildren(SyntaxTree syntaxTree, ALSymbolInformation symbol, SyntaxNode syntax)
+        protected void ProcessNodeContentRangeFromChildren(SyntaxTree syntaxTree, ALSymbol symbol, SyntaxNode syntax)
         {
             IEnumerable<SyntaxNode> list = syntax.ChildNodes();
             if (list != null)
@@ -428,12 +428,12 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
 
 #region processing child nodes
 
-        protected void ProcessChildSyntaxNode(SyntaxTree syntaxTree, ALSymbolInformation parent, SyntaxNode node)
+        protected void ProcessChildSyntaxNode(SyntaxTree syntaxTree, ALSymbol parent, SyntaxNode node)
         {
             //check if node is an attribute of parent symbol
             if (!ProcessSyntaxNodeAttribute(syntaxTree, parent, node))
             {
-                ALSymbolInformation symbolInfo = CreateSymbolInfo(syntaxTree, node);
+                ALSymbol symbolInfo = CreateSymbolInfo(syntaxTree, node);
                 if (IsValidChildSymbolInformation(symbolInfo))
                 {
                     if (((parent.childSymbols == null) || (parent.childSymbols.Count == 0)) &&
@@ -445,7 +445,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             }
         }
 
-        protected bool ProcessSyntaxNodePropertyList(SyntaxTree syntaxTree, ALSymbolInformation parent, SyntaxNode node)
+        protected bool ProcessSyntaxNodePropertyList(SyntaxTree syntaxTree, ALSymbol parent, SyntaxNode node)
         {
             bool hasProperties = false;
             IEnumerable<SyntaxNode> list = node.ChildNodes();
@@ -467,7 +467,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
         }
 
 #if BC
-        protected void ProcessVariableListDeclarationNode(SyntaxTree syntaxTree, ALSymbolInformation parent, VariableListDeclarationSyntax node)
+        protected void ProcessVariableListDeclarationNode(SyntaxTree syntaxTree, ALSymbol parent, VariableListDeclarationSyntax node)
         {
             string typeName = node.Type.ToFullString();
             string elementDataType = typeName;
@@ -476,7 +476,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
 
             foreach (VariableDeclarationNameSyntax nameNode in node.VariableNames)
             {
-                ALSymbolInformation variableSymbol = CreateSymbolInfo(syntaxTree, nameNode); //new ALSymbolInformation(ALSymbolKind.VariableDeclaration, variableName);
+                ALSymbol variableSymbol = CreateSymbolInfo(syntaxTree, nameNode); //new ALSymbolInformation(ALSymbolKind.VariableDeclaration, variableName);
                 variableSymbol.fullName = ALSyntaxHelper.EncodeName(variableSymbol.name) +
                     ": " + typeName;
                 variableSymbol.subtype = typeName;
@@ -487,7 +487,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
         }
 #endif
 
-        protected void ProcessSyntaxNodeProperty(SyntaxTree syntaxTree, ALSymbolInformation parent, string name, string value)
+        protected void ProcessSyntaxNodeProperty(SyntaxTree syntaxTree, ALSymbol parent, string name, string value)
         {
             if ((name != null) && (value != null))
             {
@@ -533,7 +533,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             }
         }
 
-        protected bool ProcessSyntaxNodeAttribute(SyntaxTree syntaxTree, ALSymbolInformation parent, SyntaxNode node)
+        protected bool ProcessSyntaxNodeAttribute(SyntaxTree syntaxTree, ALSymbol parent, SyntaxNode node)
         {
             switch (node.Kind.ConvertToLocalType())
             {
@@ -580,7 +580,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             return false;
         }
 
-        protected bool IsValidChildSymbolInformation(ALSymbolInformation symbolInformation)
+        protected bool IsValidChildSymbolInformation(ALSymbol symbolInformation)
         {
             if (symbolInformation == null)
                 return false;

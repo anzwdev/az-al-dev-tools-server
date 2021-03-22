@@ -22,52 +22,71 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return ALSymbolKind.Field;
         }
 
-        protected override ALSymbolInformation CreateMainALSymbol()
+        protected override ALSymbol CreateMainALSymbol()
         {
-            ALSymbolInformation symbol = base.CreateMainALSymbol();
+            ALSymbol symbol = base.CreateMainALSymbol();
             if (this.TypeDefinition != null)
                 symbol.fullName = ALSyntaxHelper.EncodeName(this.Name) + ": " + this.TypeDefinition.GetSourceCode();
             this.UpdateSymbolSubtype(symbol);
             return symbol;
         }
 
-        protected void UpdateSymbolSubtype(ALSymbolInformation symbol)
+        protected void UpdateSymbolSubtype(ALSymbol symbol)
         {
             //detect subtype
             if (this.Properties != null)
             {
-                ALAppProperty enabledState = this.Properties.Where(p => (p.Name == "Enabled")).FirstOrDefault();
-                if ((enabledState != null) && (enabledState.Value == "0"))
+                ALAppTableFieldState fieldState = this.GetFieldState();
+
+                if (fieldState == ALAppTableFieldState.Disabled)
                 {
                     symbol.subtype = "Disabled";
                     symbol.fullName = symbol.fullName + " (Disabled)";
                     return;
                 }
 
-                ALAppProperty obsoleteState = this.Properties.Where(p => (p.Name == "ObsoleteState")).FirstOrDefault();
-                if ((obsoleteState != null) && (!String.IsNullOrWhiteSpace(obsoleteState.Value)))
+                if ((fieldState == ALAppTableFieldState.ObsoletePending) || (fieldState == ALAppTableFieldState.ObsoleteRemoved))
                 {
                     string obsoleteReasonText = "";
-                    ALAppProperty obsoleteReason = this.Properties.Where(p => (p.Name == "ObsoleteReason")).FirstOrDefault();
-                    if ((obsoleteReason != null) && (!String.IsNullOrWhiteSpace(obsoleteReason.Value)))
-                        obsoleteReasonText = ": " + obsoleteReason.Value.Trim();
+                    string obsoleteReason = this.Properties.GetValue("ObsoleteReason");
+                    if (!String.IsNullOrWhiteSpace(obsoleteReason))
+                        obsoleteReasonText = ": " + obsoleteReason.Trim();
 
-                    if (obsoleteState.Value.Equals("Pending", StringComparison.CurrentCultureIgnoreCase))
+                    switch (fieldState)
                     {
-                        symbol.subtype = "ObsoletePending";
-                        symbol.fullName = symbol.fullName + " (Obsolete-Pending" + obsoleteReasonText + ")";
+                        case ALAppTableFieldState.ObsoletePending:
+                            symbol.subtype = "ObsoletePending";
+                            symbol.fullName = symbol.fullName + " (Obsolete-Pending" + obsoleteReasonText + ")";
+                            break;
+                        case ALAppTableFieldState.ObsoleteRemoved:
+                            symbol.subtype = "ObsoleteRemoved";
+                            symbol.fullName = symbol.fullName + " (Obsolete-Removed" + obsoleteReasonText + ")";
+                            break;
                     }
-                    else if (obsoleteState.Value.Equals("Removed", StringComparison.CurrentCultureIgnoreCase))
-                    {
-                        symbol.subtype = "ObsoleteRemoved";
-                        symbol.fullName = symbol.fullName + " (Obsolete-Removed" + obsoleteReasonText + ")";
-                    }
-
                 }
-
             }
-
         }
+
+        public ALAppTableFieldState GetFieldState()
+        {
+            if (this.Properties != null)
+            {
+                string enabledState = this.Properties.GetValue("Enabled");
+                if ((enabledState != null) && (enabledState.Equals("0") || enabledState.Equals("false", StringComparison.CurrentCultureIgnoreCase)))
+                    return ALAppTableFieldState.Disabled;
+
+                string obsoleteState = this.Properties.GetValue("ObsoleteState");
+                if (!String.IsNullOrWhiteSpace(obsoleteState))
+                {
+                    if (obsoleteState.Equals("Pending", StringComparison.CurrentCultureIgnoreCase))
+                        return ALAppTableFieldState.ObsoletePending;
+                    if (obsoleteState.Equals("Removed", StringComparison.CurrentCultureIgnoreCase))
+                        return ALAppTableFieldState.ObsoleteRemoved;
+                }
+            }
+            return ALAppTableFieldState.Active;
+        }
+
 
     }
 }

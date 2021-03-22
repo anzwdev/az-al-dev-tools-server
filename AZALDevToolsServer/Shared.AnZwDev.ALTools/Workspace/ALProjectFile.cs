@@ -4,6 +4,8 @@ using System.Text;
 using System.IO;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using AnZwDev.ALTools.ALSymbolReferences;
+using AnZwDev.ALTools.ALSymbols;
+using AnZwDev.ALTools.ALSymbols.SymbolReaders;
 
 namespace AnZwDev.ALTools.Workspace
 {
@@ -120,12 +122,37 @@ namespace AnZwDev.ALTools.Workspace
             this.CompileSymbolReferences();
         }
 
-        public void OnChange(string content)
+        public ALSymbol OnChange(string content, bool returnSymbols)
         {
             this.IsDirty = true;
             if (content == null)
                 content = this.ReadAllText();
             _syntaxTree = SyntaxTree.ParseObjectText(content);
+
+            if (returnSymbols)
+                return this.CreateSymbols();
+
+            return null;
+        }
+
+        public ALSymbol CreateSymbols()
+        {
+            if (this._syntaxTree != null)
+            {
+                try
+                {
+                    ALSymbolInfoSyntaxTreeReader symbolTreeBuilder = new ALSymbolInfoSyntaxTreeReader(true);
+                    return symbolTreeBuilder.ProcessSyntaxTree(_syntaxTree);
+                }
+                catch (Exception e)
+                {
+                    return new ALSymbol()
+                    {
+                        fullName = e.Message
+                    };
+                }
+            }
+            return null;
         }
 
         public void OnSave()

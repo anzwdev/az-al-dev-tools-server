@@ -8,6 +8,8 @@ namespace AnZwDev.ALTools.Server.Contracts.SymbolsInformation
     {
 
         public string table { get; set; }
+        public bool includeDisabled { get; set; }
+        public bool includeObsolete { get; set; }
 
     }
 }

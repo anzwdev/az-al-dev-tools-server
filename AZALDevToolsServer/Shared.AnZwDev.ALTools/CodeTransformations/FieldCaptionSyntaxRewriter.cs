@@ -37,7 +37,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         protected PropertySyntax CreateCaptionProperty(SyntaxNode node)
         {
-            string value = node.GetNameStringValue();
+            string value = node.GetNameStringValue().RemovePrefixSuffix(this.Project.MandatoryPrefixes, this.Project.MandatorySuffixes, this.Project.MandatoryAffixes);
 
             SyntaxTriviaList leadingTriviaList = node.CreateChildNodeIdentTrivia();
             SyntaxTriviaList trailingTriviaList = SyntaxFactory.ParseTrailingTrivia("\r\n", 0);

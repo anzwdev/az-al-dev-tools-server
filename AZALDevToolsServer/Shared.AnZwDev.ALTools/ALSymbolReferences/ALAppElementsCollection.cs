@@ -27,29 +27,29 @@ namespace AnZwDev.ALTools.ALSymbolReferences
 
         #region ALSymbolInformation conversion
 
-        public void AddToALSymbol(ALSymbolInformation symbol)
+        public void AddToALSymbol(ALSymbol symbol)
         {
             this.AddToALSymbol(symbol, ALSymbolKind.Undefined, null, ALSymbolKind.Undefined);
         }
 
-        public void AddCollectionToALSymbol(ALSymbolInformation symbol, ALSymbolKind collectionKind)
+        public void AddCollectionToALSymbol(ALSymbol symbol, ALSymbolKind collectionKind)
         {
             this.AddToALSymbol(symbol, collectionKind, collectionKind.ToName(), ALSymbolKind.Undefined);
         }
 
-        public void AddToALSymbol(ALSymbolInformation symbol, ALSymbolKind collectionKind, string collectionName)
+        public void AddToALSymbol(ALSymbol symbol, ALSymbolKind collectionKind, string collectionName)
         {
             this.AddToALSymbol(symbol, collectionKind, collectionName, ALSymbolKind.Undefined);
         }
 
-        public void AddToALSymbol(ALSymbolInformation symbol, ALSymbolKind collectionKind, string collectionName, ALSymbolKind firstItemSymbolKind)
+        public void AddToALSymbol(ALSymbol symbol, ALSymbolKind collectionKind, string collectionName, ALSymbolKind firstItemSymbolKind)
         {
             if (this.Count > 0)
             {
-                ALSymbolInformation collectionSymbol = symbol;
+                ALSymbol collectionSymbol = symbol;
                 if (!String.IsNullOrWhiteSpace(collectionName))
                 {
-                    collectionSymbol = new ALSymbolInformation(collectionKind, collectionName);
+                    collectionSymbol = new ALSymbol(collectionKind, collectionName);
                     symbol.AddChildSymbol(collectionSymbol);
                 }
 
@@ -57,7 +57,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
                 {
                     if ((i == 0) && (firstItemSymbolKind != ALSymbolKind.Undefined))
                     {
-                        ALSymbolInformation itemSymbol = this[i].ToALSymbol();
+                        ALSymbol itemSymbol = this[i].ToALSymbol();
                         itemSymbol.kind = firstItemSymbolKind;
                         collectionSymbol.AddChildSymbol(itemSymbol);
                     }

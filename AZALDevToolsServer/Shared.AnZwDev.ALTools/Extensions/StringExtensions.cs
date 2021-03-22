@@ -63,5 +63,73 @@ namespace AnZwDev.ALTools.Extensions
             return pos;
         }
 
+        public static string RemovePrefixSuffix(this string text, List<string> prefixes, List<string> suffixes, List<string> affixes)
+        {
+            if (text != null)
+            {
+                bool found = false;
+                //remove first suffix
+                text = text.RemoveSuffix(suffixes, out found);
+                if (found)
+                    return text;
+
+                //remove first prefix
+                text = text.RemovePrefix(prefixes, out found);
+                if (found)
+                    return text;
+
+                //remove first prefix/suffix
+                text = text.RemoveSuffix(affixes, out found);
+                if (found)
+                    return text;
+                text = text.RemovePrefix(affixes, out found);
+                if (found)
+                    return text;
+            }
+            return text;
+        }
+
+        public static string RemovePrefix(this string text, List<string> prefixes, out bool found)
+        {
+            found = false;
+            if (prefixes != null)
+            {
+                for (int i = 0; i < prefixes.Count; i++)
+                {
+                    if ((!String.IsNullOrWhiteSpace(prefixes[i])) && (text.StartsWith(prefixes[i])))
+                    {
+                        found = true;
+                        return text.Substring(prefixes[i].Length).Trim();
+                    }
+                }
+            }
+            return text;
+        }
+
+        public static string RemoveSuffix(this string text, List<string> suffixes, out bool found)
+        {
+            found = false;
+            if (suffixes != null)
+            {
+                for (int i = 0; i < suffixes.Count; i++)
+                {
+                    if ((!String.IsNullOrWhiteSpace(suffixes[i])) && (text.EndsWith(suffixes[i])))
+                    {
+                        found = true;
+                        return text.Substring(0, text.Length - suffixes[i].Length).Trim();
+                    }
+                }
+            }
+            return text;
+        }
+
+
+        public static List<string> ToSingleElementList(this string text)
+        {
+            List<string> list = new List<string>();
+            list.Add(text);
+            return list;
+        }
+
     }
 }

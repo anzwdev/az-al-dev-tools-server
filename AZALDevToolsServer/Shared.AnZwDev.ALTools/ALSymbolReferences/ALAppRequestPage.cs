@@ -19,9 +19,9 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return ALSymbolKind.RequestPage;
         }
 
-        protected override ALSymbolInformation CreateMainALSymbol()
+        protected override ALSymbol CreateMainALSymbol()
         {
-            ALSymbolInformation symbol = base.CreateMainALSymbol();
+            ALSymbol symbol = base.CreateMainALSymbol();
             symbol.name = "RequestPage";
             symbol.fullName = symbol.name;
             symbol.id = 0;

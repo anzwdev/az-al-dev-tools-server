@@ -54,9 +54,9 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return fullName;
         }
 
-        protected override ALSymbolInformation CreateMainALSymbol()
+        protected override ALSymbol CreateMainALSymbol()
         {
-            return new ALSymbolInformation(this.GetALSymbolKind(), this.GetSourceCode());
+            return new ALSymbol(this.GetALSymbolKind(), this.GetSourceCode());
         }
 
         public bool EmptySubtype()

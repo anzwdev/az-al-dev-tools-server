@@ -65,7 +65,7 @@ namespace AnZwDev.ALTools.Server
             //document tracking notification handlers
             this.Dispatcher.RegisterNotificationHandler(new WorkspaceFoldersChangeNotificationHandler(this.ALDevToolsServer));
             this.Dispatcher.RegisterNotificationHandler(new DocumentOpenNotificationHandler(this.ALDevToolsServer));
-            this.Dispatcher.RegisterNotificationHandler(new DocumentChangeNotificationHandler(this.ALDevToolsServer));
+            this.Dispatcher.RegisterRequestHandler(new DocumentContentChangeRequestHandler(this.ALDevToolsServer));
             this.Dispatcher.RegisterNotificationHandler(new DocumentCloseNotificationHandler(this.ALDevToolsServer));
 
             //this file change handlers are not used by vs code:

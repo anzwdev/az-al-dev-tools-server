@@ -23,9 +23,9 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return ALSymbolKind.DotNetTypeDeclaration;
         }
 
-        protected override ALSymbolInformation CreateMainALSymbol()
+        protected override ALSymbol CreateMainALSymbol()
         {
-            ALSymbolInformation symbol = new ALSymbolInformation(this.GetALSymbolKind(), this.TypeName);
+            ALSymbol symbol = new ALSymbol(this.GetALSymbolKind(), this.TypeName);
             if (!String.IsNullOrWhiteSpace(this.AliasName))
                 symbol.fullName = ALSyntaxHelper.EncodeName(this.AliasName) + ": " + ALSyntaxHelper.EncodeName(this.TypeName.NotNull());
             return symbol;

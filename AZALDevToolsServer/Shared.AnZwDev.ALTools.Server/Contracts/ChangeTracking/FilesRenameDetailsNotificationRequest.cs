@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace AnZwDev.ALTools.Server.Contracts
+namespace AnZwDev.ALTools.Server.Contracts.ChangeTracking
 {
     public class FilesRenameDetailsNotificationRequest
     {

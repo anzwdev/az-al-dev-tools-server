@@ -12,7 +12,7 @@ namespace AnZwDev.ALTools.ALSymbols
 
         public string Path { get; set; }
         public ALSyntaxTreeSymbol RootSymbolWithProperties { get; set; }
-        public ALSymbolInformation RootSymbol { get; set; }
+        public ALSymbol RootSymbol { get; set; }
         public int OpenCount { get; set; }
 
         protected ALSyntaxTreeSymbolsReader SyntaxTreeReader { get; set; }

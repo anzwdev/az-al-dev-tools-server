@@ -21,7 +21,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return ALSymbolKind.DotNetPackage;
         }
 
-        protected override void AddChildALSymbols(ALSymbolInformation symbol)
+        protected override void AddChildALSymbols(ALSymbol symbol)
         {
             this.AssemblyDeclarations?.AddToALSymbol(symbol);
             base.AddChildALSymbols(symbol);

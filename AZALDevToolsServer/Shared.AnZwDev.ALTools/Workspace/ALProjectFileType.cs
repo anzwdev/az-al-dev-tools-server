@@ -11,7 +11,8 @@ namespace AnZwDev.ALTools.Workspace
         AL = 1,
         AppJson = 2,
         Xml = 3,
-        AppPackage = 4
+        AppPackage = 4,
+        AppSourceCopJson = 5
 
     }
 }

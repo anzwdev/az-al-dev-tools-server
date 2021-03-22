@@ -1109,6 +1109,11 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Compiler
                 ALAppTypeDefinition type = CreateTypeDefinition(node.DataType);
                 if (node.Array != null)
                     ProcessDataType(type, node.Array);
+
+                ConvertedSyntaxKind kind = node.Kind.ConvertToLocalType();
+                if (kind == ConvertedSyntaxKind.RecordTypeReference)
+                    this.ProcessDataType(type, (RecordTypeReferenceSyntax)node);
+
                 return type;
             }
             return null;
@@ -1148,6 +1153,15 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Compiler
                     break;
             }
             return alElement;
+        }
+
+        protected void ProcessDataType(ALAppTypeDefinition alType, RecordTypeReferenceSyntax node)
+        {
+            if (node.Temporary != null)
+            {
+                string temporary = node.Temporary.ToString();
+                alType.Temporary = ((temporary != null) && (temporary.Equals("temporary", StringComparison.CurrentCultureIgnoreCase)));
+            }
         }
 
         protected void ProcessDataType(ALAppTypeDefinition alType, ArraySyntax node)

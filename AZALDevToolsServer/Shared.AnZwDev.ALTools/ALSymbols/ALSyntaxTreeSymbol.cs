@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace AnZwDev.ALTools.ALSymbols
 {
-    public class ALSyntaxTreeSymbol : ALSymbolInformation
+    public class ALSyntaxTreeSymbol : ALSymbol
     {
 
         public string type { get; set; }
@@ -26,7 +26,7 @@ namespace AnZwDev.ALTools.ALSymbols
             this.properties = new List<PropertyValue>();
         }
 
-        public ALSymbolInformation ToALSymbolInformation()
+        public ALSymbol ToALSymbolInformation()
         {
             return this.CreateCopy(true);
         }

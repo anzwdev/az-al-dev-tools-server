@@ -1,5 +1,6 @@
 ﻿using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.CodeTransformations;
+using AnZwDev.ALTools.Extensions;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using System;
 using System.Collections.Generic;
@@ -20,10 +21,8 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         protected override void SetParameters(string sourceCode, string path, TextSpan span, Dictionary<string, string> parameters)
         {
             base.SetParameters(sourceCode, path, span, parameters);
-            if (parameters.ContainsKey(FieldTooltipParameterName))
-                this.SyntaxRewriter.PageFieldTooltip = parameters[FieldTooltipParameterName];
-            if (parameters.ContainsKey(ActionTooltipParameterName))
-                this.SyntaxRewriter.PageActionTooltip = parameters[ActionTooltipParameterName];
+            this.SyntaxRewriter.PageFieldTooltip = parameters.GetStringValue(FieldTooltipParameterName);
+            this.SyntaxRewriter.PageActionTooltip = parameters.GetStringValue(ActionTooltipParameterName);
         }
 
     }

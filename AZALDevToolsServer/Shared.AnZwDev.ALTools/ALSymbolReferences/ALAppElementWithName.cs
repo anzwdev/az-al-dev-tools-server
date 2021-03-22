@@ -16,9 +16,9 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         {
         }
 
-        protected override ALSymbolInformation CreateMainALSymbol()
+        protected override ALSymbol CreateMainALSymbol()
         {
-            return new ALSymbolInformation(this.GetALSymbolKind(), this.Name);
+            return new ALSymbol(this.GetALSymbolKind(), this.Name);
         }
 
         public override int CompareTo(object obj)

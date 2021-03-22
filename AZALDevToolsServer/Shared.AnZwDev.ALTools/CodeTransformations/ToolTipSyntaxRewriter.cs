@@ -67,8 +67,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                     caption = value;
             }
             else if (String.IsNullOrWhiteSpace(caption))
-                caption = node.GetNameStringValue();
-
+                caption = node.GetNameStringValue().RemovePrefixSuffix(this.Project.MandatoryPrefixes, this.Project.MandatorySuffixes, this.Project.MandatoryAffixes);
 
             string toolTipValue = "";          
             switch (node.Kind.ConvertToLocalType())

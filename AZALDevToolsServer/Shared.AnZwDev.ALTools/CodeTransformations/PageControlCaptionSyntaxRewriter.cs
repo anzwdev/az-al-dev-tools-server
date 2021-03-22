@@ -56,7 +56,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                 PropertySyntax propertySyntax = node.GetProperty("Caption");
                 if ((propertySyntax == null) || (String.IsNullOrWhiteSpace(propertySyntax.Value.ToString())))
                 {
-                    string caption = node.GetNameStringValue();
+                    string caption = node.GetNameStringValue().RemovePrefixSuffix(this.Project.MandatoryPrefixes, this.Project.MandatorySuffixes, this.Project.MandatoryAffixes);
                     if (!String.IsNullOrWhiteSpace(caption))
                     {
                         PropertySyntax newPropertySyntax = this.CreateCaptionProperty(node, caption);
@@ -78,7 +78,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                 PropertySyntax propertySyntax = node.GetProperty("Caption");
                 if ((propertySyntax == null) || (String.IsNullOrWhiteSpace(propertySyntax.Value.ToString())))
                 {
-                    string caption = node.GetNameStringValue();
+                    string caption = node.GetNameStringValue().RemovePrefixSuffix(this.Project.MandatoryPrefixes, this.Project.MandatorySuffixes, this.Project.MandatoryAffixes);
                     if (!String.IsNullOrWhiteSpace(caption))
                     {
                         PropertySyntax newPropertySyntax = this.CreateCaptionProperty(node, caption);
@@ -100,7 +100,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                 PropertySyntax propertySyntax = node.GetProperty("Caption");
                 if ((propertySyntax == null) || (String.IsNullOrWhiteSpace(propertySyntax.Value.ToString())))
                 {
-                    string caption = node.GetNameStringValue();
+                    string caption = node.GetNameStringValue().RemovePrefixSuffix(this.Project.MandatoryPrefixes, this.Project.MandatorySuffixes, this.Project.MandatoryAffixes);
                     if (!String.IsNullOrWhiteSpace(caption))
                     {
                         PropertySyntax newPropertySyntax = this.CreateCaptionProperty(node, caption);
@@ -124,6 +124,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                     string caption = ALSyntaxHelper.DecodeName(node.PartName.ToString());
                     if (String.IsNullOrWhiteSpace(caption))
                         caption = node.GetNameStringValue();
+                    caption = caption.RemovePrefixSuffix(this.Project.MandatoryPrefixes, this.Project.MandatorySuffixes, this.Project.MandatoryAffixes);
                     if (!String.IsNullOrWhiteSpace(caption))
                     {
                         PropertySyntax newPropertySyntax = this.CreateCaptionProperty(node, caption);

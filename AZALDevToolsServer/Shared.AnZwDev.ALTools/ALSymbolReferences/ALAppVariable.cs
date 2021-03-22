@@ -22,9 +22,9 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return ALSymbolKind.VariableDeclaration;
         }
 
-        protected override ALSymbolInformation CreateMainALSymbol()
+        protected override ALSymbol CreateMainALSymbol()
         {
-            ALSymbolInformation symbol = base.CreateMainALSymbol();
+            ALSymbol symbol = base.CreateMainALSymbol();
             if (this.TypeDefinition != null)
                 symbol.fullName = ALSyntaxHelper.EncodeName(this.Name) + ": " + this.TypeDefinition.GetSourceCode();
             return symbol;

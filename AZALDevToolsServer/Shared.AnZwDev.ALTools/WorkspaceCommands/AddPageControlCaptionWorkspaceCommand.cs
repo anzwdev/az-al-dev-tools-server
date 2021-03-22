@@ -1,5 +1,6 @@
 ﻿using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.CodeTransformations;
+using AnZwDev.ALTools.Extensions;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         public static string SetActionGroupsCaptionsParameterName = "setActionGroupsCaptions";
         public static string SetPartsCaptionsParameterName = "setPartsCaptions";
         public static string SetFieldsCaptionsParameterName = "setFieldsCaptions";
-        
+
         public AddPageControlCaptionWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "addPageControlCaptions")
         {
         }
@@ -23,16 +24,11 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         protected override void SetParameters(string sourceCode, string path, TextSpan span, Dictionary<string, string> parameters)
         {
             base.SetParameters(sourceCode, path, span, parameters);
-            this.SyntaxRewriter.SetActionsCaptions = this.GetBoolParameter(parameters, SetActionsCaptionsParameterName);
-            this.SyntaxRewriter.SetGroupsCaptions = this.GetBoolParameter(parameters, SetGroupsCaptionsParameterName);
-            this.SyntaxRewriter.SetActionGroupsCaptions = this.GetBoolParameter(parameters, SetActionGroupsCaptionsParameterName);
-            this.SyntaxRewriter.SetPartsCaptions = this.GetBoolParameter(parameters, SetPartsCaptionsParameterName);
-            this.SyntaxRewriter.SetFieldsCaptions = this.GetBoolParameter(parameters, SetFieldsCaptionsParameterName);
-        }
-
-        private bool GetBoolParameter(Dictionary<string, string> parameters, string value)
-        {
-            return ((parameters.ContainsKey(value)) && (parameters[value].ToLower() == "true"));
+            this.SyntaxRewriter.SetActionsCaptions = parameters.GetBoolValue(SetActionsCaptionsParameterName);
+            this.SyntaxRewriter.SetGroupsCaptions = parameters.GetBoolValue(SetGroupsCaptionsParameterName);
+            this.SyntaxRewriter.SetActionGroupsCaptions = parameters.GetBoolValue(SetActionGroupsCaptionsParameterName);
+            this.SyntaxRewriter.SetPartsCaptions = parameters.GetBoolValue(SetPartsCaptionsParameterName);
+            this.SyntaxRewriter.SetFieldsCaptions = parameters.GetBoolValue(SetFieldsCaptionsParameterName);
         }
 
     }

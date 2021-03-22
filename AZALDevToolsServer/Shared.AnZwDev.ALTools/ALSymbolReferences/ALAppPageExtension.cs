@@ -24,14 +24,14 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return ALSymbolKind.PageExtensionObject;
         }
 
-        protected override ALSymbolInformation CreateMainALSymbol()
+        protected override ALSymbol CreateMainALSymbol()
         {
-            ALSymbolInformation symbol = base.CreateMainALSymbol();
+            ALSymbol symbol = base.CreateMainALSymbol();
             symbol.extends = this.TargetObject;
             return symbol;
         }
 
-        protected override void AddChildALSymbols(ALSymbolInformation symbol)
+        protected override void AddChildALSymbols(ALSymbol symbol)
         {
             this.ControlChanges?.AddToALSymbol(symbol, ALSymbolKind.PageExtensionLayout, "layout");
             this.ActionChanges?.AddToALSymbol(symbol, ALSymbolKind.PageExtensionActionList, "actions");

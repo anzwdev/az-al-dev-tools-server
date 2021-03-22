@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
 using AnZwDev.ALTools.ALSymbolReferences;
+using AnZwDev.ALTools.Extensions;
 
 namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 {
@@ -11,6 +12,12 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
         [JsonProperty("dataType")]
         public string DataType { get; set; }
+
+        [JsonProperty("fieldClass")]
+        public string FieldClass { get; set; }
+
+        [JsonProperty("state")]
+        public ALAppTableFieldState State { get; set; }
 
         public TableFieldInformaton()
         {
@@ -24,13 +31,24 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             this.DataType = dataType;
         }
 
-        public TableFieldInformaton(ALAppTableField symbolReference)
+        public TableFieldInformaton(ALProject project, ALAppTableField symbolReference)
         {
             this.Id = symbolReference.Id;
             this.Name = symbolReference.Name;
-
             if (symbolReference.Properties != null)
+            {
                 this.Caption = symbolReference.Properties.GetValue("Caption");
+                this.FieldClass = symbolReference.Properties.GetValue("FieldClass");
+            }
+
+            if (String.IsNullOrWhiteSpace(this.Caption))
+            {
+                string caption = this.Name;
+                if (project != null)
+                    caption = caption.RemovePrefixSuffix(project.MandatoryPrefixes, project.MandatorySuffixes, project.MandatoryAffixes);
+                this.Caption = caption;
+            }
+
             this.DataType = symbolReference.TypeDefinition.Name;
         }
 

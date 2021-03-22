@@ -116,7 +116,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             if ((!String.IsNullOrWhiteSpace(pageInformation.Source)) && (getPageFields || getAvailableFields))
             {
                 TableInformationProvider tableInformationProvider = new TableInformationProvider();
-                List<TableFieldInformaton> allTableFieldsList = tableInformationProvider.GetTableFields(project, pageInformation.Source);
+                List<TableFieldInformaton> allTableFieldsList = tableInformationProvider.GetTableFields(project, pageInformation.Source, false, false);
 
                 Dictionary<string, TableFieldInformaton> availableTableFieldsDict = allTableFieldsList.ToDictionary();
 

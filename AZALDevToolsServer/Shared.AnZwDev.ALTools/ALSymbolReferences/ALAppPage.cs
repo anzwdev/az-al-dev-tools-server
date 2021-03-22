@@ -22,7 +22,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return ALSymbolKind.PageObject;
         }
 
-        protected override void AddChildALSymbols(ALSymbolInformation symbol)
+        protected override void AddChildALSymbols(ALSymbol symbol)
         {
             this.Controls?.AddToALSymbol(symbol, ALSymbolKind.PageLayout, "layout");
             this.Actions?.AddToALSymbol(symbol, ALSymbolKind.PageActionList, "actions");

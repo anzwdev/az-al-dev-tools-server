@@ -34,7 +34,7 @@ namespace AnZwDev.ALTools.Server.Handlers
             }
             catch (Exception e)
             {
-                response.root = new ALSymbolInformation();
+                response.root = new ALSymbol();
                 response.root.fullName = e.Message;
             }
 

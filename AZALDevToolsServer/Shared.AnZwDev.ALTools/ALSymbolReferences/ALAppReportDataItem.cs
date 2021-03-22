@@ -23,15 +23,15 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return ALSymbolKind.ReportDataItem;
         }
 
-        protected override ALSymbolInformation CreateMainALSymbol()
+        protected override ALSymbol CreateMainALSymbol()
         {
-            ALSymbolInformation symbol = base.CreateMainALSymbol();
+            ALSymbol symbol = base.CreateMainALSymbol();
             if (!String.IsNullOrWhiteSpace(this.RelatedTable))
                 symbol.fullName = ALSyntaxHelper.EncodeName(this.Name) + ": " + ALSyntaxHelper.EncodeName(this.RelatedTable);
             return symbol;
         }
 
-        protected override void AddChildALSymbols(ALSymbolInformation symbol)
+        protected override void AddChildALSymbols(ALSymbol symbol)
         {
             this.Columns?.AddToALSymbol(symbol);
             this.DataItems?.AddToALSymbol(symbol);

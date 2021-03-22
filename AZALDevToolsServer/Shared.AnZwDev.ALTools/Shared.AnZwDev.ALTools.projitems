@@ -57,6 +57,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppTable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppTableExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppTableField.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppTableFieldState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppTableKey.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppTypeDefinition.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppVariable.cs" />
@@ -75,7 +76,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\Serialization\NavxPackage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALFullSyntaxTree.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALFullSyntaxTreeNode.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSymbolInformation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSymbol.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSymbolKind.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSymbolKindExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSymbolLibrariesCollection.cs" />
@@ -95,6 +96,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\SymbolReaders\ALFullSyntaxTreeReader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\SymbolReaders\ALSymbolInfoSyntaxTreeReader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\SymbolReaders\ALSyntaxTreeSymbolsReader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeAnalysis\AppSourceCopSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeAnalysis\CodeAnalyzerRule.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeAnalysis\CodeAnalyzersLibrariesCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeAnalysis\CodeAnalyzersLibrary.cs" />
@@ -119,6 +121,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\PathUtils.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\VersionNumber.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\AlphanumComparatorFast .cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\DictionaryExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\EnumExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\MethodInfoExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\StringExtensions.cs" />

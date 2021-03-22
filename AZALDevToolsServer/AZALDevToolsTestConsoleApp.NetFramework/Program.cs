@@ -31,7 +31,7 @@ namespace AZALDevToolsTestConsoleApp.NetFramework
             //string filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\small\\Pag50000.MySmallTableList.al";
             string filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC16\\MyPage.al";
             ALSymbolInfoSyntaxTreeReader syntaxTreeReader = new ALSymbolInfoSyntaxTreeReader(true);
-            ALSymbolInformation symbols = syntaxTreeReader.ProcessSourceFile(filePath);
+            ALSymbol symbols = syntaxTreeReader.ProcessSourceFile(filePath);
 
             ALFullSyntaxTree syntaxTree = new ALFullSyntaxTree();
             syntaxTree.Load("", filePath);

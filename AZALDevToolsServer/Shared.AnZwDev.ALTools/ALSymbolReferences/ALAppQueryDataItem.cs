@@ -24,16 +24,16 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return ALSymbolKind.QueryDataItem;
         }
 
-        protected override ALSymbolInformation CreateMainALSymbol()
+        protected override ALSymbol CreateMainALSymbol()
         {
-            ALSymbolInformation symbol = base.CreateMainALSymbol();
+            ALSymbol symbol = base.CreateMainALSymbol();
             symbol.fullName = symbol.kind.ToName() + " " + ALSyntaxHelper.EncodeName(this.Name);
             if (!String.IsNullOrWhiteSpace(this.RelatedTable))
                 symbol.fullName = symbol.fullName + ": Table " + this.RelatedTable;
             return symbol;
         }
 
-        protected override void AddChildALSymbols(ALSymbolInformation symbol)
+        protected override void AddChildALSymbols(ALSymbol symbol)
         {
             this.DataItems?.AddToALSymbol(symbol);
             this.Columns?.AddToALSymbol(symbol);

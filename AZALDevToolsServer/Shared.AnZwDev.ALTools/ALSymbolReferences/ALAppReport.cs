@@ -22,7 +22,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return ALSymbolKind.ReportObject;
         }
 
-        protected override void AddChildALSymbols(ALSymbolInformation symbol)
+        protected override void AddChildALSymbols(ALSymbol symbol)
         {
             this.DataItems?.AddToALSymbol(symbol, ALSymbolKind.ReportDataSetSection, "dataset");
             if (this.RequestPage != null)

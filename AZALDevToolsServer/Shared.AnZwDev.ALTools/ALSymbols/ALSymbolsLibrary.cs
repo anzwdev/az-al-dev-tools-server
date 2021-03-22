@@ -9,13 +9,13 @@ namespace AnZwDev.ALTools.ALSymbols
     public class ALSymbolsLibrary
     {
 
-        public ALSymbolInformation Root { get; set; }
+        public ALSymbol Root { get; set; }
 
         public ALSymbolsLibrary() : this(null)
         {
         }
 
-        public ALSymbolsLibrary(ALSymbolInformation rootSymbol)
+        public ALSymbolsLibrary(ALSymbol rootSymbol)
         {
             this.Root = rootSymbol;
         }
@@ -25,17 +25,17 @@ namespace AnZwDev.ALTools.ALSymbols
             return false;
         }
 
-        public ALSymbolInformation GetObjectsTree()
+        public ALSymbol GetObjectsTree()
         {
             return this.Root.GetObjectsTree();
         }
 
-        public List<ALSymbolInformation> GetSymbolsListByPath(int[][] paths, ALSymbolKind kind)
+        public List<ALSymbol> GetSymbolsListByPath(int[][] paths, ALSymbolKind kind)
         {
-            List<ALSymbolInformation> symbolsList = new List<ALSymbolInformation>();
+            List<ALSymbol> symbolsList = new List<ALSymbol>();
             for (int i=0; i<paths.Length;i++)
             {
-                ALSymbolInformation symbol = this.GetSymbolByPath(paths[i]);
+                ALSymbol symbol = this.GetSymbolByPath(paths[i]);
                 if ((symbol != null) && (
                     (kind == ALSymbolKind.Undefined) ||
                     (symbol.kind == kind) ||
@@ -45,11 +45,11 @@ namespace AnZwDev.ALTools.ALSymbols
             return symbolsList;
         }
 
-        public ALSymbolInformation GetSymbolByPath(int[] path)
+        public ALSymbol GetSymbolByPath(int[] path)
         {
             if ((this.Root != null) && (path != null) && (path.Length > 0))
             {
-                ALSymbolInformation symbol = this.Root;
+                ALSymbol symbol = this.Root;
                 for (int i = path.Length - 1; i >= 0; i--)
                 {
                     if ((symbol.childSymbols == null) || (path[i] >= symbol.childSymbols.Count))

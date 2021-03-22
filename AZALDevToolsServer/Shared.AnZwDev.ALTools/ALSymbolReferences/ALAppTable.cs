@@ -24,7 +24,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return ALSymbolKind.TableObject;
         }
 
-        protected override void AddChildALSymbols(ALSymbolInformation symbol)
+        protected override void AddChildALSymbols(ALSymbol symbol)
         {
             this.Fields?.AddToALSymbol(symbol, ALSymbolKind.FieldList, "fields");
             this.Keys?.AddToALSymbol(symbol, ALSymbolKind.KeyList, "keys", ALSymbolKind.PrimaryKey);

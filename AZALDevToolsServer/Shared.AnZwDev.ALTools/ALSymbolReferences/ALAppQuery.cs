@@ -21,7 +21,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return ALSymbolKind.QueryObject;
         }
 
-        protected override void AddChildALSymbols(ALSymbolInformation symbol)
+        protected override void AddChildALSymbols(ALSymbol symbol)
         {
             this.Elements?.AddToALSymbol(symbol, ALSymbolKind.QueryElements, "elements");
             base.AddChildALSymbols(symbol);

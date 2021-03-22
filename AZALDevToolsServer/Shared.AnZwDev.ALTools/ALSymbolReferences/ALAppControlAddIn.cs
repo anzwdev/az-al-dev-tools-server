@@ -17,7 +17,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return ALSymbolKind.ControlAddInObject;
         }
 
-        protected override void AddChildALSymbols(ALSymbolInformation symbol)
+        protected override void AddChildALSymbols(ALSymbol symbol)
         {
             this.Events?.AddToALSymbol(symbol);
             base.AddChildALSymbols(symbol);

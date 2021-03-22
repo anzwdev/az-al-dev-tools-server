@@ -16,9 +16,9 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         {
         }
 
-        protected override ALSymbolInformation CreateMainALSymbol()
+        protected override ALSymbol CreateMainALSymbol()
         {
-            ALSymbolInformation symbol = base.CreateMainALSymbol();
+            ALSymbol symbol = base.CreateMainALSymbol();
             symbol.extends = this.TargetObject;
             return symbol;
         }

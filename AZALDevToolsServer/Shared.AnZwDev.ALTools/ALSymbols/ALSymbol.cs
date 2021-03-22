@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AnZwDev.ALTools.ALSymbols
 {
-    public class ALSymbolInformation
+    public class ALSymbol
     {
         public int? id { get; set; }
         
@@ -32,7 +32,7 @@ namespace AnZwDev.ALTools.ALSymbols
         public string extends { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public List<ALSymbolInformation> childSymbols { get; set; }
+        public List<ALSymbol> childSymbols { get; set; }
         
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public Range range { get; set; }
@@ -46,7 +46,7 @@ namespace AnZwDev.ALTools.ALSymbols
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public bool? containsDiagnostics { get; set; }
 
-        public ALSymbolInformation()
+        public ALSymbol()
         {
             this.id = 0;
             this.childSymbols = null;
@@ -59,25 +59,25 @@ namespace AnZwDev.ALTools.ALSymbols
             this.containsDiagnostics = null;
         }
 
-        public ALSymbolInformation(ALSymbolKind kindValue, string nameValue) : this()
+        public ALSymbol(ALSymbolKind kindValue, string nameValue) : this()
         {
             this.kind = kindValue;
             this.name = nameValue;
             this.fullName = ALSyntaxHelper.EncodeName(nameValue);
         }
 
-        public ALSymbolInformation(ALSymbolKind kindValue, string nameValue, int? idValue) : this(kindValue, nameValue)
+        public ALSymbol(ALSymbolKind kindValue, string nameValue, int? idValue) : this(kindValue, nameValue)
         {
             if (idValue.HasValue)
                 this.id = idValue.Value;
         }
 
-        public void AddChildSymbol(ALSymbolInformation symbolInfo)
+        public void AddChildSymbol(ALSymbol symbolInfo)
         {
             if (symbolInfo == null)
                 return;
             if (this.childSymbols == null)
-                this.childSymbols = new List<ALSymbolInformation>();
+                this.childSymbols = new List<ALSymbol>();
             this.childSymbols.Add(symbolInfo);
         }
 
@@ -95,9 +95,9 @@ namespace AnZwDev.ALTools.ALSymbols
             }
         }
 
-        public ALSymbolInformation CreateCopy(bool withChildSymbols)
+        public ALSymbol CreateCopy(bool withChildSymbols)
         {
-            ALSymbolInformation symbol = new ALSymbolInformation();
+            ALSymbol symbol = new ALSymbol();
 
             symbol.id = this.id;
             symbol.name = this.name;
@@ -118,9 +118,9 @@ namespace AnZwDev.ALTools.ALSymbols
             return symbol;
         }
 
-        public ALSymbolInformation GetObjectsTree()
+        public ALSymbol GetObjectsTree()
         {
-            ALSymbolInformation symbol = this.CreateCopy(false);
+            ALSymbol symbol = this.CreateCopy(false);
             if ((!this.kind.IsObjectDefinition()) && (this.childSymbols != null))
             {
                 for (int i = 0; i < this.childSymbols.Count; i++)

@@ -37,16 +37,23 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
         #region Find table
 
-        protected ALAppTable FindTable(ALProject project, string name)
+        protected ALAppTable FindTable(ALProject project, string name, out ALProject sourceProject)
         {
+            sourceProject = null;
             ALAppTable table = FindTable(project.Symbols, name);
             if (table != null)
+            {
+                sourceProject = project;
                 return table;
+            }
             foreach (ALProjectDependency dependency in project.Dependencies)
             {
                 table = FindTable(dependency.Symbols, name);
                 if (table != null)
+                {
+                    sourceProject = dependency.SourceProject;
                     return table;
+                }
             }
             return null;
         }
@@ -100,17 +107,18 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
         #region Get table fields
 
-        public List<TableFieldInformaton> GetTableFields(ALProject project, string tableName)
+        public List<TableFieldInformaton> GetTableFields(ALProject project, string tableName, bool includeDisabled, bool includeObsolete)
         {
             List<TableFieldInformaton> fields = new List<TableFieldInformaton>();
 
             //find table
-            ALAppTable table = this.FindTable(project, tableName);
+            ALProject tableSourceProject;
+            ALAppTable table = this.FindTable(project, tableName, out tableSourceProject);
             if (table == null)
                 return fields;
 
-            //add fields from table extensions
-            this.AddFields(fields, table.Fields);
+            //add fields from table
+            this.AddFields(fields, tableSourceProject, table.Fields, includeDisabled, includeObsolete);
 
             //add table extension fields
             ALAppTableExtension tableExtension;
@@ -118,7 +126,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             {
                 tableExtension = FindTableExtension(dependency.Symbols, tableName);
                 if (tableExtension != null)
-                    this.AddFields(fields, tableExtension.Fields);
+                    this.AddFields(fields, dependency.SourceProject, tableExtension.Fields, includeDisabled, includeObsolete);
             }
 
             //add virtual system fields
@@ -127,13 +135,20 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             return fields;
         }
 
-        protected void AddFields(List<TableFieldInformaton> fields, ALAppElementsCollection<ALAppTableField> fieldReferencesList)
+        protected void AddFields(List<TableFieldInformaton> fields, ALProject project, ALAppElementsCollection<ALAppTableField> fieldReferencesList, bool includeDisabled, bool includeObsolete)
         {
             if (fieldReferencesList != null)
             {
                 foreach (ALAppTableField fieldReference in fieldReferencesList)
                 {
-                    fields.Add(new TableFieldInformaton(fieldReference));
+                    ALAppTableFieldState fieldState = fieldReference.GetFieldState();
+                    if ((fieldState == ALAppTableFieldState.Active) || 
+                        (fieldState == ALAppTableFieldState.ObsoletePending) || 
+                        ((fieldState == ALAppTableFieldState.ObsoleteRemoved) && (includeObsolete)) ||
+                        ((fieldState == ALAppTableFieldState.Disabled) && (includeDisabled)))
+                    {
+                        fields.Add(new TableFieldInformaton(project, fieldReference));
+                    }
                 }
             }
         }

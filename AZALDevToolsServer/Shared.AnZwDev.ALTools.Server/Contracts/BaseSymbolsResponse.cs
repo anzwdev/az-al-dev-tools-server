@@ -10,7 +10,7 @@ namespace AnZwDev.ALTools.Server.Contracts
     public class BaseSymbolsResponse
     {
 
-        public ALSymbolInformation root { get; set; }
+        public ALSymbol root { get; set; }
 
     }
 }

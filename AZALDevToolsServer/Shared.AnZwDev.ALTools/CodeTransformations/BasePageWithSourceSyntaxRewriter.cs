@@ -14,15 +14,11 @@ namespace AnZwDev.ALTools.CodeTransformations
     public class BasePageWithSourceSyntaxRewriter : ALSyntaxRewriter
     {
 
-        //public TypeInformationCollector TypeInformationCollector { get; }
-        //public TableTypeInformation CurrentTable { get; set; }
-
         protected TableInformationProvider TableInformationProvider { get; }
         protected List<TableFieldInformaton> TableFields { get; set; }
 
         public BasePageWithSourceSyntaxRewriter()
         {
-            //this.TypeInformationCollector = new TypeInformationCollector();
             this.TableInformationProvider = new TableInformationProvider();
             this.TableFields = null;
         }
@@ -54,7 +50,7 @@ namespace AnZwDev.ALTools.CodeTransformations
             {
                 string sourceTable = ALSyntaxHelper.DecodeName(sourceTablePropertyValue.ToString());
                 if (!String.IsNullOrWhiteSpace(sourceTable))
-                    this.TableFields = this.TableInformationProvider.GetTableFields(this.Project, sourceTable);
+                    this.TableFields = this.TableInformationProvider.GetTableFields(this.Project, sourceTable, false, false);
             }
         }
 
@@ -81,7 +77,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                         }
                     }
                     if (String.IsNullOrWhiteSpace(caption))
-                        caption = source.Replace("\"", "");
+                        caption = source.Replace("\"", "").RemovePrefixSuffix(this.Project.MandatoryPrefixes, this.Project.MandatorySuffixes, this.Project.MandatoryAffixes);
                 }
             }
             return caption;

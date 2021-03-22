@@ -1,4 +1,4 @@
-﻿using AnZwDev.ALTools.Server.Contracts;
+﻿using AnZwDev.ALTools.Server.Contracts.ChangeTracking;
 using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
 using System;
 using System.Collections.Generic;

@@ -19,9 +19,9 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return ALSymbolKind.ReportColumn;
         }
 
-        protected override ALSymbolInformation CreateMainALSymbol()
+        protected override ALSymbol CreateMainALSymbol()
         {
-            ALSymbolInformation symbol = base.CreateMainALSymbol();
+            ALSymbol symbol = base.CreateMainALSymbol();
             if (!String.IsNullOrWhiteSpace(this.SourceExpression))
                 symbol.fullName = ALSyntaxHelper.EncodeName(this.Name) + ": " + this.SourceExpression;
             return symbol;

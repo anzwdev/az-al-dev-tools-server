@@ -6,6 +6,8 @@ using System.IO;
 using AnZwDev.ALTools.Core;
 using AnZwDev.ALTools.ALSymbolReferences.Compiler;
 using AnZwDev.ALTools.ALSymbolReferences.Serialization;
+using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
+using AnZwDev.ALTools.ALSymbols;
 
 namespace AnZwDev.ALTools.Workspace
 {
@@ -144,11 +146,12 @@ namespace AnZwDev.ALTools.Workspace
                 project.OnDocumentSave(path);
         }
 
-        public void OnDocumentChange(string path, string content)
+        public ALSymbol OnDocumentChange(string path, string content, bool returnSymbols)
         {
             ALProject project = this.FindProject(path);
             if (project != null)
-                project.OnDocumentChange(path, content);
+                return project.OnDocumentChange(path, content, returnSymbols);
+            return null;
         }
 
         public void OnFilesCreate(string[] paths)

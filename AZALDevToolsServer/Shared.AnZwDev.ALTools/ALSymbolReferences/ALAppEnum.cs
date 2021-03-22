@@ -21,7 +21,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return ALSymbolKind.EnumType;
         }
 
-        protected override void AddChildALSymbols(ALSymbolInformation symbol)
+        protected override void AddChildALSymbols(ALSymbol symbol)
         {
             this.Values?.AddToALSymbol(symbol);
             base.AddChildALSymbols(symbol);

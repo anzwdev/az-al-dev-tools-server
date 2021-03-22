@@ -10,7 +10,7 @@ namespace AnZwDev.ALTools.Server.Contracts
     public class LibrarySymbolsDetailsResponse
     {
 
-        public List<ALSymbolInformation> symbols { get; set; }
+        public List<ALSymbol> symbols { get; set; }
 
     }
 }
