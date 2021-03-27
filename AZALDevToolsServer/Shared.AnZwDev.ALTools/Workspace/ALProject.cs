@@ -199,7 +199,7 @@ namespace AnZwDev.ALTools.Workspace
         {
             foreach (ALProjectFile file in this.Files)
             {
-                file.CompileSymbolReferences();
+                file.CompileSymbolReferences(true);
             }
         }
 
@@ -209,8 +209,7 @@ namespace AnZwDev.ALTools.Workspace
             {
                 if (file.IsDirty)
                 {
-                    file.CompileSymbolReferences();
-                    file.IsDirty = false;
+                    file.CompileSymbolReferences(true);
                 }
             }
         }

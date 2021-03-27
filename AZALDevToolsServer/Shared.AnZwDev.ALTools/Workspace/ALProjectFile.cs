@@ -87,12 +87,13 @@ namespace AnZwDev.ALTools.Workspace
 
         #region Symbols compilation
 
-        public void CompileSymbolReferences()
+        public void CompileSymbolReferences(bool cleanDirtyState)
         {
             if ((this.IsDirty) && (_syntaxTree != null))
             {
                 this.Symbols = this.Project.Workspace.SymbolReferenceCompiler.CreateObjectsList(_syntaxTree);
-                this.IsDirty = false;
+                if (cleanDirtyState)
+                    this.IsDirty = false;
             }
             else
                 this.CompileSymbolReferences(this.ReadAllText());
@@ -109,7 +110,7 @@ namespace AnZwDev.ALTools.Workspace
         public void OnAdd()
         {
             this.IsDirty = false;
-            this.CompileSymbolReferences();
+            this.CompileSymbolReferences(true);
         }
 
         public void OnOpen()
@@ -119,7 +120,7 @@ namespace AnZwDev.ALTools.Workspace
         public void OnClose()
         {
             this.IsDirty = false;
-            this.CompileSymbolReferences();
+            this.CompileSymbolReferences(true);
         }
 
         public ALSymbol OnChange(string content, bool returnSymbols)
@@ -128,6 +129,7 @@ namespace AnZwDev.ALTools.Workspace
             if (content == null)
                 content = this.ReadAllText();
             _syntaxTree = SyntaxTree.ParseObjectText(content);
+            this.CompileSymbolReferences(false);
 
             if (returnSymbols)
                 return this.CreateSymbols();
@@ -158,7 +160,7 @@ namespace AnZwDev.ALTools.Workspace
         public void OnSave()
         {
             this.IsDirty = false;
-            this.CompileSymbolReferences();
+            this.CompileSymbolReferences(true);
         }
 
         public void OnDelete()

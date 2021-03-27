@@ -152,6 +152,40 @@ namespace AnZwDev.ALTools.ALSymbols
             return source;
         }
 
+        public static ALMemberAccessExpression DecodeMemberAccessExpression(string expression)
+        {
+            expression = expression.Trim();
+            int pos = FindMemberAccessSeparator(expression);
+            if (pos < 0)
+                return new ALMemberAccessExpression(DecodeName(expression), null);
+
+            if (pos == (expression.Length - 1))
+                return new ALMemberAccessExpression(DecodeName(expression.Substring(0, pos).Trim()), null);
+
+            return new ALMemberAccessExpression(
+                DecodeName(expression.Substring(0, pos).Trim()),
+                DecodeName(expression.Substring(pos + 1).Trim()));
+        }
+
+        public static int FindMemberAccessSeparator(string expression)
+        {
+            bool inName = false;
+            for (int i=0; i<expression.Length; i++)
+            {
+                switch (expression[i])
+                {
+                    case '.':
+                        if (!inName)
+                            return i;
+                        break;
+                    case '"':
+                        inName = !inName;
+                        break;
+                }
+            }
+            return -1;
+        }
+
 
     }
 }

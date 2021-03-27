@@ -159,6 +159,10 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                     SafeProcessPageChartPartNode(symbol, node);
                     break;
 #endif
+                case ConvertedSyntaxKind.XmlPortFieldElement:
+                case ConvertedSyntaxKind.XmlPortFieldAttribute:
+                    ProcessXmlPortFieldNode(symbol, (XmlPortFieldNodeSyntax)node);
+                    break;
                 case ConvertedSyntaxKind.PageField:
                     ProcessPageFieldNode(symbol, (PageFieldSyntax)node);
                     break;
@@ -245,7 +249,9 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
         protected void ProcessPageFieldNode(ALSymbol symbol, PageFieldSyntax syntax)
         {
             if (syntax.Expression != null)
+            {
                 symbol.source = ALSyntaxHelper.DecodeName(syntax.Expression.ToString());
+            }
         }
 
         protected void ProcessPagePartNode(ALSymbol symbol, PagePartSyntax syntax)
@@ -325,6 +331,14 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                 ": Record " + syntax.SourceTable.ToFullString();
             symbol.source = ALSyntaxHelper.DecodeName(syntax.SourceTable.ToFullString());
             this.ProcessNodeContentRange(syntaxTree, symbol, syntax, syntax.OpenBraceToken, syntax.CloseBraceToken);
+        }
+
+        protected void ProcessXmlPortFieldNode(ALSymbol symbol, XmlPortFieldNodeSyntax syntax)
+        {
+            if (syntax.SourceField != null)
+            {
+                symbol.source = ALSyntaxHelper.DecodeName(syntax.SourceField.ToString());
+            }
         }
 
         protected void ProcessReportDataItemNode(SyntaxTree syntaxTree, ALSymbol symbol, ReportDataItemSyntax syntax)

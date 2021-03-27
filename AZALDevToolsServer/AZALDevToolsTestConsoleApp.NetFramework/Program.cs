@@ -54,6 +54,9 @@ namespace AZALDevToolsTestConsoleApp.NetFramework
             PageInformationProvider pageInformationProvider = new PageInformationProvider();
             PageInformation pageInformation = pageInformationProvider.GetPageDetails(project, "Test3", true, true);
 
+            XmlPortInformationProvider xmlPortInformationProvider = new XmlPortInformationProvider();
+            XmlPortTableElementInformation xmlPortTableElementInformation = xmlPortInformationProvider.GetXmlPortTableElementDetails(project, "wefew", "Item", true, true);
+
             Console.WriteLine("Done");
             Console.ReadKey();
         }

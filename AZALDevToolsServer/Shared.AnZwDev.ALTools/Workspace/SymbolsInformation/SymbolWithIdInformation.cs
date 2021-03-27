@@ -18,7 +18,8 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
         public SymbolWithIdInformation(ALAppElementWithNameId symbol)
         {
-            
+            this.Id = symbol.Id;
+            this.Name = symbol.Name;
         }
 
     }

@@ -9,6 +9,7 @@
     <Import_RootNamespace>AnZwDev.ALTools</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)ALAppXmlPortNodeKind.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALDevToolsServer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppAttributeArgument.cs" />
@@ -62,6 +63,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppTypeDefinition.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppVariable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppXmlPort.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppXmlPortNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\Compiler\ALSymbolReferenceCompiler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\IALAppElementsCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\Serialization\AppPackageDataStream.cs" />
@@ -76,6 +78,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\Serialization\NavxPackage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALFullSyntaxTree.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALFullSyntaxTreeNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALMemberAccessExpression.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSymbol.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSymbolKind.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSymbolKindExtension.cs" />
@@ -180,5 +183,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\TableFieldInformaton.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\TableInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\TableInformationProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\XmlPortInformation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\XmlPortInformationProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\XmlPortTableElementInformation.cs" />
   </ItemGroup>
 </Project>

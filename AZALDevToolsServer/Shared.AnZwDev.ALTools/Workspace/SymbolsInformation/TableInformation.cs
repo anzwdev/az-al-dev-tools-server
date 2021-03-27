@@ -12,10 +12,8 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
         {
         }
 
-        public TableInformation(ALAppTable table)
+        public TableInformation(ALAppTable table): base(table)
         {
-            this.Id = table.Id;
-            this.Name = table.Name;
             if (table.Properties != null)
                 this.Caption = table.Properties.GetValue("Caption");
         }

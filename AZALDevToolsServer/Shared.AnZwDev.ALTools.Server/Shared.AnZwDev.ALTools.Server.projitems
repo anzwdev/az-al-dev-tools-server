@@ -53,6 +53,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetTableFieldsListResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetTablesListRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetTablesListResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetXmlPortTableElementDetailsRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetXmlPortTableElementDetailsResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\WorkspaceCommandRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\WorkspaceCommandResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\ChangeTracking\WorkspaceFoldersChangeNotificationRequest.cs" />
@@ -87,6 +89,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\SymbolsInformation\GetPageDetailsRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\SymbolsInformation\GetTableFieldsListRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\SymbolsInformation\GetTablesListRequestHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\SymbolsInformation\GetXmlPortTableElementDetailsRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\WorkspaceCommandRequestHandler.cs" />
   </ItemGroup>
 </Project>

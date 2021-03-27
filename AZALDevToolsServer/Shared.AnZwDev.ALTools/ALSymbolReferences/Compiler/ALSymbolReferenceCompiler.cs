@@ -508,9 +508,67 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Compiler
                 alObject.RequestPage = this.CreateRequestPage(node.XmlPortRequestPage);
             
             //add elements
+            if ((node.XmlPortSchema != null) && (node.XmlPortSchema.XmlPortSchema != null))
+            {
+                alObject.Schema = new ALAppElementsCollection<ALAppXmlPortNode>();
+                foreach (XmlPortNodeSyntax childNode in node.XmlPortSchema.XmlPortSchema)
+                {
+                    alObject.Schema.Add(CreateXmlPortNode(childNode));
+                }
+            }
 
             return alObject;
         }
+
+        protected ALAppXmlPortNode CreateXmlPortNode(XmlPortNodeSyntax node)
+        {
+            ALAppXmlPortNode alXmlPortNode = new ALAppXmlPortNode();
+            alXmlPortNode.Name = node.GetNameStringValue();
+            
+            ConvertedSyntaxKind kind = node.Kind.ConvertToLocalType();
+            switch (kind)
+            {
+                case ConvertedSyntaxKind.XmlPortFieldElement:
+                    alXmlPortNode.Kind = ALAppXmlPortNodeKind.FieldElement;
+                    ProcessXmlPortFieldNode(alXmlPortNode, (XmlPortFieldNodeSyntax)node);
+                    break;
+                case ConvertedSyntaxKind.XmlPortFieldAttribute:
+                    alXmlPortNode.Kind = ALAppXmlPortNodeKind.FieldAttribute;
+                    ProcessXmlPortFieldNode(alXmlPortNode, (XmlPortFieldNodeSyntax)node);
+                    break;
+                case ConvertedSyntaxKind.XmlPortTableElement:
+                    alXmlPortNode.Kind = ALAppXmlPortNodeKind.TableElement;
+                    ProcessXmlPortTableElement(alXmlPortNode, (XmlPortTableElementSyntax)node);
+                    break;
+                case ConvertedSyntaxKind.XmlPortTextElement:
+                    alXmlPortNode.Kind = ALAppXmlPortNodeKind.TextElement;
+                    break;
+            }
+
+            if ((node.Schema != null) && (node.Schema.Count > 0))
+            {
+                alXmlPortNode.Schema = new ALAppElementsCollection<ALAppXmlPortNode>();
+                foreach (XmlPortNodeSyntax childNode in node.Schema)
+                {
+                    alXmlPortNode.Schema.Add(CreateXmlPortNode(childNode));
+                }
+            }
+
+            return alXmlPortNode;
+        }
+
+        protected void ProcessXmlPortFieldNode(ALAppXmlPortNode alXmlPortNode, XmlPortFieldNodeSyntax node)
+        {
+            if (node.SourceField != null)
+                alXmlPortNode.Expression = ALSyntaxHelper.DecodeName(node.SourceField.ToString()).Trim();
+        }
+
+        protected void ProcessXmlPortTableElement(ALAppXmlPortNode alAppXmlPortNode, XmlPortTableElementSyntax node)
+        {
+            if (node.SourceTable != null)
+                alAppXmlPortNode.Expression = ALSyntaxHelper.DecodeName(node.SourceTable.ToString()).Trim();
+        }
+
 
 #endregion
 

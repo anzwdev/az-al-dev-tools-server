@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using AnZwDev.ALTools.ALSymbolReferences;
+using AnZwDev.ALTools.ALSymbols;
 
 namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 {
@@ -55,7 +56,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             return null;
         }
 
-        protected ALAppReport ALAppReport(ALProject project, int id)
+        protected ALAppReport FindReport(ALProject project, int id)
         {
             ALAppReport report = FindReport(project.Symbols, id);
             if (report != null)
@@ -89,16 +90,63 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
         #endregion
 
-        #region Get report details
-
-
-
-        #endregion
-
         #region Get report data item details
 
+        public ReportDataItemInformation GetReportDataItemInformationDetails(ALProject project, string reportName, string dataItemName, bool getDataItemFields, bool getAvailableFields)
+        {
+            ALAppReport report = this.FindReport(project, reportName);
+            if ((report == null) || (report.DataItems == null))
+                return null;
+            ALAppReportDataItem reportDataItem = report.FindDataItem(dataItemName);
+            if (reportDataItem == null)
+                return null;
 
-        
+            ReportDataItemInformation reportDataItemInformation = new ReportDataItemInformation(reportDataItem);
+            if ((!String.IsNullOrWhiteSpace(reportDataItem.RelatedTable)) && (getDataItemFields || getAvailableFields))
+            {
+                TableInformationProvider tableInformationProvider = new TableInformationProvider();
+                List<TableFieldInformaton> allTableFieldsList = tableInformationProvider.GetTableFields(project, reportDataItem.RelatedTable, false, false);
+
+                Dictionary<string, TableFieldInformaton> availableTableFieldsDict = allTableFieldsList.ToDictionary();
+                List<TableFieldInformaton> reportDataItemFields = new List<TableFieldInformaton>();
+
+                if (reportDataItem.Columns != null)
+                    this.CollectReportDataItemFields(reportDataItem.Columns, availableTableFieldsDict, reportDataItemFields);
+
+                if (getDataItemFields)
+                    reportDataItemInformation.DataItemTableFields = reportDataItemFields;
+                if (getAvailableFields)
+                    reportDataItemInformation.AvailableTableFields = availableTableFieldsDict.Values.ToList();
+            }
+
+            return reportDataItemInformation;
+        }
+
+        protected void CollectReportDataItemFields(string dataItemName, ALAppElementsCollection<ALAppReportColumn> columnsList, Dictionary<string, TableFieldInformaton> availableTableFieldsDict, List<TableFieldInformaton> reportDataItemFields)
+        {
+            for (int i = 0; i < columnsList.Count; i++)
+            {
+                ALAppReportColumn reportColumn = columnsList[i];
+                if (!String.IsNullOrWhiteSpace(reportColumn.SourceExpression))
+                {
+                    ALMemberAccessExpression memberAccessExpression = ALSyntaxHelper.DecodeMemberAccessExpression(reportColumn.SourceExpression);
+                    bool isMemberAccess = !String.IsNullOrWhiteSpace(memberAccessExpression.Expression);
+
+                    string sourceExpression = null;
+                    if (!isMemberAccess)
+                        sourceExpression = memberAccessExpression.Name.ToLower();
+                    else if (dataItemName.Equals(memberAccessExpression.Name, StringComparison.CurrentCultureIgnoreCase))
+                        sourceExpression = memberAccessExpression.Expression.ToLower();
+
+                    if ((!String.IsNullOrWhiteSpace(sourceExpression)) && (availableTableFieldsDict.ContainsKey(sourceExpression)))
+                    {
+                        reportDataItemFields.Add(availableTableFieldsDict[sourceExpression]);
+                        availableTableFieldsDict.Remove(sourceExpression);
+                    }
+                }
+            }
+        }
+
         #endregion
 
     }
