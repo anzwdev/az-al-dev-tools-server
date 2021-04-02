@@ -57,8 +57,13 @@ namespace AnZwDev.ALTools.Server
             this.Dispatcher.RegisterRequestHandler(new GetCodeunitsListRequestHandler(this.ALDevToolsServer));
             this.Dispatcher.RegisterRequestHandler(new GetInterfacesListRequestHandler(this.ALDevToolsServer));
             this.Dispatcher.RegisterRequestHandler(new GetEnumsListRequestHandler(this.ALDevToolsServer));
+            this.Dispatcher.RegisterRequestHandler(new GetReportsListRequestHandler(this.ALDevToolsServer));
+            this.Dispatcher.RegisterRequestHandler(new GetQueriesListRequestHandler(this.ALDevToolsServer));
+            this.Dispatcher.RegisterRequestHandler(new GetXmlPortsListRequestHandler(this.ALDevToolsServer));
             this.Dispatcher.RegisterRequestHandler(new GetPageDetailsRequestHandler(this.ALDevToolsServer));
             this.Dispatcher.RegisterRequestHandler(new GetXmlPortTableElementDetailsRequestHandler(this.ALDevToolsServer));
+            this.Dispatcher.RegisterRequestHandler(new GetReportDataItemDetailsRequestHandler(this.ALDevToolsServer));
+            this.Dispatcher.RegisterRequestHandler(new GetQueryDataItemDetailsRequestHandler(this.ALDevToolsServer));
 
             //standard notification handlers
             this.Dispatcher.RegisterNotificationHandler(new ExitNotificationHandler(this));

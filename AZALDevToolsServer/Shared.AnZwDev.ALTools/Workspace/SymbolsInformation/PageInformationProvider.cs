@@ -105,7 +105,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
         #region Get page details
 
-        public PageInformation GetPageDetails(ALProject project, string pageName, bool getPageFields, bool getAvailableFields)
+        public PageInformation GetPageDetails(ALProject project, string pageName, bool getExistingFields, bool getAvailableFields)
         {
             ALAppPage pageSymbol = this.FindPage(project, pageName);
             if (pageSymbol == null)
@@ -113,7 +113,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             PageInformation pageInformation = new PageInformation(pageSymbol);
 
             //collect fields
-            if ((!String.IsNullOrWhiteSpace(pageInformation.Source)) && (getPageFields || getAvailableFields))
+            if ((!String.IsNullOrWhiteSpace(pageInformation.Source)) && (getExistingFields || getAvailableFields))
             {
                 TableInformationProvider tableInformationProvider = new TableInformationProvider();
                 List<TableFieldInformaton> allTableFieldsList = tableInformationProvider.GetTableFields(project, pageInformation.Source, false, false);
@@ -133,8 +133,8 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
                         this.CollectVisibleFields(pageExtensionSymbol.ControlChanges, availableTableFieldsDict, pageTableFields);
                 }
 
-                if (getPageFields)
-                    pageInformation.PageTableFields = pageTableFields;
+                if (getExistingFields)
+                    pageInformation.ExistingTableFields = pageTableFields;
                 if (getAvailableFields)
                     pageInformation.AvailableTableFields = availableTableFieldsDict.Values.ToList();
             }

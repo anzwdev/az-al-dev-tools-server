@@ -67,7 +67,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Serialization
 
         public bool TheSameContent(AppPackageInformation appPackage)
         {
-            return ((this.TheSameExtension(appPackage, true)) && (this.TheSameUId(appPackage)));
+            return ((this.TheSameExtension(appPackage, true)) && ((!ALToolsConst.CompareAppPackageUId) || (this.TheSameUId(appPackage))));
         }
 
         public bool TheSameExtension(AppPackageInformation appPackage, bool compareVersion)

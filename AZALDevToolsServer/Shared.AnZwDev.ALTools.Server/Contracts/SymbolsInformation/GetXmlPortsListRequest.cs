@@ -4,7 +4,7 @@ using System.Text;
 
 namespace AnZwDev.ALTools.Server.Contracts.SymbolsInformation
 {
-    public class GetPageDetailsRequest : GetTableBasedSymbolDetailsRequest
+    public class GetXmlPortsListRequest : GetSymbolsInformationRequest
     {
     }
 }

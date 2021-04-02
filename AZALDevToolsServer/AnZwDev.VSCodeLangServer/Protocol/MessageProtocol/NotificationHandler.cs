@@ -31,10 +31,6 @@ namespace AnZwDev.VSCodeLangServer.Protocol.MessageProtocol
             }
             catch (Exception e)
             {
-                //System.IO.File.AppendAllText("c:\\temp\\aaaa.txt", 
-                //    "Message: " + notificationMessage.Id + "\n" +
-                //    "Error: " + e.Message + "\n" +
-                //    "Call Stack: " + e.StackTrace + "\n");
             }
         }
 

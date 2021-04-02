@@ -27,5 +27,28 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             base.AddChildALSymbols(symbol);
         }
 
+        public ALAppQueryDataItem FindDataItem(string name)
+        {
+            if ((this.Elements != null) && (!String.IsNullOrWhiteSpace(name)))
+                return this.FindDataItem(this.Elements, name);
+            return null;
+        }
+
+        protected ALAppQueryDataItem FindDataItem(ALAppElementsCollection<ALAppQueryDataItem> dataItemsCollection, string name)
+        {
+            foreach (ALAppQueryDataItem dataItem in dataItemsCollection)
+            {
+                if (name.Equals(dataItem.Name, StringComparison.CurrentCultureIgnoreCase))
+                    return dataItem;
+                if (dataItem.DataItems != null)
+                {
+                    ALAppQueryDataItem foundDataItem = this.FindDataItem(dataItem.DataItems, name);
+                    if (foundDataItem != null)
+                        return foundDataItem;
+                }
+            }
+            return null;
+        }
+
     }
 }

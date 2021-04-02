@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace AnZwDev.ALTools
+namespace AnZwDev.ALTools.ALSymbolReferences
 {
     public enum ALAppXmlPortNodeKind
     {
 
         TextElement = 0,
-        TableElement = 1,
-        FieldElement = 2,
-        FieldAttribute = 3
+        TextAttribute = 1,
+        TableElement = 2,
+        FieldElement = 3,
+        FieldAttribute = 4
 
     }
 }

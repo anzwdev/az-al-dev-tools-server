@@ -28,13 +28,9 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
                 if (project != null)
                 {
                     XmlPortInformationProvider provider = new XmlPortInformationProvider();
-                    response.symbol = provider.GetXmlPortTableElementDetails(project, parameters.xmlPortName, parameters.name, parameters.getXmlPortTableFields, parameters.getAvailableFields);
-
-                    SymbolInformationComparer comparer = new SymbolInformationComparer();
-                    if (response.symbol.AvailableTableFields != null)
-                        response.symbol.AvailableTableFields.Sort(comparer);
-                    if (response.symbol.XmlPortTableFields != null)
-                        response.symbol.XmlPortTableFields.Sort(comparer);
+                    response.symbol = provider.GetXmlPortTableElementDetails(project, parameters.objectName, parameters.name, parameters.getExistingFields, parameters.getAvailableFields);
+                    if (response.symbol != null)
+                        response.symbol.Sort();
                 }
             }
             catch (Exception e)

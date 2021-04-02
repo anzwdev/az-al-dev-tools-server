@@ -9,7 +9,7 @@
     <Import_RootNamespace>AnZwDev.ALTools</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)ALAppXmlPortNodeKind.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppXmlPortNodeKind.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALDevToolsServer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppAttributeArgument.cs" />
@@ -99,6 +99,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\SymbolReaders\ALFullSyntaxTreeReader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\SymbolReaders\ALSymbolInfoSyntaxTreeReader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\SymbolReaders\ALSyntaxTreeSymbolsReader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALToolsConst.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeAnalysis\AppSourceCopSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeAnalysis\CodeAnalyzerRule.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeAnalysis\CodeAnalyzersLibrariesCollection.cs" />
@@ -173,6 +174,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\InterfaceInformationProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\PageInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\PageInformationProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\QueryDataItemInformation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\QueryInformation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\QueryInformationProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\ReportDataItemInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\ReportInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\ReportInformationProvider.cs" />
@@ -180,6 +184,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\SymbolInformationComparer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\SymbolInformationListExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\SymbolWithIdInformation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\TableBasedSymbolInformation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\TableBasedSymbolWithIdInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\TableFieldInformaton.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\TableInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\TableInformationProvider.cs" />

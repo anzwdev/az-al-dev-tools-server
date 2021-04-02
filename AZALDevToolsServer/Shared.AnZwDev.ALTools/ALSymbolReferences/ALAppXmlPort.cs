@@ -22,6 +22,15 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return ALSymbolKind.XmlPortObject;
         }
 
+        protected override void AddChildALSymbols(ALSymbol symbol)
+        {
+            this.Schema?.AddToALSymbol(symbol, ALSymbolKind.QueryElements, "schema");
+            base.AddChildALSymbols(symbol);
+            if (this.RequestPage != null)
+                symbol.AddChildSymbol(this.RequestPage.ToALSymbol());
+            base.AddChildALSymbols(symbol);
+        }
+
         public ALAppXmlPortNode FindNode(string name, ALAppXmlPortNodeKind nodeKind)
         {
             if ((this.Schema != null) && (!String.IsNullOrWhiteSpace(name)))

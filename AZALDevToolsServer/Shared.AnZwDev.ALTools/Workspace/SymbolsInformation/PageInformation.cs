@@ -6,26 +6,15 @@ using AnZwDev.ALTools.ALSymbolReferences;
 
 namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 {
-    public class PageInformation : SymbolWithIdInformation
+    public class PageInformation : TableBasedSymbolWithIdInformation
     {
-
-        [JsonProperty("source")]
-        public string Source { get; set; }
-        [JsonProperty("pageTableFields")]
-        public List<TableFieldInformaton> PageTableFields { get; set; }
-        [JsonProperty("availableTableFields")]
-        public List<TableFieldInformaton> AvailableTableFields { get; set; }
 
         public PageInformation()
         {
         }
 
-        public PageInformation(ALAppPage page)
+        public PageInformation(ALAppPage page) : base(page, null)
         {
-            this.PageTableFields = null;
-            this.AvailableTableFields = null;
-            this.Id = page.Id;
-            this.Name = page.Name;
             if (page.Properties != null)
             {
                 this.Caption = page.Properties.GetValue("Caption");

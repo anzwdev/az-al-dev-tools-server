@@ -422,7 +422,6 @@ namespace AnZwDev.ALTools.Workspace
 
         protected void FileEvent(string name, string path)
         {
-            //File.AppendAllText("c:\\temp\\aaaa.txt", name + ": " + path + "\n");
         }
 
         #endregion

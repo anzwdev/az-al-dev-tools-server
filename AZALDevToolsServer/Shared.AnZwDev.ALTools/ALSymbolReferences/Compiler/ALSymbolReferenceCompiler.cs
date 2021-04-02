@@ -452,6 +452,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Compiler
         protected ALAppReportDataItem CreateReportDataItem(ReportDataItemSyntax node)
         {
             ALAppReportDataItem dataItem = new ALAppReportDataItem();
+            dataItem.Name = node.GetNameStringValue();
             if (node.DataItemTable != null)
                 dataItem.RelatedTable = ALSyntaxHelper.DecodeName(node.DataItemTable.ToString());
 
@@ -542,6 +543,9 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Compiler
                     break;
                 case ConvertedSyntaxKind.XmlPortTextElement:
                     alXmlPortNode.Kind = ALAppXmlPortNodeKind.TextElement;
+                    break;
+                case ConvertedSyntaxKind.XmlPortTextAttribute:
+                    alXmlPortNode.Kind = ALAppXmlPortNodeKind.TextAttribute;
                     break;
             }
 
@@ -1327,7 +1331,8 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Compiler
             ALAppProperty alElement = new ALAppProperty();
             if (node.Name != null)
                 alElement.Name = ALSyntaxHelper.DecodeName(node.Name.ToString());
-            alElement.Value = node.Value.ToString();
+            if (node.Value != null)
+                alElement.Value = node.Value.ToString();
 
             if (alElement.Value != null)
             {

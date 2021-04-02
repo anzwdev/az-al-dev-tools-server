@@ -40,6 +40,7 @@ namespace AZALDevToolsTestConsoleApp.NetFramework
             CodeAnalyzersLibrary caLib = caLibCol.GetCodeAnalyzersLibrary("${CodeCop}");
 
             //Workspace tests
+            /*
             string[] projects =
             {
                 "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC16\\"
@@ -56,6 +57,10 @@ namespace AZALDevToolsTestConsoleApp.NetFramework
 
             XmlPortInformationProvider xmlPortInformationProvider = new XmlPortInformationProvider();
             XmlPortTableElementInformation xmlPortTableElementInformation = xmlPortInformationProvider.GetXmlPortTableElementDetails(project, "wefew", "Item", true, true);
+
+            ReportInformationProvider reportInformationProvider = new ReportInformationProvider();
+            ReportDataItemInformation reportDataItemInformation = reportInformationProvider.GetReportDataItemInformationDetails(project, "MyTestReport", "Vendor", true, true);
+            */
 
             Console.WriteLine("Done");
             Console.ReadKey();

@@ -6,26 +6,15 @@ using System.Text;
 
 namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 {
-    public class XmlPortTableElementInformation : SymbolInformation
+    public class XmlPortTableElementInformation : TableBasedSymbolInformation
     {
-
-        [JsonProperty("source")]
-        public string Source { get; set; }
-        [JsonProperty("xmlPortTableFields")]
-        public List<TableFieldInformaton> XmlPortTableFields { get; set; }
-        [JsonProperty("availableTableFields")]
-        public List<TableFieldInformaton> AvailableTableFields { get; set; }
 
         public XmlPortTableElementInformation()
         {
         }
 
-        public XmlPortTableElementInformation(ALAppXmlPortNode xmlPortTableElement)
+        public XmlPortTableElementInformation(ALAppXmlPortNode xmlPortTableElement) : base(xmlPortTableElement, xmlPortTableElement.Expression)
         {
-            this.Name = xmlPortTableElement.Name;
-            this.Source = xmlPortTableElement.Expression;
-            this.XmlPortTableFields = null;
-            this.AvailableTableFields = null;
         }
 
 

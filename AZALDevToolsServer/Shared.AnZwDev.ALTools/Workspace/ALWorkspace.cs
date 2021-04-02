@@ -8,6 +8,7 @@ using AnZwDev.ALTools.ALSymbolReferences.Compiler;
 using AnZwDev.ALTools.ALSymbolReferences.Serialization;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using AnZwDev.ALTools.ALSymbols;
+using AnZwDev.ALTools.Extensions;
 
 namespace AnZwDev.ALTools.Workspace
 {
@@ -77,7 +78,40 @@ namespace AnZwDev.ALTools.Workspace
 
         public ALProject FindProject(string id, string name, string publisher, VersionNumber version)
         {
-            return null;
+            bool emptyId = String.IsNullOrWhiteSpace(id);
+            ALProject foundProject = null;
+
+            name = name.NotNull();
+            publisher = publisher.NotNull();
+
+            for (int i = 0; i < this.Projects.Count; i++)
+            {
+                ALProject project = this.Projects[i];
+
+                if (project.Properties != null)
+                {
+                    bool compareId = ((!emptyId) && (!String.IsNullOrWhiteSpace(project.Properties.Id)));
+
+                    if (
+                        (
+                            (compareId) &&
+                            (id.Equals(project.Properties.Id, StringComparison.CurrentCultureIgnoreCase))
+                        ) || (
+                            (!compareId) &&
+                            (name.Equals(project.Properties.Name, StringComparison.CurrentCultureIgnoreCase)) &&
+                            (publisher.Equals(project.Properties.Publisher, StringComparison.CurrentCultureIgnoreCase))
+                        ))
+                    {
+                        if ((foundProject == null) || (project.Properties.Version == null) || (project.Properties.Version.Greater(version)))
+                        {
+                            foundProject = project;
+                            if (project.Properties.Version != null)
+                                version = project.Properties.Version;
+                        }
+                    }
+                }
+            }
+            return foundProject;
         }
 
         public ALProject FindProject(string path)

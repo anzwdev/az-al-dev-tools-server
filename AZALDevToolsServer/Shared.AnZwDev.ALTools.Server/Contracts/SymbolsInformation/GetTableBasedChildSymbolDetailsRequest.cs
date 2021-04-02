@@ -4,7 +4,8 @@ using System.Text;
 
 namespace AnZwDev.ALTools.Server.Contracts.SymbolsInformation
 {
-    public class GetPageDetailsRequest : GetTableBasedSymbolDetailsRequest
+    public class GetTableBasedChildSymbolDetailsRequest : GetTableBasedSymbolDetailsRequest
     {
+        public string objectName { get; set; }
     }
 }

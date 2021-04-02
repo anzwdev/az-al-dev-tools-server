@@ -92,7 +92,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
         #region Get report data item details
 
-        public ReportDataItemInformation GetReportDataItemInformationDetails(ALProject project, string reportName, string dataItemName, bool getDataItemFields, bool getAvailableFields)
+        public ReportDataItemInformation GetReportDataItemInformationDetails(ALProject project, string reportName, string dataItemName, bool getExistingFields, bool getAvailableFields)
         {
             ALAppReport report = this.FindReport(project, reportName);
             if ((report == null) || (report.DataItems == null))
@@ -102,7 +102,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
                 return null;
 
             ReportDataItemInformation reportDataItemInformation = new ReportDataItemInformation(reportDataItem);
-            if ((!String.IsNullOrWhiteSpace(reportDataItem.RelatedTable)) && (getDataItemFields || getAvailableFields))
+            if ((!String.IsNullOrWhiteSpace(reportDataItem.RelatedTable)) && (getExistingFields || getAvailableFields))
             {
                 TableInformationProvider tableInformationProvider = new TableInformationProvider();
                 List<TableFieldInformaton> allTableFieldsList = tableInformationProvider.GetTableFields(project, reportDataItem.RelatedTable, false, false);
@@ -111,10 +111,10 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
                 List<TableFieldInformaton> reportDataItemFields = new List<TableFieldInformaton>();
 
                 if (reportDataItem.Columns != null)
-                    this.CollectReportDataItemFields(reportDataItem.Columns, availableTableFieldsDict, reportDataItemFields);
+                    this.CollectReportDataItemFields(reportDataItemInformation.Name, reportDataItem.Columns, availableTableFieldsDict, reportDataItemFields);
 
-                if (getDataItemFields)
-                    reportDataItemInformation.DataItemTableFields = reportDataItemFields;
+                if (getExistingFields)
+                    reportDataItemInformation.ExistingTableFields = reportDataItemFields;
                 if (getAvailableFields)
                     reportDataItemInformation.AvailableTableFields = availableTableFieldsDict.Values.ToList();
             }

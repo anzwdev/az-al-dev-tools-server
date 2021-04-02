@@ -155,6 +155,27 @@ namespace AnZwDev.ALTools.ALSymbols
 
         VariableDeclarationName = 429,
 
+        Entitlement = 430,
+        PermissionSet = 431,
+        PermissionSetExtension = 432,
+        ReportExtension = 433,
+        ReportExtensionAddColumnChange = 434,
+        ReportExtensionAddDataItemChange = 435,
+        ReportExtensionDataSetAddColumn = 436,
+        ReportExtensionDataSetAddDataItem = 437,
+        ReportExtensionDataSetModify = 438,
+        ReportExtensionDataSetSection = 439,
+        ReportExtensionModifyChange = 440,
+        ReportExtensionObject = 441,
+        RequestPageExtension = 442,
+
+        //AddKeyword
+        //EntitlementKeyword
+        //ReportExtensionKeyword
+        //PermissionSetExtensionKeyword
+        //PermissionSetKeyword
+
+
         LocalMethodDeclaration = 50001,
         PrimaryKey = 50002,
         Module = 50003,

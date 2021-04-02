@@ -27,13 +27,9 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
                 if (project != null)
                 {
                     PageInformationProvider provider = new PageInformationProvider();
-                    response.symbol = provider.GetPageDetails(project, parameters.name, parameters.getPageFields, parameters.getAvailableFields);
-
-                    SymbolInformationComparer comparer = new SymbolInformationComparer();
-                    if (response.symbol.AvailableTableFields != null)
-                        response.symbol.AvailableTableFields.Sort(comparer);
-                    if (response.symbol.PageTableFields != null)
-                        response.symbol.PageTableFields.Sort(comparer);
+                    response.symbol = provider.GetPageDetails(project, parameters.name, parameters.getExistingFields, parameters.getAvailableFields);
+                    if (response.symbol != null)
+                        response.symbol.Sort();
                 }
             }
             catch (Exception e)

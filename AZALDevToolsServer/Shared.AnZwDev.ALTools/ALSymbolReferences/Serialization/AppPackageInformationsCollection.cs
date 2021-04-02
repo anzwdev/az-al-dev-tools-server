@@ -16,12 +16,15 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Serialization
 
         public void AddFromFolder(string path)
         {
-            string[] files = Directory.GetFiles(path, "*.app");
-            for (int i = 0; i < files.Length; i++)
+            if (Directory.Exists(path))
             {
-                AppPackageInformation packageInfo = new AppPackageInformation(files[i]);
-                if (!packageInfo.IsEmpty())
-                    this.Add(packageInfo);
+                string[] files = Directory.GetFiles(path, "*.app");
+                for (int i = 0; i < files.Length; i++)
+                {
+                    AppPackageInformation packageInfo = new AppPackageInformation(files[i]);
+                    if (!packageInfo.IsEmpty())
+                        this.Add(packageInfo);
+                }
             }
         }
 

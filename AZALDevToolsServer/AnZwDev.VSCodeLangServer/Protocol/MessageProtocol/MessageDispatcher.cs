@@ -150,51 +150,57 @@ namespace AnZwDev.VSCodeLangServer.Protocol.MessageProtocol
 
         public async Task DispatchMessage(Message messageToDispatch, MessageWriter messageWriter)
         {
-            Task handlerToAwait = null;
-            AbstractMessageHandler handler = null;
 
-            switch (messageToDispatch.MessageType)
+            try
             {
-                case MessageType.Request:
-                    if (this._requestHandlers.TryGetValue(messageToDispatch.Method, out handler))
-                        handlerToAwait = handler.HandleRawMessage(messageToDispatch, messageWriter);
-                    else
-                        // TODO: Message not supported error
-                        this.logger.Write(LogLevel.Warning, $"MessageDispatcher: No handler registered for Request type '{messageToDispatch.Method}'");
-                    break;
-                case MessageType.Event:
-                    if (this._notificationHandlers.TryGetValue(messageToDispatch.Method, out handler))
-                        handlerToAwait = handler.HandleRawMessage(messageToDispatch, messageWriter);
-                    else
-                        // TODO: Message not supported error
-                        this.logger.Write(LogLevel.Warning, $"MessageDispatcher: No handler registered for Event type '{messageToDispatch.Method}'");
-                    break;
-                default:
-                    // TODO: Return message not supported
-                    this.logger.Write(LogLevel.Warning, $"MessageDispatcher received unknown message type of method '{messageToDispatch.Method}'");
-                    break;
-            }
 
-            if (handlerToAwait != null)
-            {
-                try
+                Task handlerToAwait = null;
+                AbstractMessageHandler handler = null;
+
+                switch (messageToDispatch.MessageType)
                 {
+                    case MessageType.Request:
+                        if (this._requestHandlers.TryGetValue(messageToDispatch.Method, out handler))
+                            handlerToAwait = handler.HandleRawMessage(messageToDispatch, messageWriter);
+                        else
+                            // TODO: Message not supported error
+                            this.logger.Write(LogLevel.Warning, $"MessageDispatcher: No handler registered for Request type '{messageToDispatch.Method}'");
+                        break;
+                    case MessageType.Event:
+                        if (this._notificationHandlers.TryGetValue(messageToDispatch.Method, out handler))
+                            handlerToAwait = handler.HandleRawMessage(messageToDispatch, messageWriter);
+                        else
+                            // TODO: Message not supported error
+                            this.logger.Write(LogLevel.Warning, $"MessageDispatcher: No handler registered for Event type '{messageToDispatch.Method}'");
+                        break;
+                    default:
+                        // TODO: Return message not supported
+                        this.logger.Write(LogLevel.Warning, $"MessageDispatcher received unknown message type of method '{messageToDispatch.Method}'");
+                        break;
+                }
+
+                if (handlerToAwait != null)
                     await handlerToAwait;
-                }
-                catch (TaskCanceledException)
+            }
+            catch (TaskCanceledException)
+            {
+                // Some tasks may be cancelled due to legitimate
+                // timeouts so don't let those exceptions go higher.
+            }
+            catch (AggregateException e)
+            {
+                if ((e.InnerExceptions != null) && (e.InnerExceptions.Count > 0) && (!(e.InnerExceptions[0] is TaskCanceledException)))
                 {
-                    // Some tasks may be cancelled due to legitimate
-                    // timeouts so don't let those exceptions go higher.
+                    Exception innerException = e.InnerExceptions[0];
+
+                    // Cancelled tasks aren't a problem, so rethrow
+                    // anything that isn't a TaskCanceledException
+                    this.logger.Write(LogLevel.Error, "Error: " + innerException.Message + "\n" + innerException.StackTrace);
                 }
-                catch (AggregateException e)
-                {
-                    if (!(e.InnerExceptions[0] is TaskCanceledException))
-                    {
-                        // Cancelled tasks aren't a problem, so rethrow
-                        // anything that isn't a TaskCanceledException
-                        throw e;
-                    }
-                }
+            }
+            catch (Exception e)
+            {
+                this.logger.Write(LogLevel.Error, "Error: " + e.Message + "\n" + e.StackTrace);
             }
         }
 

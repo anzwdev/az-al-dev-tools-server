@@ -92,7 +92,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
         #region Get xml port table element details
 
-        public XmlPortTableElementInformation GetXmlPortTableElementDetails(ALProject project, string xmlPortName, string xmlPortTableElementName, bool getXmlPortTableFields, bool getAvailableFields)
+        public XmlPortTableElementInformation GetXmlPortTableElementDetails(ALProject project, string xmlPortName, string xmlPortTableElementName, bool getExistingFields, bool getAvailableFields)
         {
             ALAppXmlPort xmlPort = this.FindXmlPort(project, xmlPortName);
             if ((xmlPort == null) || (xmlPort.Schema == null))
@@ -102,7 +102,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
                 return null;
 
             XmlPortTableElementInformation tableElementInformation = new XmlPortTableElementInformation(xmlPortTableElement);
-            if ((!String.IsNullOrWhiteSpace(tableElementInformation.Source)) && (getXmlPortTableFields || getAvailableFields))
+            if ((!String.IsNullOrWhiteSpace(tableElementInformation.Source)) && (getExistingFields || getAvailableFields))
             {
                 TableInformationProvider tableInformationProvider = new TableInformationProvider();
                 List<TableFieldInformaton> allTableFieldsList = tableInformationProvider.GetTableFields(project, tableElementInformation.Source, false, false);
@@ -114,8 +114,8 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
                     this.CollectXmlPortTableFields(tableElementInformation.Source, xmlPortTableElement.Schema, availableTableFieldsDict, xmlPortTableFields);
 
 
-                if (getXmlPortTableFields)
-                    tableElementInformation.XmlPortTableFields = xmlPortTableFields;
+                if (getExistingFields)
+                    tableElementInformation.ExistingTableFields = xmlPortTableFields;
                 if (getAvailableFields)
                     tableElementInformation.AvailableTableFields = availableTableFieldsDict.Values.ToList();
             }
