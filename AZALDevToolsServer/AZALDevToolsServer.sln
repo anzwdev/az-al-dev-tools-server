@@ -25,7 +25,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AZALDevToolsServer.NetFrame
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nav2018", "Nav2018", "{34BEBFF1-3C43-49CE-8EE6-AB45909184A2}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Shared.AnZwDev.ALTools", "Shared.AnZwDev.ALTools\Shared.AnZwDev.ALTools.shproj", "{F5845F76-37F2-45A8-BF68-8AEC74BA1D1E}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Shared.AnZwDev.ALTools.Server", "Shared.AnZwDev.ALTools.Server\Shared.AnZwDev.ALTools.Server.shproj", "{DAD5E11E-9D4E-47B8-9D49-5451ACD49013}"
+EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Shared.AnZwDev.ALTools.Server\Shared.AnZwDev.ALTools.Server.projitems*{23da7234-5a89-4a2c-b97e-0c133f9f90a8}*SharedItemsImports = 5
+		Shared.AnZwDev.ALTools\Shared.AnZwDev.ALTools.projitems*{266523f6-4e4a-4aab-88d6-7c814a03ae41}*SharedItemsImports = 5
+		Shared.AnZwDev.ALTools\Shared.AnZwDev.ALTools.projitems*{3d135999-5ebf-4063-a5c3-b142b5ccfe30}*SharedItemsImports = 4
+		Shared.AnZwDev.ALTools.Server\Shared.AnZwDev.ALTools.Server.projitems*{af393350-c960-4c6b-95fd-526ae575cc82}*SharedItemsImports = 4
+		Shared.AnZwDev.ALTools.Server\Shared.AnZwDev.ALTools.Server.projitems*{dad5e11e-9d4e-47b8-9d49-5451acd49013}*SharedItemsImports = 13
+		Shared.AnZwDev.ALTools\Shared.AnZwDev.ALTools.projitems*{f5845f76-37f2-45a8-bf68-8aec74ba1d1e}*SharedItemsImports = 13
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU

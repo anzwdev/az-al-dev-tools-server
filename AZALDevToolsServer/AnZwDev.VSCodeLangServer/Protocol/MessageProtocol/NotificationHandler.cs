@@ -25,7 +25,13 @@ namespace AnZwDev.VSCodeLangServer.Protocol.MessageProtocol
                 typedParams = notificationMessage.Contents.ToObject<TParams>();
             }
 
-            await HandleNotification(typedParams, notificationContext);
+            try
+            {
+                await HandleNotification(typedParams, notificationContext);
+            }
+            catch (Exception e)
+            {
+            }
         }
 
         public abstract Task HandleNotification(TParams parameters, NotificationContext context);

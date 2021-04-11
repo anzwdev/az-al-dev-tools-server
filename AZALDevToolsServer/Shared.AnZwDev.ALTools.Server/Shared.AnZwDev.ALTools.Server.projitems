@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>dad5e11e-9d4e-47b8-9d49-5451acd49013</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>AnZwDev.ALTools.Server</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)ALDevToolsServerHost.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\AppPackageSymbolsRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\AppPackageSymbolsResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\BaseOpenSymbolsLibraryResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\BaseSymbolsResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\ChangeTracking\DocumentChangeNotificationRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\ChangeTracking\DocumentContentChangeResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\CloseSymbolsLibraryRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\CloseSyntaxTreeRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\ChangeTracking\DocumentContentChangeRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\DocumentSymbolsRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\DocumentSymbolsResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\ChangeTracking\FilesNotificationRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\ChangeTracking\FilesRenameDetailsNotificationRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\ChangeTracking\FilesRenameNotificationRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\ChangeTracking\FileSystemChangeNotificationRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\GetCodeAnalyzersRulesRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\GetCodeAnalyzersRulesResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\GetFullSyntaxTreeRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\GetFullSyntaxTreeResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\GetSyntaxTreeRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\GetSyntaxTreeResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\GetSyntaxTreeSymbolRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\GetSyntaxTreeSymbolResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\LibrarySymbolsDetailsRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\LibrarySymbolsDetailsResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\ProjectSymbolsRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\ProjectSymbolsResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetCodeunitsListRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetCodeunitsListResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetEnumsListRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetEnumsListResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetInterfacesListRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetInterfacesListResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetPageDetailsRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetPageDetailsResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetPagesListRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetPagesListResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetQueriesListRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetQueriesListResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetQueryDataItemDetailsRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetQueryDataItemDetailsResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetReportDataItemDetailsRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetReportDataItemDetailsResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetSymbolInformationDetailsRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetSymbolInformationDetailsResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetSymbolsInformationRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetSymbolsInformationResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetTableBasedChildSymbolDetailsRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetTableBasedSymbolDetailsRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetTableFieldsListRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetTableFieldsListResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetTablesListRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetTablesListResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetXmlPortsListRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetXmlPortsListResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetXmlPortTableElementDetailsRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetXmlPortTableElementDetailsResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\WorkspaceCommandRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\WorkspaceCommandResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\ChangeTracking\WorkspaceFoldersChangeNotificationRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\AppPackageSymbolsRequestHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\BaseALNotificationHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\BaseALRequestHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\ChangeTracking\DocumentContentChangeRequestHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\ChangeTracking\DocumentCloseNotificationHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\ChangeTracking\DocumentOpenNotificationHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\ChangeTracking\DocumentSaveNotificationHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\ChangeTracking\FileCreateNotificationHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\ChangeTracking\FileDeleteNotificationHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\ChangeTracking\FileRenameNotificationHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\ChangeTracking\FileSystemFileChangeNotificationHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\ChangeTracking\FileSystemFileCreateNotificationHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\ChangeTracking\FileSystemFileDeleteNotificationHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\ChangeTracking\WorkspaceFoldersChangeNotificationHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\CloseSymbolsLibraryNotificationHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\CloseSyntaxTreeNotificationHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\DocumentSymbolsRequestHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\ExitNotificationHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\GetCodeAnalyzersRulesRequestHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\GetFullSyntaxTreeRequestHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\GetSyntaxTreeRequestHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\GetSyntaxTreeSymbolRequestHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\LibrarySymbolsDetailsRequestHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\ProjectSymbolsRequestHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\ShutdownRequestHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\SymbolsInformation\GetCodeunitsListRequestHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\SymbolsInformation\GetEnumsListRequestHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\SymbolsInformation\GetInterfacesListRequestHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\SymbolsInformation\GetPageDetailsRequestHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\SymbolsInformation\GetPagesListRequestHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\SymbolsInformation\GetQueriesListRequestHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\SymbolsInformation\GetQueryDataItemDetailsRequestHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\SymbolsInformation\GetReportDataItemDetailsRequestHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetReportsListRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetReportsListResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\SymbolsInformation\GetReportsListRequestHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\SymbolsInformation\GetTableFieldsListRequestHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\SymbolsInformation\GetTablesListRequestHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\SymbolsInformation\GetXmlPortsListRequestHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\SymbolsInformation\GetXmlPortTableElementDetailsRequestHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\WorkspaceCommandRequestHandler.cs" />
+  </ItemGroup>
+</Project>

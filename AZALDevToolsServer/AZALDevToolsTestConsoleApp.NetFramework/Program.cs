@@ -4,7 +4,8 @@ using AnZwDev.ALTools.ALSymbols.SymbolReaders;
 using AnZwDev.ALTools.CodeAnalysis;
 using AnZwDev.ALTools.CodeTransformations;
 using AnZwDev.ALTools.Server;
-using AnZwDev.ALTools.TypeInformation;
+using AnZwDev.ALTools.Workspace;
+using AnZwDev.ALTools.Workspace.SymbolsInformation;
 using AnZwDev.ALTools.WorkspaceCommands;
 using System;
 using System.Collections.Generic;
@@ -30,7 +31,7 @@ namespace AZALDevToolsTestConsoleApp.NetFramework
             //string filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\small\\Pag50000.MySmallTableList.al";
             string filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC16\\MyPage.al";
             ALSymbolInfoSyntaxTreeReader syntaxTreeReader = new ALSymbolInfoSyntaxTreeReader(true);
-            ALSymbolInformation symbols = syntaxTreeReader.ProcessSourceFile(filePath);
+            ALSymbol symbols = syntaxTreeReader.ProcessSourceFile(filePath);
 
             ALFullSyntaxTree syntaxTree = new ALFullSyntaxTree();
             syntaxTree.Load("", filePath);
@@ -38,11 +39,31 @@ namespace AZALDevToolsTestConsoleApp.NetFramework
             CodeAnalyzersLibrariesCollection caLibCol = new CodeAnalyzersLibrariesCollection(alDevToolsServer);
             CodeAnalyzersLibrary caLib = caLibCol.GetCodeAnalyzersLibrary("${CodeCop}");
 
-            filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC16\\AnZwDev_Small but great AZ AL Extension_1.0.0.0.app";
-            ALSymbolInfoPackageReader packageReader = new ALSymbolInfoPackageReader();
-            packageReader.ReadAppPackage(filePath);
+            //Workspace tests
+            /*
+            string[] projects =
+            {
+                "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC16\\"
+            };
+
+            ALWorkspace workspace = new ALWorkspace();
+            workspace.LoadProjects(projects);
+            workspace.ResolveDependencies();
+
+            ALProject project = workspace.Projects[0];
+
+            PageInformationProvider pageInformationProvider = new PageInformationProvider();
+            PageInformation pageInformation = pageInformationProvider.GetPageDetails(project, "Test3", true, true);
+
+            XmlPortInformationProvider xmlPortInformationProvider = new XmlPortInformationProvider();
+            XmlPortTableElementInformation xmlPortTableElementInformation = xmlPortInformationProvider.GetXmlPortTableElementDetails(project, "wefew", "Item", true, true);
+
+            ReportInformationProvider reportInformationProvider = new ReportInformationProvider();
+            ReportDataItemInformation reportDataItemInformation = reportInformationProvider.GetReportDataItemInformationDetails(project, "MyTestReport", "Vendor", true, true);
+            */
 
             Console.WriteLine("Done");
+            Console.ReadKey();
         }
     }
 }
