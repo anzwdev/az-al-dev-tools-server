@@ -99,6 +99,17 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Compiler
                 case ConvertedSyntaxKind.Interface:
                     alObjectsList.Add(this.CreateInterface((InterfaceSyntax)node));
                     break;
+
+                case ConvertedSyntaxKind.ReportExtensionObject:
+                    alObjectsList.Add(this.CreateReportExtension((ReportExtensionSyntax)node));
+                    break;
+                case ConvertedSyntaxKind.PermissionSet:
+                    alObjectsList.Add(this.CreatePermissionSet((PermissionSetSyntax)node));
+                    break;
+                case ConvertedSyntaxKind.PermissionSetExtension:
+                    alObjectsList.Add(this.CreatePermissionSetExtension((PermissionSetExtensionSyntax)node));
+                    break;
+
 #endif
                 default:
                     this.ProcessSyntaxNodesList(node.ChildNodes(), alObjectsList);
@@ -418,7 +429,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Compiler
             return alObject;
         }
 
-#region Request page
+        #region Request page
 
         protected ALAppRequestPage CreateRequestPage(RequestPageSyntax node)
         {
@@ -435,9 +446,9 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Compiler
             return page;
         }
 
-#endregion
+        #endregion
 
-#region Report data items
+        #region Report data items
 
         protected ALAppElementsCollection<ALAppReportDataItem> CreateReportDataItemsList(SyntaxList<ReportDataItemSyntax> nodesList)
         {
@@ -494,9 +505,107 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Compiler
             return column;
         }
 
-#endregion
+        #endregion
 
-#endregion
+        #endregion
+
+        #region Report extension methods
+
+#if BC
+
+        protected ALAppReportExtension CreateReportExtension(ReportExtensionSyntax node)
+        {
+            ALAppReportExtension alObject = new ALAppReportExtension();
+            this.ProcessApplicationObject(alObject, node);
+
+            if (node.BaseObject != null)
+                alObject.Target = ALSyntaxHelper.DecodeName(node.BaseObject.ToString());
+
+            if (node.RequestPage != null)
+                alObject.RequestPage = this.CreateRequestPageExtension(node.RequestPage);
+
+            if ((node.DataSet != null) && (node.DataSet.Changes != null))
+                this.ProcessReportExtensionDataSetChanges(alObject, node.DataSet.Changes);
+
+            return alObject;
+        }
+
+
+        #region Request page extension
+
+        protected ALAppRequestPageExtension CreateRequestPageExtension(RequestPageExtensionSyntax node)
+        {
+            ALAppRequestPageExtension alObject = new ALAppRequestPageExtension();
+            alObject.Name = node.GetNameStringValue();
+
+            if (node.PropertyList != null)
+                alObject.Properties = this.CreatePropertiesList(node.PropertyList.Properties);
+            if (node.Layout != null)
+                alObject.ControlChanges = this.CreatePageExtensionControlChangesList(node.Layout.Changes);
+            if (node.Actions != null)
+                alObject.ActionChanges = this.CreatePageExtensionActionChangesList(node.Actions.Changes);
+            return alObject;
+        }
+
+        #endregion
+
+        #region Report changes
+
+        protected void ProcessReportExtensionDataSetChanges(ALAppReportExtension alObject, SyntaxList<ReportExtensionDataSetChangeBaseSyntax> changesList)
+        {
+            foreach (ReportExtensionDataSetChangeBaseSyntax change in changesList)
+            {
+                ConvertedSyntaxKind kind = change.Kind.ConvertToLocalType();
+                switch (kind)
+                {
+                    case ConvertedSyntaxKind.ReportExtensionAddColumnChange:
+                        this.ProcessReportExtensionAddColumn(alObject, (ReportExtensionDataSetAddColumnSyntax)change);
+                        break;
+                    case ConvertedSyntaxKind.ReportExtensionAddDataItemChange:
+                        this.ProcessReportExtensionAddDataItem(alObject, (ReportExtensionDataSetAddDataItemSyntax)change);
+                        break;
+                }
+            }
+        }
+
+        protected void ProcessReportExtensionAddColumn(ALAppReportExtension alObject, ReportExtensionDataSetAddColumnSyntax change)
+        {
+            if ((change.Columns != null) && (change.Columns.Count > 0))
+            {
+                string parentName = (change.Anchor != null) ? ALSyntaxHelper.DecodeName(change.Anchor.ToString()) : "";
+                if (alObject.Columns == null)
+                    alObject.Columns = new ALAppElementsCollection<ALAppReportColumn>();
+                foreach (ReportColumnSyntax columnSyntax in change.Columns)
+                {
+                    ALAppReportColumn column = CreateReportColumn(columnSyntax);
+                    column.OwningDataItemName = parentName;
+                    alObject.Columns.Add(column);
+                }
+            }
+        }
+
+        protected void ProcessReportExtensionAddDataItem(ALAppReportExtension alObject, ReportExtensionDataSetAddDataItemSyntax change)
+        {
+            if ((change.DataItems != null) && (change.DataItems.Count > 0))
+            {
+                string parentName = (change.Anchor != null) ? ALSyntaxHelper.DecodeName(change.Anchor.ToString()) : "";
+                if (alObject.DataItems == null)
+                    alObject.DataItems = new ALAppElementsCollection<ALAppReportDataItem>();
+                foreach (ReportDataItemSyntax dataItemSyntax in change.DataItems)
+                {
+                    ALAppReportDataItem dataItem = CreateReportDataItem(dataItemSyntax);
+                    dataItem.OwningDataItemName = parentName;
+                    alObject.DataItems.Add(dataItem);
+                }
+            }
+        }
+
+        #endregion
+
+
+#endif
+
+        #endregion
 
         #region XmlPort methods
 
@@ -1005,9 +1114,39 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Compiler
         }
 #endif
 
-#endregion
+        #endregion
 
-#region AL Object methods
+        #region PermissionSet methods
+
+#if BC
+
+        protected ALAppPermissionSet CreatePermissionSet(PermissionSetSyntax node)
+        {
+            ALAppPermissionSet alObject = new ALAppPermissionSet();
+            this.ProcessApplicationObject(alObject, node);
+            return alObject;
+        }
+
+#endif
+
+        #endregion
+
+        #region PermissionSetExtension methods
+#if BC
+
+        protected ALAppPermissionSetExtension CreatePermissionSetExtension(PermissionSetExtensionSyntax node)
+        {
+            ALAppPermissionSetExtension alObject = new ALAppPermissionSetExtension();
+            this.ProcessApplicationObject(alObject, node);
+            if (node.BaseObject != null)
+                alObject.TargetObject = ALSyntaxHelper.DecodeName(node.BaseObject.ToString());
+            return alObject;
+        }
+#endif
+
+        #endregion
+
+        #region AL Object methods
 
         protected void ProcessObject(ALAppObject alObject, ObjectSyntax node)
         {            

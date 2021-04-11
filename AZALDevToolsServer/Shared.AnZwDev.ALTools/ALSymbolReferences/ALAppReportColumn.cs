@@ -8,6 +8,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
     public class ALAppReportColumn : ALAppElementWithName
     {
 
+        public string OwningDataItemName { get; set; }
         public string SourceExpression { get; set; }
 
         public ALAppReportColumn()

@@ -94,7 +94,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
         protected ALAppPageExtension FindPageExtension(ALAppSymbolReference symbols, string pageName)
         {
-            if ((symbols != null) && (symbols.TableExtensions != null))
+            if ((symbols != null) && (symbols.PageExtensions != null))
                 return symbols.PageExtensions
                     .Where(p => (pageName.Equals(p.TargetObject, StringComparison.CurrentCultureIgnoreCase)))
                     .FirstOrDefault();

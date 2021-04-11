@@ -31,6 +31,9 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         public ALAppElementsCollection<ALAppEnum> EnumTypes { get; set; }
         public ALAppElementsCollection<ALAppEnumExtension> EnumExtensionTypes { get; set; }
         public ALAppElementsCollection<ALAppInterface> Interfaces { get; set; }
+        public ALAppElementsCollection<ALAppReportExtension> ReportExtensions { get; set; }
+        public ALAppElementsCollection<ALAppPermissionSet> PermissionSets { get; set; }
+        public ALAppElementsCollection<ALAppPermissionSetExtension> PermissionSetExtensions { get; set; }
 
         private ALSymbol _alSymbolCache = null;
 
@@ -140,7 +143,19 @@ namespace AnZwDev.ALTools.ALSymbolReferences
                     if (this.Interfaces == null)
                         this.Interfaces = new ALAppElementsCollection<ALAppInterface>();
                     return this.Interfaces;
-            }           
+                case ALSymbolKind.ReportExtensionObject:
+                    if (this.ReportExtensions == null)
+                        this.ReportExtensions = new ALAppElementsCollection<ALAppReportExtension>();
+                    return this.ReportExtensions;
+                case ALSymbolKind.PermissionSet:
+                    if (this.PermissionSets == null)
+                        this.PermissionSets = new ALAppElementsCollection<ALAppPermissionSet>();
+                    return this.PermissionSets;
+                case ALSymbolKind.PermissionSetExtension:
+                    if (this.PermissionSetExtensions == null)
+                        this.PermissionSetExtensions = new ALAppElementsCollection<ALAppPermissionSetExtension>();
+                    return this.PermissionSetExtensions;
+            }
             return null;
         }
 
@@ -189,6 +204,11 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             this.EnumTypes?.AddCollectionToALSymbol(symbol, ALSymbolKind.EnumTypeList);
             this.EnumExtensionTypes?.AddCollectionToALSymbol(symbol, ALSymbolKind.EnumExtensionTypeList);
             this.Interfaces?.AddCollectionToALSymbol(symbol, ALSymbolKind.InterfaceObjectList);
+
+            this.ReportExtensions?.AddCollectionToALSymbol(symbol, ALSymbolKind.ReportExtensionObjectList);
+            this.PermissionSets?.AddCollectionToALSymbol(symbol, ALSymbolKind.PermissionSetList);
+            this.PermissionSetExtensions?.AddCollectionToALSymbol(symbol, ALSymbolKind.PermissionSetExtensionList);
+
         }
 
         #endregion

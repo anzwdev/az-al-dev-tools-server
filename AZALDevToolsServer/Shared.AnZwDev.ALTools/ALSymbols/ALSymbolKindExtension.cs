@@ -129,6 +129,15 @@ namespace AnZwDev.ALTools.ALSymbols
                 case ALSymbolKind.PageViewList: return "PageViewList";
                 case ALSymbolKind.PageView: return "PageView";
 
+                case ALSymbolKind.ReportExtensionAddColumnChange: return "AddColumn";
+                case ALSymbolKind.ReportExtensionAddDataItemChange: return "AddDataItem";
+                case ALSymbolKind.ReportExtensionDataSetAddColumn: return "AddDataSetColumn";
+                case ALSymbolKind.ReportExtensionDataSetAddDataItem: return "AddDataItem";
+                case ALSymbolKind.ReportExtensionDataSetModify: return "ModifyDataSet";
+                case ALSymbolKind.ReportExtensionDataSetSection: return "dataset";
+                case ALSymbolKind.ReportExtensionModifyChange: return "Modify";
+                case ALSymbolKind.RequestPageExtension: return "RequestOptionsPage";
+
                 //case ALSymbolKind.//PageFieldReferencePropertyValue: return "//PageFieldReferencePropertyValue";
 
                 case ALSymbolKind.CodeunitObject: return "Codeunit";
@@ -144,6 +153,9 @@ namespace AnZwDev.ALTools.ALSymbols
                 case ALSymbolKind.PageCustomizationObject: return "Page Customization";
                 case ALSymbolKind.DotNetPackage: return "DotNet Package";
                 case ALSymbolKind.Interface: return "Interface";
+                case ALSymbolKind.ReportExtensionObject: return "Report Extension";
+                case ALSymbolKind.PermissionSet: return "PermissionSet";
+                case ALSymbolKind.PermissionSetExtension: return "PermissionSet Extension";
 
                 //case ALSymbolKind.//AttributeArgumentList: return "//AttributeArgumentList";
                 //case ALSymbolKind.//LiteralAttributeArgument: return "//LiteralAttributeArgument";
@@ -170,6 +182,9 @@ namespace AnZwDev.ALTools.ALSymbols
                 case ALSymbolKind.EnumTypeList: return "Enums";
                 case ALSymbolKind.EnumExtensionTypeList: return "EnumExtensions";
                 case ALSymbolKind.InterfaceObjectList: return "Interfaces";
+                case ALSymbolKind.ReportExtensionObjectList: return "ReportExtensions";
+                case ALSymbolKind.PermissionSetList: return "PermissionSets";
+                case ALSymbolKind.PermissionSetExtensionList: return "PermissionSetExtensions";
             }
             //throw new Exception("Unsupported enum value " + value.ToString());
             return value.ToString();
@@ -194,6 +209,9 @@ namespace AnZwDev.ALTools.ALSymbols
                 case ALSymbolKind.EnumType: return ALSymbolKind.EnumTypeList;
                 case ALSymbolKind.EnumExtensionType: return ALSymbolKind.EnumExtensionTypeList;
                 case ALSymbolKind.Interface: return ALSymbolKind.InterfaceObjectList;
+                case ALSymbolKind.ReportExtensionObject: return ALSymbolKind.ReportExtensionObjectList;
+                case ALSymbolKind.PermissionSet: return ALSymbolKind.PermissionSetList;
+                case ALSymbolKind.PermissionSetExtension: return ALSymbolKind.PermissionSetExtensionList;
                 default: return ALSymbolKind.SymbolGroup;
             }
         }
@@ -217,6 +235,10 @@ namespace AnZwDev.ALTools.ALSymbols
                 case ALSymbolKind.EnumType:
                 case ALSymbolKind.EnumExtensionType:
                 case ALSymbolKind.Interface:
+                case ALSymbolKind.ReportExtensionObject:
+                case ALSymbolKind.PermissionSet:
+                case ALSymbolKind.PermissionSetExtension:
+                case ALSymbolKind.Entitlement:
                     return true;
             }
             return false;

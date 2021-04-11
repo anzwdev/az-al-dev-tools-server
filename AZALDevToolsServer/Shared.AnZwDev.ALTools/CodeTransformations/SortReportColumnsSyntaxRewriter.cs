@@ -11,6 +11,8 @@ namespace AnZwDev.ALTools.CodeTransformations
     public class SortReportColumnsSyntaxRewriter: ALSyntaxRewriter
     {
 
+        #region Report element comparer
+
         protected class ReportElementComparer : IComparer<SyntaxNodeSortInfo<ReportDataItemElementSyntax>>
         {
             protected static AlphanumComparatorFast _stringComparer = new AlphanumComparatorFast();
@@ -31,6 +33,27 @@ namespace AnZwDev.ALTools.CodeTransformations
             }
         }
 
+        #endregion
+
+        #region Report column comparer
+
+        protected class ReportColumnComparer : IComparer<SyntaxNodeSortInfo<ReportColumnSyntax>>
+        {
+            protected static AlphanumComparatorFast _stringComparer = new AlphanumComparatorFast();
+
+            public ReportColumnComparer()
+            {
+            }
+
+            public int Compare(SyntaxNodeSortInfo<ReportColumnSyntax> x, SyntaxNodeSortInfo<ReportColumnSyntax> y)
+            {
+                return _stringComparer.Compare(x.Name, y.Name);
+            }
+        }
+
+        #endregion
+
+
         public SortReportColumnsSyntaxRewriter()
         {
         }
@@ -46,6 +69,22 @@ namespace AnZwDev.ALTools.CodeTransformations
             }
             return base.VisitReportDataItem(node);
         }
+
+#if BC
+
+        public override SyntaxNode VisitReportExtensionDataSetAddColumn(ReportExtensionDataSetAddColumnSyntax node)
+        {
+            if ((this.NodeInSpan(node)) && (!node.ContainsDiagnostics) && (node.Columns != null) && (node.Columns.Count > 1))
+            {
+                SyntaxList<ReportColumnSyntax> columns =
+                    SyntaxNodesGroupsTree<ReportColumnSyntax>.SortSyntaxListWithSortInfo(
+                        node.Columns, new ReportColumnComparer());
+                node = node.WithColumns(columns);
+            }
+            return base.VisitReportExtensionDataSetAddColumn(node);
+        }
+
+#endif
 
     }
 }
