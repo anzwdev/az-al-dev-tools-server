@@ -9,6 +9,10 @@
     <Import_RootNamespace>AnZwDev.ALTools</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppPermissionSet.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppPermissionSetExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppReportExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppRequestPageExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppXmlPortNodeKind.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALDevToolsServer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppAttribute.cs" />

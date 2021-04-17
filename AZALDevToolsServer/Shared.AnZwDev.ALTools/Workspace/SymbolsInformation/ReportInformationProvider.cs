@@ -90,14 +90,62 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
         #endregion
 
+        #region Find report extension
+
+        protected ALAppReportExtension FindReportExtension(ALAppSymbolReference symbols, string reportName)
+        {
+            if ((symbols != null) && (symbols.ReportExtensions != null))
+                return symbols.ReportExtensions
+                    .Where(p => (reportName.Equals(p.Target, StringComparison.CurrentCultureIgnoreCase)))
+                    .FirstOrDefault();
+            return null;
+        }
+
+        #endregion
+
+        #region Find report data item
+
+        protected ALAppReportDataItem FindReportDataItem(ALProject project, string reportName, string dataItemName)
+        {
+            ALAppReportDataItem dataItem;
+            //find report data item
+            ALAppReport report = this.FindReport(project, reportName);
+            if ((report != null) && (report.DataItems != null))
+            {
+                dataItem = report.FindDataItem(dataItemName);
+                if (dataItem != null)
+                    return dataItem;
+            }
+
+            //find report extension data item
+            ALAppReportExtension reportExtension = FindReportExtension(project.Symbols, reportName);
+            if ((reportExtension != null) && (reportExtension.DataItems != null))
+            {
+                dataItem = reportExtension.FindDataItem(dataItemName);
+                if (dataItem != null)
+                    return dataItem;
+            }
+
+            foreach (ALProjectDependency dependency in project.Dependencies)
+            {
+                reportExtension = FindReportExtension(dependency.Symbols, reportName);
+                if ((reportExtension != null) && (reportExtension.DataItems != null))
+                {
+                    dataItem = reportExtension.FindDataItem(dataItemName);
+                    if (dataItem != null)
+                        return dataItem;
+                }
+            }
+            return null;
+        }
+
+        #endregion
+
         #region Get report data item details
 
         public ReportDataItemInformation GetReportDataItemInformationDetails(ALProject project, string reportName, string dataItemName, bool getExistingFields, bool getAvailableFields)
         {
-            ALAppReport report = this.FindReport(project, reportName);
-            if ((report == null) || (report.DataItems == null))
-                return null;
-            ALAppReportDataItem reportDataItem = report.FindDataItem(dataItemName);
+            ALAppReportDataItem reportDataItem = this.FindReportDataItem(project, reportName, dataItemName);
             if (reportDataItem == null)
                 return null;
 
@@ -113,6 +161,15 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
                 if (reportDataItem.Columns != null)
                     this.CollectReportDataItemFields(reportDataItemInformation.Name, reportDataItem.Columns, availableTableFieldsDict, reportDataItemFields);
 
+                //collect fields from report extensions
+                foreach (ALProjectDependency dependency in project.Dependencies)
+                {
+                    ALAppReportExtension reportExtension = FindReportExtension(dependency.Symbols, reportName);
+                    if ((reportExtension != null) && (reportExtension.Columns != null))
+                        this.CollectReportDataItemFields(reportDataItemInformation.Name, reportExtension.Columns.Where(p => (dataItemName.Equals(p.OwningDataItemName, StringComparison.CurrentCultureIgnoreCase))), availableTableFieldsDict, reportDataItemFields);
+                }
+
+                //add fields
                 if (getExistingFields)
                     reportDataItemInformation.ExistingTableFields = reportDataItemFields;
                 if (getAvailableFields)
@@ -122,11 +179,10 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             return reportDataItemInformation;
         }
 
-        protected void CollectReportDataItemFields(string dataItemName, ALAppElementsCollection<ALAppReportColumn> columnsList, Dictionary<string, TableFieldInformaton> availableTableFieldsDict, List<TableFieldInformaton> reportDataItemFields)
+        protected void CollectReportDataItemFields(string dataItemName, IEnumerable<ALAppReportColumn> columnsList, Dictionary<string, TableFieldInformaton> availableTableFieldsDict, List<TableFieldInformaton> reportDataItemFields)
         {
-            for (int i = 0; i < columnsList.Count; i++)
+            foreach (ALAppReportColumn reportColumn in columnsList)
             {
-                ALAppReportColumn reportColumn = columnsList[i];
                 if (!String.IsNullOrWhiteSpace(reportColumn.SourceExpression))
                 {
                     ALMemberAccessExpression memberAccessExpression = ALSyntaxHelper.DecodeMemberAccessExpression(reportColumn.SourceExpression);

@@ -194,8 +194,47 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                     //Var and GlobalVar syntax nodes are different in Nav2018
                     ProcessVarSection(syntaxTree, symbol, node);
                     break;
+#if BC
+                case ConvertedSyntaxKind.ReportExtensionObject:
+                    ProcessReportExtensionNode(symbol, (ReportExtensionSyntax)node);
+                    break;
+                case ConvertedSyntaxKind.ReportExtensionAddDataItemChange:
+                    ProcessReportExtensionDataItemChangeNode(symbol, (ReportExtensionDataSetAddDataItemSyntax)node);
+                    break;
+                case ConvertedSyntaxKind.ReportExtensionAddColumnChange:
+                    ProcessReportExtensionAddColumnChangeNode(syntaxTree, symbol, (ReportExtensionDataSetAddColumnSyntax)node);
+                    break;
+#endif
             }
         }
+
+
+#if BC
+
+        protected void ProcessReportExtensionNode(ALSymbol symbol, ReportExtensionSyntax syntax)
+        {
+            if (syntax.BaseObject != null)
+                symbol.extends = ALSyntaxHelper.DecodeName(syntax.BaseObject.ToString());
+        }
+
+        protected void ProcessReportExtensionDataItemChangeNode(ALSymbol symbol, ReportExtensionDataSetAddDataItemSyntax syntax)
+        {
+            symbol.name = ALSyntaxHelper.FormatSyntaxNodeName(syntax.ChangeKeyword.ToString());
+            symbol.fullName = symbol.name;
+        }
+
+        protected void ProcessReportExtensionAddColumnChangeNode(SyntaxTree syntaxTree, ALSymbol symbol, ReportExtensionDataSetAddColumnSyntax syntax)
+        {
+            if (syntax.Anchor != null)
+            {
+                //symbol.fullName = ALSyntaxHelper.EncodeName(symbol.name) + ": Record " + syntax.Anchor.ToFullString();
+                symbol.extends = ALSyntaxHelper.DecodeName(syntax.Anchor.ToString());
+            }
+            this.ProcessNodeContentRange(syntaxTree, symbol, syntax, syntax.OpenBraceToken, syntax.CloseBraceToken);
+        }
+
+
+#endif
 
         protected void ProcessVarSection(SyntaxTree syntaxTree, ALSymbol symbol, SyntaxNode syntax)
         {
@@ -343,9 +382,11 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
 
         protected void ProcessReportDataItemNode(SyntaxTree syntaxTree, ALSymbol symbol, ReportDataItemSyntax syntax)
         {
-            symbol.fullName = ALSyntaxHelper.EncodeName(symbol.name) + ": Record " + syntax.DataItemTable.ToFullString();
             if (syntax.DataItemTable != null)
+            {
+                symbol.fullName = ALSyntaxHelper.EncodeName(symbol.name) + ": Record " + syntax.DataItemTable.ToFullString();
                 symbol.source = ALSyntaxHelper.DecodeName(syntax.DataItemTable.ToString());
+            }
             this.ProcessNodeContentRange(syntaxTree, symbol, syntax, syntax.OpenBraceToken, syntax.CloseBraceToken);
         }
 
@@ -630,6 +671,11 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                 case ConvertedSyntaxKind.PageCustomizationObject: return ALSymbolKind.PageCustomizationObject;
                 case ConvertedSyntaxKind.DotNetPackage: return ALSymbolKind.DotNetPackage;
                 case ConvertedSyntaxKind.Interface: return ALSymbolKind.Interface;
+                //case ConvertedSyntaxKind.ReportExtension: return ALSymbolKind.ReportExtension;
+                case ConvertedSyntaxKind.ReportExtensionObject: return ALSymbolKind.ReportExtensionObject;
+                case ConvertedSyntaxKind.PermissionSet: return ALSymbolKind.PermissionSet;
+                case ConvertedSyntaxKind.PermissionSetExtension: return ALSymbolKind.PermissionSetExtension;
+                case ConvertedSyntaxKind.Entitlement: return ALSymbolKind.Entitlement;
 
                 //code elements
                 case ConvertedSyntaxKind.MethodDeclaration:
@@ -709,9 +755,17 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                 case ConvertedSyntaxKind.ReportLabel: return ALSymbolKind.ReportLabel;
                 case ConvertedSyntaxKind.ReportLabelMultilanguage: return ALSymbolKind.ReportLabelMultilanguage;
 
+                //report extensions
+                case ConvertedSyntaxKind.ReportExtensionAddColumnChange: return ALSymbolKind.ReportExtensionAddColumnChange;
+                case ConvertedSyntaxKind.ReportExtensionAddDataItemChange: return ALSymbolKind.ReportExtensionAddDataItemChange;
+                case ConvertedSyntaxKind.ReportExtensionDataSetAddColumn: return ALSymbolKind.ReportExtensionDataSetAddColumn;
+                case ConvertedSyntaxKind.ReportExtensionDataSetAddDataItem: return ALSymbolKind.ReportExtensionDataSetAddDataItem;
+                case ConvertedSyntaxKind.ReportExtensionDataSetModify: return ALSymbolKind.ReportExtensionDataSetModify;
+                case ConvertedSyntaxKind.ReportExtensionDataSetSection: return ALSymbolKind.ReportExtensionDataSetSection;
+                case ConvertedSyntaxKind.ReportExtensionModifyChange: return ALSymbolKind.ReportExtensionModifyChange;
+                case ConvertedSyntaxKind.RequestPageExtension: return ALSymbolKind.RequestPageExtension;
+
                 //dotnet packages
-
-
 
                 //control add-ins
                 case ConvertedSyntaxKind.EventTriggerDeclaration: return ALSymbolKind.EventTriggerDeclaration;

@@ -158,7 +158,7 @@ namespace AnZwDev.ALTools.ALSymbols
         Entitlement = 430,
         PermissionSet = 431,
         PermissionSetExtension = 432,
-        ReportExtension = 433,
+        //ReportExtension = 433,
         ReportExtensionAddColumnChange = 434,
         ReportExtensionAddDataItemChange = 435,
         ReportExtensionDataSetAddColumn = 436,
@@ -196,6 +196,10 @@ namespace AnZwDev.ALTools.ALSymbols
         EnumTypeList = 50017,
         EnumExtensionTypeList = 50018,
         InterfaceObjectList = 50059,
+        ReportExtensionObjectList = 50060,
+        PermissionSetList = 50061,
+        PermissionSetExtensionList = 50062,
+        EntitlementList = 50063,
 
         Namespace = 50019,
         Package = 50020,
@@ -247,7 +251,6 @@ namespace AnZwDev.ALTools.ALSymbols
         SyntaxTreeToken = 50057,
         SyntaxTreeTrivia = 50058
 
-        //Next available id 50060
-
+        //Next available id 50064
     }
 }

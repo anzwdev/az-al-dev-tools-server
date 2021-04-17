@@ -121,7 +121,10 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             this.AddFields(fields, tableSourceProject, table.Fields, includeDisabled, includeObsolete);
 
             //add table extension fields
-            ALAppTableExtension tableExtension;
+            ALAppTableExtension tableExtension = this.FindTableExtension(project.Symbols, tableName);
+            if (tableExtension != null)
+                this.AddFields(fields, project, tableExtension.Fields, includeDisabled, includeObsolete);
+
             foreach (ALProjectDependency dependency in project.Dependencies)
             {
                 tableExtension = FindTableExtension(dependency.Symbols, tableName);

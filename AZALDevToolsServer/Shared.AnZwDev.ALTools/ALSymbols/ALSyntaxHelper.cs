@@ -75,7 +75,7 @@ namespace AnZwDev.ALTools.ALSymbols
             if ((names != null) && (names.Length > 0))
             {
                 string list = names[0];
-                for (int i=1; i<names.Length; i++)
+                for (int i = 1; i < names.Length; i++)
                 {
                     list = list + ", " + EncodeName(names[i]);
                 }
@@ -147,7 +147,7 @@ namespace AnZwDev.ALTools.ALSymbols
                 {
                     source = source.Substring(0, commentPos) + source.Substring(endPos + 1);
                     commentPos = source.IndexOfFirst(commentPos, "//", "/*");
-                }                
+                }
             }
             return source;
         }
@@ -170,7 +170,7 @@ namespace AnZwDev.ALTools.ALSymbols
         public static int FindMemberAccessSeparator(string expression)
         {
             bool inName = false;
-            for (int i=0; i<expression.Length; i++)
+            for (int i = 0; i < expression.Length; i++)
             {
                 switch (expression[i])
                 {
@@ -185,6 +185,24 @@ namespace AnZwDev.ALTools.ALSymbols
             }
             return -1;
         }
+
+        public static string FormatSyntaxNodeName(string name)
+        {
+            if (String.IsNullOrWhiteSpace(name))
+                return name;
+
+            string nameText = name.ToLower();
+            switch (nameText)
+            {
+                case "addfirst": return "AddFirst";
+                case "addlast": return "AddLast";
+                case "addbefore": return "AddBefore";
+                case "addafter": return "AddAfter";
+                case "dataset": return "DataSet";
+            }
+            return name;
+        }
+
 
 
     }

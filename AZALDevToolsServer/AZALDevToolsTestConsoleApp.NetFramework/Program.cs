@@ -40,10 +40,10 @@ namespace AZALDevToolsTestConsoleApp.NetFramework
             CodeAnalyzersLibrary caLib = caLibCol.GetCodeAnalyzersLibrary("${CodeCop}");
 
             //Workspace tests
-            /*
             string[] projects =
             {
-                "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC16\\"
+                //"C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC16\\"
+                "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18"
             };
 
             ALWorkspace workspace = new ALWorkspace();
@@ -52,15 +52,16 @@ namespace AZALDevToolsTestConsoleApp.NetFramework
 
             ALProject project = workspace.Projects[0];
 
+            /*
             PageInformationProvider pageInformationProvider = new PageInformationProvider();
             PageInformation pageInformation = pageInformationProvider.GetPageDetails(project, "Test3", true, true);
 
             XmlPortInformationProvider xmlPortInformationProvider = new XmlPortInformationProvider();
             XmlPortTableElementInformation xmlPortTableElementInformation = xmlPortInformationProvider.GetXmlPortTableElementDetails(project, "wefew", "Item", true, true);
+            */
 
             ReportInformationProvider reportInformationProvider = new ReportInformationProvider();
-            ReportDataItemInformation reportDataItemInformation = reportInformationProvider.GetReportDataItemInformationDetails(project, "MyTestReport", "Vendor", true, true);
-            */
+            ReportDataItemInformation reportDataItemInformation = reportInformationProvider.GetReportDataItemInformationDetails(project, "Sales Invoice NA", "T1", true, true);
 
             Console.WriteLine("Done");
             Console.ReadKey();
