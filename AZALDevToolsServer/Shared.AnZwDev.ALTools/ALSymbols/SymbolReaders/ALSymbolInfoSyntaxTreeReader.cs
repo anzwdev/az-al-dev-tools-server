@@ -552,6 +552,8 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                     case ALSymbolKind.PageObject:
                         if (name == "sourcetable")
                             parent.source = ALSyntaxHelper.DecodeName(value);
+                        else if (name == "pagetype")
+                            parent.subtype = ALSyntaxHelper.DecodeName(value);
                         break;
                     case ALSymbolKind.Field:
                         if ((name == "enabled") && (value != null) && (
