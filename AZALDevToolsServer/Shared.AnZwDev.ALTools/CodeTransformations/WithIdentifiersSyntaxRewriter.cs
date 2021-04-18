@@ -37,16 +37,19 @@ namespace AnZwDev.ALTools.CodeTransformations
                     if ((methodOperation != null) && (methodOperation.Kind == OperationKind.InvocationExpression))
                     {
                         IInvocationExpression invocationExpression = methodOperation as IInvocationExpression;
-                        if (parameterIndex >= invocationExpression.TargetMethod.Parameters.Length)
-                            parameterIndex = invocationExpression.TargetMethod.Parameters.Length - 1;
-                        if (parameterIndex < 0)
-                            parameterIndex = 0;
-
-                        if ((invocationExpression.TargetMethod != null) && (invocationExpression.TargetMethod.Parameters.Length > parameterIndex))
+                        if ((invocationExpression != null) && (invocationExpression.TargetMethod != null) && (invocationExpression.TargetMethod.Parameters != null))
                         {
-                            IParameterSymbol parameter = invocationExpression.TargetMethod.Parameters[parameterIndex];
-                            if (parameter.MemberMustBeOnSame)
-                                skip = true;
+                            if (parameterIndex >= invocationExpression.TargetMethod.Parameters.Length)
+                                parameterIndex = invocationExpression.TargetMethod.Parameters.Length - 1;
+                            if (parameterIndex < 0)
+                                parameterIndex = 0;
+
+                            if (invocationExpression.TargetMethod.Parameters.Length > parameterIndex)
+                            {
+                                IParameterSymbol parameter = invocationExpression.TargetMethod.Parameters[parameterIndex];
+                                if (parameter.MemberMustBeOnSame)
+                                    skip = true;
+                            }
                         }
                     }
                 }
@@ -96,6 +99,36 @@ namespace AnZwDev.ALTools.CodeTransformations
             {
                 switch (operation.Kind.ConvertToLocalType())
                 {
+                    case ConvertedOperationKind.TestActionAccess:
+                        ITestActionAccess testActionAccess = operation as ITestActionAccess;
+                        if (testActionAccess != null)
+                            return testActionAccess.Instance;
+                        break;
+                    case ConvertedOperationKind.TestFieldAccess:
+                        ITestFieldAccess testFieldAccess = operation as ITestFieldAccess;
+                        if (testFieldAccess != null)
+                            return testFieldAccess.Instance;
+                        break;
+                    case ConvertedOperationKind.TestFilterAccess:
+                        ITestFilterAccess testFilterAccess = operation as ITestFilterAccess;
+                        if (testFilterAccess != null)
+                            return testFilterAccess.Instance;
+                        break;
+                    case ConvertedOperationKind.TestFilterFieldAccess:
+                        ITestFilterFieldAccess testFilterFieldAccess = operation as ITestFilterFieldAccess;
+                        if (testFilterFieldAccess != null)
+                            return testFilterFieldAccess.Instance;
+                        break;
+                    case ConvertedOperationKind.TestPartAccess:
+                        ITestPartAccess testPartAccess = operation as ITestPartAccess;
+                        if (testPartAccess != null)
+                            return testPartAccess.Instance;
+                        break;
+                    case ConvertedOperationKind.PagePartAccess:
+                        IPagePartAccess pagePartAccess = operation as IPagePartAccess;
+                        if (pagePartAccess != null)
+                            return pagePartAccess.Instance;
+                        break;
                     case ConvertedOperationKind.FieldAccess:
                         IFieldAccess fieldAccess = operation as IFieldAccess;
                         if (fieldAccess != null)

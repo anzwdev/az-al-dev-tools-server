@@ -35,6 +35,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             this.RegisterCommand(new AddPageControlCaptionWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new AddDataClassificationWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new AddFieldCaptionsWorkspaceCommand(this.ALDevToolsServer));
+            this.RegisterCommand(new AddObjectCaptionsWorkspaceCommand(this.ALDevToolsServer));
 
 #if BC            
             this.RegisterCommand(new RemoveWithWorkspaceCommand(this.ALDevToolsServer));
