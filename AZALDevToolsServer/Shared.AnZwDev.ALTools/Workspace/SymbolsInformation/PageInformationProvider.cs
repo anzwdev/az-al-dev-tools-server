@@ -181,5 +181,50 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
         #endregion
 
+        #region Page fields
+
+        public List<TableFieldInformaton> GetAllTableFieldsForPage(ALProject project, string pageName, bool includeDisabled, bool includeObsolete)
+        {
+            ALAppPage page = this.FindPage(project, pageName);
+            if (page != null)
+            {
+                string tableName = page.Properties.GetValue("SourceTable");
+                if (!String.IsNullOrWhiteSpace(tableName))
+                {
+                    TableInformationProvider tableInformationProvider = new TableInformationProvider();
+                    return tableInformationProvider.GetTableFields(project, tableName, includeDisabled, includeObsolete);
+                }
+            }
+            return null;
+        }
+
+        #endregion
+
+        #region Page variables
+
+        public List<ALAppVariable> GetPageVariables(ALProject project, string pageName)
+        {
+            List<ALAppVariable> variables = new List<ALAppVariable>();
+            
+            ALAppPage page = this.FindPage(project, pageName);
+            if ((page != null) && (page.Variables != null) && (page.Variables.Count > 0))
+                variables.AddRange(page.Variables);
+
+            ALAppPageExtension pageExtension = FindPageExtension(project.Symbols, pageName);
+            if ((pageExtension != null) && (pageExtension.Variables != null) && (pageExtension.Variables.Count > 0))
+                variables.AddRange(pageExtension.Variables);
+            foreach (ALProjectDependency dependency in project.Dependencies)
+            {
+                pageExtension = FindPageExtension(dependency.Symbols, pageName);
+                if ((pageExtension != null) && (pageExtension.Variables != null) && (pageExtension.Variables.Count > 0))
+                    variables.AddRange(pageExtension.Variables);
+            }
+
+            return variables;
+        }
+
+        #endregion
+
+
     }
 }

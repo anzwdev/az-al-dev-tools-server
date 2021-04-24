@@ -1362,6 +1362,23 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Compiler
             {
                 string temporary = node.Temporary.ToString();
                 alType.Temporary = ((temporary != null) && (temporary.Equals("temporary", StringComparison.CurrentCultureIgnoreCase)));
+
+                if (node.DataType != null)
+                {
+                    ConvertedSyntaxKind kind = node.DataType.Kind.ConvertToLocalType();
+                    if (kind == ConvertedSyntaxKind.SubtypedDataType)
+                    {
+                        SubtypedDataTypeSyntax subtypedDataTypeSyntax = node.DataType as SubtypedDataTypeSyntax;
+                        if (subtypedDataTypeSyntax != null)
+                        {
+                            alType.Subtype = new ALAppSubtypeDefinition();
+                            alType.Subtype.Name = ALSyntaxHelper.DecodeName(subtypedDataTypeSyntax.Subtype.ToString());
+                        }
+                    }
+                    
+                }
+            
+                
             }
         }
 

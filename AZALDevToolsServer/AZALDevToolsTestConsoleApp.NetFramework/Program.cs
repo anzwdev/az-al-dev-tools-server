@@ -1,4 +1,5 @@
 ﻿using AnZwDev.ALTools;
+using AnZwDev.ALTools.ALSymbolReferences;
 using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.ALSymbols.SymbolReaders;
 using AnZwDev.ALTools.CodeAnalysis;
@@ -39,13 +40,14 @@ namespace AZALDevToolsTestConsoleApp.NetFramework
             CodeAnalyzersLibrariesCollection caLibCol = new CodeAnalyzersLibrariesCollection(alDevToolsServer);
             CodeAnalyzersLibrary caLib = caLibCol.GetCodeAnalyzersLibrary("${CodeCop}");
 
-
+            /*
             filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18\\WithTestCodeunit.al";
             string content = System.IO.File.ReadAllText(filePath);
             Dictionary<string, string> pm = new Dictionary<string, string>();
             pm.Add("sourceFilePath", filePath);
             string projectPath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18";
             WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("removeWith", content, projectPath, null, pm);
+            */
 
             //Workspace tests
             string[] projects =
@@ -53,6 +55,7 @@ namespace AZALDevToolsTestConsoleApp.NetFramework
                 //"C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC16\\"
                 "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18"
             };
+            
 
             ALWorkspace workspace = new ALWorkspace();
             workspace.LoadProjects(projects);
@@ -60,10 +63,10 @@ namespace AZALDevToolsTestConsoleApp.NetFramework
 
             ALProject project = workspace.Projects[0];
 
-            /*
             PageInformationProvider pageInformationProvider = new PageInformationProvider();
-            PageInformation pageInformation = pageInformationProvider.GetPageDetails(project, "Test3", true, true);
+            PageInformation pageInformation = pageInformationProvider.GetPageDetails(project, "MyPageCard", true, true);
 
+            /*
             XmlPortInformationProvider xmlPortInformationProvider = new XmlPortInformationProvider();
             XmlPortTableElementInformation xmlPortTableElementInformation = xmlPortInformationProvider.GetXmlPortTableElementDetails(project, "wefew", "Item", true, true);
             */

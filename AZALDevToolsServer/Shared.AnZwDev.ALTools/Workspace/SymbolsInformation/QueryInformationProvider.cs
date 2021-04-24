@@ -140,5 +140,17 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
         #endregion
 
+        #region Query variables
+
+        public List<ALAppVariable> GetQueryVariables(ALProject project, string name)
+        {
+            ALAppQuery query = this.FindQuery(project, name);
+            if ((query != null) && (query.Variables != null) && (query.Variables.Count > 0))
+                return query.Variables;
+            return null;
+        }
+
+        #endregion
+
     }
 }

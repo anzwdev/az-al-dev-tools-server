@@ -34,5 +34,9 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             base.AddChildALSymbols(symbol);
         }
 
+        public virtual void ReplaceIdReferences(ALAppObjectIdMap idMap)
+        {
+        }
+
     }
 }
