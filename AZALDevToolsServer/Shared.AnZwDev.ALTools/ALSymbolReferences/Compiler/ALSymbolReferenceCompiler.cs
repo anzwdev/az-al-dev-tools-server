@@ -986,7 +986,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Compiler
         {
             ALAppProfile alObject = new ALAppProfile();
 #if BC
-            this.ProcessApplicationObject(alObject, node);
+            this.ProcessObject(alObject, node);
 #else
             this.ProcessObject(alObject, node);
 #endif

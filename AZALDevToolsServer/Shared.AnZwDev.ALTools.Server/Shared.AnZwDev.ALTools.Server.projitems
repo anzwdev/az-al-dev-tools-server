@@ -29,6 +29,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\GetCodeAnalyzersRulesResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\GetFullSyntaxTreeRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\GetFullSyntaxTreeResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\GetProjectSettingsRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\GetProjectSettingsResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\GetSyntaxTreeRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\GetSyntaxTreeResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\GetSyntaxTreeSymbolRequest.cs" />
@@ -90,6 +92,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\ExitNotificationHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\GetCodeAnalyzersRulesRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\GetFullSyntaxTreeRequestHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\GetProjectSettingsRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\GetSyntaxTreeRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\GetSyntaxTreeSymbolRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\LibrarySymbolsDetailsRequestHandler.cs" />
