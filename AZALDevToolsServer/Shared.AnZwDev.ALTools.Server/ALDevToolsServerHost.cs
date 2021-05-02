@@ -85,7 +85,7 @@ namespace AnZwDev.ALTools.Server
             this.Dispatcher.RegisterNotificationHandler(new FileSystemFileChangeNotificationHandler(this.ALDevToolsServer));
 
             //other message handlers
-            this.Dispatcher.RegisterNotificationHandler(new GetProjectSettingsRequestHandler(this.ALDevToolsServer));
+            this.Dispatcher.RegisterRequestHandler(new GetProjectSettingsRequestHandler(this.ALDevToolsServer));
         }
 
     }
