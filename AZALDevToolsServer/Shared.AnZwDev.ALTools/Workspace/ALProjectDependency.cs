@@ -35,5 +35,10 @@ namespace AnZwDev.ALTools.Workspace
             this.Propagated = false;
         }
 
+        public bool IdReferencesReplaced()
+        {
+            return ((this.SourceProject != null) || (this.Symbols == null) || (this.Symbols.IdReferencesReplaced()));
+        }
+
     }
 }

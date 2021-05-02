@@ -986,7 +986,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Compiler
         {
             ALAppProfile alObject = new ALAppProfile();
 #if BC
-            this.ProcessApplicationObject(alObject, node);
+            this.ProcessObject(alObject, node);
 #else
             this.ProcessObject(alObject, node);
 #endif
@@ -1362,6 +1362,23 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Compiler
             {
                 string temporary = node.Temporary.ToString();
                 alType.Temporary = ((temporary != null) && (temporary.Equals("temporary", StringComparison.CurrentCultureIgnoreCase)));
+
+                if (node.DataType != null)
+                {
+                    ConvertedSyntaxKind kind = node.DataType.Kind.ConvertToLocalType();
+                    if (kind == ConvertedSyntaxKind.SubtypedDataType)
+                    {
+                        SubtypedDataTypeSyntax subtypedDataTypeSyntax = node.DataType as SubtypedDataTypeSyntax;
+                        if (subtypedDataTypeSyntax != null)
+                        {
+                            alType.Subtype = new ALAppSubtypeDefinition();
+                            alType.Subtype.Name = ALSyntaxHelper.DecodeName(subtypedDataTypeSyntax.Subtype.ToString());
+                        }
+                    }
+                    
+                }
+            
+                
             }
         }
 

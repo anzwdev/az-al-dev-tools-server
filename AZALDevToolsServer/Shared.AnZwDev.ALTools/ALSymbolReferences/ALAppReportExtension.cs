@@ -91,7 +91,5 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             symbol.AddChildSymbol(columnsSymbol);
         }
 
-
-
     }
 }

@@ -160,6 +160,14 @@ namespace AnZwDev.ALTools.Workspace
                 this.ResolveDependency(this.Dependencies[index], appPackagesCollection);
                 index++;
             }
+
+            //change internal references from ids to names
+            if (!this.Dependencies.IdReferencesReplaced())
+            {
+                ALAppObjectIdMap objectIdMap = this.Dependencies.CreateALAppObjectIdMap();
+                this.Dependencies.ReplaceIdReferences(objectIdMap);
+            }
+
         }
 
         protected void ResolveDependency(ALProjectDependency dependency, AppPackageInformationsCollection appPackagesCollection)

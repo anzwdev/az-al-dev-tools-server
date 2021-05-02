@@ -205,5 +205,30 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
         #endregion
 
+        #region Page variables
+
+        public List<ALAppVariable> GetReportVariables(ALProject project, string name)
+        {
+            List<ALAppVariable> variables = new List<ALAppVariable>();
+
+            ALAppReport report = this.FindReport(project, name);
+            if ((report != null) && (report.Variables != null) && (report.Variables.Count > 0))
+                variables.AddRange(report.Variables);
+
+            ALAppReportExtension reportExtension = FindReportExtension(project.Symbols, name);
+            if ((reportExtension != null) && (reportExtension.Variables != null) && (reportExtension.Variables.Count > 0))
+                variables.AddRange(reportExtension.Variables);
+            foreach (ALProjectDependency dependency in project.Dependencies)
+            {
+                reportExtension = FindReportExtension(dependency.Symbols, name);
+                if ((reportExtension != null) && (reportExtension.Variables != null) && (reportExtension.Variables.Count > 0))
+                    variables.AddRange(reportExtension.Variables);
+            }
+
+            return variables;
+        }
+
+        #endregion
+
     }
 }

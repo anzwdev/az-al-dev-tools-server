@@ -156,5 +156,17 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
         #endregion
 
+        #region XmlPort variables
+
+        public List<ALAppVariable> GetXmlPortVariables(ALProject project, string name)
+        {
+            ALAppXmlPort xmlPort = this.FindXmlPort(project, name);
+            if ((xmlPort != null) && (xmlPort.Variables != null) && (xmlPort.Variables.Count > 0))
+                return xmlPort.Variables;
+            return null;
+        }
+
+        #endregion
+
     }
 }

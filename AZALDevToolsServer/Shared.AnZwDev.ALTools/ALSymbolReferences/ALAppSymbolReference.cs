@@ -36,6 +36,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         public ALAppElementsCollection<ALAppPermissionSetExtension> PermissionSetExtensions { get; set; }
 
         private ALSymbol _alSymbolCache = null;
+        private bool _idReferencesReplaced = false;
 
         public ALAppSymbolReference()
         {
@@ -209,6 +210,29 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             this.PermissionSets?.AddCollectionToALSymbol(symbol, ALSymbolKind.PermissionSetList);
             this.PermissionSetExtensions?.AddCollectionToALSymbol(symbol, ALSymbolKind.PermissionSetExtensionList);
 
+        }
+
+        #endregion
+
+        #region Id to name references change
+
+        public void AddToObjectsIdMap(ALAppObjectIdMap idMap)
+        {
+            idMap.AddRange(idMap.TableIdMap, this.Tables);
+        }
+
+        public bool IdReferencesReplaced()
+        {
+            return this._idReferencesReplaced;
+        }
+
+        public void ReplaceIdReferences(ALAppObjectIdMap idMap)
+        {
+            if (this.Pages != null)
+                for (int i = 0; i < this.Pages.Count; i++)
+                    this.Pages[i].ReplaceIdReferences(idMap);
+
+            this._idReferencesReplaced = true;
         }
 
         #endregion
