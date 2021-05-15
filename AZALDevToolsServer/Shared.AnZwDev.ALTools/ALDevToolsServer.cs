@@ -42,6 +42,8 @@ namespace AnZwDev.ALTools
                 this.PlatformSpecificFolder = "darwin";
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
                 this.PlatformSpecificFolder = "linux";
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                this.PlatformSpecificFolder = "win32";
             else
 #endif
                 this.PlatformSpecificFolder = "";

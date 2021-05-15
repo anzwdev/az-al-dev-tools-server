@@ -934,7 +934,11 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Compiler
             alObject.TargetObject = ALSyntaxHelper.DecodeName(node.BaseObject.ToString());
 
             if (node.Fields != null)
-                alObject.Fields = this.CreateTableExtensionFieldsList(node.Fields.Fields);
+            {
+                ALAppElementsCollection<ALAppTableField> modifiedFields = null;
+                alObject.Fields = this.CreateTableExtensionFieldsList(node.Fields.Fields, out modifiedFields);
+                alObject.FieldModifications = modifiedFields;
+            }
             
             if (node.Keys != null)
                 alObject.Keys = this.CreateTableKeysList(node.Keys.Keys);
@@ -947,27 +951,52 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Compiler
             return alObject;
         }
 
-#region Fields
+        #region Fields
 
-        protected ALAppElementsCollection<ALAppTableField> CreateTableExtensionFieldsList(SyntaxList<FieldBaseSyntax> nodesList)
+        protected ALAppElementsCollection<ALAppTableField> CreateTableExtensionFieldsList(SyntaxList<FieldBaseSyntax> nodesList, out ALAppElementsCollection<ALAppTableField> modifiedFields)
         {
+            modifiedFields = null;
             if ((nodesList != null) && (nodesList.Count > 0))
             {
                 ALAppElementsCollection<ALAppTableField> list = new ALAppElementsCollection<ALAppTableField>();
                 foreach (FieldBaseSyntax node in nodesList)
                 {
-                    FieldSyntax fieldNode = node as FieldSyntax;
-                    if (node != null)
-                        list.Add(this.CreateTableField(fieldNode));
+                    ConvertedSyntaxKind kind = node.Kind.ConvertToLocalType();
+                    switch (kind)
+                    {
+                        case ConvertedSyntaxKind.Field:
+                            FieldSyntax fieldNode = node as FieldSyntax;
+                            if (fieldNode != null)
+                                list.Add(this.CreateTableField(fieldNode));
+                            break;
+                        case ConvertedSyntaxKind.FieldModification:
+                            FieldModificationSyntax fieldModification = node as FieldModificationSyntax;
+                            if (fieldModification != null)
+                            {
+                                if (modifiedFields == null)
+                                    modifiedFields = new ALAppElementsCollection<ALAppTableField>();
+                                modifiedFields.Add(this.CreateTableFieldModification(fieldModification));
+                            }
+                            break;
+                    }
                 }
                 return list;
             }
             return null;
         }
 
-#endregion
+        protected ALAppTableField CreateTableFieldModification(FieldModificationSyntax node)
+        {
+            ALAppTableField alElement = new ALAppTableField();
+            alElement.Name = node.GetNameStringValue();
+            if (node.PropertyList != null)
+                alElement.Properties = this.CreatePropertiesList(node.PropertyList.Properties);
+            return alElement;
+        }
 
-#region Field groups
+        #endregion
+
+        #region Field groups
 
 #if BC
         protected ALAppElementsCollection<ALAppFieldGroup> CreateTableExtensionFieldsGroups(SyntaxList<FieldGroupChangeBaseSyntax> nodesList)
@@ -976,11 +1005,11 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Compiler
         }
 #endif
 
-#endregion
+        #endregion
 
-#endregion
+        #endregion
 
-#region Profile methods
+        #region Profile methods
 
         protected ALAppProfile CreateProfile(ProfileSyntax node)
         {
@@ -1149,7 +1178,8 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Compiler
         #region AL Object methods
 
         protected void ProcessObject(ALAppObject alObject, ObjectSyntax node)
-        {            
+        {
+            alObject.ReferenceSourceFileName = node.SyntaxTree.FilePath;
             alObject.Name = node.GetNameStringValue();
 
             if (node.PropertyList != null)

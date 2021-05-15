@@ -123,7 +123,10 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             //add table extension fields
             ALAppTableExtension tableExtension = this.FindTableExtension(project.Symbols, tableName);
             if (tableExtension != null)
+            {
                 this.AddFields(fields, project, tableExtension.Fields, includeDisabled, includeObsolete);
+                this.UpdateFields(fields, tableExtension.FieldModifications);
+            }
 
             foreach (ALProjectDependency dependency in project.Dependencies)
             {
@@ -156,6 +159,22 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             }
         }
         
+        protected void UpdateFields(List<TableFieldInformaton> fields, ALAppElementsCollection<ALAppTableField> fieldModificationsCollection)
+        {
+            if (fieldModificationsCollection != null)
+            {
+                foreach (ALAppTableField fieldModification in fieldModificationsCollection)
+                {
+                    TableFieldInformaton field = fields
+                        .Where(p => ((p.Name != null) && (p.Name.Equals(fieldModification.Name, StringComparison.CurrentCultureIgnoreCase))))
+                        .FirstOrDefault();
+                    if (field != null)
+                        field.UpdateProperties(fieldModification.Properties);
+                }
+            }
+
+        }
+
         protected void AddSystemFields(List<TableFieldInformaton> fields)
         {
             fields.Add(new TableFieldInformaton(2000000000, "SystemId", "Guid"));
