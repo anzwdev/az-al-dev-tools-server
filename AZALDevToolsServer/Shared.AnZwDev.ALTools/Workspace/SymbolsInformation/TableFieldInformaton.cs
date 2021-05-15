@@ -52,5 +52,15 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             this.DataType = symbolReference.TypeDefinition.Name;
         }
 
+        public void UpdateProperties(ALAppPropertiesCollection propertiesCollection)
+        {
+            if (propertiesCollection != null)
+            {
+                string caption = propertiesCollection.GetValue("Caption");
+                if (!String.IsNullOrWhiteSpace(caption))
+                    this.Caption = caption;
+            }
+        }
+
     }
 }

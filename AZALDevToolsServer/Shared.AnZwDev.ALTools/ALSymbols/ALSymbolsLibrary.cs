@@ -16,7 +16,7 @@ namespace AnZwDev.ALTools.ALSymbols
         }
 
         public ALSymbolsLibrary(ALSymbol rootSymbol)
-        {
+        {            
             this.Root = rootSymbol;
         }
 

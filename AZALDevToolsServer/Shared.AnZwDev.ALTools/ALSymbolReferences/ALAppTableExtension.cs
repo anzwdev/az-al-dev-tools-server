@@ -11,6 +11,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
     {
 
         public string TargetObject { get; set; }
+        public ALAppElementsCollection<ALAppTableField> FieldModifications { get; set; }
 
         public ALAppTableExtension()
         {

@@ -87,6 +87,5 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return ALAppTableFieldState.Active;
         }
 
-
     }
 }
