@@ -9,11 +9,13 @@
     <Import_RootNamespace>AnZwDev.ALTools</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppBaseSymbolsLibrarySource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppObjectIdMap.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppPermissionSet.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppPermissionSetExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppReportExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppRequestPageExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppSymbolsLibrarySource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppXmlPortNodeKind.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALDevToolsServer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppAttribute.cs" />
@@ -89,6 +91,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSymbolKindExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSymbolLibrariesCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSymbolsLibrary.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSymbolsLibrarySource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSymbolSourceLocation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSyntaxHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSyntaxTree.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSyntaxTreesCollection.cs" />
@@ -168,6 +172,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\ALProjectFileType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\ALProjectIdRange.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\ALProjectProperties.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Workspace\ALProjectSymbolsLibrarySource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\ALWorkspace.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\ProjectSymbolReferencesBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\Serialization\ALProjectMetadataSerializer.cs" />

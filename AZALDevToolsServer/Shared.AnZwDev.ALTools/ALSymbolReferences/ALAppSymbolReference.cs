@@ -35,11 +35,15 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         public ALAppElementsCollection<ALAppPermissionSet> PermissionSets { get; set; }
         public ALAppElementsCollection<ALAppPermissionSetExtension> PermissionSetExtensions { get; set; }
 
+        public string ReferenceSourceFileName { get; set; }
+
+
         private ALSymbol _alSymbolCache = null;
         private bool _idReferencesReplaced = false;
 
         public ALAppSymbolReference()
         {
+            ReferenceSourceFileName = null;
         }
 
         #region Objects processing
@@ -160,6 +164,60 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return null;
         }
 
+        public ALAppObject FindObjectByName(ALSymbolKind symbolKind, string name)
+        {
+            switch (symbolKind)
+            {
+                case ALSymbolKind.TableObject:
+                    return this.FindObjectByName(this.Tables, name);
+                case ALSymbolKind.PageObject:
+                    return this.FindObjectByName(this.Pages, name);
+                case ALSymbolKind.ReportObject:
+                    return this.FindObjectByName(this.Reports, name);
+                case ALSymbolKind.XmlPortObject:
+                    return this.FindObjectByName(this.XmlPorts, name);
+                case ALSymbolKind.QueryObject:
+                    return this.FindObjectByName(this.Queries, name);
+                case ALSymbolKind.CodeunitObject:
+                    return this.FindObjectByName(this.Codeunits, name);
+                case ALSymbolKind.ControlAddInObject:
+                    return this.FindObjectByName(this.ControlAddIns, name);
+                case ALSymbolKind.PageExtensionObject:
+                    return this.FindObjectByName(this.PageExtensions, name);
+                case ALSymbolKind.TableExtensionObject:
+                    return this.FindObjectByName(this.TableExtensions, name);
+                case ALSymbolKind.ProfileObject:
+                    return this.FindObjectByName(this.Pofiles, name);
+                case ALSymbolKind.PageCustomizationObject:
+                    return this.FindObjectByName(this.PageCustomizations, name);
+                case ALSymbolKind.DotNetPackage:
+                    return this.FindObjectByName(this.DotNetPackages, name);
+                case ALSymbolKind.EnumType:
+                    return this.FindObjectByName(this.EnumTypes, name);
+                case ALSymbolKind.EnumExtensionType:
+                    return this.FindObjectByName(this.EnumExtensionTypes, name);
+                case ALSymbolKind.Interface:
+                    return this.FindObjectByName(this.Interfaces, name);
+                case ALSymbolKind.ReportExtensionObject:
+                    return this.FindObjectByName(this.ReportExtensions, name);
+                case ALSymbolKind.PermissionSet:
+                    return this.FindObjectByName(this.PermissionSets, name);
+                case ALSymbolKind.PermissionSetExtension:
+                    return this.FindObjectByName(this.PermissionSetExtensions, name);
+            }
+
+            return null;
+        }
+
+        protected ALAppObject FindObjectByName<T>(ALAppElementsCollection<T> collection, string name) where T: ALAppObject
+        {
+            if ((collection == null) || (String.IsNullOrWhiteSpace(name)))
+                return null;
+            return collection
+                .Where(p => (name.Equals(p.Name, StringComparison.CurrentCultureIgnoreCase)))
+                .FirstOrDefault();
+        }
+
         #endregion
 
         #region ALSymbolInformation conversion
@@ -171,7 +229,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
 
         public ALSymbolsLibrary ToALSymbolsLibrary()
         {
-            return new ALSymbolsLibrary(this.ToALSymbol());
+            return new ALSymbolsLibrary(new ALAppSymbolsLibrarySource(this), this.ToALSymbol());
         }
 
         public override ALSymbol ToALSymbol()

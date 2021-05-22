@@ -1,6 +1,7 @@
 ﻿using AnZwDev.ALTools;
 using AnZwDev.ALTools.ALSymbolReferences;
 using AnZwDev.ALTools.ALSymbolReferences.Compiler;
+using AnZwDev.ALTools.ALSymbolReferences.Serialization;
 using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.ALSymbols.SymbolReaders;
 using AnZwDev.ALTools.CodeAnalysis;
@@ -11,6 +12,8 @@ using AnZwDev.ALTools.Workspace.SymbolsInformation;
 using AnZwDev.ALTools.WorkspaceCommands;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -45,7 +48,6 @@ namespace AZALDevToolsTestConsoleApp
             pm.Add("sourceFilePath", filePath);
             string projectPath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18";
             WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("removeWith", content, projectPath, null, pm);
-
 
             Console.WriteLine("Done");
             Console.ReadKey();

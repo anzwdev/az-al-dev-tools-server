@@ -17,18 +17,22 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Compiler
         {
         }
 
-        public List<ALAppObject> CreateObjectsList(string source)
+        public List<ALAppObject> CreateObjectsList(string sourcePath, string source)
         {
-            return CreateObjectsList(SyntaxTree.ParseObjectText(source));
+            return CreateObjectsList(sourcePath, SyntaxTree.ParseObjectText(source));
         }
 
-        public List<ALAppObject> CreateObjectsList(SyntaxTree syntaxTree)
+        public List<ALAppObject> CreateObjectsList(string sourcePath, SyntaxTree syntaxTree)
         {
             SyntaxNode node = syntaxTree.GetRoot();
             if (node != null)
             {
                 List<ALAppObject> alObjectsList = new List<ALAppObject>();
                 this.ProcessSyntaxNode(node, alObjectsList);
+                foreach (ALAppObject alAppObject in alObjectsList)
+                {
+                    alAppObject.ReferenceSourceFileName = sourcePath;
+                }
                 return alObjectsList;
             }
 
