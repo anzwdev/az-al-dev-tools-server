@@ -1,5 +1,6 @@
 ﻿using AnZwDev.ALTools;
 using AnZwDev.ALTools.ALSymbols;
+using AnZwDev.VSCodeLangServer.Protocol.Server;
 using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
 using AnZwDev.ALTools.Server.Contracts;
 using System;
@@ -13,7 +14,7 @@ namespace AnZwDev.ALTools.Server.Handlers
     public class GetFullSyntaxTreeRequestHandler : BaseALRequestHandler<GetFullSyntaxTreeRequest, GetFullSyntaxTreeResponse>
     {
         
-        public GetFullSyntaxTreeRequestHandler(ALDevToolsServer server) : base(server, "al/getfullsyntaxtree")
+        public GetFullSyntaxTreeRequestHandler(ALDevToolsServer server, LanguageServerHost languageServerHost) : base(server, languageServerHost, "al/getfullsyntaxtree")
         {
         }
 

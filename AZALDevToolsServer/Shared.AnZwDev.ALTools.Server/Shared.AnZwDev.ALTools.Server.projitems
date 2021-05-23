@@ -25,10 +25,14 @@
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\ChangeTracking\FilesRenameDetailsNotificationRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\ChangeTracking\FilesRenameNotificationRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\ChangeTracking\FileSystemChangeNotificationRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\GetALAppContentRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\GetALAppContentResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\GetCodeAnalyzersRulesRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\GetCodeAnalyzersRulesResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\GetFullSyntaxTreeRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\GetFullSyntaxTreeResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\GetLibrarySymbolLocationRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\GetLibrarySymbolLocationResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\GetProjectSettingsRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\GetProjectSettingsResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\GetSyntaxTreeRequest.cs" />
@@ -90,8 +94,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\CloseSyntaxTreeNotificationHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\DocumentSymbolsRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\ExitNotificationHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\GetALAppContentRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\GetCodeAnalyzersRulesRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\GetFullSyntaxTreeRequestHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\GetLibrarySymbolLocationRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\GetProjectSettingsRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\GetSyntaxTreeRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\GetSyntaxTreeSymbolRequestHandler.cs" />

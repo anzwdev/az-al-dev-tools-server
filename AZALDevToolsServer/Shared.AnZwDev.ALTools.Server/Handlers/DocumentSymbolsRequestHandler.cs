@@ -8,13 +8,15 @@ using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.ALSymbols.SymbolReaders;
 using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
 using AnZwDev.ALTools.Server.Contracts;
+using AnZwDev.VSCodeLangServer.Utility;
+using AnZwDev.VSCodeLangServer.Protocol.Server;
 
 namespace AnZwDev.ALTools.Server.Handlers
 {
     public class DocumentSymbolsRequestHandler : BaseALRequestHandler<DocumentSymbolsRequest, DocumentSymbolsResponse>
     {
 
-        public DocumentSymbolsRequestHandler(ALDevToolsServer server) : base(server, "al/documentsymbols")
+        public DocumentSymbolsRequestHandler(ALDevToolsServer server, LanguageServerHost languageServerHost) : base(server, languageServerHost, "al/documentsymbols")
         {
         }
 
@@ -34,6 +36,7 @@ namespace AnZwDev.ALTools.Server.Handlers
             {
                 response.root = new ALSymbol();
                 response.root.fullName = e.Message;
+                this.LogError(e);
             }
 
             return response;

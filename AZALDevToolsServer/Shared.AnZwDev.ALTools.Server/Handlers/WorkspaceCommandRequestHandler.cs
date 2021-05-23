@@ -1,6 +1,7 @@
 ﻿using AnZwDev.ALTools;
 using AnZwDev.ALTools.CodeTransformations;
 using AnZwDev.ALTools.WorkspaceCommands;
+using AnZwDev.VSCodeLangServer.Protocol.Server;
 using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
 using AnZwDev.ALTools.Server.Contracts;
 using System;
@@ -9,13 +10,14 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using AnZwDev.VSCodeLangServer.Utility;
 
 namespace AnZwDev.ALTools.Server.Handlers
 {
     public class WorkspaceCommandRequestHandler : BaseALRequestHandler<WorkspaceCommandRequest, WorkspaceCommandResponse>
     {
 
-        public WorkspaceCommandRequestHandler(ALDevToolsServer server) : base(server, "al/workspacecommand")
+        public WorkspaceCommandRequestHandler(ALDevToolsServer server, LanguageServerHost languageServerHost) : base(server, languageServerHost, "al/workspacecommand")
         {
         }
 
@@ -33,6 +35,7 @@ namespace AnZwDev.ALTools.Server.Handlers
             {
                 response.error = true;
                 response.errorMessage = e.Message;
+                this.LogError(e);
             }
             return response;
         }

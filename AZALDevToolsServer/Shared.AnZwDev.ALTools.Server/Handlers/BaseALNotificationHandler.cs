@@ -1,4 +1,5 @@
 ﻿using AnZwDev.ALTools;
+using AnZwDev.VSCodeLangServer.Protocol.Server;
 using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace AnZwDev.ALTools.Server.Handlers
 
         public ALDevToolsServer Server { get; }
 
-        public BaseALNotificationHandler(ALDevToolsServer alDevToolsServer, string name) : base(name)
+        public BaseALNotificationHandler(ALDevToolsServer alDevToolsServer, LanguageServerHost languageServerHost, string name) : base(languageServerHost, name)
         {
             this.Server = alDevToolsServer;
         }

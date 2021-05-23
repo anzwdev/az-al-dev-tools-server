@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AnZwDev.VSCodeLangServer.Protocol.Server;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ namespace AnZwDev.VSCodeLangServer.Protocol.MessageProtocol
     public abstract class RequestHandler<TParameters, TResult> : AbstractMessageHandler
     {
 
-        public RequestHandler(string name) : base(name)
+        public RequestHandler(LanguageServerHost languageServerHost, string name) : base(languageServerHost, name)
         {
         }
 

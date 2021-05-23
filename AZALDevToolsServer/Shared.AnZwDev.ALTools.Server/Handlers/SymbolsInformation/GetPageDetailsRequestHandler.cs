@@ -1,6 +1,7 @@
 ﻿using AnZwDev.ALTools.Server.Contracts.SymbolsInformation;
 using AnZwDev.ALTools.Workspace;
 using AnZwDev.ALTools.Workspace.SymbolsInformation;
+using AnZwDev.VSCodeLangServer.Protocol.Server;
 using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
     public class GetPageDetailsRequestHandler : BaseALRequestHandler<GetPageDetailsRequest, GetPageDetailsResponse>
     {
 
-        public GetPageDetailsRequestHandler(ALDevToolsServer server) : base(server, "al/getpagedetails")
+        public GetPageDetailsRequestHandler(ALDevToolsServer server, LanguageServerHost languageServerHost) : base(server, languageServerHost, "al/getpagedetails")
         {
         }
 
@@ -36,9 +37,10 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
             {
                 response.symbol = new PageInformation();
                 response.symbol.Name = e.Message;
+                this.LogError(e);
             }
 
-                return response;
+            return response;
 
         }
 

@@ -495,7 +495,7 @@ namespace AnZwDev.ALTools.Workspace
                 rootSymbol = this.Symbols.ToALSymbol();
             }
 
-            return new ALSymbolsLibrary(rootSymbol);
+            return new ALSymbolsLibrary(new ALProjectSymbolsLibrarySource(this), rootSymbol);
         }
 
         #endregion

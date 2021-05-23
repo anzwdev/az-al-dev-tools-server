@@ -38,6 +38,18 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Serialization
         [XmlAttribute("PropagateDependencies")]
         public string PropagateDependenciesText { get; set; }
 
+        [XmlAttribute("ShowMyCode")]
+        public string ShowMyCodeText { get; set; }
+
+        [XmlIgnore]
+        public bool ShowMyCode
+        {
+            get 
+            {
+                return ((String.IsNullOrWhiteSpace(this.ShowMyCodeText)) || (this.ShowMyCodeText.Equals("true", StringComparison.CurrentCultureIgnoreCase)));
+            }
+        }
+
         [XmlIgnore]
         public bool PropagateDependencies
         {

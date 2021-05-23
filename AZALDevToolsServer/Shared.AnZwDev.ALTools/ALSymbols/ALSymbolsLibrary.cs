@@ -10,13 +10,15 @@ namespace AnZwDev.ALTools.ALSymbols
     {
 
         public ALSymbol Root { get; set; }
+        public ALSymbolsLibrarySource Source { get; set; }
 
-        public ALSymbolsLibrary() : this(null)
+        public ALSymbolsLibrary() : this(null, null)
         {
         }
 
-        public ALSymbolsLibrary(ALSymbol rootSymbol)
-        {            
+        public ALSymbolsLibrary(ALSymbolsLibrarySource source, ALSymbol rootSymbol)
+        {
+            this.Source = source;
             this.Root = rootSymbol;
         }
 
@@ -63,6 +65,14 @@ namespace AnZwDev.ALTools.ALSymbols
             }
             return null;
         }
+
+        public ALSymbolSourceLocation GetSymbolSourceLocation(ALSymbol symbol)
+        {
+            if (this.Source != null)
+                return this.Source.GetSymbolSourceLocation(symbol);
+            return null;
+        }
+
 
     }
 }

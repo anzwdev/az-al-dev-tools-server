@@ -1,6 +1,7 @@
 ﻿using AnZwDev.ALTools.Server.Contracts.SymbolsInformation;
 using AnZwDev.ALTools.Workspace;
 using AnZwDev.ALTools.Workspace.SymbolsInformation;
+using AnZwDev.VSCodeLangServer.Protocol.Server;
 using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
     public class GetReportDataItemDetailsRequestHandler : BaseALRequestHandler<GetReportDataItemDetailsRequest, GetReportDataItemDetailsResponse>
     {
 
-        public GetReportDataItemDetailsRequestHandler(ALDevToolsServer server) : base(server, "al/getreportdataitemdetails")
+        public GetReportDataItemDetailsRequestHandler(ALDevToolsServer server, LanguageServerHost languageServerHost) : base(server, languageServerHost, "al/getreportdataitemdetails")
         {
         }
 
@@ -36,6 +37,7 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
             {
                 response.symbol = new ReportDataItemInformation();
                 response.symbol.Name = e.Message;
+                this.LogError(e);
             }
 
             return response;

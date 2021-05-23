@@ -196,6 +196,7 @@ namespace AnZwDev.VSCodeLangServer.Utility
                 {
                     configuration = configuration.WriteTo.Async(a => a.File(logFile.Key,
                         restrictedToMinimumLevel: ConvertLogLevel(logFile.Value ?? _logLevel),
+                        shared: true,
                         outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff} {Message}{NewLine}")
                     );
                 }

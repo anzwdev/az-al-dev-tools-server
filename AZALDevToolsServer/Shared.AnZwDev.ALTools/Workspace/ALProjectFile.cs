@@ -91,7 +91,7 @@ namespace AnZwDev.ALTools.Workspace
         {
             if ((this.IsDirty) && (_syntaxTree != null))
             {
-                this.Symbols = this.Project.Workspace.SymbolReferenceCompiler.CreateObjectsList(_syntaxTree);
+                this.Symbols = this.Project.Workspace.SymbolReferenceCompiler.CreateObjectsList(this.FullPath, _syntaxTree);
                 if (cleanDirtyState)
                     this.IsDirty = false;
             }
@@ -101,7 +101,7 @@ namespace AnZwDev.ALTools.Workspace
 
         public void CompileSymbolReferences(string source)
         {
-            this.Symbols = this.Project.Workspace.SymbolReferenceCompiler.CreateObjectsList(source);
+            this.Symbols = this.Project.Workspace.SymbolReferenceCompiler.CreateObjectsList(this.FullPath, source);
             this.IsDirty = false;
         }
 

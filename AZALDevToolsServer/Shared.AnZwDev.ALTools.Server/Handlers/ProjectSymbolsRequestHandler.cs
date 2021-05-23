@@ -8,13 +8,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AnZwDev.ALTools.Workspace;
+using AnZwDev.VSCodeLangServer.Protocol.Server;
 
 namespace AnZwDev.ALTools.Server.Handlers
 {
     public class ProjectSymbolsRequestHandler : BaseALRequestHandler<ProjectSymbolsRequest, ProjectSymbolsResponse>
     {
 
-        public ProjectSymbolsRequestHandler(ALDevToolsServer server) : base(server, "al/projectsymbols")
+        public ProjectSymbolsRequestHandler(ALDevToolsServer server, LanguageServerHost languageServerHost) : base(server, languageServerHost, "al/projectsymbols")
         {
         }
 
@@ -36,6 +37,7 @@ namespace AnZwDev.ALTools.Server.Handlers
             {
                 response.root = new ALSymbol();
                 response.root.fullName = e.Message;
+                this.LogError(e);
             }
 
             return response;

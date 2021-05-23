@@ -24,7 +24,6 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             this.Remove((T)element);
         }
 
-
         #region ALSymbolInformation conversion
 
         public void AddToALSymbol(ALSymbol symbol)

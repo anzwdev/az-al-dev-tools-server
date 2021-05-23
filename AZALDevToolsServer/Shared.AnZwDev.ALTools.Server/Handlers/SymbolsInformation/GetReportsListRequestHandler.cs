@@ -1,6 +1,7 @@
 ﻿using AnZwDev.ALTools.Server.Contracts.SymbolsInformation;
 using AnZwDev.ALTools.Workspace;
 using AnZwDev.ALTools.Workspace.SymbolsInformation;
+using AnZwDev.VSCodeLangServer.Protocol.Server;
 using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
     public class GetReportsListRequestHandler : BaseALRequestHandler<GetReportsListRequest, GetReportsListResponse>
     {
 
-        public GetReportsListRequestHandler(ALDevToolsServer server) : base(server, "al/getreportslist")
+        public GetReportsListRequestHandler(ALDevToolsServer server, LanguageServerHost languageServerHost) : base(server, languageServerHost, "al/getreportslist")
         {
         }
 

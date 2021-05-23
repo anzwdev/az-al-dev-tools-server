@@ -1,4 +1,5 @@
 ﻿using AnZwDev.ALTools;
+using AnZwDev.VSCodeLangServer.Protocol.Server;
 using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
 using AnZwDev.ALTools.Server.Contracts;
 using System;
@@ -12,7 +13,7 @@ namespace AnZwDev.ALTools.Server.Handlers
     public class CloseSymbolsLibraryNotificationHandler : BaseALNotificationHandler<CloseSymbolsLibraryRequest>
     {
 
-        public CloseSymbolsLibraryNotificationHandler(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "al/closesymbolslibrary")
+        public CloseSymbolsLibraryNotificationHandler(ALDevToolsServer alDevToolsServer, LanguageServerHost languageServerHost) : base(alDevToolsServer, languageServerHost, "al/closesymbolslibrary")
         {
         }
 

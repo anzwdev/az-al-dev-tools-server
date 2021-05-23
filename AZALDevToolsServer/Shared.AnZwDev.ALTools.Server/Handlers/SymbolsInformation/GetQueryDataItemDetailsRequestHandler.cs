@@ -1,6 +1,7 @@
 ﻿using AnZwDev.ALTools.Server.Contracts.SymbolsInformation;
 using AnZwDev.ALTools.Workspace;
 using AnZwDev.ALTools.Workspace.SymbolsInformation;
+using AnZwDev.VSCodeLangServer.Protocol.Server;
 using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
     public class GetQueryDataItemDetailsRequestHandler : BaseALRequestHandler<GetQueryDataItemDetailsRequest, GetQueryDataItemDetailsResponse>
     {
 
-        public GetQueryDataItemDetailsRequestHandler(ALDevToolsServer server) : base(server, "al/getquerydataitemdetails")
+        public GetQueryDataItemDetailsRequestHandler(ALDevToolsServer server, LanguageServerHost languageServerHost) : base(server, languageServerHost, "al/getquerydataitemdetails")
         {
         }
 
@@ -37,6 +38,7 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
             {
                 response.symbol = new QueryDataItemInformation();
                 response.symbol.Name = e.Message;
+                this.LogError(e);
             }
 
             return response;
