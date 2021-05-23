@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AnZwDev.ALTools;
 using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.ALSymbols.SymbolReaders;
+using AnZwDev.VSCodeLangServer.Protocol.Server;
 using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
 using AnZwDev.ALTools.Server.Contracts;
 using AnZwDev.ALTools.Workspace;
@@ -15,7 +16,7 @@ namespace AnZwDev.ALTools.Server.Handlers
     public class GetProjectSettingsRequestHandler : BaseALRequestHandler<GetProjectSettingsRequest, GetProjectSettingsResponse>
     {
 
-        public GetProjectSettingsRequestHandler(ALDevToolsServer server) : base(server, "al/getprojectsettings")
+        public GetProjectSettingsRequestHandler(ALDevToolsServer server, LanguageServerHost languageServerHost) : base(server, languageServerHost, "al/getprojectsettings")
         {
         }
 
@@ -34,6 +35,7 @@ namespace AnZwDev.ALTools.Server.Handlers
             }
             catch (Exception e)
             {
+                this.LogError(e);
             }
 
             return response;

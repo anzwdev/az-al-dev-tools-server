@@ -1,6 +1,7 @@
 ﻿using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.Server.Contracts;
 using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
+using AnZwDev.VSCodeLangServer.Protocol.Server;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,7 +12,7 @@ namespace AnZwDev.ALTools.Server.Handlers
     public class GetLibrarySymbolLocationRequestHandler : BaseALRequestHandler<GetLibrarySymbolLocationRequest, GetLibrarySymbolLocationResponse>
     {
 
-        public GetLibrarySymbolLocationRequestHandler(ALDevToolsServer server) : base(server, "al/librarysymbollocation")
+        public GetLibrarySymbolLocationRequestHandler(ALDevToolsServer server, LanguageServerHost languageServerHost) : base(server, languageServerHost, "al/librarysymbollocation")
         {
         }
 
@@ -30,6 +31,7 @@ namespace AnZwDev.ALTools.Server.Handlers
             }
             catch (Exception e)
             {
+                this.LogError(e);
             }
             return response;
         }

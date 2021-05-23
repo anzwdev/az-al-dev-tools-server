@@ -1,4 +1,5 @@
 ﻿using AnZwDev.ALTools.Server.Contracts.ChangeTracking;
+using AnZwDev.VSCodeLangServer.Protocol.Server;
 using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace AnZwDev.ALTools.Server.Handlers.ChangeTracking
     public class DocumentOpenNotificationHandler : BaseALNotificationHandler<DocumentChangeNotificationRequest>
     {
 
-        public DocumentOpenNotificationHandler(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "ws/documentOpen")
+        public DocumentOpenNotificationHandler(ALDevToolsServer alDevToolsServer, LanguageServerHost languageServerHost) : base(alDevToolsServer, languageServerHost, "ws/documentOpen")
         {
         }
 

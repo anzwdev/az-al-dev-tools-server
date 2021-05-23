@@ -1,4 +1,5 @@
-﻿using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
+﻿using AnZwDev.VSCodeLangServer.Protocol.Server;
+using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace AnZwDev.ALTools.Server.Handlers
     public class ShutdownRequestHandler : RequestHandler<object, object>
     {
 
-        public ShutdownRequestHandler() : base("shutdown")
+        public ShutdownRequestHandler(LanguageServerHost languageServerHost) : base(languageServerHost, "shutdown")
         {
         }
 

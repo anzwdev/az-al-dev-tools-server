@@ -1,5 +1,6 @@
 ﻿using AnZwDev.ALTools.ALSymbolReferences.Serialization;
 using AnZwDev.ALTools.Server.Contracts;
+using AnZwDev.VSCodeLangServer.Protocol.Server;
 using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace AnZwDev.ALTools.Server.Handlers
     public class GetALAppContentRequestHandler : BaseALRequestHandler<GetALAppContentRequest, GetALAppContentResponse>
     {
 
-        public GetALAppContentRequestHandler(ALDevToolsServer server) : base(server, "al/getalappcontent")
+        public GetALAppContentRequestHandler(ALDevToolsServer server, LanguageServerHost languageServerHost) : base(server, languageServerHost, "al/getalappcontent")
         {
         }
 
@@ -68,6 +69,7 @@ namespace AnZwDev.ALTools.Server.Handlers
             catch (Exception e)
             {
                 response.source = "Reading file content failed. " + e.Message;
+                this.LogError(e);
             }
             return response;
         }

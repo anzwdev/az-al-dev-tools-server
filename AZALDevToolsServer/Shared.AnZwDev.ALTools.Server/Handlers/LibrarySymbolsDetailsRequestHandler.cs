@@ -7,13 +7,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AnZwDev.VSCodeLangServer.Protocol.Server;
 
 namespace AnZwDev.ALTools.Server.Handlers
 {
     public class LibrarySymbolsDetailsRequestHandler : BaseALRequestHandler<LibrarySymbolsDetailsRequest, LibrarySymbolsDetailsResponse>
     {
 
-        public LibrarySymbolsDetailsRequestHandler(ALDevToolsServer server) : base(server, "al/librarysymbolsdetails")
+        public LibrarySymbolsDetailsRequestHandler(ALDevToolsServer server, LanguageServerHost languageServerHost) : base(server, languageServerHost, "al/librarysymbolsdetails")
         {
         }
 
@@ -30,6 +31,7 @@ namespace AnZwDev.ALTools.Server.Handlers
             }
             catch (Exception e)
             {
+                this.LogError(e);
             }
             return response;
         }

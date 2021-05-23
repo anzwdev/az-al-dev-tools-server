@@ -1,4 +1,5 @@
 ﻿using AnZwDev.ALTools.Server.Contracts.ChangeTracking;
+using AnZwDev.VSCodeLangServer.Protocol.Server;
 using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace AnZwDev.ALTools.Server.Handlers.ChangeTracking
     public class FileRenameNotificationHandler : BaseALNotificationHandler<FilesRenameNotificationRequest>
     {
 
-        public FileRenameNotificationHandler(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "ws/fileRename")
+        public FileRenameNotificationHandler(ALDevToolsServer alDevToolsServer, LanguageServerHost languageServerHost) : base(alDevToolsServer, languageServerHost, "ws/fileRename")
         {
         }
 

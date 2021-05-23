@@ -1,5 +1,6 @@
 ﻿using AnZwDev.ALTools;
 using AnZwDev.ALTools.CodeAnalysis;
+using AnZwDev.VSCodeLangServer.Protocol.Server;
 using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
 using AnZwDev.ALTools.Server.Contracts;
 using System;
@@ -13,7 +14,7 @@ namespace AnZwDev.ALTools.Server.Handlers
     public class GetCodeAnalyzersRulesRequestHandler : BaseALRequestHandler<GetCodeAnalyzersRulesRequest, GetCodeAnalyzersRulesResponse>
     {
 
-        public GetCodeAnalyzersRulesRequestHandler(ALDevToolsServer server) : base(server, "al/getcodeanalyzersrules")
+        public GetCodeAnalyzersRulesRequestHandler(ALDevToolsServer server, LanguageServerHost languageServerHost) : base(server, languageServerHost, "al/getcodeanalyzersrules")
         {
         }
 

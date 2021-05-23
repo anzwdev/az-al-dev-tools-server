@@ -1,4 +1,5 @@
 ﻿using AnZwDev.ALTools;
+using AnZwDev.VSCodeLangServer.Protocol.Server;
 using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
 using AnZwDev.ALTools.Server.Contracts;
 using System;
@@ -12,7 +13,7 @@ namespace AnZwDev.ALTools.Server.Handlers
     public class CloseSyntaxTreeNotificationHandler : BaseALNotificationHandler<CloseSyntaxTreeRequest>
     {
 
-        public CloseSyntaxTreeNotificationHandler(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "al/closesyntaxtree")
+        public CloseSyntaxTreeNotificationHandler(ALDevToolsServer alDevToolsServer, LanguageServerHost languageServerHost) : base(alDevToolsServer, languageServerHost, "al/closesyntaxtree")
         {
         }
 

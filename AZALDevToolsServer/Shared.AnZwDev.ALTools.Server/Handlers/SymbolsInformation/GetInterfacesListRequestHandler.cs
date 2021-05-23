@@ -1,6 +1,7 @@
 ﻿using AnZwDev.ALTools.Server.Contracts.SymbolsInformation;
 using AnZwDev.ALTools.Workspace;
 using AnZwDev.ALTools.Workspace.SymbolsInformation;
+using AnZwDev.VSCodeLangServer.Protocol.Server;
 using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
     public class GetInterfacesListRequestHandler : BaseALRequestHandler<GetInterfacesListRequest, GetInterfacesListResponse>
     {
 
-        public GetInterfacesListRequestHandler(ALDevToolsServer server) : base(server, "al/getinterfaceslist")
+        public GetInterfacesListRequestHandler(ALDevToolsServer server, LanguageServerHost languageServerHost) : base(server, languageServerHost, "al/getinterfaceslist")
         {
         }
 

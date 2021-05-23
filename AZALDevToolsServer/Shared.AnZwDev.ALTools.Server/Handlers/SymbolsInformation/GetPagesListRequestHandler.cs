@@ -1,6 +1,7 @@
 ﻿using AnZwDev.ALTools.Server.Contracts.SymbolsInformation;
 using AnZwDev.ALTools.Workspace;
 using AnZwDev.ALTools.Workspace.SymbolsInformation;
+using AnZwDev.VSCodeLangServer.Protocol.Server;
 using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
     public class GetPagesListRequestHandler : BaseALRequestHandler<GetPagesListRequest, GetPagesListResponse>
     {
 
-        public GetPagesListRequestHandler(ALDevToolsServer server) : base(server, "al/getpageslist")
+        public GetPagesListRequestHandler(ALDevToolsServer server, LanguageServerHost languageServerHost) : base(server, languageServerHost, "al/getpageslist")
         {
         }
 

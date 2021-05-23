@@ -1,4 +1,5 @@
 ﻿using AnZwDev.ALTools.Server.Contracts.ChangeTracking;
+using AnZwDev.VSCodeLangServer.Protocol.Server;
 using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace AnZwDev.ALTools.Server.Handlers.ChangeTracking
     public class WorkspaceFoldersChangeNotificationHandler: BaseALNotificationHandler<WorkspaceFoldersChangeNotificationRequest>
     {
 
-        public WorkspaceFoldersChangeNotificationHandler(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "ws/workspaceFoldersChange")
+        public WorkspaceFoldersChangeNotificationHandler(ALDevToolsServer alDevToolsServer, LanguageServerHost languageServerHost) : base(alDevToolsServer, languageServerHost, "ws/workspaceFoldersChange")
         {
         }
 
