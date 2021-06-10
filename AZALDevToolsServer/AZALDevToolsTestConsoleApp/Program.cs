@@ -49,6 +49,21 @@ namespace AZALDevToolsTestConsoleApp
             string projectPath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18";
             WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("removeWith", content, projectPath, null, pm);
 
+            //test project
+            string[] projects =
+            {
+                "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18"
+            };
+
+            ALWorkspace workspace = new ALWorkspace();
+            workspace.LoadProjects(projects);
+            workspace.ResolveDependencies();
+            ALProject project = workspace.Projects[0];
+
+            TableInformationProvider tableInformationProvider = new TableInformationProvider();
+            List<TableFieldInformaton> fields = tableInformationProvider.GetTableFields(project, "Purchase Line", false, false);
+            List<TableFieldInformaton> fields2 = fields.Where(p => (p.Name.StartsWith("Description"))).ToList();
+
             Console.WriteLine("Done");
             Console.ReadKey();
         }

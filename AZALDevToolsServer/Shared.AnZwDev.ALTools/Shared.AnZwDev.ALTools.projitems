@@ -113,6 +113,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)CodeAnalysis\CodeAnalyzerRule.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeAnalysis\CodeAnalyzersLibrariesCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeAnalysis\CodeAnalyzersLibrary.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeAnalysis\SyntaxFactoryHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\ALCaptionsSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\ALSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\AppAreaSyntaxRewriter.cs" />
@@ -185,6 +186,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\EnumInformationProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\InterfaceInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\InterfaceInformationProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\LabelPropertiesInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\PageInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\PageInformationProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\QueryDataItemInformation.cs" />

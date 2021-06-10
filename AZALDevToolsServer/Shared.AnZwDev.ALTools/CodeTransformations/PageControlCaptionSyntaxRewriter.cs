@@ -1,6 +1,8 @@
 ﻿using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.ALSymbols.Internal;
+using AnZwDev.ALTools.CodeAnalysis;
 using AnZwDev.ALTools.Extensions;
+using AnZwDev.ALTools.Workspace.SymbolsInformation;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using System;
@@ -34,11 +36,10 @@ namespace AnZwDev.ALTools.CodeTransformations
                 if ((propertySyntax == null) || (String.IsNullOrWhiteSpace(propertySyntax.Value.ToString())))
                 {
                     //try to find source field caption
-                    bool hasCaptionProperty;
-                    string caption = this.GetFieldCaption(node, out hasCaptionProperty);
-                    if (!String.IsNullOrWhiteSpace(caption))
+                    LabelInformation captionLabel = this.GetFieldCaption(node);
+                    if (!String.IsNullOrWhiteSpace(captionLabel.Value))
                     {
-                        PropertySyntax newPropertySyntax = this.CreateCaptionProperty(node, caption);
+                        PropertySyntax newPropertySyntax = this.CreateCaptionProperty(node, captionLabel.Value, captionLabel.Comment);
                         NoOfChanges++;
                         if (propertySyntax == null)
                             return node.AddPropertyListProperties(newPropertySyntax);
@@ -59,7 +60,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                     string caption = node.GetNameStringValue().RemovePrefixSuffix(this.Project.MandatoryPrefixes, this.Project.MandatorySuffixes, this.Project.MandatoryAffixes);
                     if (!String.IsNullOrWhiteSpace(caption))
                     {
-                        PropertySyntax newPropertySyntax = this.CreateCaptionProperty(node, caption);
+                        PropertySyntax newPropertySyntax = this.CreateCaptionProperty(node, caption, null);
                         NoOfChanges++;
                         if (propertySyntax == null)
                             node = node.AddPropertyListProperties(newPropertySyntax);
@@ -81,7 +82,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                     string caption = node.GetNameStringValue().RemovePrefixSuffix(this.Project.MandatoryPrefixes, this.Project.MandatorySuffixes, this.Project.MandatoryAffixes);
                     if (!String.IsNullOrWhiteSpace(caption))
                     {
-                        PropertySyntax newPropertySyntax = this.CreateCaptionProperty(node, caption);
+                        PropertySyntax newPropertySyntax = this.CreateCaptionProperty(node, caption, null);
                         NoOfChanges++;
                         if (propertySyntax == null)
                             node = node.AddPropertyListProperties(newPropertySyntax);
@@ -103,7 +104,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                     string caption = node.GetNameStringValue().RemovePrefixSuffix(this.Project.MandatoryPrefixes, this.Project.MandatorySuffixes, this.Project.MandatoryAffixes);
                     if (!String.IsNullOrWhiteSpace(caption))
                     {
-                        PropertySyntax newPropertySyntax = this.CreateCaptionProperty(node, caption);
+                        PropertySyntax newPropertySyntax = this.CreateCaptionProperty(node, caption, null);
                         NoOfChanges++;
                         if (propertySyntax == null)
                             return node.AddPropertyListProperties(newPropertySyntax);
@@ -127,7 +128,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                     caption = caption.RemovePrefixSuffix(this.Project.MandatoryPrefixes, this.Project.MandatorySuffixes, this.Project.MandatoryAffixes);
                     if (!String.IsNullOrWhiteSpace(caption))
                     {
-                        PropertySyntax newPropertySyntax = this.CreateCaptionProperty(node, caption);
+                        PropertySyntax newPropertySyntax = this.CreateCaptionProperty(node, caption, null);
                         NoOfChanges++;
                         if (propertySyntax == null)
                             return node.AddPropertyListProperties(newPropertySyntax);
@@ -138,22 +139,12 @@ namespace AnZwDev.ALTools.CodeTransformations
             return base.VisitPagePart(node);
         }
 
-        protected PropertySyntax CreateCaptionProperty(SyntaxNode node, string caption)
+        protected PropertySyntax CreateCaptionProperty(SyntaxNode node, string caption, string comment)
         {
             SyntaxTriviaList leadingTriviaList = node.CreateChildNodeIdentTrivia();
             SyntaxTriviaList trailingTriviaList = SyntaxFactory.ParseTrailingTrivia("\r\n", 0);
 
-            PropertyKind propertyKind;
-            try
-            {
-                propertyKind = (PropertyKind)Enum.Parse(typeof(PropertyKind), "Caption", true);
-            }
-            catch (Exception)
-            {
-                propertyKind = PropertyKind.Caption;
-            }
-
-            return SyntaxFactory.PropertyLiteral(propertyKind, caption)
+            return SyntaxFactoryHelper.CaptionProperty(caption, comment)
                 .WithLeadingTrivia(leadingTriviaList)
                 .WithTrailingTrivia(trailingTriviaList);
         }

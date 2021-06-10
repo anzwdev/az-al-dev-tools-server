@@ -1489,7 +1489,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Compiler
                 {
                     PropertySyntax propertyNode = node as PropertySyntax;
                     if (propertyNode != null)
-                        list.Add(this.CreateProperty(propertyNode));
+                        this.AddProperty(list, propertyNode);
                 }
 
                 return list;
@@ -1507,7 +1507,8 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Compiler
                 {
                     PropertySyntax propertyNode = node as PropertySyntax;
                     if (propertyNode != null)
-                        list.Add(this.CreateProperty(propertyNode));
+                        this.AddProperty(list, propertyNode);
+                        //list.Add(this.CreateProperty(propertyNode));
                 }
 
                 return list;
@@ -1516,23 +1517,52 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Compiler
         }
 #endif
 
-        protected ALAppProperty CreateProperty(PropertySyntax node)
+        protected void AddProperty(ALAppPropertiesCollection list, PropertySyntax node)
         {
-            ALAppProperty alElement = new ALAppProperty();
+            string name = null;
             if (node.Name != null)
-                alElement.Name = ALSyntaxHelper.DecodeName(node.Name.ToString());
+                name = ALSyntaxHelper.DecodeName(node.Name.ToString());
+            if (name != null)
+                name = name.Trim();
+            
             if (node.Value != null)
-                alElement.Value = node.Value.ToString();
-
-            if (alElement.Value != null)
             {
-                if (alElement.Value.StartsWith("'"))
-                    alElement.Value = ALSyntaxHelper.DecodeString(alElement.Value);
-                else if (alElement.Value.StartsWith("\""))
-                    alElement.Value = ALSyntaxHelper.DecodeName(alElement.Value);
+                PropertyValueSyntax propertyValue = node.Value;
+                ConvertedSyntaxKind propertyValueKind = propertyValue.Kind.ConvertToLocalType();
+                switch (propertyValueKind)
+                {
+                    case ConvertedSyntaxKind.LabelPropertyValue:
+                        AddProperty(list, name, propertyValue as LabelPropertyValueSyntax);
+                        break;
+                    default:
+                        list.Add(new ALAppProperty(name, ALSyntaxHelper.DecodeStringOrName(node.Value.ToString())));
+                        break;
+                }
             }
+        }
 
-            return alElement;
+        protected void AddProperty(ALAppPropertiesCollection list, string name, LabelPropertyValueSyntax node)
+        {
+            LabelSyntax labelSyntax = node.Value;
+            if (labelSyntax != null)
+            {
+                if (labelSyntax.LabelText != null)
+                    list.Add(new ALAppProperty(name, ALSyntaxHelper.DecodeString(labelSyntax.LabelText.ToString())));
+                
+                //add property arguments
+                if ((labelSyntax.Properties != null) && (labelSyntax.Properties.Values != null))
+                {
+                    foreach (IdentifierEqualsLiteralSyntax propertySyntax in labelSyntax.Properties.Values)
+                    {
+                        if ((propertySyntax.Identifier != null) && (propertySyntax.Literal != null))
+                        {
+                            list.Add(new ALAppProperty(
+                                name + "." + propertySyntax.Identifier.ToString().Trim(),
+                                ALSyntaxHelper.DecodeStringOrName(propertySyntax.Literal.ToString())));
+                        }
+                    }
+                }
+            }
         }
 
 #endregion

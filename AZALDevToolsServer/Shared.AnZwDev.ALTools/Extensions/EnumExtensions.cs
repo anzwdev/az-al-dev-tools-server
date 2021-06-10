@@ -47,5 +47,17 @@ namespace AnZwDev.ALTools.Extensions
             return source.Convert<ActionKind, ConvertedActionKind>();
         }
 
+        public static T FromString<T>(string name, T defaultValue) where T : Enum
+        {
+            try
+            {
+                return (T)Enum.Parse(typeof(T), name, true);
+            }
+            catch (Exception)
+            {
+                return defaultValue;
+            }
+        }
+
     }
 }

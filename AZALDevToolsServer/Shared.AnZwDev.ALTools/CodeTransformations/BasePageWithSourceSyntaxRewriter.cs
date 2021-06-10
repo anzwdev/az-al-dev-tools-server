@@ -95,18 +95,17 @@ namespace AnZwDev.ALTools.CodeTransformations
             }
         }
 
-        protected string GetFieldCaption(PageFieldSyntax node, out bool hasCaptionProperty)
+        protected LabelInformation GetFieldCaption(PageFieldSyntax node)
         {
             //try to find source field caption
             string caption = null;
-            hasCaptionProperty = false;
             if (node.Expression != null)
             {
                 List<TableFieldInformaton> fieldsList;
                 string fieldName;
                 string source = node.Expression.ToString().Trim();
                 ALMemberAccessExpression memberAccessExpression = ALSyntaxHelper.DecodeMemberAccessExpression(source);
-                
+
                 //get field name and fields list
                 if (String.IsNullOrWhiteSpace(memberAccessExpression.Expression))
                 {
@@ -121,18 +120,15 @@ namespace AnZwDev.ALTools.CodeTransformations
 
                 if ((fieldsList != null) && (fieldName != null))
                 {
-                    TableFieldInformaton tableField = this.TableFields.Where(p => (fieldName.Equals(p.Name, StringComparison.CurrentCultureIgnoreCase))).FirstOrDefault();
-                    if ((tableField != null) && (!String.IsNullOrWhiteSpace(tableField.Caption)))
-                    {
-                        caption = tableField.Caption;
-                        hasCaptionProperty = true;
-                    }
+                    TableFieldInformaton tableField = fieldsList.Where(p => (fieldName.Equals(p.Name, StringComparison.CurrentCultureIgnoreCase))).FirstOrDefault();
+                    if ((tableField != null) && (tableField.CaptionLabel != null) && (!String.IsNullOrWhiteSpace(tableField.CaptionLabel.Value)))
+                        return tableField.CaptionLabel;
                 }
 
                 if ((String.IsNullOrWhiteSpace(caption)) && (fieldName != null))
                     caption = fieldName.Replace("\"", "").RemovePrefixSuffix(this.Project.MandatoryPrefixes, this.Project.MandatorySuffixes, this.Project.MandatoryAffixes);
             }
-            return caption;
+            return new LabelInformation("Caption", caption);
         }
 
         protected void SetGlobalVarOwner(ALSymbolKind kind, string name)
