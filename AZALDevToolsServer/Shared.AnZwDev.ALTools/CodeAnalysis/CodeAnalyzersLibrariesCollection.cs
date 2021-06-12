@@ -25,7 +25,7 @@ namespace AnZwDev.ALTools.CodeAnalysis
 
             try
             {
-                CodeAnalyzersLibrary library = new CodeAnalyzersLibrary(this.ALDevToolsServer, name);
+                CodeAnalyzersLibrary library = this.CreateCodeAnalyzersLibrary(name);
                 library.Load();
                 this.LibrariesCache.Add(name, library);
                 return library;
@@ -35,6 +35,14 @@ namespace AnZwDev.ALTools.CodeAnalysis
                 return null;
             }
         }
+
+        protected CodeAnalyzersLibrary CreateCodeAnalyzersLibrary(string name)
+        {
+            if ((name != null) && (name.Equals("Compiler", StringComparison.CurrentCultureIgnoreCase)))
+                return new CompilerCodeAnalyzersLibrary(name);
+            return new DllCodeAnalyzersLibrary(this.ALDevToolsServer, name);
+        }
+
 
     }
 }

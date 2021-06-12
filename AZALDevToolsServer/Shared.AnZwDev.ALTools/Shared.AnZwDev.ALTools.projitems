@@ -113,6 +113,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)CodeAnalysis\CodeAnalyzerRule.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeAnalysis\CodeAnalyzersLibrariesCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeAnalysis\CodeAnalyzersLibrary.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeAnalysis\CompilerCodeAnalyzersLibrary.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeAnalysis\DllCodeAnalyzersLibrary.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeAnalysis\SyntaxFactoryHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\ALCaptionsSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\ALSyntaxRewriter.cs" />
