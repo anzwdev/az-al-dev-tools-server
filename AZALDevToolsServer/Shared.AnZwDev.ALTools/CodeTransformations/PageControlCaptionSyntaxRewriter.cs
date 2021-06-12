@@ -30,7 +30,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         public override SyntaxNode VisitPageField(PageFieldSyntax node)
         {
-            if (this.SetFieldsCaptions)
+            if ((this.SetFieldsCaptions) && (!node.HasProperty("CaptionML")))
             {
                 PropertySyntax propertySyntax = node.GetProperty("Caption");
                 if ((propertySyntax == null) || (String.IsNullOrWhiteSpace(propertySyntax.Value.ToString())))
@@ -52,7 +52,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         public override SyntaxNode VisitPageGroup(PageGroupSyntax node)
         {
-            if (this.SetGroupsCaptions)
+            if ((this.SetGroupsCaptions) && (!node.HasProperty("CaptionML")))
             {
                 PropertySyntax propertySyntax = node.GetProperty("Caption");
                 if ((propertySyntax == null) || (String.IsNullOrWhiteSpace(propertySyntax.Value.ToString())))
@@ -74,7 +74,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         public override SyntaxNode VisitPageActionGroup(PageActionGroupSyntax node)
         {
-            if (this.SetActionGroupsCaptions)
+            if ((this.SetActionGroupsCaptions) && (!node.HasProperty("CaptionML")))
             {
                 PropertySyntax propertySyntax = node.GetProperty("Caption");
                 if ((propertySyntax == null) || (String.IsNullOrWhiteSpace(propertySyntax.Value.ToString())))
@@ -96,7 +96,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         public override SyntaxNode VisitPageAction(PageActionSyntax node)
         {
-            if (this.SetActionsCaptions)
+            if ((this.SetActionsCaptions) && (!node.HasProperty("CaptionML")))
             {
                 PropertySyntax propertySyntax = node.GetProperty("Caption");
                 if ((propertySyntax == null) || (String.IsNullOrWhiteSpace(propertySyntax.Value.ToString())))
@@ -117,7 +117,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         public override SyntaxNode VisitPagePart(PagePartSyntax node)
         {
-            if (this.SetPartsCaptions)
+            if ((this.SetPartsCaptions) && (!node.HasProperty("CaptionML")))
             {
                 PropertySyntax propertySyntax = node.GetProperty("Caption");
                 if ((propertySyntax == null) || (String.IsNullOrWhiteSpace(propertySyntax.Value.ToString())))

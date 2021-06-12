@@ -53,8 +53,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         protected bool HasToolTip(SyntaxNode node)
         {
-            PropertySyntax ToolTipProperty = node.GetProperty("ToolTip");
-            return ((ToolTipProperty != null) && (!String.IsNullOrWhiteSpace(ToolTipProperty.Value.ToString())));
+            return ((node.HasNonEmptyProperty("ToolTip")) || (node.HasProperty("ToolTipML")));
         }
 
         protected PropertySyntax CreateToolTipProperty(SyntaxNode node, string caption = null, string comment = null)

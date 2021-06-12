@@ -22,10 +22,16 @@ namespace AnZwDev.ALTools.Extensions
             return node.GetType().TryGetPropertyValue<T>(node, propertyName);
         }
 
-        public static bool HasProperty(this SyntaxNode node, string propertyName, string emptyValue = null)
+        public static bool HasProperty(this SyntaxNode node, string propertyName)
+        {
+            return (node.GetProperty(propertyName) != null);
+        }
+
+        public static bool HasNonEmptyProperty(this SyntaxNode node, string propertyName, string emptyValue = null)
         {
             PropertySyntax propertySyntax = node.GetProperty(propertyName);
             return ((propertySyntax != null) &&
+                (propertySyntax.Value != null) &&
                 (!String.IsNullOrWhiteSpace(propertySyntax.Value.ToString())) &&
                 (
                     (emptyValue == null) ||
