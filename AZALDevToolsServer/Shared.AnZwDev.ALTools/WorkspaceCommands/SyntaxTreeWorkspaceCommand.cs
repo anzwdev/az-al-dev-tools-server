@@ -75,7 +75,10 @@ namespace AnZwDev.ALTools.WorkspaceCommands
 
         public virtual SyntaxNode ProcessSyntaxNode(SyntaxNode node, string sourceCode, string path, TextSpan span, Dictionary<string, string> parameters)
         {
-            return FormatSyntaxNode(node);
+            bool skipFormatting = ((parameters != null) && (parameters.ContainsKey("skipFormatting")) && (parameters["skipFormatting"] == "true"));
+            if (!skipFormatting)
+                node = FormatSyntaxNode(node);
+            return node;
         }
 
     }

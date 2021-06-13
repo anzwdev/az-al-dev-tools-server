@@ -21,7 +21,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         public WorkspaceCommand(ALDevToolsServer alDevToolsServer, string newName)
         {
             this.ALDevToolsServer = alDevToolsServer;
-            Name = newName;
+            this.Name = newName;
         }
 
         public virtual WorkspaceCommandResult Run(string sourceCode, string path, Range range, Dictionary<string, string> parameters)
