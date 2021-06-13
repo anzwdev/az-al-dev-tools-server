@@ -96,7 +96,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         protected bool HasApplicationArea(SyntaxNode node)
         {
-            return node.HasProperty("ApplicationArea");
+            return node.HasNonEmptyProperty("ApplicationArea");
         }
 
         protected PropertySyntax CreateApplicationAreaProperty(SyntaxNode node)

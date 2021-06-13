@@ -19,8 +19,12 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
         [JsonProperty("state")]
         public ALAppTableFieldState State { get; set; }
 
+        [JsonProperty("captionLabel")]
+        public LabelInformation CaptionLabel { get; set; }
+
         public TableFieldInformaton()
         {
+            this.InitializeLabels();
         }
 
         public TableFieldInformaton(int id, string name, string dataType)
@@ -29,17 +33,20 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             this.Name = name;
             this.Caption = name;
             this.DataType = dataType;
+            this.InitializeLabels();
         }
 
         public TableFieldInformaton(ALProject project, ALAppTableField symbolReference)
         {
+            this.InitializeLabels();
             this.Id = symbolReference.Id;
             this.Name = symbolReference.Name;
             if (symbolReference.Properties != null)
             {
                 this.Caption = symbolReference.Properties.GetValue("Caption");
                 this.FieldClass = symbolReference.Properties.GetValue("FieldClass");
-            }
+                this.CaptionLabel.Update(symbolReference.Properties);
+            } 
 
             if (String.IsNullOrWhiteSpace(this.Caption))
             {
@@ -47,9 +54,15 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
                 if (project != null)
                     caption = caption.RemovePrefixSuffix(project.MandatoryPrefixes, project.MandatorySuffixes, project.MandatoryAffixes);
                 this.Caption = caption;
+                this.CaptionLabel.SetValue(this.Caption);
             }
 
             this.DataType = symbolReference.TypeDefinition.Name;
+        }
+
+        private void InitializeLabels()
+        {
+            this.CaptionLabel = new LabelInformation("Caption");
         }
 
         public void UpdateProperties(ALAppPropertiesCollection propertiesCollection)
@@ -58,7 +71,10 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             {
                 string caption = propertiesCollection.GetValue("Caption");
                 if (!String.IsNullOrWhiteSpace(caption))
+                {
                     this.Caption = caption;
+                    this.CaptionLabel.Update(propertiesCollection);
+                }
             }
         }
 

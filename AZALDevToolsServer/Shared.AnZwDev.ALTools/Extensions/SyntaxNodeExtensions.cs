@@ -1,4 +1,5 @@
 ﻿using AnZwDev.ALTools.ALSymbols;
+using AnZwDev.ALTools.Workspace.SymbolsInformation;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using System;
@@ -21,10 +22,16 @@ namespace AnZwDev.ALTools.Extensions
             return node.GetType().TryGetPropertyValue<T>(node, propertyName);
         }
 
-        public static bool HasProperty(this SyntaxNode node, string propertyName, string emptyValue = null)
+        public static bool HasProperty(this SyntaxNode node, string propertyName)
+        {
+            return (node.GetProperty(propertyName) != null);
+        }
+
+        public static bool HasNonEmptyProperty(this SyntaxNode node, string propertyName, string emptyValue = null)
         {
             PropertySyntax propertySyntax = node.GetProperty(propertyName);
             return ((propertySyntax != null) &&
+                (propertySyntax.Value != null) &&
                 (!String.IsNullOrWhiteSpace(propertySyntax.Value.ToString())) &&
                 (
                     (emptyValue == null) ||
@@ -49,6 +56,48 @@ namespace AnZwDev.ALTools.Extensions
 
             return SyntaxFactory.ParseLeadingTrivia(indent, 0);
         }
+
+        public static LabelInformation GetCaptionPropertyInformation(this SyntaxNode node)
+        {
+            return node.GetLabelPropertyInformation("Caption");
+        }
+
+        public static LabelInformation GetLabelPropertyInformation(this SyntaxNode node, string name)
+        {
+            PropertySyntax propertySyntax = node.GetProperty(name);
+            if ((propertySyntax != null) && (propertySyntax.Value != null))
+            {
+                LabelPropertyValueSyntax labelPropertyValue = propertySyntax.Value as LabelPropertyValueSyntax;
+                if ((labelPropertyValue != null) && (labelPropertyValue.Value != null))
+                {
+                    LabelSyntax labelSyntax = labelPropertyValue.Value;
+                    LabelInformation labelInformation = new LabelInformation(name);
+
+                    //get label text
+                    if (labelSyntax.LabelText != null)
+                        labelInformation.Value = ALSyntaxHelper.DecodeString(labelSyntax.LabelText.ToString());
+
+                    //add property arguments
+                    if ((labelSyntax.Properties != null) && (labelSyntax.Properties.Values != null))
+                    {
+                        foreach (IdentifierEqualsLiteralSyntax labelPropertySyntax in labelSyntax.Properties.Values)
+                        {
+                            if ((labelPropertySyntax.Identifier != null) && (labelPropertySyntax.Literal != null))
+                            {
+                                labelInformation.SetProperty(
+                                    labelPropertySyntax.Identifier.ToString().Trim(),
+                                    ALSyntaxHelper.DecodeStringOrName(labelPropertySyntax.Literal.ToString()));
+                            }
+                        }
+                    }
+
+                    return labelInformation;
+                }
+            }
+
+            return null;
+        }
+
 
         #region Nav2018 helpers
 

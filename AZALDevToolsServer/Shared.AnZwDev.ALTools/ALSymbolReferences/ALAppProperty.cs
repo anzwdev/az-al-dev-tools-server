@@ -16,5 +16,11 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         {
         }
 
+        public ALAppProperty(string newName, string newValue)
+        {
+            this.Name = newName;
+            this.Value = newValue;
+        }
+
     }
 }

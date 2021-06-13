@@ -16,20 +16,23 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         public override SyntaxNode VisitField(FieldSyntax node)
         {
-            PropertySyntax propertySyntax = node.GetProperty("Caption");
-            if (propertySyntax == null)
+            if (!node.HasProperty("CaptionML"))
             {
-                NoOfChanges++;
-                return node.AddPropertyListProperties(
-                    this.CreateCaptionPropertyFromName(node));
-            }
-            else
-            {
-                string valueText = propertySyntax.Value.ToString();
-                if (String.IsNullOrWhiteSpace(valueText))
+                PropertySyntax propertySyntax = node.GetProperty("Caption");
+                if (propertySyntax == null)
                 {
                     NoOfChanges++;
-                    return node.ReplaceNode(propertySyntax, this.CreateCaptionPropertyFromName(node));
+                    return node.AddPropertyListProperties(
+                        this.CreateCaptionPropertyFromName(node));
+                }
+                else
+                {
+                    string valueText = propertySyntax.Value.ToString();
+                    if (String.IsNullOrWhiteSpace(valueText))
+                    {
+                        NoOfChanges++;
+                        return node.ReplaceNode(propertySyntax, this.CreateCaptionPropertyFromName(node));
+                    }
                 }
             }
             return base.VisitField(node);

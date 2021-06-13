@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AnZwDev.ALTools.Server.Handlers.ChangeTracking;
 using AnZwDev.ALTools.Server.Handlers.SymbolsInformation;
+using AnZwDev.ALTools.Server.Handlers.LanguageInformation;
 
 namespace AnZwDev.ALTools.Server
 {
@@ -86,6 +87,9 @@ namespace AnZwDev.ALTools.Server
             this.Dispatcher.RegisterNotificationHandler(new FileSystemFileCreateNotificationHandler(this.ALDevToolsServer, this));
             this.Dispatcher.RegisterNotificationHandler(new FileSystemFileDeleteNotificationHandler(this.ALDevToolsServer, this));
             this.Dispatcher.RegisterNotificationHandler(new FileSystemFileChangeNotificationHandler(this.ALDevToolsServer, this));
+
+            //language handlers
+            this.Dispatcher.RegisterRequestHandler(new GetImagesRequestHandler(this.ALDevToolsServer, this));
 
             //other message handlers
             this.Dispatcher.RegisterRequestHandler(new GetProjectSettingsRequestHandler(this.ALDevToolsServer, this));

@@ -1,6 +1,8 @@
 ﻿using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.ALSymbols.Internal;
+using AnZwDev.ALTools.CodeAnalysis;
 using AnZwDev.ALTools.Extensions;
+using AnZwDev.ALTools.Workspace.SymbolsInformation;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using System;
@@ -12,12 +14,14 @@ namespace AnZwDev.ALTools.CodeTransformations
     public class ToolTipSyntaxRewriter : BasePageWithSourceSyntaxRewriter
     {
         public string PageFieldTooltip { get; set; }
+        public string PageFieldTooltipComment { get; set; }
         public string PageActionTooltip { get; set; }
 
         public ToolTipSyntaxRewriter()
         {
             PageActionTooltip = "Executes the %1 action.";
             PageFieldTooltip = "Specifies the value of %1 field.";
+            PageFieldTooltipComment = "%Caption.Comment%";
         }
 
         protected override SyntaxNode AfterVisitNode(SyntaxNode node)
@@ -34,9 +38,9 @@ namespace AnZwDev.ALTools.CodeTransformations
             this.NoOfChanges++;
 
             //try to find source field caption
-            string caption = this.GetFieldCaption(node, out _);
+            LabelInformation captionLabel = this.GetFieldCaption(node);
 
-            return node.AddPropertyListProperties(this.CreateToolTipProperty(node, caption));
+            return node.AddPropertyListProperties(this.CreateToolTipProperty(node, captionLabel.Value, captionLabel.Comment));
         }
 
         public override SyntaxNode VisitPageAction(PageActionSyntax node)
@@ -49,55 +53,69 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         protected bool HasToolTip(SyntaxNode node)
         {
-            PropertySyntax ToolTipProperty = node.GetProperty("ToolTip");
-            return ((ToolTipProperty != null) && (!String.IsNullOrWhiteSpace(ToolTipProperty.Value.ToString())));
+            return ((node.HasNonEmptyProperty("ToolTip")) || (node.HasProperty("ToolTipML")));
         }
 
-        protected PropertySyntax CreateToolTipProperty(SyntaxNode node, string caption = null)
+        protected PropertySyntax CreateToolTipProperty(SyntaxNode node, string caption = null, string comment = null)
         {
             SyntaxTriviaList leadingTriviaList = node.CreateChildNodeIdentTrivia();
             SyntaxTriviaList trailingTriviaList = SyntaxFactory.ParseTrailingTrivia("\r\n", 0);
 
-            //get caption from control
-            PropertyValueSyntax captionProperty = node.GetPropertyValue("Caption");
-            if (captionProperty != null)
+            //get caption from control caption
+            LabelInformation controlCaptionInformation = node.GetCaptionPropertyInformation();
+            if ((controlCaptionInformation != null) && (!String.IsNullOrWhiteSpace(controlCaptionInformation.Value)))
             {
-                string value = ALSyntaxHelper.DecodeString(captionProperty.ToString());
-                if (!String.IsNullOrWhiteSpace(value))
-                    caption = value;
+                caption = controlCaptionInformation.Value;
+                comment = controlCaptionInformation.Comment;
             }
+            //get caption from control name
             else if (String.IsNullOrWhiteSpace(caption))
+            {
                 caption = node.GetNameStringValue().RemovePrefixSuffix(this.Project.MandatoryPrefixes, this.Project.MandatorySuffixes, this.Project.MandatoryAffixes);
+                comment = null;
+            }
 
-            string toolTipValue = "";          
+            string toolTipValue = "";
+            string toolTipComment = "";
             switch (node.Kind.ConvertToLocalType())
             {
                 case ConvertedSyntaxKind.PageField:
                     toolTipValue = PageFieldTooltip;
+                    toolTipComment = PageFieldTooltipComment;
                     break;
                 case ConvertedSyntaxKind.PageAction:
                     toolTipValue = PageActionTooltip;
                     break;
             }
 
-            if (toolTipValue.Contains("%1"))
-                toolTipValue = toolTipValue.Replace("%1", caption);
+            toolTipValue = ApplyTextTemplate(toolTipValue, caption, comment);
+            toolTipComment = ApplyTextTemplate(toolTipComment, caption, comment);
 
-            //try to convert from string to avoid issues with enum ids changed between AL compiler versions
-            PropertyKind propertyKind;
-            try
-            {
-                propertyKind = (PropertyKind)Enum.Parse(typeof(PropertyKind), "ToolTip", true);
-            }
-            catch (Exception)
-            {
-                propertyKind = PropertyKind.ToolTip;
-            }
-
-            return SyntaxFactory.PropertyLiteral(propertyKind, toolTipValue)
+            return SyntaxFactoryHelper.ToolTipProperty(toolTipValue, toolTipComment)
                 .WithLeadingTrivia(leadingTriviaList)
                 .WithTrailingTrivia(trailingTriviaList);
         }
+
+        protected string ApplyTextTemplate(string template, string caption, string comment)
+        {
+            if (template == null)
+                return "";
+
+            if (comment == null)
+                comment = "";
+            if (caption == null)
+                caption = "";
+
+            if (template.Contains("%1"))
+                template = template.Replace("%1", caption);
+            if (template.Contains("%Caption%"))
+                template = template.Replace("%Caption%", caption);
+            if (template.Contains("%Caption.Comment%"))
+                template = template.Replace("%Caption.Comment%", comment);
+
+            return template;
+        }
+
 
     }
 }
