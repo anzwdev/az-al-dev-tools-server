@@ -9,6 +9,9 @@
     <Import_RootNamespace>AnZwDev.ALTools</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\ImageInformation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\ImageInformationComparer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\ImageInformationProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppBaseSymbolsLibrarySource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppObjectIdMap.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppPermissionSet.cs" />

@@ -39,6 +39,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\GetSyntaxTreeResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\GetSyntaxTreeSymbolRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\GetSyntaxTreeSymbolResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\LanguageInformation\GetImagesRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\LanguageInformation\GetImagesResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\LibrarySymbolsDetailsRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\LibrarySymbolsDetailsResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\ProjectSymbolsRequest.cs" />
@@ -101,6 +103,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\GetProjectSettingsRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\GetSyntaxTreeRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\GetSyntaxTreeSymbolRequestHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\LanguageInformation\GetImagesRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\LibrarySymbolsDetailsRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\ProjectSymbolsRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\ShutdownRequestHandler.cs" />

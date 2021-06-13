@@ -1,4 +1,5 @@
 ﻿using AnZwDev.ALTools;
+using AnZwDev.ALTools.ALLanguageInformation;
 using AnZwDev.ALTools.ALSymbolReferences;
 using AnZwDev.ALTools.ALSymbolReferences.Compiler;
 using AnZwDev.ALTools.ALSymbolReferences.Serialization;
@@ -33,9 +34,11 @@ namespace AZALDevToolsTestConsoleApp
 
             //get list of errors and warnings
             //CompilerCodeAnalyzersLibrary lib = new CompilerCodeAnalyzersLibrary("Compiler");
-
-
             CodeAnalyzersLibrary lib = alDevToolsServer.CodeAnalyzersLibraries.GetCodeAnalyzersLibrary("Compiler");
+
+            ImageInformationProvider provider = new ImageInformationProvider();
+            List<ImageInformation> images = provider.GetActionImages();
+
 
             //string filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\small\\Pag50000.MySmallTableList.al";
             string filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18\\MyTableExt.al";
