@@ -16,6 +16,7 @@ namespace AnZwDev.ALTools.Workspace
         public string Name { get; set; }
         public string Publisher { get; set; }
         public VersionNumber Version { get; set; }
+        public VersionNumber Runtime { get; set; }
 
         public List<ALProjectIdRange> Ranges { get; set; }
 

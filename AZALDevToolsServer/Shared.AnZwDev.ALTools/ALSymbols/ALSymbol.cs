@@ -66,6 +66,13 @@ namespace AnZwDev.ALTools.ALSymbols
             this.fullName = ALSyntaxHelper.EncodeName(nameValue);
         }
 
+        public ALSymbol(string kindTextValue, string nameValue) : this(ALSymbolKind.Undefined, nameValue)
+        {
+            ALSymbolKind kindValue;
+            if (Enum.TryParse<ALSymbolKind>(kindTextValue, out kindValue))
+                this.kind = kindValue;
+        }
+
         public ALSymbol(ALSymbolKind kindValue, string nameValue, int? idValue) : this(kindValue, nameValue)
         {
             if (idValue.HasValue)

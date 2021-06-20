@@ -244,5 +244,49 @@ namespace AnZwDev.ALTools.ALSymbols
             return false;
         }
 
+        public static bool ServerDefinitionAvailable(this ALSymbolKind kind)
+        {
+            switch (kind)
+            {
+                case ALSymbolKind.TableObject:
+                case ALSymbolKind.CodeunitObject:
+                case ALSymbolKind.PageObject:
+                case ALSymbolKind.ReportObject:
+                case ALSymbolKind.QueryObject:
+                case ALSymbolKind.XmlPortObject:
+                case ALSymbolKind.ControlAddInObject:
+                case ALSymbolKind.EnumType:
+                case ALSymbolKind.Interface:
+                    return true;
+            }
+            return false;
+        }
+
+        public static string ToObjectTypeName(this ALSymbolKind kind)
+        {
+            switch (kind)
+            {
+                case ALSymbolKind.TableObject:
+                    return "Table";
+                case ALSymbolKind.CodeunitObject:
+                    return "Codeunit";
+                case ALSymbolKind.PageObject:
+                    return "Page";
+                case ALSymbolKind.ReportObject:
+                    return "Report";
+                case ALSymbolKind.QueryObject:
+                    return "Query";
+                case ALSymbolKind.XmlPortObject:
+                    return "XmlPort";
+                case ALSymbolKind.ControlAddInObject:
+                    return "ControlAddIn";
+                case ALSymbolKind.EnumType:
+                    return "Enum";
+                case ALSymbolKind.Interface:
+                    return "Interface";
+            }
+            return null;
+        }
+
     }
 }

@@ -21,12 +21,12 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             }
             else if ((symbolReference == null) || (String.IsNullOrWhiteSpace(symbolReference.ReferenceSourceFileName)))
             {
-                location.schema = "file";
+                location.schema = ALSymbolSourceLocationSchema.File;
                 location.sourcePath = alAppObject.ReferenceSourceFileName;
             }
             else
             {
-                location.schema = "alapp";
+                location.schema = ALSymbolSourceLocationSchema.ALApp;
                 location.sourcePath = symbolReference.ReferenceSourceFileName + "::" + alAppObject.ReferenceSourceFileName;
             }
         }

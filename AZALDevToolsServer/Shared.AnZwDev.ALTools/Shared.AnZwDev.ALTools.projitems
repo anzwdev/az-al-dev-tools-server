@@ -96,6 +96,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSymbolsLibrary.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSymbolsLibrarySource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSymbolSourceLocation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSymbolSourceLocationSchema.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSyntaxHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSyntaxTree.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSyntaxTreesCollection.cs" />
