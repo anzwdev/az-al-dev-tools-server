@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using AnZwDev.ALTools.Extensions;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 
@@ -113,7 +114,7 @@ namespace AnZwDev.ALTools.CodeTransformations
         public void SortSyntaxNodes(IComparer<T> comparer)
         {
             if (this.SyntaxNodes.Count > 1)
-                this.SyntaxNodes.Sort(comparer);
+                this.SyntaxNodes.SortWithTrivia(comparer);
             foreach (SyntaxNodesGroup<T> group in this.ChildGroups)
             {
                 group.SortSyntaxNodes(comparer);
@@ -125,7 +126,7 @@ namespace AnZwDev.ALTools.CodeTransformations
             if (this.SyntaxNodes.Count > 1)
             {
                 List<SyntaxNodeSortInfo<T>> list = SyntaxNodeSortInfo<T>.FromNodesList(this.SyntaxNodes);
-                list.Sort(comparer);
+                list.SortWithTrivia(comparer);
                 this.SyntaxNodes = SyntaxNodeSortInfo<T>.ToNodesList(list);
             }
 

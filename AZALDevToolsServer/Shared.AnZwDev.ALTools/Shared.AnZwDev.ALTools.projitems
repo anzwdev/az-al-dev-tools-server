@@ -136,6 +136,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\SyntaxNodesGroup.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\SyntaxNodesGroupsTree.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\SyntaxNodeSortInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\SyntaxNodeSortInfoListSyntaxNodeProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\ToolTipSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\WithIdentifiersSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\WithRemoveSyntaxRewriter.cs" />
@@ -144,6 +145,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\AlphanumComparatorFast .cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\DictionaryExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\EnumExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\List_SyntaxNode_Extensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\MethodInfoExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\StringExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\SyntaxNodeExtensions.cs" />
