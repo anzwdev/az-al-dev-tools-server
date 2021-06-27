@@ -103,6 +103,80 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
         #endregion
 
+        #region Find pages for table
+
+        protected List<ALAppPage> FindPagesForTable(ALProject project, string tableName)
+        {
+            List<ALAppPage> pagesList = new List<ALAppPage>();
+            this.FindPagesForTable(project.Symbols, tableName, pagesList);
+            foreach (ALProjectDependency dependency in project.Dependencies)
+            {
+                this.FindPagesForTable(dependency.Symbols, tableName, pagesList);
+            }
+            return pagesList;
+        }
+
+        protected void FindPagesForTable(ALAppSymbolReference symbols, string tableName, List<ALAppPage> pagesList)
+        {
+            if ((symbols != null) && (symbols.Pages != null))
+            {
+                foreach (ALAppPage page in symbols.Pages)
+                {
+                    string pageSourceTable = page.GetSourceTable();
+                    if ((pageSourceTable != null) && (pageSourceTable.Equals(tableName, StringComparison.CurrentCultureIgnoreCase)))
+                        pagesList.Add(page);
+                }
+            }
+        }
+
+        #endregion
+
+        #region Find page extesnions for pages
+
+        protected List<ALAppPageExtension> FindPageExtensionsForPages(ALProject project, List<ALAppPage> pagesList)
+        {
+            List<ALAppPageExtension> pageExtensionsList = new List<ALAppPageExtension>();
+            if ((pagesList != null) && (pagesList.Count > 0))
+            {
+                //collect page names
+                HashSet<string> pageNamesSet = new HashSet<string>();
+                foreach (ALAppPage page in pagesList)
+                {
+                    if (page.Name != null)
+                        pageNamesSet.Add(page.Name.ToLower());
+                }
+
+                //find page extensions
+                if (project.Symbols != null)
+                    this.FindPageExtensionsForPages(project.Symbols, pageNamesSet, pageExtensionsList);
+
+                foreach (ALProjectDependency dependency in project.Dependencies)
+                {
+                    this.FindPageExtensionsForPages(dependency.Symbols, pageNamesSet, pageExtensionsList);
+                }
+            }
+            return pageExtensionsList;
+        }
+
+        protected void FindPageExtensionsForPages(ALAppSymbolReference symbols, HashSet<string> pageNamesSet, List<ALAppPageExtension> pageExtensionsList)
+        {
+            if ((symbols != null) && (symbols.PageExtensions != null))
+            {
+                foreach (ALAppPageExtension pageExtension in symbols.PageExtensions)
+                {
+                    if (pageExtension.TargetObject != null)
+                    {
+                        string pageName = pageExtension.TargetObject.ToLower();
+                        if (pageNamesSet.Contains(pageName))
+                            pageExtensionsList.Add(pageExtension);
+                    }
+                }
+            }
+        }
+
+
+        #endregion
+
         #region Get page details
 
         public PageInformation GetPageDetails(ALProject project, string pageName, bool getExistingFields, bool getAvailableFields)
@@ -225,6 +299,91 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
         #endregion
 
+        #region Tooltips information
+
+        public void CollectToolTips(ALProject project, string tableName, List<TableFieldInformaton> tableFieldsList)
+        {
+            //find pages and page extensions
+            List<ALAppPage> pagesList = this.FindPagesForTable(project, tableName);
+            List<ALAppPageExtension> pageExtensionsList = this.FindPageExtensionsForPages(project, pagesList);
+            
+            //collect fields
+            Dictionary<string, TableFieldInformaton> tableFieldsDictionary = new Dictionary<string, TableFieldInformaton>();
+            foreach (TableFieldInformaton tableField in tableFieldsList)
+            {
+                if (!String.IsNullOrWhiteSpace(tableField.Name))
+                {
+                    string tableFieldName = tableField.Name.ToLower();
+                    if (!tableFieldsDictionary.ContainsKey(tableFieldName))
+                        tableFieldsDictionary.Add(tableFieldName, tableField);
+                }
+            }
+            
+            //process pages
+            foreach (ALAppPage page in pagesList)
+            {
+                this.CollectToolTips(page.Controls, tableFieldsDictionary);
+            }
+
+            //process page extensions
+            foreach (ALAppPageExtension pageExtension in pageExtensionsList)
+            {
+                this.CollectToolTips(pageExtension.ControlChanges, tableFieldsDictionary);
+            }
+        }
+
+        protected void CollectToolTips(List<ALAppPageControlChange> controlChangesList, Dictionary<string, TableFieldInformaton> tableFields)
+        {
+            if (controlChangesList != null)
+            {
+                foreach (ALAppPageControlChange controlChange in controlChangesList)
+                {
+                    this.CollectToolTips(controlChange.Controls, tableFields);
+                }
+            }
+        }
+
+        protected void CollectToolTips(List<ALAppPageControl> controlsList, Dictionary<string, TableFieldInformaton> tableFields)
+        {
+            if (controlsList != null)
+            {
+                foreach (ALAppPageControl control in controlsList)
+                {
+                    //check field and tooltip value
+                    if (!String.IsNullOrWhiteSpace(control.Expression))
+                    {
+                        string toolTip = control.Properties.GetValue("ToolTip");
+                        if (!String.IsNullOrWhiteSpace(toolTip))
+                        {
+                            string fieldName = null;
+                            ALMemberAccessExpression memberAccessExpression = ALSyntaxHelper.DecodeMemberAccessExpression(control.Expression);
+                            if (String.IsNullOrWhiteSpace(memberAccessExpression.Expression))
+                                fieldName = memberAccessExpression.Name;
+                            else if (memberAccessExpression.Expression.Equals("rec", StringComparison.CurrentCultureIgnoreCase))
+                                fieldName = memberAccessExpression.Expression;
+                            if (!String.IsNullOrWhiteSpace(fieldName))
+                            {
+                                fieldName.ToLower();
+                                if (tableFields.ContainsKey(fieldName))
+                                {
+                                    TableFieldInformaton tableFieldInformaton = tableFields[fieldName];
+                                    if (tableFieldInformaton.ToolTips == null)
+                                        tableFieldInformaton.ToolTips = new List<string>();
+                                    if (!tableFieldInformaton.ToolTips.Contains(toolTip))
+                                        tableFieldInformaton.ToolTips.Add(toolTip);
+                                }
+                            }
+                        }
+                    }
+                    //process child controls
+                    if (control.Controls != null)
+                        this.CollectToolTips(control.Controls, tableFields);
+                }
+            }
+        }
+
+        #endregion
 
     }
 }
+

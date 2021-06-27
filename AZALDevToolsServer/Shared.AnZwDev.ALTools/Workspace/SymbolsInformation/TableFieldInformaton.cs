@@ -22,6 +22,9 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
         [JsonProperty("captionLabel")]
         public LabelInformation CaptionLabel { get; set; }
 
+        [JsonProperty("toolTips")]
+        public List<string> ToolTips { get; set; }
+
         public TableFieldInformaton()
         {
             this.InitializeLabels();
