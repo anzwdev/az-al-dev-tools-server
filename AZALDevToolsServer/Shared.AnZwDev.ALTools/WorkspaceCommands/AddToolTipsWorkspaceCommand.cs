@@ -14,6 +14,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         public static string FieldTooltipParameterName = "toolTipField";
         public static string FieldTooltipCommentParameterName = "toolTipFieldComment";
         public static string ActionTooltipParameterName = "toolTipAction";
+        public static string UseFieldDescriptionParameterName = "useFieldDescription";
 
         public AddToolTipsWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "addToolTips")
         {
@@ -25,6 +26,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             this.SyntaxRewriter.PageFieldTooltip = parameters.GetStringValue(FieldTooltipParameterName);
             this.SyntaxRewriter.PageActionTooltip = parameters.GetStringValue(ActionTooltipParameterName);
             this.SyntaxRewriter.PageFieldTooltipComment = parameters.GetStringValue(FieldTooltipCommentParameterName);
+            this.SyntaxRewriter.UseFieldDescription = parameters.GetBoolValue(UseFieldDescriptionParameterName);
         }
 
     }

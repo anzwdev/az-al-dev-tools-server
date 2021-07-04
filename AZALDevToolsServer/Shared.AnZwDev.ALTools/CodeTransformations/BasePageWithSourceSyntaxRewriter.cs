@@ -95,10 +95,11 @@ namespace AnZwDev.ALTools.CodeTransformations
             }
         }
 
-        protected LabelInformation GetFieldCaption(PageFieldSyntax node)
+        protected TableFieldCaptionInfo GetFieldCaption(PageFieldSyntax node)
         {
             //try to find source field caption
             string caption = null;
+            string description = null;
             if (node.Expression != null)
             {
                 List<TableFieldInformaton> fieldsList;
@@ -121,14 +122,18 @@ namespace AnZwDev.ALTools.CodeTransformations
                 if ((fieldsList != null) && (fieldName != null))
                 {
                     TableFieldInformaton tableField = fieldsList.Where(p => (fieldName.Equals(p.Name, StringComparison.CurrentCultureIgnoreCase))).FirstOrDefault();
-                    if ((tableField != null) && (tableField.CaptionLabel != null) && (!String.IsNullOrWhiteSpace(tableField.CaptionLabel.Value)))
-                        return tableField.CaptionLabel;
+                    if (tableField != null)
+                    {
+                        description = tableField.Description;
+                        if ((tableField.CaptionLabel != null) && (!String.IsNullOrWhiteSpace(tableField.CaptionLabel.Value)))
+                            return new TableFieldCaptionInfo(tableField.CaptionLabel, description);
+                    }
                 }
 
                 if ((String.IsNullOrWhiteSpace(caption)) && (fieldName != null))
                     caption = fieldName.Replace("\"", "").RemovePrefixSuffix(this.Project.MandatoryPrefixes, this.Project.MandatorySuffixes, this.Project.MandatoryAffixes);
             }
-            return new LabelInformation("Caption", caption);
+            return new TableFieldCaptionInfo(new LabelInformation("Caption", caption), description);
         }
 
         protected void SetGlobalVarOwner(ALSymbolKind kind, string name)
