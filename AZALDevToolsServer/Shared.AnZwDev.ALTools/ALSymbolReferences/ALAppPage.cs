@@ -29,6 +29,17 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             base.AddChildALSymbols(symbol);
         }
 
+        public string GetSourceTable()
+        {
+            if (this.Properties != null)
+            {
+                ALAppProperty sourceTable = this.Properties.GetProperty("SourceTable");
+                if (sourceTable != null)
+                    return sourceTable.Value;
+            }
+            return null;
+        }
+
         public override void ReplaceIdReferences(ALAppObjectIdMap idMap)
         {
             if (this.Properties != null)

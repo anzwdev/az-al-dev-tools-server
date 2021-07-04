@@ -37,9 +37,11 @@ namespace AnZwDev.ALTools.Server
             this.Dispatcher.RegisterRequestHandler(new AppPackageSymbolsRequestHandler(this.ALDevToolsServer, this));
             this.Dispatcher.RegisterRequestHandler(new ProjectSymbolsRequestHandler(this.ALDevToolsServer, this));
             this.Dispatcher.RegisterRequestHandler(new LibrarySymbolsDetailsRequestHandler(this.ALDevToolsServer, this));
-            this.Dispatcher.RegisterRequestHandler(new GetLibrarySymbolLocationRequestHandler(this.ALDevToolsServer, this));
             this.Dispatcher.RegisterRequestHandler(new CloseSymbolsLibraryNotificationHandler(this.ALDevToolsServer, this));
-            
+
+            this.Dispatcher.RegisterRequestHandler(new GetLibrarySymbolLocationRequestHandler(this.ALDevToolsServer, this));
+            this.Dispatcher.RegisterRequestHandler(new GetProjectSymbolLocationRequestHandler(this.ALDevToolsServer, this));
+
             this.Dispatcher.RegisterRequestHandler(new GetALAppContentRequestHandler(this.ALDevToolsServer, this));
 
             //syntax tree analyzer

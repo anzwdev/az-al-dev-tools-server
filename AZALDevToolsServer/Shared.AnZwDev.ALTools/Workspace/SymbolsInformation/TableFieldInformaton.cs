@@ -22,6 +22,12 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
         [JsonProperty("captionLabel")]
         public LabelInformation CaptionLabel { get; set; }
 
+        [JsonProperty("description")]
+        public string Description { get; set; }
+
+        [JsonProperty("toolTips")]
+        public List<string> ToolTips { get; set; }
+
         public TableFieldInformaton()
         {
             this.InitializeLabels();
@@ -33,6 +39,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             this.Name = name;
             this.Caption = name;
             this.DataType = dataType;
+            this.Description = null;
             this.InitializeLabels();
         }
 
@@ -45,6 +52,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             {
                 this.Caption = symbolReference.Properties.GetValue("Caption");
                 this.FieldClass = symbolReference.Properties.GetValue("FieldClass");
+                this.Description = symbolReference.Properties.GetValue("Description");
                 this.CaptionLabel.Update(symbolReference.Properties);
             } 
 
@@ -69,12 +77,18 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
         {
             if (propertiesCollection != null)
             {
+                //function is called from properties update in table extension,
+                //so if Properties.GetValue returns null, it means that
+                //property has not been changed and should not be updated here
                 string caption = propertiesCollection.GetValue("Caption");
                 if (!String.IsNullOrWhiteSpace(caption))
                 {
                     this.Caption = caption;
                     this.CaptionLabel.Update(propertiesCollection);
                 }
+                string description = propertiesCollection.GetValue("Description");
+                if (!String.IsNullOrWhiteSpace(description))
+                    this.Description = description;
             }
         }
 

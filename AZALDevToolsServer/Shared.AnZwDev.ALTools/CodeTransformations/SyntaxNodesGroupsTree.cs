@@ -134,7 +134,7 @@ namespace AnZwDev.ALTools.CodeTransformations
             if (!nodesGroupsTree.Root.HasChildGroups)
             {
                 List<T> list = syntaxList.ToList();
-                list.Sort(comparer);
+                list.SortWithTrivia(comparer);
                 return SyntaxFactory.List(list);
             }
 
@@ -160,7 +160,14 @@ namespace AnZwDev.ALTools.CodeTransformations
             {
                 List<SyntaxNodeSortInfo<T>> list =
                     SyntaxNodeSortInfo<T>.FromSyntaxList(syntaxList);
-                list.Sort(comparer);
+
+                for (int i=0; i<list.Count; i++)
+                {
+                    SyntaxTriviaList leadingTrivia = list[i].Node.GetLeadingTrivia();
+                    SyntaxTriviaList trailingTrivia = list[i].Node.GetTrailingTrivia();
+                }
+
+                list.SortWithTrivia(comparer);
                 return SyntaxNodeSortInfo<T>.ToSyntaxList(list);
             }
 

@@ -44,6 +44,9 @@ namespace AnZwDev.ALTools.Workspace.Serialization
             [JsonProperty("ranges")]
             public ProjectIdRangeMetadata[] Ranges { get; set; }
 
+            [JsonProperty("Runtime")]
+            public string Runtime { get; set; }
+
             #endregion
 
             #region Initialization
@@ -95,6 +98,7 @@ namespace AnZwDev.ALTools.Workspace.Serialization
                 targetProperties.Name = this.Name;
                 targetProperties.Publisher = this.Publisher;
                 targetProperties.Version = new Core.VersionNumber(this.Version);
+                targetProperties.Runtime = new Core.VersionNumber(this.Runtime);
             }
 
             private void CopyIdRanges(ALProjectProperties targetProperties)

@@ -16,6 +16,7 @@ namespace AnZwDev.ALTools.CodeTransformations
         public string PageFieldTooltip { get; set; }
         public string PageFieldTooltipComment { get; set; }
         public string PageActionTooltip { get; set; }
+        public bool UseFieldDescription { get; set; }
 
         public ToolTipSyntaxRewriter()
         {
@@ -38,9 +39,12 @@ namespace AnZwDev.ALTools.CodeTransformations
             this.NoOfChanges++;
 
             //try to find source field caption
-            LabelInformation captionLabel = this.GetFieldCaption(node);
+            string forceToolTipValue = null;
+            TableFieldCaptionInfo captionInfo = this.GetFieldCaption(node);
+            if (this.UseFieldDescription)
+                forceToolTipValue = captionInfo.Description;
 
-            return node.AddPropertyListProperties(this.CreateToolTipProperty(node, captionLabel.Value, captionLabel.Comment));
+            return node.AddPropertyListProperties(this.CreateToolTipProperty(node, captionInfo.Caption.Value, captionInfo.Caption.Comment, forceToolTipValue));
         }
 
         public override SyntaxNode VisitPageAction(PageActionSyntax node)
@@ -56,40 +60,48 @@ namespace AnZwDev.ALTools.CodeTransformations
             return ((node.HasNonEmptyProperty("ToolTip")) || (node.HasProperty("ToolTipML")));
         }
 
-        protected PropertySyntax CreateToolTipProperty(SyntaxNode node, string caption = null, string comment = null)
+        protected PropertySyntax CreateToolTipProperty(SyntaxNode node, string caption = null, string comment = null, string forceToolTipValue = null)
         {
             SyntaxTriviaList leadingTriviaList = node.CreateChildNodeIdentTrivia();
             SyntaxTriviaList trailingTriviaList = SyntaxFactory.ParseTrailingTrivia("\r\n", 0);
 
-            //get caption from control caption
-            LabelInformation controlCaptionInformation = node.GetCaptionPropertyInformation();
-            if ((controlCaptionInformation != null) && (!String.IsNullOrWhiteSpace(controlCaptionInformation.Value)))
-            {
-                caption = controlCaptionInformation.Value;
-                comment = controlCaptionInformation.Comment;
-            }
-            //get caption from control name
-            else if (String.IsNullOrWhiteSpace(caption))
-            {
-                caption = node.GetNameStringValue().RemovePrefixSuffix(this.Project.MandatoryPrefixes, this.Project.MandatorySuffixes, this.Project.MandatoryAffixes);
-                comment = null;
-            }
-
             string toolTipValue = "";
             string toolTipComment = "";
-            switch (node.Kind.ConvertToLocalType())
-            {
-                case ConvertedSyntaxKind.PageField:
-                    toolTipValue = PageFieldTooltip;
-                    toolTipComment = PageFieldTooltipComment;
-                    break;
-                case ConvertedSyntaxKind.PageAction:
-                    toolTipValue = PageActionTooltip;
-                    break;
-            }
 
-            toolTipValue = ApplyTextTemplate(toolTipValue, caption, comment);
-            toolTipComment = ApplyTextTemplate(toolTipComment, caption, comment);
+            if (String.IsNullOrWhiteSpace(forceToolTipValue))
+            {
+                //get caption from control caption
+                LabelInformation controlCaptionInformation = node.GetCaptionPropertyInformation();
+                if ((controlCaptionInformation != null) && (!String.IsNullOrWhiteSpace(controlCaptionInformation.Value)))
+                {
+                    caption = controlCaptionInformation.Value;
+                    comment = controlCaptionInformation.Comment;
+                }
+                //get caption from control name
+                else if (String.IsNullOrWhiteSpace(caption))
+                {
+                    caption = node.GetNameStringValue().RemovePrefixSuffix(this.Project.MandatoryPrefixes, this.Project.MandatorySuffixes, this.Project.MandatoryAffixes);
+                    comment = null;
+                }
+
+                switch (node.Kind.ConvertToLocalType())
+                {
+                    case ConvertedSyntaxKind.PageField:
+                        toolTipValue = PageFieldTooltip;
+                        toolTipComment = PageFieldTooltipComment;
+                        break;
+                    case ConvertedSyntaxKind.PageAction:
+                        toolTipValue = PageActionTooltip;
+                        break;
+                }
+
+                toolTipValue = ApplyTextTemplate(toolTipValue, caption, comment);
+                toolTipComment = ApplyTextTemplate(toolTipComment, caption, comment);
+            }
+            else
+            {
+                toolTipValue = forceToolTipValue;
+            }
 
             return SyntaxFactoryHelper.ToolTipProperty(toolTipValue, toolTipComment)
                 .WithLeadingTrivia(leadingTriviaList)

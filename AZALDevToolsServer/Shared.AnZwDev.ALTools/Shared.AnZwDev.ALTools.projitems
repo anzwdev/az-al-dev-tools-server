@@ -96,6 +96,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSymbolsLibrary.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSymbolsLibrarySource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSymbolSourceLocation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSymbolSourceLocationSchema.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSyntaxHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSyntaxTree.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSyntaxTreesCollection.cs" />
@@ -136,6 +137,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\SyntaxNodesGroup.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\SyntaxNodesGroupsTree.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\SyntaxNodeSortInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\SyntaxNodeSortInfoListSyntaxNodeProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\TableFieldCaptionInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\ToolTipSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\WithIdentifiersSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\WithRemoveSyntaxRewriter.cs" />
@@ -144,6 +147,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\AlphanumComparatorFast .cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\DictionaryExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\EnumExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\List_SyntaxNode_Extensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\MethodInfoExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\StringExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\SyntaxNodeExtensions.cs" />
@@ -191,7 +195,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\EnumInformationProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\InterfaceInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\InterfaceInformationProvider.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\LabelPropertiesInformation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\LabelInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\PageInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\PageInformationProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\QueryDataItemInformation.cs" />

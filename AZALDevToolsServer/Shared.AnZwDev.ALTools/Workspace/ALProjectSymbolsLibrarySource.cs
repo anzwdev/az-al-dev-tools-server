@@ -18,6 +18,16 @@ namespace AnZwDev.ALTools.Workspace
 
         public override ALSymbolSourceLocation GetSymbolSourceLocation(ALSymbol symbol)
         {
+            return this.GetSymbolSourceLocation(symbol, false);
+        }
+
+        public ALSymbolSourceLocation GetSymbolSourceProjectLocation(ALSymbol symbol)
+        {
+            return this.GetSymbolSourceLocation(symbol, true);
+        }
+
+        protected ALSymbolSourceLocation GetSymbolSourceLocation(ALSymbol symbol, bool projectSource)
+        {
             ALSymbolSourceLocation location = new ALSymbolSourceLocation(symbol);
 
             ALAppObject alAppObject = null;
@@ -26,7 +36,7 @@ namespace AnZwDev.ALTools.Workspace
                 alAppObject = this.Project.Symbols.FindObjectByName(symbol.kind, symbol.name);
                 if (alAppObject != null)
                 {
-                    this.SetSource(location, this.Project.Symbols, alAppObject);
+                    this.SetSource(location, this.Project.Symbols, alAppObject, projectSource);
                     return location;
                 }
             }
@@ -40,7 +50,7 @@ namespace AnZwDev.ALTools.Workspace
                         alAppObject = dependency.Symbols.FindObjectByName(symbol.kind, symbol.name);
                         if (alAppObject != null)
                         {
-                            this.SetSource(location, dependency.Symbols, alAppObject);
+                            this.SetSource(location, dependency.Symbols, alAppObject, projectSource);
                             return location;
                         }
                     }
@@ -50,7 +60,34 @@ namespace AnZwDev.ALTools.Workspace
             return location;
         }
 
+        protected void SetSource(ALSymbolSourceLocation location, ALAppSymbolReference symbolReference, ALAppObject alAppObject, bool projectSource)
+        {
+            this.SetSource(location, symbolReference, alAppObject);
+            if ((projectSource) && (location.schema == ALSymbolSourceLocationSchema.ALApp) && (alAppObject.GetALSymbolKind().ServerDefinitionAvailable()))
+            {
+                //for old version of Business Central and NAV 2018 objects can be modified and defined in C/AL, so we have to download source from the server
+#if BC
+                bool serverSideSymbols = (
+                    (this.Project.Properties.Runtime == null) ||
+                    (this.Project.Properties.Runtime.Parts == null) ||
+                    (this.Project.Properties.Runtime.Parts.Length == 0) ||
+                    (this.Project.Properties.Runtime.Parts[0] <= 4));
+#else
+                bool serverSideSymbols = true;
+#endif
 
+                if (serverSideSymbols)
+                {
+                    location.schema = ALSymbolSourceLocationSchema.Server;
+                    location.sourcePath = alAppObject.Name;
+                }
+                else
+                {
+                    location.schema = ALSymbolSourceLocationSchema.ALPreview;
+                    location.sourcePath = alAppObject.GetALSymbolKind().ToObjectTypeName() + "/" + alAppObject.Id.ToString() + "/" + alAppObject.Name + ".dal";
+                }
+            }
+        }
 
     }
 }
