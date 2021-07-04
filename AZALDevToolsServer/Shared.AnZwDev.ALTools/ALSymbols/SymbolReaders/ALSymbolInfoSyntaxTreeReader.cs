@@ -549,6 +549,10 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                 name = name.ToLower();
                 switch (parent.kind)
                 {
+                    case ALSymbolKind.QueryObject:
+                        if (name == "querytype")
+                            parent.subtype = ALSyntaxHelper.DecodeName(value);
+                        break;
                     case ALSymbolKind.PageObject:
                         if (name == "sourcetable")
                             parent.source = ALSyntaxHelper.DecodeName(value);
