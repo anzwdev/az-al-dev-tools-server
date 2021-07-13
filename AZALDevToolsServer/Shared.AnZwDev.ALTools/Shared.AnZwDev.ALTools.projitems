@@ -83,6 +83,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\Serialization\AppPackagesSymbolReferencesCache.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\Serialization\AppPackagesSymbolReferencesCacheEntry.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\Serialization\AppPackageSymbolReferencesReader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\Serialization\NavAppManifestNavxPackageConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\Serialization\NavxApp.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\Serialization\NavxDependency.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\Serialization\NavxPackage.cs" />

@@ -14,9 +14,11 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Serialization
         public string FullName { get; private set; }
         public byte[] UId { get; private set; }
         public NavxPackage Manifest { get; private set; }
+        public bool IsRuntimePackage { get; private set; }
 
         public AppPackageInformation(string fullPath)
         {
+            this.IsRuntimePackage = false;
             this.FullPath = fullPath;
             this.FullName = Path.GetFileNameWithoutExtension(this.FullPath);
             this.Reload();
@@ -34,6 +36,20 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Serialization
                         this.UId = new byte[AppPackageDataStream.HeaderLength];
                         stream.Read(this.UId, 0, this.UId.Length);
 
+                        Microsoft.Dynamics.Nav.CodeAnalysis.Packaging.NavAppPackage navAppPackage = Microsoft.Dynamics.Nav.CodeAnalysis.Packaging.NavAppPackage.Open(stream, false);
+#if BC
+                        this.IsRuntimePackage = navAppPackage.IsRuntimePackage;
+#else
+                        this.IsRuntimePackage = false;
+#endif
+                        Microsoft.Dynamics.Nav.CodeAnalysis.Packaging.NavAppPackageReader naAppPackageReader = new Microsoft.Dynamics.Nav.CodeAnalysis.Packaging.NavAppPackageReader(stream, navAppPackage, false);
+                        Microsoft.Dynamics.Nav.CodeAnalysis.Packaging.NavAppManifest navAppManifest = naAppPackageReader.ReadNavAppManifest();
+                        naAppPackageReader.Dispose();
+                        navAppPackage.Dispose();
+
+                        this.Manifest = NavAppManifestNavxPackageConverter.CreateNavxPackageManifest(navAppManifest);                       
+
+                        /*
                         //load metadata
                         using (AppPackageDataStream dataStream = new AppPackageDataStream(stream))
                         {
@@ -47,6 +63,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Serialization
                                 }
                             }
                         }
+                        */
                     }
                 } 
                 else

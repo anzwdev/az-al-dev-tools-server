@@ -36,31 +36,27 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Serialization
         public string Runtime { get; set; }
         
         [XmlAttribute("PropagateDependencies")]
-        public string PropagateDependenciesText { get; set; }
+        public string PropagateDependenciesText 
+        {
+            get { return this.PropagateDependencies.ToString(); }
+            set { this.PropagateDependencies = TextToBool(value); }
+        }
 
         [XmlAttribute("ShowMyCode")]
-        public string ShowMyCodeText { get; set; }
-
-        [XmlIgnore]
-        public bool ShowMyCode
-        {
-            get 
-            {
-                return ((String.IsNullOrWhiteSpace(this.ShowMyCodeText)) || (this.ShowMyCodeText.Equals("true", StringComparison.CurrentCultureIgnoreCase)));
-            }
+        public string ShowMyCodeText 
+        { 
+            get { return this.ShowMyCode.ToString(); }
+            set { this.ShowMyCode = TextToBool(value); }
         }
 
         [XmlIgnore]
-        public bool PropagateDependencies
-        {
-            get
-            {
-                return ((this.PropagateDependenciesText != null) && (this.PropagateDependenciesText.Equals("true", StringComparison.CurrentCultureIgnoreCase)));
-            }
-        }
+        public bool ShowMyCode { get; set; }
 
         [XmlIgnore]
-        public VersionNumber Version { get; }
+        public bool PropagateDependencies { get; set; }
+
+        [XmlIgnore]
+        public VersionNumber Version { get; set; }
 
         public NavxApp()
         {
@@ -74,6 +70,11 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Serialization
                 (this.Name == navxApp.Name) &&
                 (this.Publisher == navxApp.Publisher) &&
                 ((!compareVersion) || (this.Version.Equal(navxApp.Version)));
+        }
+
+        protected bool TextToBool(string value)
+        {
+            return ((value != null) && (value.Equals("true", StringComparison.CurrentCultureIgnoreCase)));
         }
 
     }
