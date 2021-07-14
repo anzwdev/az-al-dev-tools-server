@@ -16,6 +16,23 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Serialization
             ALAppSymbolReference symbolReference = null;
 
             Stream packageStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+
+            Microsoft.Dynamics.Nav.CodeAnalysis.Packaging.NavAppPackage navAppPackage = Microsoft.Dynamics.Nav.CodeAnalysis.Packaging.NavAppPackage.Open(packageStream, false);
+            Microsoft.Dynamics.Nav.CodeAnalysis.Packaging.NavAppPackageReader naAppPackageReader = new Microsoft.Dynamics.Nav.CodeAnalysis.Packaging.NavAppPackageReader(packageStream, navAppPackage, false);
+            Stream symbolsStream = naAppPackageReader.ReadSymbolReferenceFile();
+
+            using (StreamReader streamReader = new StreamReader(symbolsStream))
+            using (JsonReader reader = new JsonTextReader(streamReader))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+
+                symbolReference = serializer.Deserialize<ALAppSymbolReference>(reader);
+            }
+
+            naAppPackageReader.Dispose();
+            navAppPackage.Dispose();
+
+            /*
             packageStream.Seek(AppPackageDataStream.HeaderLength, SeekOrigin.Begin);
 
             AppPackageDataStream dataStream = new AppPackageDataStream(packageStream);
@@ -31,9 +48,10 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Serialization
             }
             package.Dispose();
 
+            dataStream.Dispose();
+            */
             packageStream.Close();
             packageStream.Dispose();
-            dataStream.Dispose();
 
             if (symbolReference != null)
                 symbolReference.ReferenceSourceFileName = path;

@@ -106,6 +106,23 @@ namespace AnZwDev.ALTools.Core
             return (this.Compare(value) != 0);
         }
 
+        public string GetVersionText(int noOfPlaces)
+        {
+            string text = GetPart(0).ToString();
+            for (int i=1; i<noOfPlaces; i++)
+            {
+                text = text + "." + GetPart(i).ToString();
+            }
+            return text;
+        }
+
+        protected int GetPart(int index)
+        {
+            if ((this.Parts == null) || (index >= this.Parts.Length))
+                return 0;
+            return this.Parts[index];
+        }
+
 
     }
 }

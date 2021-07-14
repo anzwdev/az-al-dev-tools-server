@@ -28,6 +28,8 @@ namespace AnZwDev.ALTools.Server.Handlers
                     response.source = "Cannot find application manifest in the \"" + parameters.appPath + "\" file";
                 else if (!appPackageInformation.Manifest.App.ShowMyCode)
                     response.source = "File cannot be opened. Publisher of the application has set ShowMyCode property to false.";
+                else if (appPackageInformation.IsRuntimePackage)
+                    response.source = "File cannot be opened.";
                 else
                 {
                     using (FileStream packageStream = new FileStream(parameters.appPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
