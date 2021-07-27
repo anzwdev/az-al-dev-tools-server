@@ -37,6 +37,8 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             this.RegisterCommand(new AddFieldCaptionsWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new AddObjectCaptionsWorkspaceCommand(this.ALDevToolsServer));
 
+            this.RegisterCommand(new FixKeywordsCaseWorkspaceCommand(this.ALDevToolsServer));
+
 #if BC            
             this.RegisterCommand(new RemoveWithWorkspaceCommand(this.ALDevToolsServer));
 #endif
@@ -47,6 +49,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             this.RegisterCommand(groupCommand.AddCommand(new SortPropertiesWorkspaceCommand(this.ALDevToolsServer)));
             this.RegisterCommand(groupCommand.AddCommand(new SortReportColumnsWorkspaceCommand(this.ALDevToolsServer)));
             this.RegisterCommand(groupCommand.AddCommand(new SortTableFieldsWorkspaceCommand(this.ALDevToolsServer)));
+
             this.RegisterCommand(groupCommand);
         }
 
