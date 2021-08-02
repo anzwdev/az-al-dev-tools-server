@@ -284,8 +284,71 @@ namespace AnZwDev.ALTools.ALSymbols
                     return "Enum";
                 case ALSymbolKind.Interface:
                     return "Interface";
+                case ALSymbolKind.PageExtensionObject: 
+                    return "PageExtension";
+                case ALSymbolKind.TableExtensionObject: 
+                    return "TableExtension";
+                case ALSymbolKind.ProfileObject: 
+                    return "Profile";
+                case ALSymbolKind.PageCustomizationObject: 
+                    return "PageCustomization";
+                case ALSymbolKind.DotNetPackage: 
+                    return "DotNetPackage";
+                case ALSymbolKind.EnumExtensionType: 
+                    return "EnumExtension";
+                case ALSymbolKind.ReportExtensionObject: 
+                    return "ReportExtension";
+                case ALSymbolKind.PermissionSet: 
+                    return "PermissionSet";
+                case ALSymbolKind.PermissionSetExtension: 
+                    return "PermissionSetExtension";
             }
             return null;
+        }
+
+        public static ALSymbolKind FromObjectTypeName(string name)
+        {
+            name = name.ToLower();
+            switch (name)
+            {
+                case "table":
+                    return ALSymbolKind.TableObject;
+                case "page":
+                    return ALSymbolKind.PageObject;
+                case "report":
+                    return ALSymbolKind.ReportObject;
+                case "xmlport":
+                    return ALSymbolKind.XmlPortObject;
+                case "query":
+                    return ALSymbolKind.QueryObject;
+                case "codeunit":
+                    return ALSymbolKind.CodeunitObject;
+                case "controladdin":
+                    return ALSymbolKind.ControlAddInObject;
+                case "pageextension":
+                    return ALSymbolKind.PageExtensionObject;
+                case "tableextension":
+                    return ALSymbolKind.TableExtensionObject;
+                case "profile":
+                    return ALSymbolKind.ProfileObject;
+                case "pagecustomization":
+                    return ALSymbolKind.PageCustomizationObject;
+                case "dotnetpackage":
+                    return ALSymbolKind.DotNetPackage;
+                case "enum":
+                    return ALSymbolKind.EnumType;
+                case "enumextension": 
+                    return ALSymbolKind.EnumExtensionType;
+                case "interface": 
+                    return ALSymbolKind.Interface;
+                case "reportextension": 
+                    return ALSymbolKind.ReportExtensionObject;
+                case "permissionset": 
+                    return ALSymbolKind.PermissionSet;
+                case "permissionsetextension": 
+                    return ALSymbolKind.PermissionSetExtension;
+            }
+            return ALSymbolKind.Undefined;
         }
 
     }

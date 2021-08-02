@@ -72,6 +72,9 @@ namespace AnZwDev.ALTools.Server
             this.Dispatcher.RegisterRequestHandler(new GetReportDataItemDetailsRequestHandler(this.ALDevToolsServer, this));
             this.Dispatcher.RegisterRequestHandler(new GetQueryDataItemDetailsRequestHandler(this.ALDevToolsServer, this));
 
+            //next available object id
+            this.Dispatcher.RegisterRequestHandler(new GetNextObjectIdRequestHandler(this.ALDevToolsServer, this));
+
             //standard notification handlers
             this.Dispatcher.RegisterNotificationHandler(new ExitNotificationHandler(this));
 
