@@ -16,24 +16,24 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         public string Publisher { get; set; }
         public string Version { get; set; }
 
-        public ALAppElementsCollection<ALAppTable> Tables { get; set; }
-        public ALAppElementsCollection<ALAppPage> Pages { get; set; }
-        public ALAppElementsCollection<ALAppReport> Reports { get; set; }
-        public ALAppElementsCollection<ALAppXmlPort> XmlPorts { get; set; }
-        public ALAppElementsCollection<ALAppQuery> Queries { get; set; }
-        public ALAppElementsCollection<ALAppCodeunit> Codeunits { get; set; }
-        public ALAppElementsCollection<ALAppControlAddIn> ControlAddIns { get; set; }
-        public ALAppElementsCollection<ALAppPageExtension> PageExtensions { get; set; }
-        public ALAppElementsCollection<ALAppTableExtension> TableExtensions { get; set; }
-        public ALAppElementsCollection<ALAppProfile> Pofiles { get; set; }
-        public ALAppElementsCollection<ALAppPageCustomization> PageCustomizations { get; set; }
-        public ALAppElementsCollection<ALAppDotNetPackage> DotNetPackages { get; set; }
-        public ALAppElementsCollection<ALAppEnum> EnumTypes { get; set; }
-        public ALAppElementsCollection<ALAppEnumExtension> EnumExtensionTypes { get; set; }
-        public ALAppElementsCollection<ALAppInterface> Interfaces { get; set; }
-        public ALAppElementsCollection<ALAppReportExtension> ReportExtensions { get; set; }
-        public ALAppElementsCollection<ALAppPermissionSet> PermissionSets { get; set; }
-        public ALAppElementsCollection<ALAppPermissionSetExtension> PermissionSetExtensions { get; set; }
+        public ALAppObjectsCollection<ALAppTable> Tables { get; set; }
+        public ALAppObjectsCollection<ALAppPage> Pages { get; set; }
+        public ALAppObjectsCollection<ALAppReport> Reports { get; set; }
+        public ALAppObjectsCollection<ALAppXmlPort> XmlPorts { get; set; }
+        public ALAppObjectsCollection<ALAppQuery> Queries { get; set; }
+        public ALAppObjectsCollection<ALAppCodeunit> Codeunits { get; set; }
+        public ALAppObjectsCollection<ALAppControlAddIn> ControlAddIns { get; set; }
+        public ALAppObjectsCollection<ALAppPageExtension> PageExtensions { get; set; }
+        public ALAppObjectsCollection<ALAppTableExtension> TableExtensions { get; set; }
+        public ALAppObjectsCollection<ALAppProfile> Pofiles { get; set; }
+        public ALAppObjectsCollection<ALAppPageCustomization> PageCustomizations { get; set; }
+        public ALAppObjectsCollection<ALAppDotNetPackage> DotNetPackages { get; set; }
+        public ALAppObjectsCollection<ALAppEnum> EnumTypes { get; set; }
+        public ALAppObjectsCollection<ALAppEnumExtension> EnumExtensionTypes { get; set; }
+        public ALAppObjectsCollection<ALAppInterface> Interfaces { get; set; }
+        public ALAppObjectsCollection<ALAppReportExtension> ReportExtensions { get; set; }
+        public ALAppObjectsCollection<ALAppPermissionSet> PermissionSets { get; set; }
+        public ALAppObjectsCollection<ALAppPermissionSetExtension> PermissionSetExtensions { get; set; }
 
         public string ReferenceSourceFileName { get; set; }
 
@@ -90,75 +90,75 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             {
                 case ALSymbolKind.TableObject:
                     if (this.Tables == null)
-                        this.Tables = new ALAppElementsCollection<ALAppTable>();
+                        this.Tables = new ALAppObjectsCollection<ALAppTable>();
                     return this.Tables;
                 case ALSymbolKind.PageObject:
                     if (this.Pages == null)
-                        this.Pages = new ALAppElementsCollection<ALAppPage>();
+                        this.Pages = new ALAppObjectsCollection<ALAppPage>();
                     return this.Pages;
                 case ALSymbolKind.ReportObject:
                     if (this.Reports == null)
-                        this.Reports = new ALAppElementsCollection<ALAppReport>();
+                        this.Reports = new ALAppObjectsCollection<ALAppReport>();
                     return this.Reports;
                 case ALSymbolKind.XmlPortObject:
                     if (this.XmlPorts == null)
-                        this.XmlPorts = new ALAppElementsCollection<ALAppXmlPort>();
+                        this.XmlPorts = new ALAppObjectsCollection<ALAppXmlPort>();
                     return this.XmlPorts;
                 case ALSymbolKind.QueryObject:
                     if (this.Queries == null)
-                        this.Queries = new ALAppElementsCollection<ALAppQuery>();
+                        this.Queries = new ALAppObjectsCollection<ALAppQuery>();
                     return this.Queries;
                 case ALSymbolKind.CodeunitObject:
                     if (this.Codeunits == null)
-                        this.Codeunits = new ALAppElementsCollection<ALAppCodeunit>();
+                        this.Codeunits = new ALAppObjectsCollection<ALAppCodeunit>();
                     return this.Codeunits;
                 case ALSymbolKind.ControlAddInObject:
                     if (this.ControlAddIns == null)
-                        this.ControlAddIns = new ALAppElementsCollection<ALAppControlAddIn>();
+                        this.ControlAddIns = new ALAppObjectsCollection<ALAppControlAddIn>();
                     return this.ControlAddIns;
                 case ALSymbolKind.PageExtensionObject:
                     if (this.PageExtensions == null)
-                        this.PageExtensions = new ALAppElementsCollection<ALAppPageExtension>();
+                        this.PageExtensions = new ALAppObjectsCollection<ALAppPageExtension>();
                     return this.PageExtensions;
                 case ALSymbolKind.TableExtensionObject:
                     if (this.TableExtensions == null)
-                        this.TableExtensions = new ALAppElementsCollection<ALAppTableExtension>();
+                        this.TableExtensions = new ALAppObjectsCollection<ALAppTableExtension>();
                     return this.TableExtensions;
                 case ALSymbolKind.ProfileObject:
                     if (this.Pofiles == null)
-                        this.Pofiles = new ALAppElementsCollection<ALAppProfile>();
+                        this.Pofiles = new ALAppObjectsCollection<ALAppProfile>();
                     return this.Pofiles;
                 case ALSymbolKind.PageCustomizationObject:
                     if (this.PageCustomizations == null)
-                        this.PageCustomizations = new ALAppElementsCollection<ALAppPageCustomization>();
+                        this.PageCustomizations = new ALAppObjectsCollection<ALAppPageCustomization>();
                     return this.PageCustomizations;
                 case ALSymbolKind.DotNetPackage:
                     if (this.DotNetPackages == null)
-                        this.DotNetPackages = new ALAppElementsCollection<ALAppDotNetPackage>();
+                        this.DotNetPackages = new ALAppObjectsCollection<ALAppDotNetPackage>();
                     return this.DotNetPackages;
                 case ALSymbolKind.EnumType:
                     if (this.EnumTypes == null)
-                        this.EnumTypes = new ALAppElementsCollection<ALAppEnum>();
+                        this.EnumTypes = new ALAppObjectsCollection<ALAppEnum>();
                     return this.EnumTypes;
                 case ALSymbolKind.EnumExtensionType:
                     if (this.EnumExtensionTypes == null)
-                        this.EnumExtensionTypes = new ALAppElementsCollection<ALAppEnumExtension>();
+                        this.EnumExtensionTypes = new ALAppObjectsCollection<ALAppEnumExtension>();
                     return this.EnumExtensionTypes;
                 case ALSymbolKind.Interface:
                     if (this.Interfaces == null)
-                        this.Interfaces = new ALAppElementsCollection<ALAppInterface>();
+                        this.Interfaces = new ALAppObjectsCollection<ALAppInterface>();
                     return this.Interfaces;
                 case ALSymbolKind.ReportExtensionObject:
                     if (this.ReportExtensions == null)
-                        this.ReportExtensions = new ALAppElementsCollection<ALAppReportExtension>();
+                        this.ReportExtensions = new ALAppObjectsCollection<ALAppReportExtension>();
                     return this.ReportExtensions;
                 case ALSymbolKind.PermissionSet:
                     if (this.PermissionSets == null)
-                        this.PermissionSets = new ALAppElementsCollection<ALAppPermissionSet>();
+                        this.PermissionSets = new ALAppObjectsCollection<ALAppPermissionSet>();
                     return this.PermissionSets;
                 case ALSymbolKind.PermissionSetExtension:
                     if (this.PermissionSetExtensions == null)
-                        this.PermissionSetExtensions = new ALAppElementsCollection<ALAppPermissionSetExtension>();
+                        this.PermissionSetExtensions = new ALAppObjectsCollection<ALAppPermissionSetExtension>();
                     return this.PermissionSetExtensions;
             }
             return null;
@@ -268,6 +268,100 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             this.PermissionSets?.AddCollectionToALSymbol(symbol, ALSymbolKind.PermissionSetList);
             this.PermissionSetExtensions?.AddCollectionToALSymbol(symbol, ALSymbolKind.PermissionSetExtensionList);
 
+        }
+
+        #endregion
+
+        #region Enumerators
+
+        public IEnumerable<long> GetIdsEnumerable(ALSymbolKind symbolKind)
+        {
+            switch (symbolKind)
+            {
+                case ALSymbolKind.TableObject:
+                    return this.Tables?.GetIdsEnumerable();
+                case ALSymbolKind.PageObject:
+                    return this.Pages?.GetIdsEnumerable();
+                case ALSymbolKind.ReportObject:
+                    return this.Reports?.GetIdsEnumerable();
+                case ALSymbolKind.XmlPortObject:
+                    return this.XmlPorts?.GetIdsEnumerable();
+                case ALSymbolKind.QueryObject:
+                    return this.Queries?.GetIdsEnumerable();
+                case ALSymbolKind.CodeunitObject:
+                    return this.Codeunits?.GetIdsEnumerable();
+                case ALSymbolKind.ControlAddInObject:
+                    return this.ControlAddIns?.GetIdsEnumerable();
+                case ALSymbolKind.PageExtensionObject:
+                    return this.PageExtensions?.GetIdsEnumerable();
+                case ALSymbolKind.TableExtensionObject:
+                    return this.TableExtensions?.GetIdsEnumerable();
+                case ALSymbolKind.ProfileObject:
+                    return this.Pofiles?.GetIdsEnumerable();
+                case ALSymbolKind.PageCustomizationObject:
+                    return this.PageCustomizations?.GetIdsEnumerable();
+                case ALSymbolKind.DotNetPackage:
+                    return this.DotNetPackages?.GetIdsEnumerable();
+                case ALSymbolKind.EnumType:
+                    return this.EnumTypes?.GetIdsEnumerable();
+                case ALSymbolKind.EnumExtensionType:
+                    return this.EnumExtensionTypes?.GetIdsEnumerable();
+                case ALSymbolKind.Interface:
+                    return this.Interfaces?.GetIdsEnumerable();
+                case ALSymbolKind.ReportExtensionObject:
+                    return this.ReportExtensions?.GetIdsEnumerable();
+                case ALSymbolKind.PermissionSet:
+                    return this.PermissionSets?.GetIdsEnumerable();
+                case ALSymbolKind.PermissionSetExtension:
+                    return this.PermissionSetExtensions?.GetIdsEnumerable();
+            }
+
+            return null;
+        }
+
+        public IEnumerable<ALAppObject> GetALAppObjectsEnumerable(ALSymbolKind symbolKind)
+        {
+            switch (symbolKind)
+            {
+                case ALSymbolKind.TableObject:
+                    return this.Tables?.GetALAppObjectsEnumerable();
+                case ALSymbolKind.PageObject:
+                    return this.Pages?.GetALAppObjectsEnumerable();
+                case ALSymbolKind.ReportObject:
+                    return this.Reports?.GetALAppObjectsEnumerable();
+                case ALSymbolKind.XmlPortObject:
+                    return this.XmlPorts?.GetALAppObjectsEnumerable();
+                case ALSymbolKind.QueryObject:
+                    return this.Queries?.GetALAppObjectsEnumerable();
+                case ALSymbolKind.CodeunitObject:
+                    return this.Codeunits?.GetALAppObjectsEnumerable();
+                case ALSymbolKind.ControlAddInObject:
+                    return this.ControlAddIns?.GetALAppObjectsEnumerable();
+                case ALSymbolKind.PageExtensionObject:
+                    return this.PageExtensions?.GetALAppObjectsEnumerable();
+                case ALSymbolKind.TableExtensionObject:
+                    return this.TableExtensions?.GetALAppObjectsEnumerable();
+                case ALSymbolKind.ProfileObject:
+                    return this.Pofiles?.GetALAppObjectsEnumerable();
+                case ALSymbolKind.PageCustomizationObject:
+                    return this.PageCustomizations?.GetALAppObjectsEnumerable();
+                case ALSymbolKind.DotNetPackage:
+                    return this.DotNetPackages?.GetALAppObjectsEnumerable();
+                case ALSymbolKind.EnumType:
+                    return this.EnumTypes?.GetALAppObjectsEnumerable();
+                case ALSymbolKind.EnumExtensionType:
+                    return this.EnumExtensionTypes?.GetALAppObjectsEnumerable();
+                case ALSymbolKind.Interface:
+                    return this.Interfaces?.GetALAppObjectsEnumerable();
+                case ALSymbolKind.ReportExtensionObject:
+                    return this.ReportExtensions?.GetALAppObjectsEnumerable();
+                case ALSymbolKind.PermissionSet:
+                    return this.PermissionSets?.GetALAppObjectsEnumerable();
+                case ALSymbolKind.PermissionSetExtension:
+                    return this.PermissionSetExtensions?.GetALAppObjectsEnumerable();
+            }
+
+            return null;
         }
 
         #endregion

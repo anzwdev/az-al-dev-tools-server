@@ -68,6 +68,9 @@ namespace AZALDevToolsTestConsoleApp
             workspace.ResolveDependencies();
             ALProject project = workspace.Projects[0];
 
+            ObjectIdInformationProvider objectIdInformationProvider = new ObjectIdInformationProvider();
+            long id = objectIdInformationProvider.GetNextObjectId(project, "Page");
+
             TableInformationProvider tableInformationProvider = new TableInformationProvider();
             List<TableFieldInformaton> fields = tableInformationProvider.GetTableFields(project, "Purchase Line", false, false);
             List<TableFieldInformaton> fields2 = fields.Where(p => (p.Name.StartsWith("Description"))).ToList();

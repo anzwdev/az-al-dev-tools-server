@@ -33,6 +33,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\GetFullSyntaxTreeResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\GetLibrarySymbolLocationRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\GetLibrarySymbolLocationResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetNextObjectIdRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetNextObjectIdResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\GetProjectSettingsRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\GetProjectSettingsResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\GetProjectSymbolLocationRequest.cs" />
@@ -113,6 +115,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\SymbolsInformation\GetCodeunitsListRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\SymbolsInformation\GetEnumsListRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\SymbolsInformation\GetInterfacesListRequestHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\SymbolsInformation\GetNextObjectIdRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\SymbolsInformation\GetPageDetailsRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\SymbolsInformation\GetPagesListRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\SymbolsInformation\GetQueriesListRequestHandler.cs" />

@@ -38,10 +38,10 @@ namespace AnZwDev.ALTools.Workspace.Serialization
             [JsonProperty("dependencies")]
             public ProjectDependencyMetadata[] Dependencies { get; set; }
 
-            [JsonProperty("range")]
+            [JsonProperty("idRange")]
             public ProjectIdRangeMetadata Range { get; set; }
 
-            [JsonProperty("ranges")]
+            [JsonProperty("idRanges")]
             public ProjectIdRangeMetadata[] Ranges { get; set; }
 
             [JsonProperty("Runtime")]
