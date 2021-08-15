@@ -38,5 +38,21 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         {
         }
 
+        public ALAppAccessMode GetAccessMode()
+        {
+            if (this.Properties != null)
+            {
+                string access = this.Properties.GetValue("Access");
+                if (!String.IsNullOrWhiteSpace(access))
+                {
+                    ALAppAccessMode accessModeValue;
+                    if (Enum.TryParse<ALAppAccessMode>(access, true, out accessModeValue))
+                        return accessModeValue;
+                }
+            }
+            return ALAppAccessMode.Public;
+        }
+
+
     }
 }

@@ -16,6 +16,7 @@ namespace AnZwDev.ALTools.Workspace
         public string Publisher { get; set; }
         public VersionNumber Version { get; set; }
         public bool Propagated { get; set; }
+        public bool InternalsVisible { get; set; }
 
         public ALProject SourceProject { get; set; }
         public AppPackageInformation SourceAppFile { get; set; }
@@ -24,6 +25,7 @@ namespace AnZwDev.ALTools.Workspace
         public ALProjectDependency()
         {
             this.Propagated = false;
+            this.InternalsVisible = false;
         }
 
         public ALProjectDependency(string id, string name, string publisher, string version)
@@ -33,6 +35,7 @@ namespace AnZwDev.ALTools.Workspace
             this.Publisher = publisher;
             this.Version = new VersionNumber(version);
             this.Propagated = false;
+            this.InternalsVisible = false;
         }
 
         public bool IdReferencesReplaced()
