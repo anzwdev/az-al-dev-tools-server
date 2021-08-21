@@ -14,9 +14,9 @@ namespace AnZwDev.ALTools.CodeTransformations
         protected static int TYPE_TABLEDATA = 1;
         protected static int TYPE_CODEUNIT = 2;
         protected static int TYPE_PAGE = 3;
-        protected static int TYPE_REPORT = 4;
-        protected static int TYPE_XMLPORT = 5;
-        protected static int TYPE_QUERY = 6;
+        protected static int TYPE_QUERY = 4;
+        protected static int TYPE_REPORT = 5;
+        protected static int TYPE_XMLPORT = 6;
 
         private Dictionary<string, int> _typePriorities;
         protected static AlphanumComparatorFast _stringComparer = new AlphanumComparatorFast();
@@ -28,9 +28,9 @@ namespace AnZwDev.ALTools.CodeTransformations
             this._typePriorities.Add("tabledata", TYPE_TABLEDATA);
             this._typePriorities.Add("codeunit", TYPE_CODEUNIT);
             this._typePriorities.Add("page", TYPE_PAGE);
+            this._typePriorities.Add("query", TYPE_QUERY);
             this._typePriorities.Add("report", TYPE_REPORT);
             this._typePriorities.Add("xmlport", TYPE_XMLPORT);
-            this._typePriorities.Add("query", TYPE_QUERY);
         }
 
         public int Compare(PermissionSyntax x, PermissionSyntax y)
