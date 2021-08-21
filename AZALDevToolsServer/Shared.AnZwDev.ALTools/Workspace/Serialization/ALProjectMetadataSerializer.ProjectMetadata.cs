@@ -47,6 +47,9 @@ namespace AnZwDev.ALTools.Workspace.Serialization
             [JsonProperty("Runtime")]
             public string Runtime { get; set; }
 
+            [JsonProperty("internalsVisibleTo")]
+            public ProjectDependencyMetadata[] InternalsVisibleTo { get; set; }
+
             #endregion
 
             #region Initialization
@@ -75,7 +78,7 @@ namespace AnZwDev.ALTools.Workspace.Serialization
                     for (int i = 0; i < this.Dependencies.Length; i++)
                     {
                         ProjectDependencyMetadata dependency = this.Dependencies[i];
-                        projectDependencies.Add(new ALProjectDependency(dependency.Id, dependency.Name, dependency.Publisher, dependency.Version));
+                        projectDependencies.Add(new ALProjectDependency(dependency.GetId(), dependency.Name, dependency.Publisher, dependency.Version));
                     }
                 }
             }
@@ -89,6 +92,7 @@ namespace AnZwDev.ALTools.Workspace.Serialization
                 ALProjectProperties properties = new ALProjectProperties();
                 this.CopyProperties(properties);
                 this.CopyIdRanges(properties);
+                this.CopyInternalsVisibleTo(properties);
                 return properties;
             }
 
@@ -113,6 +117,21 @@ namespace AnZwDev.ALTools.Workspace.Serialization
                         targetProperties.AddIdRange(idRange.From, idRange.To);
                     }
                 }
+            }
+
+            private void CopyInternalsVisibleTo(ALProjectProperties targetProperties)
+            {
+                if ((this.InternalsVisibleTo != null) && (this.InternalsVisibleTo.Length > 0))
+                {
+                    targetProperties.InternalsVisibleTo = new List<ALProjectReference>();
+                    for (int i = 0; i < this.InternalsVisibleTo.Length; i++)
+                    {
+                        ProjectDependencyMetadata dependency = this.InternalsVisibleTo[i];
+                        targetProperties.InternalsVisibleTo.Add(new ALProjectReference(dependency.GetId(), dependency.Name, dependency.Publisher, dependency.Version));
+                    }
+                }
+                else
+                    targetProperties.InternalsVisibleTo = null;
             }
 
             #endregion

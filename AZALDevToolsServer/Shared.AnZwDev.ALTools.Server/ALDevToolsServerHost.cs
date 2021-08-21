@@ -58,6 +58,7 @@ namespace AnZwDev.ALTools.Server
             this.Dispatcher.RegisterRequestHandler(new WorkspaceCommandRequestHandler(this.ALDevToolsServer, this));
 
             //symbols information
+            this.Dispatcher.RegisterRequestHandler(new GetObjectsListRequestHandler(this.ALDevToolsServer, this));
             this.Dispatcher.RegisterRequestHandler(new GetTablesListRequestHandler(this.ALDevToolsServer, this));
             this.Dispatcher.RegisterRequestHandler(new GetTableFieldsListRequestHandler(this.ALDevToolsServer, this));
             this.Dispatcher.RegisterRequestHandler(new GetCodeunitsListRequestHandler(this.ALDevToolsServer, this));
@@ -71,6 +72,7 @@ namespace AnZwDev.ALTools.Server
             this.Dispatcher.RegisterRequestHandler(new GetXmlPortTableElementDetailsRequestHandler(this.ALDevToolsServer, this));
             this.Dispatcher.RegisterRequestHandler(new GetReportDataItemDetailsRequestHandler(this.ALDevToolsServer, this));
             this.Dispatcher.RegisterRequestHandler(new GetQueryDataItemDetailsRequestHandler(this.ALDevToolsServer, this));
+            this.Dispatcher.RegisterRequestHandler(new GetPermissionSetsRequestHandler(this.ALDevToolsServer, this));
 
             //next available object id
             this.Dispatcher.RegisterRequestHandler(new GetNextObjectIdRequestHandler(this.ALDevToolsServer, this));

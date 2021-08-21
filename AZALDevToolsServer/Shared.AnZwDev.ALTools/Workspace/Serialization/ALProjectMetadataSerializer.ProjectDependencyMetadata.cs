@@ -26,6 +26,18 @@ namespace AnZwDev.ALTools.Workspace.Serialization
             [JsonProperty("version")]
             public string Version { get; set; }
 
+            public ProjectDependencyMetadata()
+            {
+            }
+
+            public string GetId()
+            {
+                if (!String.IsNullOrWhiteSpace(this.Id))
+                    return this.Id;
+                return this.AppId;
+            }
+
+
         }
 
     }

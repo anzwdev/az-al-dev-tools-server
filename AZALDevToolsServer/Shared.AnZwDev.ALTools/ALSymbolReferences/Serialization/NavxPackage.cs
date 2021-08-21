@@ -18,6 +18,10 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Serialization
         [XmlArrayItem("Dependency")]
         public NavxDependency[] Dependencies { get; set; }
 
+        [XmlArray("InternalsVisibleTo")]
+        [XmlArrayItem("Module")]
+        public NavxModuleReference[] InternalsVisibleTo { get; set; }
+
         public NavxPackage()
         {
         }

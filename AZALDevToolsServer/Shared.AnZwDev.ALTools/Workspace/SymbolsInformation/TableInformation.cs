@@ -5,7 +5,7 @@ using AnZwDev.ALTools.ALSymbolReferences;
 
 namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 {
-    public class TableInformation : SymbolWithIdInformation
+    public class TableInformation : BaseObjectInformation
     {
 
         public TableInformation()
@@ -14,8 +14,6 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
         public TableInformation(ALAppTable table): base(table)
         {
-            if (table.Properties != null)
-                this.Caption = table.Properties.GetValue("Caption");
         }
 
 

@@ -97,6 +97,15 @@ namespace AnZwDev.ALTools.CodeTransformations
             return SyntaxFactory.List<T>(nodesList);
         }
 
+        public SeparatedSyntaxList<T> CreateSeparatedSyntaxList()
+        {
+            List<T> nodesList = new List<T>();
+            this.Root.GetSyntaxNodes(nodesList);
+            SeparatedSyntaxList<T> separatedList = new SeparatedSyntaxList<T>();
+            return separatedList.AddRange(nodesList);
+        }
+
+
         public List<SyntaxNodesGroup<T>> GetAllGroups()
         {
             List<SyntaxNodesGroup<T>> list = new List<SyntaxNodesGroup<T>>();
@@ -109,6 +118,12 @@ namespace AnZwDev.ALTools.CodeTransformations
         {
             if (this.Root != null)
                 this.Root.SortSyntaxNodes(comparer);
+        }
+
+        public void SortSyntaxNodesWithTrivia(IComparer<T> comparer)
+        {
+            if (this.Root != null)
+                this.Root.SortSyntaxNodesWithTrivia(comparer);
         }
 
         public void SortSyntaxNodesWithSortInfo(IComparer<SyntaxNodeSortInfo<T>> comparer)
@@ -138,8 +153,70 @@ namespace AnZwDev.ALTools.CodeTransformations
                 return SyntaxFactory.List(list);
             }
 
-            nodesGroupsTree.SortSyntaxNodes(comparer);
+            nodesGroupsTree.SortSyntaxNodesWithTrivia(comparer);
             return nodesGroupsTree.CreateSyntaxList();
+        }
+
+        public static SeparatedSyntaxList<T> SortSeparatedSyntaxList(SeparatedSyntaxList<T> syntaxList, IComparer<T> comparer)
+        {
+            if (syntaxList.Count < 2)
+                return syntaxList;
+
+            //move NewLine characters to the front of node
+            bool removeNewLineFromFirstNode = false;
+            SyntaxTrivia newLineTrivia = SyntaxFactory.WhiteSpace("\r\n");
+            List<T> updatedNodes = new List<T>();
+            for (int i=0; i<syntaxList.Count; i++)
+            {
+                T node = syntaxList[i];
+                //add crlf at the beginning
+                SyntaxTriviaList leadingTrivias = node.GetLeadingTrivia();
+                if ((leadingTrivias.Count == 0) || (leadingTrivias[0].Kind.ConvertToLocalType() != ConvertedSyntaxKind.EndOfLineTrivia))
+                {
+                    node = node.WithLeadingTrivia(leadingTrivias.Insert(0, newLineTrivia));
+                    if (i == 0)
+                        removeNewLineFromFirstNode = true;
+                }
+                //remove crlf from the end
+                SyntaxTriviaList trailingTrivias = node.GetTrailingTrivia();
+                bool updateTrailingTrivias = false;
+                while ((trailingTrivias.Count > 0) && (trailingTrivias[trailingTrivias.Count - 1].Kind.ConvertToLocalType() == ConvertedSyntaxKind.EndOfLineTrivia))
+                {
+                    updateTrailingTrivias = true;
+                    trailingTrivias = trailingTrivias.RemoveAt(trailingTrivias.Count - 1);
+                }
+                if (updateTrailingTrivias)
+                    node = node.WithTrailingTrivia(trailingTrivias);
+                updatedNodes.Add(node);
+            }
+
+            //build list with regions
+            SyntaxNodesGroupsTree<T> nodesGroupsTree = new SyntaxNodesGroupsTree<T>();
+            nodesGroupsTree.AddNodes(updatedNodes);
+
+            //somethis went wrong - do not sort
+            if (nodesGroupsTree.Root == null)
+                return syntaxList;
+
+            //does not have any child groups
+            if (!nodesGroupsTree.Root.HasChildGroups)
+            {
+                List<T> list = updatedNodes;
+                list.Sort(comparer);
+
+                if (removeNewLineFromFirstNode)
+                {
+                    SyntaxTriviaList leadingTrivias = list[0].GetLeadingTrivia();
+                    if (leadingTrivias.Count > 0)
+                        list[0] = list[0].WithLeadingTrivia(leadingTrivias.RemoveAt(0));
+                }
+
+                SeparatedSyntaxList<T> newSyntaxList = new SeparatedSyntaxList<T>();
+                return newSyntaxList.AddRange(list);
+            }
+
+            nodesGroupsTree.SortSyntaxNodes(comparer);
+            return nodesGroupsTree.CreateSeparatedSyntaxList();
         }
 
         public static SyntaxList<T> SortSyntaxListWithSortInfo(SyntaxList<T> syntaxList, IComparer<SyntaxNodeSortInfo<T>> comparer)

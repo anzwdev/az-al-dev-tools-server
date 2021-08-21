@@ -177,6 +177,12 @@ namespace AnZwDev.ALTools.Workspace
             {
                 dependency.Symbols = dependency.SourceProject.Symbols;
                 dependency.SourceAppFile = null;
+
+                dependency.InternalsVisible = (
+                    (this.Properties != null) &&
+                    (dependency.SourceProject.Properties != null) &&
+                    (dependency.SourceProject.Properties.InternalsVisibleTo != null) &&
+                    (dependency.SourceProject.Properties.InternalsVisibleTo.FindProjectReference(this.Properties.Id, this.Properties.Name, this.Properties.Publisher) != null));
             }
             else
             {
@@ -184,6 +190,12 @@ namespace AnZwDev.ALTools.Workspace
                 if (dependency.SourceAppFile != null)
                 {
                     dependency.Symbols = this.Workspace.SymbolReferencesCache.GetSymbolReference(dependency.SourceAppFile.FullPath);
+
+                    dependency.InternalsVisible = (
+                        (this.Properties != null) &&
+                        (dependency.SourceAppFile.Manifest != null) &&
+                        (dependency.SourceAppFile.Manifest.InternalsVisibleTo != null) &&
+                        (dependency.SourceAppFile.Manifest.InternalsVisibleTo.FindModuleReference(this.Properties.Id, this.Properties.Name, this.Properties.Publisher) != null));
 
                     //add propagated dependencies
                     NavxPackage navxPackage = AppPackageNavxSerializer.Deserialize(dependency.SourceAppFile.FullPath);

@@ -364,6 +364,63 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return null;
         }
 
+        public IEnumerable<ALAppObject> GetAllALAppObjectsEnumerable(HashSet<ALSymbolKind> includeObjects)
+        {
+            if (((includeObjects == null) || (includeObjects.Contains(ALSymbolKind.TableObject))) && (this.Tables != null)) 
+                foreach (ALAppObject alAppObject in this.Tables) { yield return alAppObject; }
+
+            if (((includeObjects == null) || (includeObjects.Contains(ALSymbolKind.TableExtensionObject))) && (this.TableExtensions != null))
+                foreach (ALAppObject alAppObject in this.TableExtensions) { yield return alAppObject; }
+
+            if (((includeObjects == null) || (includeObjects.Contains(ALSymbolKind.CodeunitObject))) && (this.Codeunits != null))
+                foreach (ALAppObject alAppObject in this.Codeunits) { yield return alAppObject; }
+
+            if (((includeObjects == null) || (includeObjects.Contains(ALSymbolKind.ControlAddInObject))) && (this.ControlAddIns != null))
+                foreach (ALAppObject alAppObject in this.ControlAddIns) { yield return alAppObject; }
+
+            if (((includeObjects == null) || (includeObjects.Contains(ALSymbolKind.DotNetPackage))) && (this.DotNetPackages != null))
+                foreach (ALAppObject alAppObject in this.DotNetPackages) { yield return alAppObject; }
+
+            if (((includeObjects == null) || (includeObjects.Contains(ALSymbolKind.EnumType))) && (this.EnumTypes != null))
+                foreach (ALAppObject alAppObject in this.EnumTypes) { yield return alAppObject; }
+
+            if (((includeObjects == null) || (includeObjects.Contains(ALSymbolKind.EnumExtensionType))) && (this.EnumExtensionTypes != null))
+                foreach (ALAppObject alAppObject in this.EnumExtensionTypes) { yield return alAppObject; }
+
+            if (((includeObjects == null) || (includeObjects.Contains(ALSymbolKind.Interface))) && (this.Interfaces != null))
+                foreach (ALAppObject alAppObject in this.Interfaces) { yield return alAppObject; }
+
+            if (((includeObjects == null) || (includeObjects.Contains(ALSymbolKind.PageObject))) && (this.Pages != null)) 
+                foreach (ALAppObject alAppObject in this.Pages) { yield return alAppObject; }
+
+            if (((includeObjects == null) || (includeObjects.Contains(ALSymbolKind.PageCustomizationObject))) && (this.PageCustomizations != null))
+                foreach (ALAppObject alAppObject in this.PageCustomizations) { yield return alAppObject; }
+
+            if (((includeObjects == null) || (includeObjects.Contains(ALSymbolKind.PageExtensionObject))) && (this.PageExtensions != null))
+                foreach (ALAppObject alAppObject in this.PageExtensions) { yield return alAppObject; }
+
+            if (((includeObjects == null) || (includeObjects.Contains(ALSymbolKind.PermissionSet))) && (this.PermissionSets != null))
+                foreach (ALAppObject alAppObject in this.PermissionSets) { yield return alAppObject; }
+            
+            if (((includeObjects == null) || (includeObjects.Contains(ALSymbolKind.PermissionSetExtension))) && (this.PermissionSetExtensions != null))
+                foreach (ALAppObject alAppObject in this.PermissionSetExtensions) { yield return alAppObject; }
+
+            if (((includeObjects == null) || (includeObjects.Contains(ALSymbolKind.ProfileObject))) && (this.Pofiles != null))
+                foreach (ALAppObject alAppObject in this.Pofiles) { yield return alAppObject; }
+
+            if (((includeObjects == null) || (includeObjects.Contains(ALSymbolKind.QueryObject))) && (this.Queries != null))
+                foreach (ALAppObject alAppObject in this.Queries) { yield return alAppObject; }
+
+            if (((includeObjects == null) || (includeObjects.Contains(ALSymbolKind.ReportObject))) && (this.Reports != null)) 
+                foreach (ALAppObject alAppObject in this.Reports) { yield return alAppObject; }
+
+            if (((includeObjects == null) || (includeObjects.Contains(ALSymbolKind.ReportExtensionObject))) && (this.ReportExtensions != null))
+                foreach (ALAppObject alAppObject in this.ReportExtensions) { yield return alAppObject; }
+
+            if (((includeObjects == null) || (includeObjects.Contains(ALSymbolKind.XmlPortObject))) && (this.XmlPorts != null)) 
+                foreach (ALAppObject alAppObject in this.XmlPorts) { yield return alAppObject; }
+        }
+
         #endregion
 
         #region Id to name references change

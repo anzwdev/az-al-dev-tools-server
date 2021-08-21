@@ -21,7 +21,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
         public SymbolInformation(ALAppElementWithName symbol)
         {
-            this.Name = symbol.Name;
+            this.Name = symbol.Name;            
         }
 
     }

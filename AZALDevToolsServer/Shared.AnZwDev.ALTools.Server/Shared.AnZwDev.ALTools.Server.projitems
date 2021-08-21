@@ -55,10 +55,14 @@
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetEnumsListResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetInterfacesListRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetInterfacesListResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetObjectsListRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetObjectsListResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetPageDetailsRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetPageDetailsResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetPagesListRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetPagesListResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetPermissionSetsRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetPermissionSetsResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetQueriesListRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetQueriesListResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetQueryDataItemDetailsRequest.cs" />
@@ -116,8 +120,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\SymbolsInformation\GetEnumsListRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\SymbolsInformation\GetInterfacesListRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\SymbolsInformation\GetNextObjectIdRequestHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\SymbolsInformation\GetObjectsListRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\SymbolsInformation\GetPageDetailsRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\SymbolsInformation\GetPagesListRequestHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\SymbolsInformation\GetPermissionSetsRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\SymbolsInformation\GetQueriesListRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\SymbolsInformation\GetQueryDataItemDetailsRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\SymbolsInformation\GetReportDataItemDetailsRequestHandler.cs" />
