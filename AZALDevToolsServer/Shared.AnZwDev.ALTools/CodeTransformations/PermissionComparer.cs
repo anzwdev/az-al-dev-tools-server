@@ -10,19 +10,27 @@ namespace AnZwDev.ALTools.CodeTransformations
     public class PermissionComparer : IComparer<PermissionSyntax>
     {
 
+        protected static int TYPE_TABLE = 0;
+        protected static int TYPE_TABLEDATA = 1;
+        protected static int TYPE_CODEUNIT = 2;
+        protected static int TYPE_PAGE = 3;
+        protected static int TYPE_REPORT = 4;
+        protected static int TYPE_XMLPORT = 5;
+        protected static int TYPE_QUERY = 6;
+
         private Dictionary<string, int> _typePriorities;
         protected static AlphanumComparatorFast _stringComparer = new AlphanumComparatorFast();
 
         public PermissionComparer()
         {
             this._typePriorities = new Dictionary<string, int>();
-            this._typePriorities.Add("table", 0);
-            this._typePriorities.Add("tabledata", 1);
-            this._typePriorities.Add("codeunit", 2);
-            this._typePriorities.Add("page", 3);
-            this._typePriorities.Add("report", 4);
-            this._typePriorities.Add("xmlport", 5);
-            this._typePriorities.Add("query", 6);
+            this._typePriorities.Add("table", TYPE_TABLE);
+            this._typePriorities.Add("tabledata", TYPE_TABLEDATA);
+            this._typePriorities.Add("codeunit", TYPE_CODEUNIT);
+            this._typePriorities.Add("page", TYPE_PAGE);
+            this._typePriorities.Add("report", TYPE_REPORT);
+            this._typePriorities.Add("xmlport", TYPE_XMLPORT);
+            this._typePriorities.Add("query", TYPE_QUERY);
         }
 
         public int Compare(PermissionSyntax x, PermissionSyntax y)
@@ -33,11 +41,24 @@ namespace AnZwDev.ALTools.CodeTransformations
             int yType = this.GetTypePriority(ALSyntaxHelper.DecodeName(y.ObjectType.ToString()));
             string yName = ALSyntaxHelper.DecodeName(y.ObjectReference.Identifier.ToString());
 
-            if (xType != yType)
+            bool tableTypes = this.IsTableType(xType) && this.IsTableType(yType);
+
+            if ((!tableTypes) && (xType != yType))
                 return xType - yType;
 
-            return _stringComparer.Compare(xName, yName);
+            int stringResult = _stringComparer.Compare(xName, yName);
+
+            if ((!tableTypes) || (stringResult != 0))
+                return stringResult;
+
+            return xType - yType;
         }
+
+        protected bool IsTableType(int typePriority)
+        {
+            return ((typePriority == TYPE_TABLE) || (typePriority == TYPE_TABLEDATA));
+        }
+
 
         protected int GetTypePriority(string type)
         {

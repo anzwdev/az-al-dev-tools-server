@@ -98,7 +98,6 @@ namespace AnZwDev.ALTools.Extensions
             return null;
         }
 
-
         #region Nav2018 helpers
 
 #if NAV2018
