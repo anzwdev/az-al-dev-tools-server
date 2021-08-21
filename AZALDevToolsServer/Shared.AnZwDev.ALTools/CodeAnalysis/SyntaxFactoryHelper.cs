@@ -54,5 +54,17 @@ namespace AnZwDev.ALTools.CodeAnalysis
             return SyntaxFactoryHelper.LabelProperty(propertyKind, labelText, comment);
         }
 
+        public static SyntaxToken Token(string kindName)
+        {
+            return SyntaxFactory.Token((SyntaxKind)Enum.Parse(typeof(SyntaxKind), kindName));
+        }
+
+#if BC
+        public static SyntaxToken Token(SyntaxTriviaList leading, string kindName, SyntaxTriviaList trailing)
+        {
+            return SyntaxFactory.Token(leading, (SyntaxKind)Enum.Parse(typeof(SyntaxKind), kindName), trailing);
+        }
+#endif
+
     }
 }

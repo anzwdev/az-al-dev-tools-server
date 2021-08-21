@@ -29,7 +29,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             return WorkspaceCommandResult.Empty;
         }
 
-        protected SyntaxNode FormatSyntaxNode(SyntaxNode node)
+        protected virtual SyntaxNode FormatSyntaxNode(SyntaxNode node)
         {
 #if BC
             if (node == null)

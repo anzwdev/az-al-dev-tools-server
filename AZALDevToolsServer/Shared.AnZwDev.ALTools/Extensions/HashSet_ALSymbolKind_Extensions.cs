@@ -33,5 +33,23 @@ namespace AnZwDev.ALTools.Extensions
             if (addPermissionSetExtensions) symbolKindSet.Add(ALSymbolKind.PermissionSetExtension);
         }
 
+        public static void AddAllObjectTypes(this HashSet<ALSymbolKind> symbolKindSet)
+        {
+            symbolKindSet.AddObjectTypes(true, true, true, true, true,
+                true, true, true, true, true,
+                true, true, true, true, true,
+                true, true, true);
+        }
+
+        public static void AddObjectsWithPermissions(this HashSet<ALSymbolKind> symbolKindSet)
+        {
+            symbolKindSet.Add(ALSymbolKind.TableObject);
+            symbolKindSet.Add(ALSymbolKind.PageObject);
+            symbolKindSet.Add(ALSymbolKind.ReportObject);
+            symbolKindSet.Add(ALSymbolKind.XmlPortObject);
+            symbolKindSet.Add(ALSymbolKind.QueryObject);
+            symbolKindSet.Add(ALSymbolKind.CodeunitObject);
+        }
+
     }
 }

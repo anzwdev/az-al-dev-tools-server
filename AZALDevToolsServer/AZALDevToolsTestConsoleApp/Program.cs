@@ -48,25 +48,26 @@ namespace AZALDevToolsTestConsoleApp
             ALFullSyntaxTree syntaxTree = new ALFullSyntaxTree();
             syntaxTree.Load("", filePath);
 
-            //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18\\Pag50104.MyPrefixMyPageCard.al";
-            filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18\\fromattest2.al";
-            string content = System.IO.File.ReadAllText(filePath);
-            Dictionary<string, string> pm = new Dictionary<string, string>();
-            pm.Add("sourceFilePath", filePath);
-            string projectPath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18";
-            //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("removeWith", content, projectPath, null, pm);
-            WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("sortProperties", content, projectPath, null, pm);
-
             //test project
             string[] projects =
             {
                 "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18"
             };
 
-            ALWorkspace workspace = new ALWorkspace();
-            workspace.LoadProjects(projects);
-            workspace.ResolveDependencies();
-            ALProject project = workspace.Projects[0];
+            host.ALDevToolsServer.Workspace.LoadProjects(projects);
+            host.ALDevToolsServer.Workspace.ResolveDependencies();           
+
+            //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18\\Pag50104.MyPrefixMyPageCard.al";
+            filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18\\permissionset-Ext50101.MyPermSetExt03.al";
+            string content = System.IO.File.ReadAllText(filePath);
+            Dictionary<string, string> pm = new Dictionary<string, string>();
+            pm.Add("sourceFilePath", filePath);
+            pm.Add("skipFormatting", "true");
+            string projectPath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18";
+            //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("removeWith", content, projectPath, null, pm);
+            WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("addObjectsPermissions", content, projectPath, null, pm);
+
+            ALProject project = host.ALDevToolsServer.Workspace.Projects[0];
 
             ObjectIdInformationProvider objectIdInformationProvider = new ObjectIdInformationProvider();
             long id = objectIdInformationProvider.GetNextObjectId(project, "Page");
