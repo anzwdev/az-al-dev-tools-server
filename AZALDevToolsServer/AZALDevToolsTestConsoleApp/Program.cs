@@ -65,7 +65,7 @@ namespace AZALDevToolsTestConsoleApp
             pm.Add("skipFormatting", "true");
             string projectPath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18";
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("removeWith", content, projectPath, null, pm);
-            WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("addObjectsPermissions", content, projectPath, null, pm);
+            WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("addAllObjectsPermissions", content, projectPath, null, pm);
 
             ALProject project = host.ALDevToolsServer.Workspace.Projects[0];
 
@@ -75,6 +75,10 @@ namespace AZALDevToolsTestConsoleApp
             TableInformationProvider tableInformationProvider = new TableInformationProvider();
             List<TableFieldInformaton> fields = tableInformationProvider.GetTableFields(project, "Purchase Line", false, false);
             List<TableFieldInformaton> fields2 = fields.Where(p => (p.Name.StartsWith("Description"))).ToList();
+
+            ReportInformationProvider reportInformationProvider = new ReportInformationProvider();
+            ReportInformation reportInformation = reportInformationProvider.GetFullReportInformation(project, "Sales Order");
+
 
             Console.WriteLine("Done");
             Console.ReadKey();

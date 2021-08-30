@@ -69,6 +69,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetQueryDataItemDetailsResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetReportDataItemDetailsRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetReportDataItemDetailsResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetReportDetailsRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetReportDetailsResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetSymbolInformationDetailsRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetSymbolInformationDetailsResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetSymbolsInformationRequest.cs" />
@@ -129,6 +131,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\SymbolsInformation\GetReportDataItemDetailsRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetReportsListRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetReportsListResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\SymbolsInformation\GetReportDetailsRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\SymbolsInformation\GetReportsListRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\SymbolsInformation\GetTableFieldsListRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\SymbolsInformation\GetTablesListRequestHandler.cs" />

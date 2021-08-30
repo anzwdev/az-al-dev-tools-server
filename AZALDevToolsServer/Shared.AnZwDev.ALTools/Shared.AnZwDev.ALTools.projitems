@@ -229,6 +229,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\QueryInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\QueryInformationProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\ReportDataItemInformation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\ReportDataItemInformationFieldsBuffer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\ReportInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\ReportInformationProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\SymbolInformation.cs" />

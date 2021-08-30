@@ -152,60 +152,78 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             ReportDataItemInformation reportDataItemInformation = new ReportDataItemInformation(reportDataItem);
             if ((!String.IsNullOrWhiteSpace(reportDataItem.RelatedTable)) && (getExistingFields || getAvailableFields))
             {
+                string tableName = reportDataItem.RelatedTable;
                 TableInformationProvider tableInformationProvider = new TableInformationProvider();
-                List<TableFieldInformaton> allTableFieldsList = tableInformationProvider.GetTableFields(project, reportDataItem.RelatedTable, false, false);
+                List<TableFieldInformaton> allTableFieldsList = tableInformationProvider.GetTableFields(project, tableName, false, false);
 
-                Dictionary<string, TableFieldInformaton> availableTableFieldsDict = allTableFieldsList.ToDictionary();
-                List<TableFieldInformaton> reportDataItemFields = new List<TableFieldInformaton>();
+                ReportDataItemInformationFieldsBuffer dataItemFieldsBuffer = new ReportDataItemInformationFieldsBuffer(reportDataItemInformation);
+                dataItemFieldsBuffer.SetTable(tableName, allTableFieldsList);
 
                 if (reportDataItem.Columns != null)
-                    this.CollectReportDataItemFields(reportDataItemInformation.Name, reportDataItem.Columns, availableTableFieldsDict, reportDataItemFields);
+                    this.CollectReportDataItemFields(reportDataItem.Columns, dataItemFieldsBuffer);
 
                 //collect fields from report extensions
                 foreach (ALProjectDependency dependency in project.Dependencies)
                 {
                     ALAppReportExtension reportExtension = FindReportExtension(dependency.Symbols, reportName);
                     if ((reportExtension != null) && (reportExtension.Columns != null))
-                        this.CollectReportDataItemFields(reportDataItemInformation.Name, reportExtension.Columns.Where(p => (dataItemName.Equals(p.OwningDataItemName, StringComparison.CurrentCultureIgnoreCase))), availableTableFieldsDict, reportDataItemFields);
+                        this.CollectReportDataItemFields(reportExtension.Columns.Where(p => (dataItemName.Equals(p.OwningDataItemName, StringComparison.CurrentCultureIgnoreCase))), dataItemFieldsBuffer);
                 }
 
                 //add fields
-                if (getExistingFields)
-                    reportDataItemInformation.ExistingTableFields = reportDataItemFields;
-                if (getAvailableFields)
-                    reportDataItemInformation.AvailableTableFields = availableTableFieldsDict.Values.ToList();
+                dataItemFieldsBuffer.ApplyToDataItemInformation(getExistingFields, getAvailableFields);
             }
 
             return reportDataItemInformation;
         }
 
-        protected void CollectReportDataItemFields(string dataItemName, IEnumerable<ALAppReportColumn> columnsList, Dictionary<string, TableFieldInformaton> availableTableFieldsDict, List<TableFieldInformaton> reportDataItemFields)
+        protected void CollectReportDataItemFields(IEnumerable<ALAppReportColumn> columnsList, ReportDataItemInformationFieldsBuffer dataItemFieldsBuffer)
         {
             foreach (ALAppReportColumn reportColumn in columnsList)
             {
-                if (!String.IsNullOrWhiteSpace(reportColumn.SourceExpression))
+                this.CollectSingleReportDataItemFields(reportColumn, dataItemFieldsBuffer);
+            }
+        }
+
+        protected void CollectAllReportDataItemFields(IEnumerable<ALAppReportColumn> columnsList, Dictionary<string, ReportDataItemInformationFieldsBuffer> dataItemFieldsBuffersDict)
+        {
+            foreach (ALAppReportColumn reportColumn in columnsList)
+            {
+                if (!String.IsNullOrWhiteSpace(reportColumn.OwningDataItemName))
                 {
-                    ALMemberAccessExpression memberAccessExpression = ALSyntaxHelper.DecodeMemberAccessExpression(reportColumn.SourceExpression);
-                    bool isMemberAccess = !String.IsNullOrWhiteSpace(memberAccessExpression.Expression);
-
-                    string sourceExpression = null;
-                    if (!isMemberAccess)
-                        sourceExpression = memberAccessExpression.Name.ToLower();
-                    else if (dataItemName.Equals(memberAccessExpression.Name, StringComparison.CurrentCultureIgnoreCase))
-                        sourceExpression = memberAccessExpression.Expression.ToLower();
-
-                    if ((!String.IsNullOrWhiteSpace(sourceExpression)) && (availableTableFieldsDict.ContainsKey(sourceExpression)))
-                    {
-                        reportDataItemFields.Add(availableTableFieldsDict[sourceExpression]);
-                        availableTableFieldsDict.Remove(sourceExpression);
-                    }
+                    string dataItemName = reportColumn.OwningDataItemName.ToLower();
+                    if (dataItemFieldsBuffersDict.ContainsKey(dataItemName))
+                        this.CollectSingleReportDataItemFields(reportColumn, dataItemFieldsBuffersDict[dataItemName]);
                 }
             }
         }
 
+        protected void CollectSingleReportDataItemFields(ALAppReportColumn reportColumn, ReportDataItemInformationFieldsBuffer dataItemFieldsBuffer)
+        {
+            if (!String.IsNullOrWhiteSpace(reportColumn.SourceExpression))
+            {
+                ALMemberAccessExpression memberAccessExpression = ALSyntaxHelper.DecodeMemberAccessExpression(reportColumn.SourceExpression);
+                bool isMemberAccess = !String.IsNullOrWhiteSpace(memberAccessExpression.Expression);
+
+                string sourceExpression = null;
+                if (!isMemberAccess)
+                    sourceExpression = memberAccessExpression.Name.ToLower();
+                else if (dataItemFieldsBuffer.Name.Equals(memberAccessExpression.Name, StringComparison.CurrentCultureIgnoreCase))
+                    sourceExpression = memberAccessExpression.Expression.ToLower();
+
+                if ((!String.IsNullOrWhiteSpace(sourceExpression)) && (dataItemFieldsBuffer.AvailableTableFieldsDict.ContainsKey(sourceExpression)))
+                {
+                    dataItemFieldsBuffer.ReportDataItemFields.Add(dataItemFieldsBuffer.AvailableTableFieldsDict[sourceExpression]);
+                    dataItemFieldsBuffer.AvailableTableFieldsDict.Remove(sourceExpression);
+                }
+            }
+        }
+
+
+
         #endregion
 
-        #region Page variables
+        #region Report variables
 
         public List<ALAppVariable> GetReportVariables(ALProject project, string name)
         {
@@ -226,6 +244,96 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             }
 
             return variables;
+        }
+
+        #endregion
+
+        #region Full report information
+
+        public ReportInformation GetFullReportInformation(ALProject project, string reportName)
+        {
+            ALAppReport report = this.FindReport(project, reportName);
+            if (report == null)
+                return null;
+
+            Dictionary<string, ReportDataItemInformationFieldsBuffer> dataItemsFieldsBufferDictionary = new Dictionary<string, ReportDataItemInformationFieldsBuffer>();
+
+            ReportInformation reportInformation = new ReportInformation(report);
+            reportInformation.DataItems = new List<ReportDataItemInformation>();
+            if (report.DataItems != null)
+                this.AddDataItemInformationList(project, reportInformation.DataItems, dataItemsFieldsBufferDictionary, report.DataItems);
+
+            //add report data items from report extensions
+            foreach (ALProjectDependency dependency in project.Dependencies)
+            {
+                ALAppReportExtension reportExtension = FindReportExtension(dependency.Symbols, reportName);
+                if (reportExtension != null)
+                {
+                    if (reportExtension.DataItems != null)
+                        this.AddDataItemInformationList(project, reportInformation.DataItems, dataItemsFieldsBufferDictionary, reportExtension.DataItems);
+                    if (reportExtension.Columns != null)
+                        this.CollectAllReportDataItemFields(reportExtension.Columns, dataItemsFieldsBufferDictionary);
+                }
+            }
+
+            //apply field buffers to data items information entries
+            foreach (ReportDataItemInformationFieldsBuffer fieldsBuffer in dataItemsFieldsBufferDictionary.Values)
+            {
+                fieldsBuffer.ApplyToDataItemInformation(true, true);
+            }
+
+            //return report information
+            return reportInformation;
+        }
+
+        protected void AddDataItemInformationList(ALProject project, List<ReportDataItemInformation> dataItemInfoList, Dictionary<string, ReportDataItemInformationFieldsBuffer> dataItemsFieldsBuffer, List<ALAppReportDataItem> dataItemsList)
+        {
+            for (int i = 0; i < dataItemsList.Count; i++)
+            {
+                this.AddDataItemInformation(project, dataItemInfoList, dataItemsFieldsBuffer, dataItemsList[i], 0);
+            }
+        }
+
+        protected void AddDataItemInformation(ALProject project, List<ReportDataItemInformation> dataItemInfoList, Dictionary<string, ReportDataItemInformationFieldsBuffer> dataItemsFieldsBuffer, ALAppReportDataItem dataItem, int indent)
+        {
+            //create data item information
+            if (!String.IsNullOrWhiteSpace(dataItem.Name))
+            {
+                string nameKey = dataItem.Name.ToLower();
+                ReportDataItemInformationFieldsBuffer fieldsBuffer = null;
+                if (dataItemsFieldsBuffer.ContainsKey(nameKey))
+                    fieldsBuffer = dataItemsFieldsBuffer[nameKey];
+                else
+                {
+                    ReportDataItemInformation reportDataItemInformation = new ReportDataItemInformation(dataItem);
+                    reportDataItemInformation.Indent = indent;
+                    fieldsBuffer = new ReportDataItemInformationFieldsBuffer(reportDataItemInformation);
+                    dataItemsFieldsBuffer.Add(nameKey, fieldsBuffer);
+
+                    if (!String.IsNullOrWhiteSpace(dataItem.RelatedTable))
+                    {
+                        string tableName = dataItem.RelatedTable;
+                        TableInformationProvider tableInformationProvider = new TableInformationProvider();
+                        List<TableFieldInformaton> allTableFieldsList = tableInformationProvider.GetTableFields(project, tableName, false, false);
+
+                        fieldsBuffer.SetTable(tableName, allTableFieldsList);
+                    }
+
+                    dataItemInfoList.Add(reportDataItemInformation);
+                }
+
+                if (dataItem.Columns != null)
+                    this.CollectReportDataItemFields(dataItem.Columns, fieldsBuffer);
+            }
+
+            //add child data items
+            if (dataItem.DataItems != null)
+            {
+                for (int i=0; i<dataItem.DataItems.Count;i++)
+                {
+                    this.AddDataItemInformation(project, dataItemInfoList, dataItemsFieldsBuffer, dataItem.DataItems[i], indent + 1);
+                }
+            }
         }
 
         #endregion
