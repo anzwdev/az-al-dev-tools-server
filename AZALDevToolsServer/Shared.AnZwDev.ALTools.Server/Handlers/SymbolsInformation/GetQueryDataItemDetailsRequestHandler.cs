@@ -18,6 +18,7 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
         {
         }
 
+#pragma warning disable 1998
         protected override async Task<GetQueryDataItemDetailsResponse> HandleMessage(GetQueryDataItemDetailsRequest parameters, RequestContext<GetQueryDataItemDetailsResponse> context)
         {
             GetQueryDataItemDetailsResponse response = new GetQueryDataItemDetailsResponse();
@@ -36,13 +37,16 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
             }
             catch (Exception e)
             {
-                response.symbol = new QueryDataItemInformation();
-                response.symbol.Name = e.Message;
+                response.symbol = new QueryDataItemInformation
+                {
+                    Name = e.Message
+                };
                 this.LogError(e);
             }
 
             return response;
         }
+#pragma warning restore 1998
 
     }
 }

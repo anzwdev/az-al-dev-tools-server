@@ -20,6 +20,7 @@ namespace AnZwDev.ALTools.Server.Handlers
         {
         }
 
+#pragma warning disable 1998
         protected override async Task<DocumentSymbolsResponse> HandleMessage(DocumentSymbolsRequest parameters, RequestContext<DocumentSymbolsResponse> context)
         {
             DocumentSymbolsResponse response = new DocumentSymbolsResponse();
@@ -34,13 +35,16 @@ namespace AnZwDev.ALTools.Server.Handlers
             }
             catch (Exception e)
             {
-                response.root = new ALSymbol();
-                response.root.fullName = e.Message;
+                response.root = new ALSymbol
+                {
+                    fullName = e.Message
+                };
                 this.LogError(e);
             }
 
             return response;
         }
+#pragma warning restore 1998
 
     }
 }

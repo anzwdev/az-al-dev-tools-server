@@ -16,6 +16,7 @@ namespace AnZwDev.ALTools.Server.Handlers
         {
         }
 
+#pragma warning disable 1998
         protected override async Task<GetLibrarySymbolLocationResponse> HandleMessage(GetLibrarySymbolLocationRequest parameters, RequestContext<GetLibrarySymbolLocationResponse> context)
         {
             GetLibrarySymbolLocationResponse response = new GetLibrarySymbolLocationResponse();
@@ -35,6 +36,7 @@ namespace AnZwDev.ALTools.Server.Handlers
             }
             return response;
         }
+#pragma warning restore 1998
 
 
     }

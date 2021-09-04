@@ -17,6 +17,7 @@ namespace AnZwDev.ALTools.Server.Handlers
         {
         }
 
+#pragma warning disable 1998
         protected override async Task<GetProjectSymbolLocationResponse> HandleMessage(GetProjectSymbolLocationRequest parameters, RequestContext<GetProjectSymbolLocationResponse> context)
         {
             GetProjectSymbolLocationResponse response = new GetProjectSymbolLocationResponse();
@@ -36,6 +37,7 @@ namespace AnZwDev.ALTools.Server.Handlers
             }
             return response;
         }
+#pragma warning restore 1998
 
     }
 }

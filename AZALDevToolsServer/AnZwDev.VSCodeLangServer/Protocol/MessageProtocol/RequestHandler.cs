@@ -31,10 +31,12 @@ namespace AnZwDev.VSCodeLangServer.Protocol.MessageProtocol
                 await requestContext.SendResult(result);
         }
 
+#pragma warning disable 1998
         protected virtual async Task<TResult> HandleMessage(TParameters parameters, RequestContext<TResult> context)
         {
             return default(TResult);
         }
+#pragma warning restore 1998
 
     }
 

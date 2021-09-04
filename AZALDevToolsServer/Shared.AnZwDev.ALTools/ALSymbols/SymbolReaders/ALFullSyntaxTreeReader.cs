@@ -1,4 +1,5 @@
 ﻿using AnZwDev.ALTools.Extensions;
+using AnZwDev.ALTools.Logging;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Text;
@@ -35,6 +36,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             }
             catch (Exception e)
             {
+                MessageLog.LogError(e);
                 return new ALFullSyntaxTreeNode(e);
             }
 
@@ -49,6 +51,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             }
             catch (Exception e)
             {
+                MessageLog.LogError(e);
                 return new ALFullSyntaxTreeNode(e);
             }
         }

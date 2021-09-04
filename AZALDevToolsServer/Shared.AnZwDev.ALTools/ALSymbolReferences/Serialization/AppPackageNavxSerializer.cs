@@ -4,6 +4,7 @@ using System.Text;
 using System.IO;
 using System.Xml.Serialization;
 using System.IO.Compression;
+using AnZwDev.ALTools.Logging;
 
 namespace AnZwDev.ALTools.ALSymbolReferences.Serialization
 {
@@ -16,7 +17,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Serialization
             {
                 NavxPackage navxPackage = null;
 
-                Stream packageStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                Stream packageStream = AppFileHelper.OpenFileStreamWithRetry(path);
                 packageStream.Seek(40, SeekOrigin.Begin);
 
                 AppPackageDataStream contentStream = new AppPackageDataStream(packageStream);
@@ -39,6 +40,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Serialization
             }
             catch (Exception e)
             {
+                MessageLog.LogError(e);
                 return null;
             }
         }

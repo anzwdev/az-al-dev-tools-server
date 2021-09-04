@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Diagnostics;
+using AnZwDev.ALTools.Logging;
 
 namespace AnZwDev.ALTools.CodeAnalysis
 {
@@ -51,8 +52,9 @@ namespace AnZwDev.ALTools.CodeAnalysis
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                MessageLog.LogError(e);
             }
         }
 

@@ -17,6 +17,7 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
         {
         }
 
+#pragma warning disable 1998
         protected override async Task<GetReportDataItemDetailsResponse> HandleMessage(GetReportDataItemDetailsRequest parameters, RequestContext<GetReportDataItemDetailsResponse> context)
         {
             GetReportDataItemDetailsResponse response = new GetReportDataItemDetailsResponse();
@@ -35,13 +36,16 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
             }
             catch (Exception e)
             {
-                response.symbol = new ReportDataItemInformation();
-                response.symbol.Name = e.Message;
+                response.symbol = new ReportDataItemInformation
+                {
+                    Name = e.Message
+                };
                 this.LogError(e);
             }
 
             return response;
         }
+#pragma warning restore 1998
 
     }
 }

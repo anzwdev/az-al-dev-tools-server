@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using AnZwDev.ALTools.ALSymbolReferences;
+using AnZwDev.ALTools.ALSymbolReferences.Compiler;
+using AnZwDev.ALTools.ALSymbolReferences.Serialization;
 using AnZwDev.ALTools.ALSymbols;
 
 namespace AnZwDev.ALTools.Workspace.SymbolsInformation
@@ -42,49 +44,45 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
         #region Find report
 
-        protected ALAppReport FindReport(ALProject project, string name)
+        protected ALAppReport FindReport(ALProject project, string name, bool parsed)
         {
-            ALAppReport report = FindReport(project.Symbols, name);
+            ALAppReport report = FindReport(project.Symbols, name, parsed);
             if (report != null)
                 return report;
             foreach (ALProjectDependency dependency in project.Dependencies)
             {
-                report = FindReport(dependency.Symbols, name);
+                report = FindReport(dependency.Symbols, name, parsed);
                 if (report != null)
                     return report;
             }
             return null;
         }
 
-        protected ALAppReport FindReport(ALProject project, int id)
+        protected ALAppReport FindReport(ALProject project, int id, bool parsed)
         {
-            ALAppReport report = FindReport(project.Symbols, id);
+            ALAppReport report = FindReport(project.Symbols, id, parsed);
             if (report != null)
                 return report;
             foreach (ALProjectDependency dependency in project.Dependencies)
             {
-                report = FindReport(dependency.Symbols, id);
+                report = FindReport(dependency.Symbols, id, parsed);
                 if (report != null)
                     return report;
             }
             return null;
         }
 
-        protected ALAppReport FindReport(ALAppSymbolReference symbols, string name)
+        protected ALAppReport FindReport(ALAppSymbolReference symbols, string name, bool parsed)
         {
-            if ((symbols != null) && (symbols.Reports != null))
-                return symbols.Reports
-                    .Where(p => (name.Equals(p.Name, StringComparison.CurrentCultureIgnoreCase)))
-                    .FirstOrDefault();
+            if (symbols != null)
+                return symbols.FindObjectByName(symbols.Reports, name, parsed);
             return null;
         }
 
-        protected ALAppReport FindReport(ALAppSymbolReference symbols, int id)
+        protected ALAppReport FindReport(ALAppSymbolReference symbols, int id, bool parsed)
         {
-            if ((symbols != null) && (symbols.Reports != null))
-                return symbols.Reports
-                    .Where(p => (p.Id == id))
-                    .FirstOrDefault();
+            if (symbols != null)
+                return symbols.FindObjectById(symbols.Reports, id, parsed);
             return null;
         }
 
@@ -92,12 +90,22 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
         #region Find report extension
 
-        protected ALAppReportExtension FindReportExtension(ALAppSymbolReference symbols, string reportName)
+        protected ALAppReportExtension FindReportExtension(ALAppSymbolReference symbols, string reportName, bool parsed)
         {
             if ((symbols != null) && (symbols.ReportExtensions != null))
-                return symbols.ReportExtensions
+            {
+                ALAppReportExtension reportExtension = symbols.ReportExtensions
                     .Where(p => (reportName.Equals(p.Target, StringComparison.CurrentCultureIgnoreCase)))
                     .FirstOrDefault();
+                if ((reportExtension != null) && (parsed) && (!reportExtension.INT_Parsed))
+                {
+                    symbols.ParseObject(reportExtension);
+                    reportExtension = symbols.ReportExtensions
+                        .Where(p => (reportName.Equals(p.Target, StringComparison.CurrentCultureIgnoreCase)))
+                        .FirstOrDefault();
+                }
+                return reportExtension;
+            }
             return null;
         }
 
@@ -109,7 +117,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
         {
             ALAppReportDataItem dataItem;
             //find report data item
-            ALAppReport report = this.FindReport(project, reportName);
+            ALAppReport report = this.FindReport(project, reportName, true);
             if ((report != null) && (report.DataItems != null))
             {
                 dataItem = report.FindDataItem(dataItemName);
@@ -118,7 +126,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             }
 
             //find report extension data item
-            ALAppReportExtension reportExtension = FindReportExtension(project.Symbols, reportName);
+            ALAppReportExtension reportExtension = FindReportExtension(project.Symbols, reportName, true);
             if ((reportExtension != null) && (reportExtension.DataItems != null))
             {
                 dataItem = reportExtension.FindDataItem(dataItemName);
@@ -128,7 +136,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
             foreach (ALProjectDependency dependency in project.Dependencies)
             {
-                reportExtension = FindReportExtension(dependency.Symbols, reportName);
+                reportExtension = FindReportExtension(dependency.Symbols, reportName, true);
                 if ((reportExtension != null) && (reportExtension.DataItems != null))
                 {
                     dataItem = reportExtension.FindDataItem(dataItemName);
@@ -165,7 +173,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
                 //collect fields from report extensions
                 foreach (ALProjectDependency dependency in project.Dependencies)
                 {
-                    ALAppReportExtension reportExtension = FindReportExtension(dependency.Symbols, reportName);
+                    ALAppReportExtension reportExtension = FindReportExtension(dependency.Symbols, reportName, true);
                     if ((reportExtension != null) && (reportExtension.Columns != null))
                         this.CollectReportDataItemFields(reportExtension.Columns.Where(p => (dataItemName.Equals(p.OwningDataItemName, StringComparison.CurrentCultureIgnoreCase))), dataItemFieldsBuffer);
                 }
@@ -229,16 +237,16 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
         {
             List<ALAppVariable> variables = new List<ALAppVariable>();
 
-            ALAppReport report = this.FindReport(project, name);
+            ALAppReport report = this.FindReport(project, name, false);
             if ((report != null) && (report.Variables != null) && (report.Variables.Count > 0))
                 variables.AddRange(report.Variables);
 
-            ALAppReportExtension reportExtension = FindReportExtension(project.Symbols, name);
+            ALAppReportExtension reportExtension = FindReportExtension(project.Symbols, name, false);
             if ((reportExtension != null) && (reportExtension.Variables != null) && (reportExtension.Variables.Count > 0))
                 variables.AddRange(reportExtension.Variables);
             foreach (ALProjectDependency dependency in project.Dependencies)
             {
-                reportExtension = FindReportExtension(dependency.Symbols, name);
+                reportExtension = FindReportExtension(dependency.Symbols, name, false);
                 if ((reportExtension != null) && (reportExtension.Variables != null) && (reportExtension.Variables.Count > 0))
                     variables.AddRange(reportExtension.Variables);
             }
@@ -252,21 +260,23 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
         public ReportInformation GetFullReportInformation(ALProject project, string reportName)
         {
-            ALAppReport report = this.FindReport(project, reportName);
+            ALAppReport report = this.FindReport(project, reportName, true);
             if (report == null)
                 return null;
 
             Dictionary<string, ReportDataItemInformationFieldsBuffer> dataItemsFieldsBufferDictionary = new Dictionary<string, ReportDataItemInformationFieldsBuffer>();
 
-            ReportInformation reportInformation = new ReportInformation(report);
-            reportInformation.DataItems = new List<ReportDataItemInformation>();
+            ReportInformation reportInformation = new ReportInformation(report)
+            {
+                DataItems = new List<ReportDataItemInformation>()
+            };
             if (report.DataItems != null)
                 this.AddDataItemInformationList(project, reportInformation.DataItems, dataItemsFieldsBufferDictionary, report.DataItems);
 
             //add report data items from report extensions
             foreach (ALProjectDependency dependency in project.Dependencies)
             {
-                ALAppReportExtension reportExtension = FindReportExtension(dependency.Symbols, reportName);
+                ALAppReportExtension reportExtension = FindReportExtension(dependency.Symbols, reportName, true);
                 if (reportExtension != null)
                 {
                     if (reportExtension.DataItems != null)
@@ -300,13 +310,15 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             if (!String.IsNullOrWhiteSpace(dataItem.Name))
             {
                 string nameKey = dataItem.Name.ToLower();
-                ReportDataItemInformationFieldsBuffer fieldsBuffer = null;
+                ReportDataItemInformationFieldsBuffer fieldsBuffer;
                 if (dataItemsFieldsBuffer.ContainsKey(nameKey))
                     fieldsBuffer = dataItemsFieldsBuffer[nameKey];
                 else
                 {
-                    ReportDataItemInformation reportDataItemInformation = new ReportDataItemInformation(dataItem);
-                    reportDataItemInformation.Indent = indent;
+                    ReportDataItemInformation reportDataItemInformation = new ReportDataItemInformation(dataItem)
+                    {
+                        Indent = indent
+                    };
                     fieldsBuffer = new ReportDataItemInformationFieldsBuffer(reportDataItemInformation);
                     dataItemsFieldsBuffer.Add(nameKey, fieldsBuffer);
 

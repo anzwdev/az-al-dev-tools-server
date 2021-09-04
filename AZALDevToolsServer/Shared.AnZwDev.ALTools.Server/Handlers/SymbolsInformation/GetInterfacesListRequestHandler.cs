@@ -17,6 +17,7 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
         {
         }
 
+#pragma warning disable 1998
         protected override async Task<GetInterfacesListResponse> HandleMessage(GetInterfacesListRequest parameters, RequestContext<GetInterfacesListResponse> context)
         {
             GetInterfacesListResponse response = new GetInterfacesListResponse();
@@ -31,6 +32,7 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
 
             return response;
         }
+#pragma warning restore 1998
 
     }
 }

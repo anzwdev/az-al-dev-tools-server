@@ -16,10 +16,12 @@ namespace AnZwDev.ALTools.Server.Handlers
         {
         }
 
+#pragma warning disable 1998
         protected override async Task<object> HandleMessage(object parameters, RequestContext<object> context)
         {
             return new object();
         }
+#pragma warning restore 1998
     }
 
 }

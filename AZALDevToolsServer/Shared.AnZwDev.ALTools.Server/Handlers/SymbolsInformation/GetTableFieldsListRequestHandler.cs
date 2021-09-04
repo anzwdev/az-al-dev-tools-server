@@ -17,6 +17,7 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
         {
         }
 
+#pragma warning disable 1998
         protected override async Task<GetTableFieldsListResponse> HandleMessage(GetTableFieldsListRequest parameters, RequestContext<GetTableFieldsListResponse> context)
         {
             GetTableFieldsListResponse response = new GetTableFieldsListResponse();
@@ -31,6 +32,7 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
 
             return response;
         }
+#pragma warning restore 1998
 
     }
 }

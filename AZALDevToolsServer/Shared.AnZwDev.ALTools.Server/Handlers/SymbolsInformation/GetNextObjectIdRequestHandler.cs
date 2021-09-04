@@ -17,10 +17,13 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
         {
         }
 
+#pragma warning disable 1998
         protected override async Task<GetNextObjectIdResponse> HandleMessage(GetNextObjectIdRequest parameters, RequestContext<GetNextObjectIdResponse> context)
         {
-            GetNextObjectIdResponse response = new GetNextObjectIdResponse();
-            response.id = 0;
+            GetNextObjectIdResponse response = new GetNextObjectIdResponse
+            {
+                id = 0
+            };
 
             try
             {
@@ -41,6 +44,7 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
             return response;
 
         }
+#pragma warning restore 1998
 
 
     }

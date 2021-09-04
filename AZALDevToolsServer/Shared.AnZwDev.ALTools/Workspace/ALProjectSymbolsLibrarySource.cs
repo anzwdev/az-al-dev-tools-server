@@ -30,10 +30,10 @@ namespace AnZwDev.ALTools.Workspace
         {
             ALSymbolSourceLocation location = new ALSymbolSourceLocation(symbol);
 
-            ALAppObject alAppObject = null;
+            ALAppObject alAppObject;
             if (this.Project.Symbols != null)
             {
-                alAppObject = this.Project.Symbols.FindObjectByName(symbol.kind, symbol.name);
+                alAppObject = this.Project.Symbols.FindObjectByName(symbol.kind, symbol.name, false);
                 if (alAppObject != null)
                 {
                     this.SetSource(location, this.Project.Symbols, alAppObject, projectSource);
@@ -47,7 +47,7 @@ namespace AnZwDev.ALTools.Workspace
                 {
                     if (dependency.Symbols != null)
                     {
-                        alAppObject = dependency.Symbols.FindObjectByName(symbol.kind, symbol.name);
+                        alAppObject = dependency.Symbols.FindObjectByName(symbol.kind, symbol.name, false);
                         if (alAppObject != null)
                         {
                             this.SetSource(location, dependency.Symbols, alAppObject, projectSource);

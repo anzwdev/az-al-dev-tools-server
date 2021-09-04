@@ -17,6 +17,7 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
         {
         }
 
+#pragma warning disable 1998
         protected override async Task<GetCodeunitsListResponse> HandleMessage(GetCodeunitsListRequest parameters, RequestContext<GetCodeunitsListResponse> context)
         {
             GetCodeunitsListResponse response = new GetCodeunitsListResponse();
@@ -31,5 +32,6 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
 
             return response;
         }
+#pragma warning restore 1998
     }
 }

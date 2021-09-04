@@ -15,7 +15,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Serialization
         {
             ALAppSymbolReference symbolReference = null;
 
-            Stream packageStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            Stream packageStream = AppFileHelper.OpenFileStreamWithRetry(path);
 
             Microsoft.Dynamics.Nav.CodeAnalysis.Packaging.NavAppPackage navAppPackage = Microsoft.Dynamics.Nav.CodeAnalysis.Packaging.NavAppPackage.Open(packageStream, false);
             Microsoft.Dynamics.Nav.CodeAnalysis.Packaging.NavAppPackageReader naAppPackageReader = new Microsoft.Dynamics.Nav.CodeAnalysis.Packaging.NavAppPackageReader(packageStream, navAppPackage, false);

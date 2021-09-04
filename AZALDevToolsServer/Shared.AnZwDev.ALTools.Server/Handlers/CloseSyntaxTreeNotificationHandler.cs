@@ -17,10 +17,12 @@ namespace AnZwDev.ALTools.Server.Handlers
         {
         }
 
+#pragma warning disable 1998
         public override async Task HandleNotification(CloseSyntaxTreeRequest parameters, NotificationContext context)
         {
             this.Server.SyntaxTrees.Close(parameters.path);
         }
+#pragma warning restore 1998
 
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace AnZwDev.ALTools.ALSymbolReferences
@@ -25,6 +26,11 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             {
                 yield return this[i];
             }
+        }
+
+        protected override T FindElement(T element)
+        {
+            return this.Where(p => (p.Id == element.Id)).FirstOrDefault();
         }
 
     }

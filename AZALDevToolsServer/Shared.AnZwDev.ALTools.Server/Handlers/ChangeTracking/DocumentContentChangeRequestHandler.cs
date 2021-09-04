@@ -17,12 +17,15 @@ namespace AnZwDev.ALTools.Server.Handlers.ChangeTracking
         {
         }
 
+#pragma warning disable 1998
         protected override async Task<DocumentContentChangeResponse> HandleMessage(DocumentContentChangeRequest parameters, RequestContext<DocumentContentChangeResponse> context)
         {
-            DocumentContentChangeResponse response = new DocumentContentChangeResponse();
-            response.root = this.Server.Workspace.OnDocumentChange(parameters.path, parameters.content, parameters.returnSymbols);
+            DocumentContentChangeResponse response = new DocumentContentChangeResponse
+            {
+                root = this.Server.Workspace.OnDocumentChange(parameters.path, parameters.content, parameters.returnSymbols)
+            };
             return response;
         }
-
+#pragma warning restore 1998
     }
 }

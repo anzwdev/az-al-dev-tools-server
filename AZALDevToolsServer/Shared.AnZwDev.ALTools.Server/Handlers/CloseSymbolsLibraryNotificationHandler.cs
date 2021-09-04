@@ -17,9 +17,11 @@ namespace AnZwDev.ALTools.Server.Handlers
         {
         }
 
+#pragma warning disable 1998
         public override async Task HandleNotification(CloseSymbolsLibraryRequest parameters, NotificationContext context)
         {
             this.Server.SymbolsLibraries.RemoveLibrary(parameters.libraryId);
         }
+#pragma warning restore 1998
     }
 }

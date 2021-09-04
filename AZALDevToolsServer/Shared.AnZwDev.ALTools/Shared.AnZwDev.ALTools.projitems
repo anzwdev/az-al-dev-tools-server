@@ -78,6 +78,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppXmlPortNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\Compiler\ALSymbolReferenceCompiler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\IALAppElementsCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\Serialization\AppFileHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\Serialization\AppPackageDataStream.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\Serialization\AppPackageInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\Serialization\AppPackageInformationsCollection.cs" />
@@ -167,6 +168,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\SyntaxTreeExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\SyntaxTriviaListExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\TypeExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Logging\IMessageLogWriter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Logging\MessageLog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\AddAppAreasWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\AddDataClassificationWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\AddFieldCaptionsWorkspaceCommand.cs" />

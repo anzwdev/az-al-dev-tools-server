@@ -138,5 +138,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\SymbolsInformation\GetXmlPortsListRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\SymbolsInformation\GetXmlPortTableElementDetailsRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\WorkspaceCommandRequestHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MessageLogWriterImpl.cs" />
   </ItemGroup>
 </Project>

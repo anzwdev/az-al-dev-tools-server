@@ -18,6 +18,7 @@ namespace AnZwDev.ALTools.Server.Handlers
         {
         }
 
+#pragma warning disable 1998
         protected override async Task<GetSyntaxTreeSymbolResponse> HandleMessage(GetSyntaxTreeSymbolRequest parameters, RequestContext<GetSyntaxTreeSymbolResponse> context)
         {
             ALSyntaxTree syntaxTree = this.Server.SyntaxTrees.FindOrCreate(parameters.path, false);
@@ -25,11 +26,14 @@ namespace AnZwDev.ALTools.Server.Handlers
             if (symbol != null)
                 symbol = symbol.CreateSerializableCopy();
 
-            GetSyntaxTreeSymbolResponse response = new GetSyntaxTreeSymbolResponse();
-            response.symbol = symbol;
+            GetSyntaxTreeSymbolResponse response = new GetSyntaxTreeSymbolResponse
+            {
+                symbol = symbol
+            };
 
             return response;
         }
+#pragma warning restore 1998
     }
 
 }

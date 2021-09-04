@@ -15,10 +15,12 @@ namespace AnZwDev.ALTools.Server.Handlers.ChangeTracking
         {
         }
 
+#pragma warning disable 1998
         public override async Task HandleNotification(WorkspaceFoldersChangeNotificationRequest parameters, NotificationContext context)
         {
             this.Server.Workspace.UpdateProjects(parameters.added, parameters.removed);
         }
+#pragma warning restore 1998
 
     }
 }

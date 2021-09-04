@@ -9,7 +9,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
 {
     public class ALAppObject : ALAppElementWithNameId
     {
-
+        public bool INT_Parsed { get; set; }
         public string ReferenceSourceFileName { get; set; }
         public ALAppPropertiesCollection Properties { get; set; }
         public ALAppElementsCollection<ALAppVariable> Variables { get; set; }
@@ -18,6 +18,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
 
         public ALAppObject()
         {
+            this.INT_Parsed = false;
         }
 
         protected override ALSymbol CreateMainALSymbol()

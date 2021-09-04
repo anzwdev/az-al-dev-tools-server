@@ -18,6 +18,7 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
         {
         }
 
+#pragma warning disable 1998
         protected override async Task<GetXmlPortTableElementDetailsResponse> HandleMessage(GetXmlPortTableElementDetailsRequest parameters, RequestContext<GetXmlPortTableElementDetailsResponse> context)
         {
             GetXmlPortTableElementDetailsResponse response = new GetXmlPortTableElementDetailsResponse();
@@ -36,14 +37,17 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
             }
             catch (Exception e)
             {
-                response.symbol = new XmlPortTableElementInformation();
-                response.symbol.Name = e.Message;
+                response.symbol = new XmlPortTableElementInformation
+                {
+                    Name = e.Message
+                };
                 this.LogError(e);
             }
 
             return response;
 
         }
+#pragma warning restore 1998
 
     }
 

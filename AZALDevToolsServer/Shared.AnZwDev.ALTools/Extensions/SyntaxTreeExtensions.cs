@@ -10,13 +10,13 @@ namespace AnZwDev.ALTools.Extensions
 
         public static SyntaxTree SafeParseObjectText(string source)
         {
-            SyntaxTree syntaxTree = null;
+            SyntaxTree syntaxTree;
 
             try
             {
                 syntaxTree = ParseObjectText(source);
             }
-            catch (MissingMethodException e)
+            catch (MissingMethodException)
             {
                 syntaxTree = ParseObjectTextNav2018(source);
             }

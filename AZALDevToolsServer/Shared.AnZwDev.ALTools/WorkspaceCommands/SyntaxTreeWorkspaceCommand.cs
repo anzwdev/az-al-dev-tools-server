@@ -1,5 +1,6 @@
 ﻿using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.Extensions;
+using AnZwDev.ALTools.Logging;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Text;
@@ -68,8 +69,9 @@ namespace AnZwDev.ALTools.WorkspaceCommands
                 if ((newSource != source) && (!String.IsNullOrWhiteSpace(newSource)))
                     System.IO.File.WriteAllText(path, newSource);
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                MessageLog.LogError(e);
             }
         }
 

@@ -17,6 +17,7 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
         {
         }
 
+#pragma warning disable 1998
         protected override async Task<GetPermissionSetsResponse> HandleMessage(GetPermissionSetsRequest parameters, RequestContext<GetPermissionSetsResponse> context)
         {
             GetPermissionSetsResponse response = new GetPermissionSetsResponse();
@@ -31,5 +32,6 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
 
             return response;
         }
+#pragma warning restore 1998
     }
 }

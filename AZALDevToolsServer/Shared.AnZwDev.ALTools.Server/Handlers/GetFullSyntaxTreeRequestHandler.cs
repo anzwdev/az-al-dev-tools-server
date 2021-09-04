@@ -18,16 +18,20 @@ namespace AnZwDev.ALTools.Server.Handlers
         {
         }
 
+#pragma warning disable 1998
         protected override async Task<GetFullSyntaxTreeResponse> HandleMessage(GetFullSyntaxTreeRequest parameters, RequestContext<GetFullSyntaxTreeResponse> context)
         {
             ALFullSyntaxTree syntaxTree = new ALFullSyntaxTree();
             syntaxTree.Load(parameters.source, parameters.path);
 
-            GetFullSyntaxTreeResponse response = new GetFullSyntaxTreeResponse();
-            response.root = syntaxTree.Root;
-            
+            GetFullSyntaxTreeResponse response = new GetFullSyntaxTreeResponse
+            {
+                root = syntaxTree.Root
+            };
+
             return response;
         }
+#pragma warning restore 1998
     }
 }
 
