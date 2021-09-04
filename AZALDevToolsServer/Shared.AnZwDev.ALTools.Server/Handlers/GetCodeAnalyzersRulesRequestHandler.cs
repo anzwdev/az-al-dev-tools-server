@@ -18,17 +18,21 @@ namespace AnZwDev.ALTools.Server.Handlers
         {
         }
 
+#pragma warning disable 1998
         protected override async Task<GetCodeAnalyzersRulesResponse> HandleMessage(GetCodeAnalyzersRulesRequest parameters, RequestContext<GetCodeAnalyzersRulesResponse> context)
         {
             CodeAnalyzersLibrary library = this.Server.CodeAnalyzersLibraries.GetCodeAnalyzersLibrary(parameters.name);
 
-            GetCodeAnalyzersRulesResponse response = new GetCodeAnalyzersRulesResponse();
-            response.name = parameters.name;
+            GetCodeAnalyzersRulesResponse response = new GetCodeAnalyzersRulesResponse
+            {
+                name = parameters.name
+            };
             if (library != null)
                 response.rules = library.Rules;
 
             return response;
         }
+#pragma warning restore 1998
 
 
     }

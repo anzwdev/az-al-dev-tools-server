@@ -27,26 +27,33 @@ namespace AZALDevToolsTestConsoleApp
         {
             string extensionPath = "C:\\Projects\\MicrosoftALVersions\\LatestBC";
 
-            ALDevToolsServerHost host = new ALDevToolsServerHost(extensionPath);
+            ALDevToolsServerHost host = new(extensionPath);
             host.Initialize();
 
-            ALDevToolsServer alDevToolsServer = new ALDevToolsServer(extensionPath);
+            ALDevToolsServer alDevToolsServer = new(extensionPath);
 
             //get list of errors and warnings
             //CompilerCodeAnalyzersLibrary lib = new CompilerCodeAnalyzersLibrary("Compiler");
             CodeAnalyzersLibrary lib = alDevToolsServer.CodeAnalyzersLibraries.GetCodeAnalyzersLibrary("Compiler");
 
-            ImageInformationProvider provider = new ImageInformationProvider();
+            ImageInformationProvider provider = new();
             List<ImageInformation> images = provider.GetActionImages();
 
 
             //string filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\small\\Pag50000.MySmallTableList.al";
             string filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18\\MyTableExt.al";
-            ALSymbolInfoSyntaxTreeReader syntaxTreeReader = new ALSymbolInfoSyntaxTreeReader(true);
+            ALSymbolInfoSyntaxTreeReader syntaxTreeReader = new(true);
             ALSymbol symbols = syntaxTreeReader.ProcessSourceFile(filePath);
 
-            ALFullSyntaxTree syntaxTree = new ALFullSyntaxTree();
+            ALFullSyntaxTree syntaxTree = new();
             syntaxTree.Load("", filePath);
+
+
+            filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\IssueTests\\Attendee.Table.al";
+            filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\IssueTests\\Attendee_Original.Table.al";
+            ALSymbolInfoSyntaxTreeReader s = new(true);
+            symbols = s.ProcessSourceFile(filePath);
+
 
             //test project
             string[] projects =
@@ -60,21 +67,25 @@ namespace AZALDevToolsTestConsoleApp
             //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18\\Pag50104.MyPrefixMyPageCard.al";
             filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18\\permissionset-Ext50101.MyPermSetExt03.al";
             string content = System.IO.File.ReadAllText(filePath);
-            Dictionary<string, string> pm = new Dictionary<string, string>();
+            Dictionary<string, string> pm = new();
             pm.Add("sourceFilePath", filePath);
             pm.Add("skipFormatting", "true");
             string projectPath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18";
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("removeWith", content, projectPath, null, pm);
-            WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("addObjectsPermissions", content, projectPath, null, pm);
+            WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("addAllObjectsPermissions", content, projectPath, null, pm);
 
             ALProject project = host.ALDevToolsServer.Workspace.Projects[0];
 
-            ObjectIdInformationProvider objectIdInformationProvider = new ObjectIdInformationProvider();
+            ObjectIdInformationProvider objectIdInformationProvider = new();
             long id = objectIdInformationProvider.GetNextObjectId(project, "Page");
 
-            TableInformationProvider tableInformationProvider = new TableInformationProvider();
+            TableInformationProvider tableInformationProvider = new();
             List<TableFieldInformaton> fields = tableInformationProvider.GetTableFields(project, "Purchase Line", false, false);
             List<TableFieldInformaton> fields2 = fields.Where(p => (p.Name.StartsWith("Description"))).ToList();
+
+            ReportInformationProvider reportInformationProvider = new();
+            ReportInformation reportInformation = reportInformationProvider.GetFullReportInformation(project, "Sales Order");
+
 
             Console.WriteLine("Done");
             Console.ReadKey();

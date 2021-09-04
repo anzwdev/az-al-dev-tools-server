@@ -15,11 +15,13 @@ namespace AnZwDev.ALTools.Server.Handlers.ChangeTracking
         {
         }
 
+#pragma warning disable 1998
         public override async Task HandleNotification(FileSystemChangeNotificationRequest parameters, NotificationContext context)
         {
             this.Server.Workspace.OnFileSystemFileChange(parameters.path);
 
         }
+#pragma warning restore 1998
 
     }
 }

@@ -9,6 +9,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
 
         void AddBaseElement(ALAppBaseElement element);
         void RemoveBaseElement(ALAppBaseElement element);
+        void ReplaceBaseElement(ALAppBaseElement element);
 
     }
 }

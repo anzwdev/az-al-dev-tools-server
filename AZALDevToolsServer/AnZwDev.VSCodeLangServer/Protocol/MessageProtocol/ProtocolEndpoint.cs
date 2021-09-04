@@ -231,9 +231,8 @@ namespace AnZwDev.VSCodeLangServer.Protocol.MessageProtocol
 
         private void HandleResponse(Message responseMessage)
         {
-            TaskCompletionSource<Message> pendingRequestTask = null;
 
-            if (this.pendingRequests.TryGetValue(responseMessage.Id, out pendingRequestTask))
+            if (this.pendingRequests.TryGetValue(responseMessage.Id, out TaskCompletionSource<Message> pendingRequestTask))
             {
                 pendingRequestTask.SetResult(responseMessage);
                 this.pendingRequests.Remove(responseMessage.Id);

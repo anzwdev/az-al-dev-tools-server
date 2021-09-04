@@ -6,6 +6,7 @@ using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using AnZwDev.ALTools.ALSymbolReferences;
 using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.ALSymbols.SymbolReaders;
+using AnZwDev.ALTools.Logging;
 
 namespace AnZwDev.ALTools.Workspace
 {
@@ -148,6 +149,8 @@ namespace AnZwDev.ALTools.Workspace
                 }
                 catch (Exception e)
                 {
+                    MessageLog.LogError(e);
+
                     return new ALSymbol()
                     {
                         fullName = e.Message

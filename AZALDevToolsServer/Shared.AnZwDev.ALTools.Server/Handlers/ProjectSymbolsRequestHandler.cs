@@ -19,6 +19,7 @@ namespace AnZwDev.ALTools.Server.Handlers
         {
         }
 
+#pragma warning disable 1998
         protected override async Task<ProjectSymbolsResponse> HandleMessage(ProjectSymbolsRequest parameters, RequestContext<ProjectSymbolsResponse> context)
         {
             ProjectSymbolsResponse response = new ProjectSymbolsResponse();
@@ -35,13 +36,16 @@ namespace AnZwDev.ALTools.Server.Handlers
             }
             catch (Exception e)
             {
-                response.root = new ALSymbol();
-                response.root.fullName = e.Message;
+                response.root = new ALSymbol
+                {
+                    fullName = e.Message
+                };
                 this.LogError(e);
             }
 
             return response;
         }
+#pragma warning restore 1998
 
     }
 }

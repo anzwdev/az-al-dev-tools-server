@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AnZwDev.VSCodeLangServer.Protocol.Server;
+using AnZwDev.VSCodeLangServer.Utility;
 
 namespace AnZwDev.VSCodeLangServer.Protocol.MessageProtocol
 {
@@ -32,6 +33,7 @@ namespace AnZwDev.VSCodeLangServer.Protocol.MessageProtocol
             }
             catch (Exception e)
             {
+                this.Logger.Write(LogLevel.Error, "Error: " + e.Message + "\n" + e.StackTrace);
             }
         }
 

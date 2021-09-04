@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
+using AnZwDev.ALTools.Logging;
 
 namespace AnZwDev.ALTools.ALLanguageInformation
 {
@@ -55,8 +56,9 @@ namespace AnZwDev.ALTools.ALLanguageInformation
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                MessageLog.LogError(e);
             }
             imagesList.Sort(new ImageInformationComparer());
             return imagesList;

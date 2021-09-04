@@ -15,6 +15,7 @@ namespace AnZwDev.ALTools.Server.Handlers.ChangeTracking
         {
         }
 
+#pragma warning disable 1998
         public override async Task HandleNotification(FilesRenameNotificationRequest parameters, NotificationContext context)
         {
             if (parameters.files != null)
@@ -25,6 +26,7 @@ namespace AnZwDev.ALTools.Server.Handlers.ChangeTracking
                 }
             }
         }
+#pragma warning restore 1998
 
     }
 }

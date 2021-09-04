@@ -18,7 +18,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         public override ALSymbolSourceLocation GetSymbolSourceLocation(ALSymbol symbol)
         {
             ALSymbolSourceLocation location = new ALSymbolSourceLocation(symbol);
-            ALAppObject alAppObject = this.SymbolReference.FindObjectByName(symbol.kind, symbol.name);
+            ALAppObject alAppObject = this.SymbolReference.FindObjectByName(symbol.kind, symbol.name, false);
             if (alAppObject != null)
                 this.SetSource(location, this.SymbolReference, alAppObject);
             return location;

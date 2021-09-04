@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 
 namespace AnZwDev.ALTools.ALSymbols
 {
+
     public class ALSymbol
     {
+#pragma warning disable IDE1006
         public int? id { get; set; }
         
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
@@ -45,6 +47,7 @@ namespace AnZwDev.ALTools.ALSymbols
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public bool? containsDiagnostics { get; set; }
+#pragma warning restore IDE1006
 
         public ALSymbol()
         {
@@ -68,8 +71,7 @@ namespace AnZwDev.ALTools.ALSymbols
 
         public ALSymbol(string kindTextValue, string nameValue) : this(ALSymbolKind.Undefined, nameValue)
         {
-            ALSymbolKind kindValue;
-            if (Enum.TryParse<ALSymbolKind>(kindTextValue, out kindValue))
+            if (Enum.TryParse<ALSymbolKind>(kindTextValue, out ALSymbolKind kindValue))
                 this.kind = kindValue;
         }
 
@@ -104,15 +106,16 @@ namespace AnZwDev.ALTools.ALSymbols
 
         public ALSymbol CreateCopy(bool withChildSymbols)
         {
-            ALSymbol symbol = new ALSymbol();
-
-            symbol.id = this.id;
-            symbol.name = this.name;
-            symbol.subtype = this.subtype;
-            symbol.fullName = this.fullName;
-            symbol.kind = this.kind;
-            symbol.range = this.range;
-            symbol.selectionRange = this.selectionRange;
+            ALSymbol symbol = new ALSymbol
+            {
+                id = this.id,
+                name = this.name,
+                subtype = this.subtype,
+                fullName = this.fullName,
+                kind = this.kind,
+                range = this.range,
+                selectionRange = this.selectionRange
+            };
 
             if ((withChildSymbols) && (this.childSymbols != null))
             {

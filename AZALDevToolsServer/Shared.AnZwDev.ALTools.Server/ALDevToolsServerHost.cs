@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using AnZwDev.ALTools.Server.Handlers.ChangeTracking;
 using AnZwDev.ALTools.Server.Handlers.SymbolsInformation;
 using AnZwDev.ALTools.Server.Handlers.LanguageInformation;
+using AnZwDev.ALTools.Logging;
 
 namespace AnZwDev.ALTools.Server
 {
@@ -22,6 +23,7 @@ namespace AnZwDev.ALTools.Server
         public ALDevToolsServerHost(string extensionPath)
         {
             this.ALDevToolsServer = new ALDevToolsServer(extensionPath);
+            MessageLog.Writer = new MessageLogWriterImpl(this);
         }
 
         protected override void InitializeMessageHandlers()
@@ -37,7 +39,7 @@ namespace AnZwDev.ALTools.Server
             this.Dispatcher.RegisterRequestHandler(new AppPackageSymbolsRequestHandler(this.ALDevToolsServer, this));
             this.Dispatcher.RegisterRequestHandler(new ProjectSymbolsRequestHandler(this.ALDevToolsServer, this));
             this.Dispatcher.RegisterRequestHandler(new LibrarySymbolsDetailsRequestHandler(this.ALDevToolsServer, this));
-            this.Dispatcher.RegisterRequestHandler(new CloseSymbolsLibraryNotificationHandler(this.ALDevToolsServer, this));
+            this.Dispatcher.RegisterNotificationHandler(new CloseSymbolsLibraryNotificationHandler(this.ALDevToolsServer, this));
 
             this.Dispatcher.RegisterRequestHandler(new GetLibrarySymbolLocationRequestHandler(this.ALDevToolsServer, this));
             this.Dispatcher.RegisterRequestHandler(new GetProjectSymbolLocationRequestHandler(this.ALDevToolsServer, this));
@@ -73,6 +75,7 @@ namespace AnZwDev.ALTools.Server
             this.Dispatcher.RegisterRequestHandler(new GetReportDataItemDetailsRequestHandler(this.ALDevToolsServer, this));
             this.Dispatcher.RegisterRequestHandler(new GetQueryDataItemDetailsRequestHandler(this.ALDevToolsServer, this));
             this.Dispatcher.RegisterRequestHandler(new GetPermissionSetsRequestHandler(this.ALDevToolsServer, this));
+            this.Dispatcher.RegisterRequestHandler(new GetReportDetailsRequestHandler(this.ALDevToolsServer, this));
 
             //next available object id
             this.Dispatcher.RegisterRequestHandler(new GetNextObjectIdRequestHandler(this.ALDevToolsServer, this));

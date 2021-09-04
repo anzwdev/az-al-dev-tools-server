@@ -18,6 +18,7 @@ namespace AnZwDev.ALTools.Server.Handlers
         {
         }
 
+#pragma warning disable 1998
         protected override async Task<GetALAppContentResponse> HandleMessage(GetALAppContentRequest parameters, RequestContext<GetALAppContentResponse> context)
         {
             GetALAppContentResponse response = new GetALAppContentResponse();
@@ -32,7 +33,7 @@ namespace AnZwDev.ALTools.Server.Handlers
                     response.source = "File cannot be opened.";
                 else
                 {
-                    using (FileStream packageStream = new FileStream(parameters.appPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                    using (FileStream packageStream = AppFileHelper.OpenFileStreamWithRetry(parameters.appPath))
                     {
                         packageStream.Seek(AppPackageDataStream.HeaderLength, SeekOrigin.Begin);
 
@@ -75,6 +76,7 @@ namespace AnZwDev.ALTools.Server.Handlers
             }
             return response;
         }
+#pragma warning restore 1998
 
     }
 }

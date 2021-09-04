@@ -21,6 +21,7 @@ namespace AnZwDev.ALTools.Server.Handlers
         {
         }
 
+#pragma warning disable 1998
         protected override async Task<WorkspaceCommandResponse> HandleMessage(WorkspaceCommandRequest parameters, RequestContext<WorkspaceCommandResponse> context)
         {
             WorkspaceCommandResponse response = new WorkspaceCommandResponse();
@@ -39,6 +40,7 @@ namespace AnZwDev.ALTools.Server.Handlers
             }
             return response;
         }
+#pragma warning restore 1998
 
 
     }

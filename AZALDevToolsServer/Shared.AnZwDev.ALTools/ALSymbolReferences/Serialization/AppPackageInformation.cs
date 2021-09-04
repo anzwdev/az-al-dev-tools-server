@@ -4,6 +4,7 @@ using System.Text;
 using System.IO;
 using System.IO.Compression;
 using System.Xml.Serialization;
+using AnZwDev.ALTools.Logging;
 
 namespace AnZwDev.ALTools.ALSymbolReferences.Serialization
 {
@@ -30,7 +31,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Serialization
             {
                 if (File.Exists(this.FullPath))
                 {
-                    using (Stream stream = new FileStream(this.FullPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                    using (Stream stream = AppFileHelper.OpenFileStreamWithRetry(this.FullPath))
                     {
                         //load unique id
                         this.UId = new byte[AppPackageDataStream.HeaderLength];
@@ -73,6 +74,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Serialization
             }
             catch (Exception e)
             {
+                MessageLog.LogError(e);
                 this.Manifest = null;
             }
         }
@@ -111,7 +113,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Serialization
         public bool FileUIdChanged()
         {
             bool result = false;
-            using (Stream stream = new FileStream(this.FullPath, FileMode.Open))
+            using (Stream stream = AppFileHelper.OpenFileStreamWithRetry(this.FullPath))
             {
                 byte[] newUid = new byte[AppPackageDataStream.HeaderLength];
                 stream.Read(newUid, 0, this.UId.Length);

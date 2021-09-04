@@ -32,6 +32,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Compiler
                 foreach (ALAppObject alAppObject in alObjectsList)
                 {
                     alAppObject.ReferenceSourceFileName = sourcePath;
+                    alAppObject.INT_Parsed = true;
                 }
                 return alObjectsList;
             }
@@ -1185,6 +1186,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Compiler
         {
             alObject.ReferenceSourceFileName = node.SyntaxTree.FilePath;
             alObject.Name = node.GetNameStringValue();
+            alObject.INT_Parsed = true;
 
             if (node.PropertyList != null)
                 alObject.Properties = this.CreatePropertiesList(node.PropertyList.Properties);

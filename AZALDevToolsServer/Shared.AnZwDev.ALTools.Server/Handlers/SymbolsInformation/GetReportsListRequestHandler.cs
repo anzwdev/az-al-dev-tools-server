@@ -18,6 +18,7 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
         {
         }
 
+#pragma warning disable 1998
         protected override async Task<GetReportsListResponse> HandleMessage(GetReportsListRequest parameters, RequestContext<GetReportsListResponse> context)
         {
             GetReportsListResponse response = new GetReportsListResponse();
@@ -32,5 +33,6 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
 
             return response;
         }
+#pragma warning restore 1998
     }
 }

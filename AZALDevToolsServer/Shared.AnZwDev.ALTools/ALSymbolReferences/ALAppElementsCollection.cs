@@ -24,6 +24,19 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             this.Remove((T)element);
         }
 
+        public void ReplaceBaseElement(ALAppBaseElement element)
+        {
+            T existingItem = this.FindElement((T)element);
+            if (existingItem != null)
+                this.Remove(existingItem);
+            this.Add((T)element);
+        }
+
+        protected virtual T FindElement(T element)
+        {
+            return null;
+        }
+
         #region ALSymbolInformation conversion
 
         public void AddToALSymbol(ALSymbol symbol)

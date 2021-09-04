@@ -1,4 +1,5 @@
 ﻿using AnZwDev.ALTools.ALSymbols.SymbolReaders;
+using AnZwDev.ALTools.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,6 +36,7 @@ namespace AnZwDev.ALTools.ALSymbols
             }
             catch (Exception e)
             {
+                MessageLog.LogError(e);
                 this.RootSymbolWithProperties = new ALSyntaxTreeSymbol();
                 this.RootSymbolWithProperties.fullName = e.Message;
             }

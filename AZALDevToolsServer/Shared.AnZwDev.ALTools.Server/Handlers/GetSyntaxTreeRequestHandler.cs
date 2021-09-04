@@ -19,16 +19,20 @@ namespace AnZwDev.ALTools.Server.Handlers
         {
         }
 
+#pragma warning disable 1998
         protected override async Task<GetSyntaxTreeResponse> HandleMessage(GetSyntaxTreeRequest parameters, RequestContext<GetSyntaxTreeResponse> context)
         {
             ALSyntaxTree syntaxTree = this.Server.SyntaxTrees.FindOrCreate(parameters.path, parameters.open);
             syntaxTree.Load(parameters.source);
 
-            GetSyntaxTreeResponse response = new GetSyntaxTreeResponse();
-            response.root = syntaxTree.RootSymbol;
+            GetSyntaxTreeResponse response = new GetSyntaxTreeResponse
+            {
+                root = syntaxTree.RootSymbol
+            };
 
             return response;
         }
+#pragma warning restore 1998
 
     }
 }

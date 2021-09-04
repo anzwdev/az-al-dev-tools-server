@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AnZwDev.ALTools.ALSymbols;
+using AnZwDev.ALTools.ALSymbolReferences.Serialization;
+using AnZwDev.ALTools.ALSymbolReferences.Compiler;
 
 namespace AnZwDev.ALTools.ALSymbolReferences
 {
@@ -83,6 +85,25 @@ namespace AnZwDev.ALTools.ALSymbolReferences
                 this.ClearALSymbolCache();
             }
         }
+
+        public void ReplaceObjects(List<ALAppObject> alObjectsList)
+        {
+            for (int i = 0; i < alObjectsList.Count; i++)
+            {
+                this.ReplaceObject(alObjectsList[i]);
+            }
+        }
+
+        public void ReplaceObject(ALAppObject alObject)
+        {
+            IALAppElementsCollection alObjectsCollection = this.GetObjectsCollection(alObject.GetALSymbolKind());
+            if (alObjectsCollection != null)
+            {
+                alObjectsCollection.ReplaceBaseElement(alObject);
+                this.ClearALSymbolCache();
+            }
+        }
+
 
         protected IALAppElementsCollection GetObjectsCollection(ALSymbolKind symbolKind)
         {
@@ -164,58 +185,87 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return null;
         }
 
-        public ALAppObject FindObjectByName(ALSymbolKind symbolKind, string name)
+        public ALAppObject FindObjectByName(ALSymbolKind symbolKind, string name, bool parsed)
         {
             switch (symbolKind)
             {
                 case ALSymbolKind.TableObject:
-                    return this.FindObjectByName(this.Tables, name);
+                    return this.FindObjectByName(this.Tables, name, parsed);
                 case ALSymbolKind.PageObject:
-                    return this.FindObjectByName(this.Pages, name);
+                    return this.FindObjectByName(this.Pages, name, parsed);
                 case ALSymbolKind.ReportObject:
-                    return this.FindObjectByName(this.Reports, name);
+                    return this.FindObjectByName(this.Reports, name, parsed);
                 case ALSymbolKind.XmlPortObject:
-                    return this.FindObjectByName(this.XmlPorts, name);
+                    return this.FindObjectByName(this.XmlPorts, name, parsed);
                 case ALSymbolKind.QueryObject:
-                    return this.FindObjectByName(this.Queries, name);
+                    return this.FindObjectByName(this.Queries, name, parsed);
                 case ALSymbolKind.CodeunitObject:
-                    return this.FindObjectByName(this.Codeunits, name);
+                    return this.FindObjectByName(this.Codeunits, name, parsed);
                 case ALSymbolKind.ControlAddInObject:
-                    return this.FindObjectByName(this.ControlAddIns, name);
+                    return this.FindObjectByName(this.ControlAddIns, name, parsed);
                 case ALSymbolKind.PageExtensionObject:
-                    return this.FindObjectByName(this.PageExtensions, name);
+                    return this.FindObjectByName(this.PageExtensions, name, parsed);
                 case ALSymbolKind.TableExtensionObject:
-                    return this.FindObjectByName(this.TableExtensions, name);
+                    return this.FindObjectByName(this.TableExtensions, name, parsed);
                 case ALSymbolKind.ProfileObject:
-                    return this.FindObjectByName(this.Pofiles, name);
+                    return this.FindObjectByName(this.Pofiles, name, parsed);
                 case ALSymbolKind.PageCustomizationObject:
-                    return this.FindObjectByName(this.PageCustomizations, name);
+                    return this.FindObjectByName(this.PageCustomizations, name, parsed);
                 case ALSymbolKind.DotNetPackage:
-                    return this.FindObjectByName(this.DotNetPackages, name);
+                    return this.FindObjectByName(this.DotNetPackages, name, parsed);
                 case ALSymbolKind.EnumType:
-                    return this.FindObjectByName(this.EnumTypes, name);
+                    return this.FindObjectByName(this.EnumTypes, name, parsed);
                 case ALSymbolKind.EnumExtensionType:
-                    return this.FindObjectByName(this.EnumExtensionTypes, name);
+                    return this.FindObjectByName(this.EnumExtensionTypes, name, parsed);
                 case ALSymbolKind.Interface:
-                    return this.FindObjectByName(this.Interfaces, name);
+                    return this.FindObjectByName(this.Interfaces, name, parsed);
                 case ALSymbolKind.ReportExtensionObject:
-                    return this.FindObjectByName(this.ReportExtensions, name);
+                    return this.FindObjectByName(this.ReportExtensions, name, parsed);
                 case ALSymbolKind.PermissionSet:
-                    return this.FindObjectByName(this.PermissionSets, name);
+                    return this.FindObjectByName(this.PermissionSets, name, parsed);
                 case ALSymbolKind.PermissionSetExtension:
-                    return this.FindObjectByName(this.PermissionSetExtensions, name);
+                    return this.FindObjectByName(this.PermissionSetExtensions, name, parsed);
             }
 
             return null;
         }
 
-        protected ALAppObject FindObjectByName<T>(ALAppElementsCollection<T> collection, string name) where T: ALAppObject
+        public T FindObjectByName<T>(ALAppElementsCollection<T> collection, string name, bool parsed) where T: ALAppObject
         {
             if ((collection == null) || (String.IsNullOrWhiteSpace(name)))
                 return null;
-            return collection
+            T alObject = collection
                 .Where(p => (name.Equals(p.Name, StringComparison.CurrentCultureIgnoreCase)))
                 .FirstOrDefault();
+
+            if ((alObject != null) && (parsed) && (!alObject.INT_Parsed))
+            {
+                this.ParseObject(alObject);
+                alObject = collection
+                    .Where(p => (name.Equals(p.Name, StringComparison.CurrentCultureIgnoreCase)))
+                    .FirstOrDefault();
+            }
+
+            return alObject;
+        }
+
+        public T FindObjectById<T>(ALAppElementsCollection<T> collection, int id, bool parsed) where T : ALAppObject
+        {
+            if ((collection == null) || (id == 0))
+                return null;
+            T alObject = collection
+                .Where(p => (id == p.Id))
+                .FirstOrDefault();
+
+            if ((alObject != null) && (parsed) && (!alObject.INT_Parsed))
+            {
+                this.ParseObject(alObject);
+                alObject = collection
+                    .Where(p => (id == p.Id))
+                    .FirstOrDefault();
+            }
+
+            return alObject;
         }
 
         #endregion
@@ -442,6 +492,27 @@ namespace AnZwDev.ALTools.ALSymbolReferences
                     this.Pages[i].ReplaceIdReferences(idMap);
 
             this._idReferencesReplaced = true;
+        }
+
+        #endregion
+
+        #region Parse object
+
+        public void ParseObject(ALAppObject alAppObject)
+        {
+            if ((!String.IsNullOrWhiteSpace(alAppObject.ReferenceSourceFileName)) &&
+                (!String.IsNullOrWhiteSpace(alAppObject.ReferenceSourceFileName)) &&
+                (this.ReferenceSourceFileName.EndsWith(".app", StringComparison.CurrentCultureIgnoreCase)))
+            {
+                string content = AppFileHelper.GetAppFileContent(this.ReferenceSourceFileName, alAppObject.ReferenceSourceFileName);
+                if (!String.IsNullOrWhiteSpace(content))
+                {
+                    ALSymbolReferenceCompiler compiler = new ALSymbolReferenceCompiler();
+                    List<ALAppObject> objectsList = compiler.CreateObjectsList(alAppObject.ReferenceSourceFileName, content);
+                    this.ReplaceObjects(objectsList);
+                }
+            }
+            alAppObject.INT_Parsed = true;
         }
 
         #endregion

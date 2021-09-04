@@ -15,10 +15,12 @@ namespace AnZwDev.ALTools.Server.Handlers
         {
         }
 
+#pragma warning disable 1998
         public override async Task HandleNotification(object parameters, NotificationContext context)
         {
             this.LanguageServerHost.Stop();
         }
+#pragma warning restore 1998
 
     }
 }

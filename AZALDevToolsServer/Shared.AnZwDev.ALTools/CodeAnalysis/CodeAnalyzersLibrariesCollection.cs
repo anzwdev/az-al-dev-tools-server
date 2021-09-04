@@ -30,7 +30,7 @@ namespace AnZwDev.ALTools.CodeAnalysis
                 this.LibrariesCache.Add(name, library);
                 return library;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null;
             }

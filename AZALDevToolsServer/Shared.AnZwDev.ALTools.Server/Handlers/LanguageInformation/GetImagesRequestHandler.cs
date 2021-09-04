@@ -16,6 +16,7 @@ namespace AnZwDev.ALTools.Server.Handlers.LanguageInformation
         {
         }
 
+#pragma warning disable 1998
         protected override async Task<GetImagesResponse> HandleMessage(GetImagesRequest parameters, RequestContext<GetImagesResponse> context)
         {
             GetImagesResponse response = new GetImagesResponse();
@@ -44,6 +45,7 @@ namespace AnZwDev.ALTools.Server.Handlers.LanguageInformation
             }
             return response;
         }
+#pragma warning restore 1998
 
 
     }

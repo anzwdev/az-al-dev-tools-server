@@ -1,4 +1,5 @@
 ﻿using AnZwDev.ALTools.Extensions;
+using AnZwDev.ALTools.Logging;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using System;
@@ -30,6 +31,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             }
             catch (Exception e)
             {
+                MessageLog.LogError(e);
                 return new ALSyntaxTreeSymbol(ALSymbolKind.Undefined, "LangServer Error: " + e.Message);
             }
         }

@@ -10,17 +10,17 @@ using System.Threading.Tasks;
 
 namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
 {
-    public class GetPageDetailsRequestHandler : BaseALRequestHandler<GetPageDetailsRequest, GetPageDetailsResponse>
+    public class GetReportDetailsRequestHandler : BaseALRequestHandler<GetReportDetailsRequest, GetReportDetailsResponse>
     {
 
-        public GetPageDetailsRequestHandler(ALDevToolsServer server, LanguageServerHost languageServerHost) : base(server, languageServerHost, "al/getpagedetails")
+        public GetReportDetailsRequestHandler(ALDevToolsServer server, LanguageServerHost languageServerHost) : base(server, languageServerHost, "al/getreportdetails")
         {
         }
 
 #pragma warning disable 1998
-        protected override async Task<GetPageDetailsResponse> HandleMessage(GetPageDetailsRequest parameters, RequestContext<GetPageDetailsResponse> context)
+        protected override async Task<GetReportDetailsResponse> HandleMessage(GetReportDetailsRequest parameters, RequestContext<GetReportDetailsResponse> context)
         {
-                GetPageDetailsResponse response = new GetPageDetailsResponse();
+            GetReportDetailsResponse response = new GetReportDetailsResponse();
 
             try
             {
@@ -28,15 +28,15 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
                 ALProject project = this.Server.Workspace.FindProject(parameters.path, true);
                 if (project != null)
                 {
-                    PageInformationProvider provider = new PageInformationProvider();
-                    response.symbol = provider.GetPageDetails(project, parameters.name, parameters.getExistingFields, parameters.getAvailableFields);
+                    ReportInformationProvider provider = new ReportInformationProvider();
+                    response.symbol = provider.GetFullReportInformation(project, parameters.name);
                     if (response.symbol != null)
                         response.symbol.Sort();
                 }
             }
             catch (Exception e)
             {
-                response.symbol = new PageInformation
+                response.symbol = new ReportInformation
                 {
                     Name = e.Message
                 };
@@ -44,7 +44,6 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
             }
 
             return response;
-
         }
 #pragma warning restore 1998
 
