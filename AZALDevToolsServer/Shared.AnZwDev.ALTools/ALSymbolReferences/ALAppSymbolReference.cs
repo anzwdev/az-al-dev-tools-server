@@ -249,6 +249,51 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return alObject;
         }
 
+        public ALAppObject FindObjectById(ALSymbolKind symbolKind, int id, bool parsed)
+        {
+            switch (symbolKind)
+            {
+                case ALSymbolKind.TableObject:
+                    return this.FindObjectById(this.Tables, id, parsed);
+                case ALSymbolKind.PageObject:
+                    return this.FindObjectById(this.Pages, id, parsed);
+                case ALSymbolKind.ReportObject:
+                    return this.FindObjectById(this.Reports, id, parsed);
+                case ALSymbolKind.XmlPortObject:
+                    return this.FindObjectById(this.XmlPorts, id, parsed);
+                case ALSymbolKind.QueryObject:
+                    return this.FindObjectById(this.Queries, id, parsed);
+                case ALSymbolKind.CodeunitObject:
+                    return this.FindObjectById(this.Codeunits, id, parsed);
+                case ALSymbolKind.ControlAddInObject:
+                    return this.FindObjectById(this.ControlAddIns, id, parsed);
+                case ALSymbolKind.PageExtensionObject:
+                    return this.FindObjectById(this.PageExtensions, id, parsed);
+                case ALSymbolKind.TableExtensionObject:
+                    return this.FindObjectById(this.TableExtensions, id, parsed);
+                case ALSymbolKind.ProfileObject:
+                    return this.FindObjectById(this.Pofiles, id, parsed);
+                case ALSymbolKind.PageCustomizationObject:
+                    return this.FindObjectById(this.PageCustomizations, id, parsed);
+                case ALSymbolKind.DotNetPackage:
+                    return this.FindObjectById(this.DotNetPackages, id, parsed);
+                case ALSymbolKind.EnumType:
+                    return this.FindObjectById(this.EnumTypes, id, parsed);
+                case ALSymbolKind.EnumExtensionType:
+                    return this.FindObjectById(this.EnumExtensionTypes, id, parsed);
+                case ALSymbolKind.Interface:
+                    return this.FindObjectById(this.Interfaces, id, parsed);
+                case ALSymbolKind.ReportExtensionObject:
+                    return this.FindObjectById(this.ReportExtensions, id, parsed);
+                case ALSymbolKind.PermissionSet:
+                    return this.FindObjectById(this.PermissionSets, id, parsed);
+                case ALSymbolKind.PermissionSetExtension:
+                    return this.FindObjectById(this.PermissionSetExtensions, id, parsed);
+            }
+
+            return null;
+        }
+
         public T FindObjectById<T>(ALAppElementsCollection<T> collection, int id, bool parsed) where T : ALAppObject
         {
             if ((collection == null) || (id == 0))
