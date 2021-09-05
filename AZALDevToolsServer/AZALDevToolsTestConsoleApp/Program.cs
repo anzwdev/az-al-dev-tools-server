@@ -58,21 +58,23 @@ namespace AZALDevToolsTestConsoleApp
             //test project
             string[] projects =
             {
-                "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18"
+                //"C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18"
+                "C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject"
             };
-
             host.ALDevToolsServer.Workspace.LoadProjects(projects);
-            host.ALDevToolsServer.Workspace.ResolveDependencies();           
+            host.ALDevToolsServer.Workspace.ResolveDependencies();
 
             //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18\\Pag50104.MyPrefixMyPageCard.al";
-            filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18\\permissionset-Ext50101.MyPermSetExt03.al";
+            //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18\\permissionset-Ext50101.MyPermSetExt03.al";
+            filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject\\MySecondCodeunit.al";
             string content = System.IO.File.ReadAllText(filePath);
             Dictionary<string, string> pm = new();
             pm.Add("sourceFilePath", filePath);
             pm.Add("skipFormatting", "true");
-            string projectPath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18";
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("removeWith", content, projectPath, null, pm);
-            WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("addAllObjectsPermissions", content, projectPath, null, pm);
+            //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("addAllObjectsPermissions", content, projectPath, null, pm);
+            WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("fixIdentifiersCase", content, projects[0], null, pm);
+            //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("convertObjectIdsToNames", content, projects[0], null, pm);
 
             ALProject project = host.ALDevToolsServer.Workspace.Projects[0];
 

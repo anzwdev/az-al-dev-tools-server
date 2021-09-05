@@ -15,6 +15,104 @@ namespace AnZwDev.ALTools.CodeTransformations
         {
         }
 
+        public override SyntaxNode VisitPropertyName(PropertyNameSyntax node)
+        {
+            string prevName = node.Identifier.ValueText;
+            if ((!String.IsNullOrWhiteSpace(prevName)) && (Enum.TryParse(prevName, true, out PropertyKind propertyKind)))
+            {
+                string newName = propertyKind.ToString();
+                if (prevName != newName)
+                {
+                    SyntaxToken prevIdentifier = node.Identifier;
+                    node = node.WithIdentifier(SyntaxFactory.Identifier(newName).WithTriviaFrom(prevIdentifier));
+                }
+            }
+            return base.VisitPropertyName(node);
+        }
+
+        public override SyntaxNode VisitSimpleNamedDataType(SimpleNamedDataTypeSyntax node)
+        {
+            SyntaxNode syntaxNode = base.VisitSimpleNamedDataType(node);
+            node = syntaxNode as SimpleNamedDataTypeSyntax;
+            if (node == null)
+                return syntaxNode;
+
+            if (!node.ContainsDiagnostics)
+            {
+                SyntaxToken typeName = node.TypeName;
+                string prevName = typeName.ValueText;
+                string newName = this.FixTypeNameCase(prevName);
+                if (prevName != newName)
+                    return node.WithTypeName(SyntaxFactory.Identifier(newName).WithTriviaFrom(typeName));
+            }
+
+            return node;
+        }
+
+        public override SyntaxNode VisitLengthDataType(LengthDataTypeSyntax node)
+        {
+            SyntaxNode syntaxNode = base.VisitLengthDataType(node);
+            node = syntaxNode as LengthDataTypeSyntax;
+            if (node == null)
+                return syntaxNode;
+
+            if (!node.ContainsDiagnostics)
+            {
+                SyntaxToken typeName = node.TypeName;
+                string prevName = typeName.ValueText;
+                string newName = this.FixTypeNameCase(prevName);
+                if (prevName != newName)
+                    return node.WithTypeName(SyntaxFactory.Identifier(newName).WithTriviaFrom(typeName));
+            }
+
+            return node;
+        }
+
+        public override SyntaxNode VisitGenericNamedDataType(GenericNamedDataTypeSyntax node)
+        {
+            SyntaxNode syntaxNode = base.VisitGenericNamedDataType(node);
+            node = syntaxNode as GenericNamedDataTypeSyntax;
+            if (node == null)
+                return syntaxNode;
+
+            if (!node.ContainsDiagnostics)
+            {
+                SyntaxToken typeName = node.TypeName;
+                string prevName = typeName.ValueText;
+                string newName = this.FixTypeNameCase(prevName);
+                if (prevName != newName)
+                    return node.WithTypeName(SyntaxFactory.Identifier(newName).WithTriviaFrom(typeName));
+            }
+
+            return node;
+        }
+
+        public override SyntaxNode VisitSubtypedDataType(SubtypedDataTypeSyntax node)
+        {
+            SyntaxNode syntaxNode = base.VisitSubtypedDataType(node);
+            node = syntaxNode as SubtypedDataTypeSyntax;
+            if (node == null)
+                return syntaxNode;
+            
+            if (!node.ContainsDiagnostics)
+            {
+                SyntaxToken typeName = node.TypeName;
+                string prevName = typeName.ValueText;
+                string newName = this.FixTypeNameCase(prevName);
+                if (prevName != newName)
+                    return node.WithTypeName(SyntaxFactory.Identifier(newName).WithTriviaFrom(typeName));
+            }
+
+            return node;
+        }
+
+        protected string FixTypeNameCase(string name)
+        {
+            if (Enum.TryParse(name, true, out NavTypeKind typeKind))
+                return typeKind.ToString();
+            return name;
+        }
+
         public override SyntaxToken VisitToken(SyntaxToken token)
         {
             if (token.Kind.IsKeyword())

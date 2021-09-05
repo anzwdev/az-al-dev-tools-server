@@ -43,8 +43,10 @@ namespace AnZwDev.ALTools.WorkspaceCommands
 
 #if BC            
             this.RegisterCommand(new RemoveWithWorkspaceCommand(this.ALDevToolsServer));
+            this.RegisterCommand(new FixIdentifiersCaseWorkspaceCommand(this.ALDevToolsServer));
 #endif
             this.RegisterCommand(new RemoveVariableWorkspaceCommand(this.ALDevToolsServer));
+            this.RegisterCommand(new ConvertObjectIdsToNamesWorkspaceCommand(this.ALDevToolsServer));
 
             this.RegisterCommand(groupCommand.AddCommand(new SortProceduresWorkspaceCommand(this.ALDevToolsServer)));
             this.RegisterCommand(groupCommand.AddCommand(new SortVariablesWorkspaceCommand(this.ALDevToolsServer)));
