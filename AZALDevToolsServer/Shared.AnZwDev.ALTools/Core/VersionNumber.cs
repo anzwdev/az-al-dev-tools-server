@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AnZwDev.ALTools.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -41,7 +42,7 @@ namespace AnZwDev.ALTools.Core
 
         public VersionNumber(string versionText)
         {
-            this.Version = versionText;
+            this.Version = versionText.NotNull();
         }
 
         private void ParseVersion()
