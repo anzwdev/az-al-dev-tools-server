@@ -190,7 +190,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             if ((!String.IsNullOrWhiteSpace(pageInformation.Source)) && (getExistingFields || getAvailableFields))
             {
                 TableInformationProvider tableInformationProvider = new TableInformationProvider();
-                List<TableFieldInformaton> allTableFieldsList = tableInformationProvider.GetTableFields(project, pageInformation.Source, false, false);
+                List<TableFieldInformaton> allTableFieldsList = tableInformationProvider.GetTableFields(project, pageInformation.Source, false, false, true, true, true);
 
                 Dictionary<string, TableFieldInformaton> availableTableFieldsDict = allTableFieldsList.ToDictionary();
 
@@ -266,7 +266,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
                 if (!String.IsNullOrWhiteSpace(tableName))
                 {
                     TableInformationProvider tableInformationProvider = new TableInformationProvider();
-                    return tableInformationProvider.GetTableFields(project, tableName, includeDisabled, includeObsolete);
+                    return tableInformationProvider.GetTableFields(project, tableName, includeDisabled, includeObsolete, true, true, true);
                 }
             }
             return null;

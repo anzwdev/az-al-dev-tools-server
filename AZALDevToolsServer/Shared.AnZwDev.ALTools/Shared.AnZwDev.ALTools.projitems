@@ -21,6 +21,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppReportExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppRequestPageExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppSymbolsLibrarySource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppTableFieldClass.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppXmlPortNodeKind.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALDevToolsServer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppAttribute.cs" />

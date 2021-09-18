@@ -162,7 +162,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             {
                 string tableName = reportDataItem.RelatedTable;
                 TableInformationProvider tableInformationProvider = new TableInformationProvider();
-                List<TableFieldInformaton> allTableFieldsList = tableInformationProvider.GetTableFields(project, tableName, false, false);
+                List<TableFieldInformaton> allTableFieldsList = tableInformationProvider.GetTableFields(project, tableName, false, false, true, true, true);
 
                 ReportDataItemInformationFieldsBuffer dataItemFieldsBuffer = new ReportDataItemInformationFieldsBuffer(reportDataItemInformation);
                 dataItemFieldsBuffer.SetTable(tableName, allTableFieldsList);
@@ -326,7 +326,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
                     {
                         string tableName = dataItem.RelatedTable;
                         TableInformationProvider tableInformationProvider = new TableInformationProvider();
-                        List<TableFieldInformaton> allTableFieldsList = tableInformationProvider.GetTableFields(project, tableName, false, false);
+                        List<TableFieldInformaton> allTableFieldsList = tableInformationProvider.GetTableFields(project, tableName, false, false, true, true, true);
 
                         fieldsBuffer.SetTable(tableName, allTableFieldsList);
                     }

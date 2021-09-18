@@ -91,7 +91,7 @@ namespace AnZwDev.ALTools.CodeTransformations
             {
                 string sourceTable = ALSyntaxHelper.DecodeName(sourceTablePropertyValue.ToString());
                 if (!String.IsNullOrWhiteSpace(sourceTable))
-                    this.TableFields = this.TableInformationProvider.GetTableFields(this.Project, sourceTable, false, false);
+                    this.TableFields = this.TableInformationProvider.GetTableFields(this.Project, sourceTable, false, false, true, true, true);
             }
         }
 
@@ -214,7 +214,7 @@ namespace AnZwDev.ALTools.CodeTransformations
             if (_tablesCollectionWithFields.ContainsKey(tableNameKey))
                 return _tablesCollectionWithFields[tableNameKey];
 
-            List<TableFieldInformaton> fields = this.TableInformationProvider.GetTableFields(this.Project, tableName, false, false);
+            List<TableFieldInformaton> fields = this.TableInformationProvider.GetTableFields(this.Project, tableName, false, false, true, true, true);
             _tablesCollectionWithFields.Add(tableNameKey, fields);
             return fields;
         }
