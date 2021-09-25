@@ -22,6 +22,11 @@ namespace AnZwDev.ALTools.Extensions
             }
         }
 
+        internal static ConvertedSymbolKind ConvertToLocalType(this SymbolKind source)
+        {
+            return source.Convert<SymbolKind, ConvertedSymbolKind>();
+        }
+
         internal static ConvertedSyntaxKind ConvertToLocalType(this SyntaxKind source)
         {
             return source.Convert<SyntaxKind, ConvertedSyntaxKind>();

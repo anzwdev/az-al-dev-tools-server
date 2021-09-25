@@ -107,7 +107,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
         #region Get table fields
 
-        public List<TableFieldInformaton> GetTableFields(ALProject project, string tableName, bool includeDisabled, bool includeObsolete)
+        public List<TableFieldInformaton> GetTableFields(ALProject project, string tableName, bool includeDisabled, bool includeObsolete, bool includeNormal, bool includeFlowFields, bool includeFlowFilters)
         {
             List<TableFieldInformaton> fields = new List<TableFieldInformaton>();
 
@@ -118,13 +118,13 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
                 return fields;
 
             //add fields from table
-            this.AddFields(fields, tableSourceProject, table.Fields, includeDisabled, includeObsolete);
+            this.AddFields(fields, tableSourceProject, table.Fields, includeDisabled, includeObsolete, includeNormal, includeFlowFields, includeFlowFilters);
 
             //add table extension fields
             ALAppTableExtension tableExtension = this.FindTableExtension(project.Symbols, tableName);
             if (tableExtension != null)
             {
-                this.AddFields(fields, project, tableExtension.Fields, includeDisabled, includeObsolete);
+                this.AddFields(fields, project, tableExtension.Fields, includeDisabled, includeObsolete, includeNormal, includeFlowFields, includeFlowFilters);
                 this.UpdateFields(fields, tableExtension.FieldModifications);
             }
 
@@ -132,7 +132,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             {
                 tableExtension = FindTableExtension(dependency.Symbols, tableName);
                 if (tableExtension != null)
-                    this.AddFields(fields, dependency.SourceProject, tableExtension.Fields, includeDisabled, includeObsolete);
+                    this.AddFields(fields, dependency.SourceProject, tableExtension.Fields, includeDisabled, includeObsolete, includeNormal, includeFlowFields, includeFlowFilters);
             }
 
             //add virtual system fields
@@ -141,20 +141,27 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             return fields;
         }
 
-        protected void AddFields(List<TableFieldInformaton> fields, ALProject project, ALAppElementsCollection<ALAppTableField> fieldReferencesList, bool includeDisabled, bool includeObsolete)
+        protected void AddFields(List<TableFieldInformaton> fields, ALProject project, ALAppElementsCollection<ALAppTableField> fieldReferencesList, bool includeDisabled, bool includeObsolete, bool includeNormal, bool includeFlowFields, bool includeFlowFilters)
         {
             if (fieldReferencesList != null)
             {
                 foreach (ALAppTableField fieldReference in fieldReferencesList)
                 {
+                    ALAppTableFieldClass fieldClass = fieldReference.GetFieldClass();
                     ALAppTableFieldState fieldState = fieldReference.GetFieldState();
-                    if ((fieldState == ALAppTableFieldState.Active) || 
-                        (fieldState == ALAppTableFieldState.ObsoletePending) || 
+
+                    bool validState =
+                        (fieldState == ALAppTableFieldState.Active) ||
+                        (fieldState == ALAppTableFieldState.ObsoletePending) ||
                         ((fieldState == ALAppTableFieldState.ObsoleteRemoved) && (includeObsolete)) ||
-                        ((fieldState == ALAppTableFieldState.Disabled) && (includeDisabled)))
-                    {
+                        ((fieldState == ALAppTableFieldState.Disabled) && (includeDisabled));
+                    bool validClass =
+                        ((fieldClass == ALAppTableFieldClass.Normal) && (includeNormal)) ||
+                        ((fieldClass == ALAppTableFieldClass.FlowField) && (includeFlowFields)) ||
+                        ((fieldClass == ALAppTableFieldClass.FlowFilter) && (includeFlowFilters));
+
+                    if (validState && validClass)
                         fields.Add(new TableFieldInformaton(project, fieldReference));
-                    }
                 }
             }
         }

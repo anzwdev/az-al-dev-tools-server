@@ -87,5 +87,21 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return ALAppTableFieldState.Active;
         }
 
+        public ALAppTableFieldClass GetFieldClass()
+        {
+            if (this.Properties != null)
+            {
+                string fieldClass = this.Properties.GetValue("FieldClass");
+                if (!String.IsNullOrWhiteSpace(fieldClass))
+                {
+                    if (fieldClass.Equals("FlowField", StringComparison.CurrentCultureIgnoreCase))
+                        return ALAppTableFieldClass.FlowField;
+                    if (fieldClass.Equals("FlowFilter", StringComparison.CurrentCultureIgnoreCase))
+                        return ALAppTableFieldClass.FlowFilter;
+                }
+            }
+            return ALAppTableFieldClass.Normal;
+        }
+
     }
 }

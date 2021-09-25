@@ -190,7 +190,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             if ((!String.IsNullOrWhiteSpace(pageInformation.Source)) && (getExistingFields || getAvailableFields))
             {
                 TableInformationProvider tableInformationProvider = new TableInformationProvider();
-                List<TableFieldInformaton> allTableFieldsList = tableInformationProvider.GetTableFields(project, pageInformation.Source, false, false);
+                List<TableFieldInformaton> allTableFieldsList = tableInformationProvider.GetTableFields(project, pageInformation.Source, false, false, true, true, false);
 
                 Dictionary<string, TableFieldInformaton> availableTableFieldsDict = allTableFieldsList.ToDictionary();
 
@@ -257,7 +257,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
         #region Page fields
 
-        public List<TableFieldInformaton> GetAllTableFieldsForPage(ALProject project, string pageName, bool includeDisabled, bool includeObsolete)
+        public List<TableFieldInformaton> GetAllTableFieldsForPage(ALProject project, string pageName, bool includeDisabled, bool includeObsolete, bool includeNormal, bool includeFlowFields, bool includeFlowFilters)
         {
             ALAppPage page = this.FindPage(project, pageName);
             if (page != null)
@@ -266,7 +266,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
                 if (!String.IsNullOrWhiteSpace(tableName))
                 {
                     TableInformationProvider tableInformationProvider = new TableInformationProvider();
-                    return tableInformationProvider.GetTableFields(project, tableName, includeDisabled, includeObsolete);
+                    return tableInformationProvider.GetTableFields(project, tableName, includeDisabled, includeObsolete, includeNormal, includeFlowFields, includeFlowFilters);
                 }
             }
             return null;
