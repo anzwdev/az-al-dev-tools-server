@@ -104,7 +104,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             if ((!String.IsNullOrWhiteSpace(queryDataItem.RelatedTable)) && (getExistingFields || getAvailableFields))
             {
                 TableInformationProvider tableInformationProvider = new TableInformationProvider();
-                List<TableFieldInformaton> allTableFieldsList = tableInformationProvider.GetTableFields(project, queryDataItem.RelatedTable, false, false, true, true, true);
+                List<TableFieldInformaton> allTableFieldsList = tableInformationProvider.GetTableFields(project, queryDataItem.RelatedTable, false, false, true, true, false);
 
                 Dictionary<string, TableFieldInformaton> availableTableFieldsDict = allTableFieldsList.ToDictionary();
                 List<TableFieldInformaton> reportDataItemFields = new List<TableFieldInformaton>();

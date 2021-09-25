@@ -9,9 +9,14 @@
     <Import_RootNamespace>AnZwDev.ALTools</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\ApplicationAreaCaseInformation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\CaseInformationCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\ImageInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\ImageInformationComparer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\ImageInformationProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\PageActionAreaCaseInformation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\PageAreaCaseInformation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\SystemPartCaseInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppAccessMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppBaseSymbolsLibrarySource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppObjectIdMap.cs" />
@@ -112,6 +117,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\Internal\ConvertedChangeKind.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\Internal\ConvertedControlKind.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\Internal\ConvertedOperationKind.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\Internal\ConvertedSymbolKind.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\Internal\ConvertedSyntaxKind.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\Position.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\PropertyValue.cs" />

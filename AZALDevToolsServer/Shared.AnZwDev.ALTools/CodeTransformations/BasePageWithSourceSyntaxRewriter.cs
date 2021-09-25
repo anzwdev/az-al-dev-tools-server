@@ -66,7 +66,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                 if (!String.IsNullOrWhiteSpace(pageName))
                 {
                     PageInformationProvider pageInformationProvider = new PageInformationProvider();
-                    this.TableFields = pageInformationProvider.GetAllTableFieldsForPage(this.Project, pageName, false, false);
+                    this.TableFields = pageInformationProvider.GetAllTableFieldsForPage(this.Project, pageName, false, false, true, true, true);
                 }
             }
             else
