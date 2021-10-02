@@ -225,6 +225,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\BaseObjectInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\CodeunitInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\CodeunitInformationProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\DotNetInformationProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\DotNetTypeInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\EnumInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\EnumInformationProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\InterfaceInformation.cs" />

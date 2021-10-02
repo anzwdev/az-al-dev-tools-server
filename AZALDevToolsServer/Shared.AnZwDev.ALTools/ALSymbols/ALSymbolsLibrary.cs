@@ -29,7 +29,7 @@ namespace AnZwDev.ALTools.ALSymbols
 
         public ALSymbol GetObjectsTree()
         {
-            return this.Root.GetObjectsTree();
+            return this.Root?.GetObjectsTree();
         }
 
         public List<ALSymbol> GetSymbolsListByPath(int[][] paths, ALSymbolKind kind)

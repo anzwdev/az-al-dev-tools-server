@@ -1,5 +1,6 @@
 ﻿using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.CodeTransformations;
+using AnZwDev.ALTools.Workspace;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using System;
@@ -17,7 +18,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         {
         }
 
-        protected override SyntaxNode ProcessFile(SyntaxTree syntaxTree, SemanticModel semanticModel, Range range, Dictionary<string, string> parameters)
+        protected override SyntaxNode ProcessFile(SyntaxTree syntaxTree, SemanticModel semanticModel, ALProject project, Range range, Dictionary<string, string> parameters)
         {
             //stage 1 - update calls
             WithIdentifiersSyntaxRewriter identifiersRewriter = new WithIdentifiersSyntaxRewriter();
