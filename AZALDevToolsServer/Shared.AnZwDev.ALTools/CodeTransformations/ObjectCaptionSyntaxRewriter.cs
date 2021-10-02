@@ -23,10 +23,10 @@ namespace AnZwDev.ALTools.CodeTransformations
                 {
                     NoOfChanges++;
                     node = node.AddPropertyListProperties(
-                        this.CreateCaptionPropertyFromName(node));
+                        this.CreateCaptionPropertyFromName(node, false));
                 }
                 else
-                    node = UpdateCaptionFromName(node, propertySyntax);
+                    node = UpdateCaptionFromName(node, propertySyntax, false);
             }
             return base.VisitTable(node);
         }
@@ -40,10 +40,10 @@ namespace AnZwDev.ALTools.CodeTransformations
                 {
                     NoOfChanges++;
                     node = node.AddPropertyListProperties(
-                        this.CreateCaptionPropertyFromName(node));
+                        this.CreateCaptionPropertyFromName(node, false));
                 }
                 else
-                    node = UpdateCaptionFromName(node, propertySyntax);
+                    node = UpdateCaptionFromName(node, propertySyntax, false);
             }
             return base.VisitPage(node);
         }
@@ -57,10 +57,10 @@ namespace AnZwDev.ALTools.CodeTransformations
                 {
                     NoOfChanges++;
                     node = node.AddPropertyListProperties(
-                        this.CreateCaptionPropertyFromName(node));
+                        this.CreateCaptionPropertyFromName(node, false));
                 }
                 else
-                    node = UpdateCaptionFromName(node, propertySyntax);
+                    node = UpdateCaptionFromName(node, propertySyntax, false);
             }
             return base.VisitReport(node);
         }
@@ -74,10 +74,10 @@ namespace AnZwDev.ALTools.CodeTransformations
                 {
                     NoOfChanges++;
                     node = node.AddPropertyListProperties(
-                        this.CreateCaptionPropertyFromName(node));
+                        this.CreateCaptionPropertyFromName(node, false));
                 }
                 else
-                    node = UpdateCaptionFromName(node, propertySyntax);
+                    node = UpdateCaptionFromName(node, propertySyntax, false);
             }
             return base.VisitQuery(node);
         }
@@ -91,10 +91,10 @@ namespace AnZwDev.ALTools.CodeTransformations
                 {
                     NoOfChanges++;
                     node = node.AddPropertyListProperties(
-                        this.CreateCaptionPropertyFromName(node));
+                        this.CreateCaptionPropertyFromName(node, false));
                 }
                 else
-                    node = UpdateCaptionFromName(node, propertySyntax);
+                    node = UpdateCaptionFromName(node, propertySyntax, false);
             }
             return base.VisitXmlPort(node);
         }
