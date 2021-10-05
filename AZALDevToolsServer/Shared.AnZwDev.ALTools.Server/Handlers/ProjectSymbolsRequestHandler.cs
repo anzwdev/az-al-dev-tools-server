@@ -38,8 +38,9 @@ namespace AnZwDev.ALTools.Server.Handlers
             {
                 response.root = new ALSymbol
                 {
-                    fullName = e.Message
+                    fullName = e.Message                   
                 };
+                response.SetError(e.Message);
                 this.LogError(e);
             }
 

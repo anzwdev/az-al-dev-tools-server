@@ -31,7 +31,10 @@ namespace AnZwDev.ALTools.Server.Handlers
                 if (symbolReference != null)
                     library = symbolReference.ToALSymbolsLibrary();
                 else
+                {
                     library = new ALSymbolsLibrary();
+                    response.SetError("File does not contain any symbols.");
+                }
 
                 //ALPackageSymbolsLibrary library = this.Server.AppPackagesCache.GetSymbols(parameters.path, false);
                 if (library != null)
@@ -46,6 +49,7 @@ namespace AnZwDev.ALTools.Server.Handlers
                 {
                     fullName = e.Message
                 };
+                response.SetError(e.Message);
                 this.LogError(e);
             }
             return response;
