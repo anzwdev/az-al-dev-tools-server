@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Text;
 using AnZwDev.ALTools.Extensions;
 using AnZwDev.ALTools.ALLanguageInformation;
+using AnZwDev.ALTools.Workspace.SymbolsInformation;
 
 namespace AnZwDev.ALTools.CodeTransformations
 {
@@ -21,8 +22,20 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         public SemanticModel SemanticModel { get; set; }
 
+        private DotNetInformationProvider _dotNetInformationProvider;
+        protected DotNetInformationProvider DotNetInformationProvider
+        {
+            get
+            {
+                if (_dotNetInformationProvider == null)
+                    _dotNetInformationProvider = new DotNetInformationProvider();
+                return _dotNetInformationProvider;
+            }
+        }
+
         public IdentifierCaseSyntaxRewriter()
         {
+            _dotNetInformationProvider = null;
         }
 
         public override SyntaxNode VisitPageSystemPart(PageSystemPartSyntax node)
@@ -44,6 +57,36 @@ namespace AnZwDev.ALTools.CodeTransformations
             return base.VisitPageSystemPart(node);
         }
 
+        public override SyntaxNode VisitDotNetTypeReference(DotNetTypeReferenceSyntax node)
+        {
+            if ((this.Project != null) && (node.DataType != null) && (node.DataType.Kind.ConvertToLocalType() == ConvertedSyntaxKind.SubtypedDataType))
+            {
+                SubtypedDataTypeSyntax dataType = node.DataType as SubtypedDataTypeSyntax;
+                if ((dataType != null) && (dataType.Subtype != null) && (dataType.Subtype.Kind.ConvertToLocalType() == ConvertedSyntaxKind.ObjectReference))
+                {
+                    if ((dataType.Subtype.Identifier != null) && (dataType.Subtype.Identifier.Kind.ConvertToLocalType() == ConvertedSyntaxKind.IdentifierName))
+                    {
+                        IdentifierNameSyntax identifier = dataType.Subtype.Identifier as IdentifierNameSyntax;
+                        if ((identifier != null) && (identifier.Identifier != null) && (identifier.Identifier.ValueText != null))
+                        {
+                            string typeAliasName = identifier.Identifier.ValueText;
+                            DotNetTypeInformation typeInformation = this.DotNetInformationProvider.GetDotNetTypeInformation(this.Project, typeAliasName);
+                            if ((typeInformation != null) && (typeInformation.AliasName != null) && (typeInformation.AliasName != typeAliasName))
+                            {
+                                
+                                IdentifierNameSyntax newIdentifier = SyntaxFactory.IdentifierName(typeInformation.AliasName).WithTriviaFrom(identifier);
+                                ObjectNameOrIdSyntax newSubType = dataType.Subtype.WithIdentifier(newIdentifier);
+                                dataType = dataType.WithSubtype(newSubType);
+                                node = node.WithDataType(dataType);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return base.VisitDotNetTypeReference(node);
+        }
+
         public override SyntaxNode VisitIdentifierName(IdentifierNameSyntax node)
         {
             if (!node.ContainsDiagnostics)
@@ -62,6 +105,10 @@ namespace AnZwDev.ALTools.CodeTransformations
                             ConvertedSyntaxKind parentKind = node.Parent.Kind.ConvertToLocalType();
                             switch (parentKind)
                             {
+                                case ConvertedSyntaxKind.DotNetTypeReference:
+                                    //skip DotNetTypeReference becasue semantic model does not recognize them
+                                    updated = true;
+                                    break;
                                 case ConvertedSyntaxKind.PageSystemPart:
                                     //skip page system parts because library incorrectly reports SystemPart second parameter as Control
                                     //It reports systempart(ControlName, ControlName) instead of systempart(ControlName, SystemPartName)
@@ -99,7 +146,11 @@ namespace AnZwDev.ALTools.CodeTransformations
                             if ((info != null) && (info.Symbol != null))
                             {
                                 ConvertedSymbolKind symbolKind = info.Symbol.Kind.ConvertToLocalType();
-                                if (symbolKind != ConvertedSymbolKind.NamedType)
+                                if ((symbolKind != ConvertedSymbolKind.NamedType) &&
+                                    (symbolKind != ConvertedSymbolKind.DotNetAssembly) &&
+                                    (symbolKind != ConvertedSymbolKind.DotNetPackage) &&
+                                    (symbolKind != ConvertedSymbolKind.DotNetTypeDeclaration) &&
+                                    (symbolKind != ConvertedSymbolKind.DotNet)) 
                                     newName = info.Symbol.Name;
                             }
                         }

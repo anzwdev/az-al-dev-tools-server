@@ -15,13 +15,22 @@ namespace AnZwDev.ALTools.CodeAnalysis
             return SyntaxFactory.IdentifierEqualsLiteral(identifier, SyntaxFactory.StringLiteralValue(SyntaxFactory.Literal(value)));
         }
 
-        public static LabelSyntax Label(string labelText, string comment)
+        public static IdentifierEqualsLiteralSyntax IdentifierEqualsLiteral(string identifier, bool value)
+        {
+            string tokenKindText = value ? "TrueKeyword" : "FalseKeyword";
+            SyntaxKind tokenKind = EnumExtensions.FromString(tokenKindText, SyntaxKind.FalseKeyword);
+            return SyntaxFactory.IdentifierEqualsLiteral(identifier, SyntaxFactory.BooleanLiteralValue(SyntaxFactory.Token(tokenKind)));
+        }
+
+        public static LabelSyntax Label(string labelText, string comment, bool locked)
         {
             StringLiteralValueSyntax labelTextSyntax = SyntaxFactory.StringLiteralValue(SyntaxFactory.Literal(labelText));
 
             List<IdentifierEqualsLiteralSyntax> propertiesList = new List<IdentifierEqualsLiteralSyntax>();
             if (!String.IsNullOrWhiteSpace(comment))
                 propertiesList.Add(SyntaxFactoryHelper.IdentifierEqualsLiteral("Comment", comment));
+            if (locked)
+                propertiesList.Add(SyntaxFactoryHelper.IdentifierEqualsLiteral("Locked", true));
 
             if (propertiesList.Count > 0)
             {
@@ -36,22 +45,22 @@ namespace AnZwDev.ALTools.CodeAnalysis
             return SyntaxFactory.Label(labelTextSyntax);
         }
 
-        public static PropertySyntax LabelProperty(PropertyKind propertyKind, string labelText, string comment)
+        public static PropertySyntax LabelProperty(PropertyKind propertyKind, string labelText, string comment, bool locked)
         {
-            LabelPropertyValueSyntax propertyValue = SyntaxFactory.LabelPropertyValue(SyntaxFactoryHelper.Label(labelText, comment));
+            LabelPropertyValueSyntax propertyValue = SyntaxFactory.LabelPropertyValue(SyntaxFactoryHelper.Label(labelText, comment, locked));
             return SyntaxFactory.Property(propertyKind, propertyValue);
         }
 
-        public static PropertySyntax CaptionProperty(string labelText, string comment)
+        public static PropertySyntax CaptionProperty(string labelText, string comment, bool locked)
         {
             PropertyKind propertyKind = EnumExtensions.FromString("Caption", PropertyKind.Caption);
-            return SyntaxFactoryHelper.LabelProperty(propertyKind, labelText, comment);
+            return SyntaxFactoryHelper.LabelProperty(propertyKind, labelText, comment, locked);
         }
 
-        public static PropertySyntax ToolTipProperty(string labelText, string comment)
+        public static PropertySyntax ToolTipProperty(string labelText, string comment, bool locked)
         {
             PropertyKind propertyKind = EnumExtensions.FromString("ToolTip", PropertyKind.ToolTip);
-            return SyntaxFactoryHelper.LabelProperty(propertyKind, labelText, comment);
+            return SyntaxFactoryHelper.LabelProperty(propertyKind, labelText, comment, locked);
         }
 
         public static SyntaxToken Token(string kindName)

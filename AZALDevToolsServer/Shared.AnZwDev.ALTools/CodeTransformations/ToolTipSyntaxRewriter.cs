@@ -103,7 +103,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                 toolTipValue = forceToolTipValue;
             }
 
-            return SyntaxFactoryHelper.ToolTipProperty(toolTipValue, toolTipComment)
+            return SyntaxFactoryHelper.ToolTipProperty(toolTipValue, toolTipComment, false)
                 .WithLeadingTrivia(leadingTriviaList)
                 .WithTrailingTrivia(trailingTriviaList);
         }

@@ -145,7 +145,7 @@ namespace AnZwDev.ALTools.CodeTransformations
             SyntaxTriviaList leadingTriviaList = node.CreateChildNodeIdentTrivia();
             SyntaxTriviaList trailingTriviaList = SyntaxFactory.ParseTrailingTrivia("\r\n", 0);
 
-            return SyntaxFactoryHelper.CaptionProperty(caption, comment)
+            return SyntaxFactoryHelper.CaptionProperty(caption, comment, false)
                 .WithLeadingTrivia(leadingTriviaList)
                 .WithTrailingTrivia(trailingTriviaList);
         }

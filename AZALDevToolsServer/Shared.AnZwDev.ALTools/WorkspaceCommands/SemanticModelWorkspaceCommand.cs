@@ -1,4 +1,5 @@
 ﻿using AnZwDev.ALTools.ALSymbols;
+using AnZwDev.ALTools.Workspace;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.CommandLine;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Diagnostics;
@@ -31,15 +32,16 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             //load project
             List<SyntaxTree> syntaxTrees = new List<SyntaxTree>();
             Compilation compilation = this.LoadProject(path, syntaxTrees, sourceCode, sourcePath, out sourceSyntaxTree);
+            ALProject project = this.ALDevToolsServer.Workspace.FindProject(path, true);
 
             if (!String.IsNullOrEmpty(sourceCode))
             {
-                string newSourceCode = this.ProcessSourceCode(sourceCode, sourceSyntaxTree, compilation, range, parameters);
+                string newSourceCode = this.ProcessSourceCode(sourceCode, sourceSyntaxTree, compilation, project, range, parameters);
                 outVal = new WorkspaceCommandResult(newSourceCode);
             }
             else
             {
-                int noOfModifiedFiles = this.ProcessFiles(syntaxTrees, compilation, parameters);
+                int noOfModifiedFiles = this.ProcessFiles(syntaxTrees, compilation, project, parameters);
                 outVal = new WorkspaceCommandResult(null);
                 outVal.SetParameter(NoOfChangedFilesParameterName, noOfModifiedFiles.ToString());
             }
@@ -121,7 +123,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
 
         #region Project files processing
 
-        protected int ProcessFiles(List<SyntaxTree> syntaxTrees, Compilation compilation, Dictionary<string, string> parameters)
+        protected int ProcessFiles(List<SyntaxTree> syntaxTrees, Compilation compilation, ALProject project, Dictionary<string, string> parameters)
         {
             int noOfModifiedFiles = 0;
 
@@ -129,7 +131,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             {
                 SemanticModel semanticModel = compilation.GetSemanticModel(syntaxTree);
 
-                SyntaxNode newRootNode = this.ProcessFile(syntaxTree, semanticModel, null, parameters);
+                SyntaxNode newRootNode = this.ProcessFile(syntaxTree, semanticModel, project, null, parameters);
                 if (newRootNode != null)
                 {
                     File.WriteAllText(syntaxTree.FilePath, newRootNode.ToFullString());
@@ -142,16 +144,16 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             return noOfModifiedFiles;
         }
 
-        protected virtual SyntaxNode ProcessFile(SyntaxTree syntaxTree, SemanticModel semanticModel, Range range, Dictionary<string, string> parameters)
+        protected virtual SyntaxNode ProcessFile(SyntaxTree syntaxTree, SemanticModel semanticModel, ALProject project, Range range, Dictionary<string, string> parameters)
         {
             return syntaxTree.GetRoot();
         }
 
-        protected string ProcessSourceCode(string sourceCode, SyntaxTree sourceSyntaxTree, Compilation compilation, Range range, Dictionary<string, string> parameters)
+        protected string ProcessSourceCode(string sourceCode, SyntaxTree sourceSyntaxTree, Compilation compilation, ALProject project, Range range, Dictionary<string, string> parameters)
         {
             //SyntaxTree syntaxTree = SyntaxTree.ParseObjectText(sourceCode);
             SemanticModel semanticModel = compilation.GetSemanticModel(sourceSyntaxTree);
-            SyntaxNode newRootNode = this.ProcessFile(sourceSyntaxTree, semanticModel, null, parameters);
+            SyntaxNode newRootNode = this.ProcessFile(sourceSyntaxTree, semanticModel, project, null, parameters);
             if (newRootNode != null)
                 return newRootNode.ToFullString();
             return null;
