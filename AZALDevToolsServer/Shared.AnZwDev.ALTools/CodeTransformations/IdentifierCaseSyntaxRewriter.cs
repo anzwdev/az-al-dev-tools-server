@@ -143,7 +143,12 @@ namespace AnZwDev.ALTools.CodeTransformations
                         if (!updated)
                         {
                             SymbolInfo info = this.SemanticModel.GetSymbolInfo(node);
-                            if ((info != null) && (info.Symbol != null))
+
+                            //if no symbol info, check if it is one of system object methods (i.e. Report.SaveAsExcel)
+                            if ((info == null) || (info.Symbol == null))
+                                updated = this.TryUpdateSystemName(node, ref newName);
+
+                            if ((!updated) && (info != null) && (info.Symbol != null))
                             {
                                 ConvertedSymbolKind symbolKind = info.Symbol.Kind.ConvertToLocalType();
                                 if ((symbolKind != ConvertedSymbolKind.NamedType) &&
@@ -172,6 +177,75 @@ namespace AnZwDev.ALTools.CodeTransformations
             }
 
             return base.VisitIdentifierName(node);
+        }
+
+
+        protected bool TryUpdateSystemName(SyntaxNode node, ref string memberName)
+        {
+            switch (node.Parent.Kind.ConvertToLocalType())
+            {
+                case ConvertedSyntaxKind.MemberAccessExpression:
+                    return TryUpdateSystemObjectMembersName(node, ref memberName);
+                case ConvertedSyntaxKind.OptionAccessExpression:
+                    return TryUpdateSystemOptionName(node, ref memberName);
+            }
+            return false;
+        }
+
+        protected ITypeSymbol TryGetParentDataType(SyntaxNode node)
+        {
+            MemberAccessExpressionSyntax memberAccessExpression = node.Parent as MemberAccessExpressionSyntax;
+            if (memberAccessExpression != null)
+            {
+                SymbolInfo info = this.SemanticModel.GetSymbolInfo(memberAccessExpression.Expression);
+                if ((info != null) && (info.Symbol != null))
+                {
+                    switch (info.Symbol)
+                    {
+                        case IVariableSymbol variableSymbol: return variableSymbol.Type;
+                        case IReturnValueSymbol returnValueSymbol: return returnValueSymbol.ReturnType;
+                        case IClassTypeSymbol classTypeSymbol: return classTypeSymbol;
+                    }
+                }
+            }
+            return null;
+        }
+
+        protected bool TryUpdateSystemObjectMembersName(SyntaxNode node, ref string memberName)
+        {
+            ITypeSymbol typeSymbol = this.TryGetParentDataType(node);
+            if (typeSymbol != null)
+            {
+                switch (typeSymbol.NavTypeKind.ConvertToLocalType())
+                {
+                    case ConvertedNavTypeKind.Report:
+                        return ReportMembersCaseInformation.Values.TryFixCase(ref memberName);
+                    case ConvertedNavTypeKind.Query:
+                        return QueryMembersCaseInformation.Values.TryFixCase(ref memberName);
+                }
+            }
+
+            return false;
+        }
+
+        protected bool TryUpdateSystemOptionName(SyntaxNode node, ref string memberName)
+        {
+            SymbolInfo symbolInfo = this.SemanticModel.GetSymbolInfo(node.Parent);
+
+            if ((symbolInfo != null) && (symbolInfo.Symbol != null) && (symbolInfo.Symbol.Kind.ConvertToLocalType() == ConvertedSymbolKind.Option))
+            {
+                IOptionSymbol optionSymbol = symbolInfo.Symbol as IOptionSymbol;
+                if ((optionSymbol != null) && (optionSymbol.Type != null))
+                {
+                    string newName = optionSymbol.Type.Name;
+                    if ((newName != null) && (newName.Equals(memberName, StringComparison.CurrentCultureIgnoreCase)))
+                    {
+                        memberName = newName;
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
         protected bool IsApplicationAreaValue(IdentifierNameSyntax node)

@@ -22,6 +22,12 @@ namespace AnZwDev.ALTools.Extensions
             }
         }
 
+        internal static ConvertedNavTypeKind ConvertToLocalType(this NavTypeKind source)
+        {
+            return source.Convert<NavTypeKind, ConvertedNavTypeKind>();
+        }
+             
+
         internal static ConvertedSymbolKind ConvertToLocalType(this SymbolKind source)
         {
             return source.Convert<SymbolKind, ConvertedSymbolKind>();
