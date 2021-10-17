@@ -16,6 +16,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\ImageInformationProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\PageActionAreaCaseInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\PageAreaCaseInformation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\QueryMembersCaseInformation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\ReportMembersCaseInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\SystemPartCaseInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppAccessMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppBaseSymbolsLibrarySource.cs" />
@@ -116,6 +118,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\Internal\ConvertedActionKind.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\Internal\ConvertedChangeKind.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\Internal\ConvertedControlKind.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\Internal\ConvertedNavTypeKind.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\Internal\ConvertedOperationKind.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\Internal\ConvertedSymbolKind.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\Internal\ConvertedSyntaxKind.cs" />
