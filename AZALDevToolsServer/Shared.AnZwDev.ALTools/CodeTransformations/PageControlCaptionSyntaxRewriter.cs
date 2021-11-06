@@ -19,6 +19,7 @@ namespace AnZwDev.ALTools.CodeTransformations
         public bool SetActionGroupsCaptions { get; set; }
         public bool SetPartsCaptions { get; set; }
         public bool SetFieldsCaptions { get; set; }
+        public bool SetLabelCaptions { get; set; }
 
         public PageControlCaptionSyntaxRewriter()
         {
@@ -26,6 +27,7 @@ namespace AnZwDev.ALTools.CodeTransformations
             SetGroupsCaptions = false;
             SetPartsCaptions = false;
             SetFieldsCaptions = false;
+            SetLabelCaptions = false;
         }
 
         public override SyntaxNode VisitPageField(PageFieldSyntax node)
@@ -49,6 +51,28 @@ namespace AnZwDev.ALTools.CodeTransformations
                 }
             }
             return base.VisitPageField(node);
+        }
+
+        public override SyntaxNode VisitPageLabel(PageLabelSyntax node)
+        {
+            if ((this.SetLabelCaptions) && (!node.HasProperty("CaptionML")))
+            {
+                PropertySyntax propertySyntax = node.GetProperty("Caption");
+                if ((propertySyntax == null) || (String.IsNullOrWhiteSpace(propertySyntax.Value.ToString())))
+                {
+                    string caption = node.GetNameStringValue().RemovePrefixSuffix(this.Project.MandatoryPrefixes, this.Project.MandatorySuffixes, this.Project.MandatoryAffixes);
+                    if (!String.IsNullOrWhiteSpace(caption))
+                    {
+                        PropertySyntax newPropertySyntax = this.CreateCaptionProperty(node, caption, null);
+                        NoOfChanges++;
+                        if (propertySyntax == null)
+                            node = node.AddPropertyListProperties(newPropertySyntax);
+                        else
+                            node = node.ReplaceNode(propertySyntax, newPropertySyntax);
+                    }
+                }
+            }
+            return base.VisitPageLabel(node);
         }
 
         public override SyntaxNode VisitPageGroup(PageGroupSyntax node)

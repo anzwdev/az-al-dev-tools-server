@@ -16,6 +16,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         public static string SetActionGroupsCaptionsParameterName = "setActionGroupsCaptions";
         public static string SetPartsCaptionsParameterName = "setPartsCaptions";
         public static string SetFieldsCaptionsParameterName = "setFieldsCaptions";
+        public static string SetLabelsCaptionsParameterName = "setLabelsCaptions";
 
         public AddPageControlCaptionWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "addPageControlCaptions")
         {
@@ -29,6 +30,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             this.SyntaxRewriter.SetActionGroupsCaptions = parameters.GetBoolValue(SetActionGroupsCaptionsParameterName);
             this.SyntaxRewriter.SetPartsCaptions = parameters.GetBoolValue(SetPartsCaptionsParameterName);
             this.SyntaxRewriter.SetFieldsCaptions = parameters.GetBoolValue(SetFieldsCaptionsParameterName);
+            this.SyntaxRewriter.SetLabelCaptions = parameters.GetBoolValue(SetLabelsCaptionsParameterName);
         }
 
     }
