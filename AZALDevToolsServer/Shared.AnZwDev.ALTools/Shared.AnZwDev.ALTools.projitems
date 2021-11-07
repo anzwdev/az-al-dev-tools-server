@@ -118,10 +118,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\Internal\ConvertedActionKind.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\Internal\ConvertedChangeKind.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\Internal\ConvertedControlKind.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\Internal\ConvertedMethodKind.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\Internal\ConvertedNavTypeKind.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\Internal\ConvertedOperationKind.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\Internal\ConvertedSymbolKind.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\Internal\ConvertedSyntaxKind.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\Internal\ConvertedVariableKind.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\Position.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\PropertyValue.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\Range.cs" />
@@ -150,6 +152,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\ObjectCaptionSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\PageControlCaptionSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\PermissionComparer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\RemoveUnusedVariablesSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\RemoveVariableSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\SortPermissionSetListSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\SortPermissionsSyntaxRewriter.cs" />
@@ -192,6 +195,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\ConvertObjectIdsToNamesWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\FixIdentifiersCaseWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\FixKeywordsCaseWorkspaceCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\RemoveUnusedVariablesWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\RemoveVariableWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\RemoveWithWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\SemanticModelWorkspaceCommand.cs" />

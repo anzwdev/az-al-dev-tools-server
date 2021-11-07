@@ -26,7 +26,6 @@ namespace AnZwDev.ALTools.Extensions
         {
             return source.Convert<NavTypeKind, ConvertedNavTypeKind>();
         }
-             
 
         internal static ConvertedSymbolKind ConvertToLocalType(this SymbolKind source)
         {
@@ -56,6 +55,16 @@ namespace AnZwDev.ALTools.Extensions
         internal static ConvertedActionKind ConvertToLocalType(this ActionKind source)
         {
             return source.Convert<ActionKind, ConvertedActionKind>();
+        }
+
+        internal static ConvertedMethodKind ConvertToLocalType(this MethodKind source)
+        {
+            return source.Convert<MethodKind, ConvertedMethodKind>();
+        }
+
+        internal static ConvertedVariableKind ConvertToLocalType(this VariableKind source)
+        {
+            return source.Convert<VariableKind, ConvertedVariableKind>();
         }
 
         public static T FromString<T>(string name, T defaultValue) where T : Enum
