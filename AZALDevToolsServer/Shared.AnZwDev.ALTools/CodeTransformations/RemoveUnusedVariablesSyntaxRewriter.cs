@@ -11,9 +11,8 @@ namespace AnZwDev.ALTools.CodeTransformations
 {
 
 #if BC
-    public class RemoveUnusedVariablesSyntaxRewriter : ALSyntaxRewriter
+    public class RemoveUnusedVariablesSyntaxRewriter : ALSemanticModelSyntaxRewriter
     {
-        public SemanticModel SemanticModel { get; set; }
         public bool RemoveGlobalVariables { get; set; }
         public bool RemoveLocalVariables { get; set; }
         public bool RemoveLocalMethodParameters { get; set; }
@@ -130,14 +129,17 @@ namespace AnZwDev.ALTools.CodeTransformations
             if (this.RemoveGlobalVariables)
             {
                 GlobalVarSectionSyntax globalVariables = members.Where(p => (p.Kind.ConvertToLocalType() == ConvertedSyntaxKind.GlobalVarSection)).FirstOrDefault() as GlobalVarSectionSyntax;
-                (GlobalVarSectionSyntax newGlobalVariables, bool globalsUpdated) = this.RemoveUnusedGlobalVariablesFromNode(node, globalVariables);
-                if (globalsUpdated)
+                if (globalVariables != null)
                 {
-                    if (newGlobalVariables == null)
-                        membersList.Remove(globalVariables);
-                    else
-                        membersList[members.IndexOf(globalVariables)] = newGlobalVariables;
-                    updated = true;
+                    (GlobalVarSectionSyntax newGlobalVariables, bool globalsUpdated) = this.RemoveUnusedGlobalVariablesFromNode(node, globalVariables);
+                    if (globalsUpdated)
+                    {
+                        if (newGlobalVariables == null)
+                            membersList.Remove(globalVariables);
+                        else
+                            membersList[members.IndexOf(globalVariables)] = newGlobalVariables;
+                        updated = true;
+                    }
                 }
             }
 

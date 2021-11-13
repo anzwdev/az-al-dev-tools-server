@@ -19,36 +19,39 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         public override SyntaxNode VisitMemberAttribute(MemberAttributeSyntax node)
         {
-            string name = node.Name?.Identifier.ValueText;
-            if ((!String.IsNullOrWhiteSpace(name)) && (name.Equals("EventSubscriber", StringComparison.CurrentCultureIgnoreCase)) && (node.ArgumentList != null))
+            if (!node.ContainsDiagnostics)
             {
-                SeparatedSyntaxList<AttributeArgumentSyntax> arguments = node.ArgumentList.Arguments;
-                if ((arguments != null) && (arguments.Count >= 2))
+                string name = node.Name?.Identifier.ValueText;
+                if ((!String.IsNullOrWhiteSpace(name)) && (name.Equals("EventSubscriber", StringComparison.CurrentCultureIgnoreCase)) && (node.ArgumentList != null))
                 {
-                    OptionAccessAttributeArgumentSyntax objectTypeArgument = arguments[0] as OptionAccessAttributeArgumentSyntax;
-                    LiteralAttributeArgumentSyntax objectNameOrIdArgument = arguments[1] as LiteralAttributeArgumentSyntax;
-                    if ((objectTypeArgument != null) && (objectNameOrIdArgument != null))
+                    SeparatedSyntaxList<AttributeArgumentSyntax> arguments = node.ArgumentList.Arguments;
+                    if ((arguments != null) && (arguments.Count >= 2))
                     {
-                        string objectType = objectTypeArgument?.OptionAccess?.Name?.Identifier.ValueText;
-                        string prevValue = objectNameOrIdArgument.ToString();
-                        string newValue = prevValue;
-                        if (Int32.TryParse(prevValue, out int intValue))
+                        OptionAccessAttributeArgumentSyntax objectTypeArgument = arguments[0] as OptionAccessAttributeArgumentSyntax;
+                        LiteralAttributeArgumentSyntax objectNameOrIdArgument = arguments[1] as LiteralAttributeArgumentSyntax;
+                        if ((objectTypeArgument != null) && (objectNameOrIdArgument != null))
                         {
-                            ALAppObject alAppObject = this.FindObjectById(objectType, intValue);
-                            if (alAppObject != null)
-                                newValue = alAppObject.Name;
-                        }
+                            string objectType = objectTypeArgument?.OptionAccess?.Name?.Identifier.ValueText;
+                            string prevValue = objectNameOrIdArgument.ToString();
+                            string newValue = prevValue;
+                            if (Int32.TryParse(prevValue, out int intValue))
+                            {
+                                ALAppObject alAppObject = this.FindObjectById(objectType, intValue);
+                                if (alAppObject != null)
+                                    newValue = alAppObject.Name;
+                            }
 
-                        if ((prevValue != newValue) && (!String.IsNullOrWhiteSpace(newValue)))
-                        {
-                            OptionAccessAttributeArgumentSyntax newObjectNameOrIdArgument = SyntaxFactory.OptionAccessAttributeArgument(
-                                SyntaxFactory.OptionAccessExpression(
-                                    SyntaxFactory.IdentifierName(SyntaxFactory.Identifier(this.ObjectTypeNameToEnumName(objectType))),
-                                    SyntaxFactory.IdentifierName(SyntaxFactory.Identifier(newValue)))).WithTriviaFrom(objectNameOrIdArgument);
-                            AttributeArgumentListSyntax argumentsList = node.ArgumentList.WithArguments(arguments.Replace(objectNameOrIdArgument, newObjectNameOrIdArgument));
-                            node = node.WithArgumentList(argumentsList);
-                        }
+                            if ((prevValue != newValue) && (!String.IsNullOrWhiteSpace(newValue)))
+                            {
+                                OptionAccessAttributeArgumentSyntax newObjectNameOrIdArgument = SyntaxFactory.OptionAccessAttributeArgument(
+                                    SyntaxFactory.OptionAccessExpression(
+                                        SyntaxFactory.IdentifierName(SyntaxFactory.Identifier(this.ObjectTypeNameToEnumName(objectType))),
+                                        SyntaxFactory.IdentifierName(SyntaxFactory.Identifier(newValue)))).WithTriviaFrom(objectNameOrIdArgument);
+                                AttributeArgumentListSyntax argumentsList = node.ArgumentList.WithArguments(arguments.Replace(objectNameOrIdArgument, newObjectNameOrIdArgument));
+                                node = node.WithArgumentList(argumentsList);
+                            }
 
+                        }
                     }
                 }
             }
@@ -58,27 +61,30 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         public override SyntaxNode VisitObjectNameOrId(ObjectNameOrIdSyntax node)
         {
-            if (node.Identifier is ObjectIdSyntax objectIdSyntax)
+            if (!node.ContainsDiagnostics)
             {
-                string idText = objectIdSyntax.Value.ValueText;
-                string newName = idText;
-                if (Int32.TryParse(idText, out int idValue))
+                if (node.Identifier is ObjectIdSyntax objectIdSyntax)
                 {
-                    string objectType = this.FindObjectTypeForObjectNameOrId(node);
-                    if (!String.IsNullOrWhiteSpace(objectType))
+                    string idText = objectIdSyntax.Value.ValueText;
+                    string newName = idText;
+                    if (Int32.TryParse(idText, out int idValue))
                     {
-                        ALAppObject alAppObject = this.FindObjectById(objectType, idValue);
-                        if (alAppObject != null)
-                            newName = alAppObject.Name;
+                        string objectType = this.FindObjectTypeForObjectNameOrId(node);
+                        if (!String.IsNullOrWhiteSpace(objectType))
+                        {
+                            ALAppObject alAppObject = this.FindObjectById(objectType, idValue);
+                            if (alAppObject != null)
+                                newName = alAppObject.Name;
+                        }
                     }
-                }
 
-                if ((newName != idText) && (!String.IsNullOrWhiteSpace(newName)))
-                {
-                    SyntaxToken objectNameValue = SyntaxFactory.Identifier(newName).WithTriviaFrom(objectIdSyntax.Value);
-                    IdentifierNameSyntax objectName = SyntaxFactory.IdentifierName(objectNameValue).WithTriviaFrom(objectIdSyntax);
-                    ObjectNameOrIdSyntax newNode = SyntaxFactory.ObjectNameOrId(objectName).WithTriviaFrom(node);
-                    return newNode;
+                    if ((newName != idText) && (!String.IsNullOrWhiteSpace(newName)))
+                    {
+                        SyntaxToken objectNameValue = SyntaxFactory.Identifier(newName).WithTriviaFrom(objectIdSyntax.Value);
+                        IdentifierNameSyntax objectName = SyntaxFactory.IdentifierName(objectNameValue).WithTriviaFrom(objectIdSyntax);
+                        ObjectNameOrIdSyntax newNode = SyntaxFactory.ObjectNameOrId(objectName).WithTriviaFrom(node);
+                        return newNode;
+                    }
                 }
             }
 
@@ -88,52 +94,45 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         public override SyntaxNode VisitInvocationExpression(InvocationExpressionSyntax node)
         {
-            if ((node.ArgumentList != null) && (node.ArgumentList.Arguments != null) && (node.ArgumentList.Arguments.Count > 0) && (node.ArgumentList.Arguments[0] is LiteralExpressionSyntax argumentSyntax))
+            if (!node.ContainsDiagnostics)
             {
-                if (argumentSyntax.Literal is Int32SignedLiteralValueSyntax intLiteralSyntax)
+                if ((node.ArgumentList != null) && (node.ArgumentList.Arguments != null) && (node.ArgumentList.Arguments.Count > 0) && (node.ArgumentList.Arguments[0] is LiteralExpressionSyntax argumentSyntax))
                 {
-                    int objectId;
-                    if (Int32.TryParse(intLiteralSyntax.Number.ValueText, out objectId))
+                    if (argumentSyntax.Literal is Int32SignedLiteralValueSyntax intLiteralSyntax)
                     {
-                        if ((objectId != 0) && (node.Expression is MemberAccessExpressionSyntax expressionSyntax))
+                        int objectId;
+                        if (Int32.TryParse(intLiteralSyntax.Number.ValueText, out objectId))
                         {
-                            if (expressionSyntax.Expression is IdentifierNameSyntax expressionNameSyntax)
+                            if ((objectId != 0) && (node.Expression is MemberAccessExpressionSyntax expressionSyntax))
                             {
-                                string expressionName = expressionNameSyntax.Identifier.ValueText;
-                                string expressionMemberName = expressionSyntax.Name?.Identifier.ValueText;
-                                string objectType = this.GetObjectTypeForSystemFunction(expressionName, expressionMemberName);
-                                if (objectType != null)
+                                if (expressionSyntax.Expression is IdentifierNameSyntax expressionNameSyntax)
                                 {
-                                    ALAppObject alAppObject = this.FindObjectById(objectType, objectId);
-                                    string objectName = alAppObject?.Name;
-                                    if (!String.IsNullOrWhiteSpace(objectName))
+                                    string expressionName = expressionNameSyntax.Identifier.ValueText;
+                                    string expressionMemberName = expressionSyntax.Name?.Identifier.ValueText;
+                                    string objectType = this.GetObjectTypeForSystemFunction(expressionName, expressionMemberName);
+                                    if (objectType != null)
                                     {
-                                        CodeExpressionSyntax newArgumentSyntax = SyntaxFactory.OptionAccessExpression(
-                                            SyntaxFactory.IdentifierName(this.ObjectTypeNameToEnumName(objectType)),
-                                            SyntaxFactory.IdentifierName(objectName)).WithTriviaFrom(argumentSyntax);
-                                        SeparatedSyntaxList<CodeExpressionSyntax> newArguments = node.ArgumentList.Arguments.Replace(argumentSyntax, newArgumentSyntax);
-                                        ArgumentListSyntax newArgumentList = node.ArgumentList.WithArguments(newArguments);
-                                        node = node.WithArgumentList(newArgumentList);
+                                        ALAppObject alAppObject = this.FindObjectById(objectType, objectId);
+                                        string objectName = alAppObject?.Name;
+                                        if (!String.IsNullOrWhiteSpace(objectName))
+                                        {
+                                            CodeExpressionSyntax newArgumentSyntax = SyntaxFactory.OptionAccessExpression(
+                                                SyntaxFactory.IdentifierName(this.ObjectTypeNameToEnumName(objectType)),
+                                                SyntaxFactory.IdentifierName(objectName)).WithTriviaFrom(argumentSyntax);
+                                            SeparatedSyntaxList<CodeExpressionSyntax> newArguments = node.ArgumentList.Arguments.Replace(argumentSyntax, newArgumentSyntax);
+                                            ArgumentListSyntax newArgumentList = node.ArgumentList.WithArguments(newArguments);
+                                            node = node.WithArgumentList(newArgumentList);
+                                        }
                                     }
                                 }
                             }
-                        }
 
+                        }
                     }
                 }
             }
 
             return base.VisitInvocationExpression(node);
-        }
-
-        public override SyntaxNode VisitProperty(PropertySyntax node)
-        {
-            return base.VisitProperty(node);
-        }
-
-        public override SyntaxNode VisitPagePart(PagePartSyntax node)
-        {
-            return base.VisitPagePart(node);
         }
 
         protected string GetObjectTypeForSystemFunction(string expressionName, string expressionMemberName)
