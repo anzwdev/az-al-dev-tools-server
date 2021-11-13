@@ -1,4 +1,5 @@
-﻿using AnZwDev.ALTools.Extensions;
+﻿using AnZwDev.ALTools.ALSymbols;
+using AnZwDev.ALTools.Extensions;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using System;
@@ -33,17 +34,22 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         public override SyntaxNode VisitPage(PageSyntax node)
         {
-            if (!node.HasProperty("CaptionML"))
+            //check page type
+            string pageType = ALSyntaxHelper.DecodeName(node.GetProperty("PageType")?.Value?.ToString());
+            if ((pageType == null) || (!pageType.Equals("API", StringComparison.CurrentCultureIgnoreCase)))
             {
-                PropertySyntax propertySyntax = node.GetProperty("Caption");
-                if (propertySyntax == null)
+                if (!node.HasProperty("CaptionML"))
                 {
-                    NoOfChanges++;
-                    node = node.AddPropertyListProperties(
-                        this.CreateCaptionPropertyFromName(node, false));
+                    PropertySyntax propertySyntax = node.GetProperty("Caption");
+                    if (propertySyntax == null)
+                    {
+                        NoOfChanges++;
+                        node = node.AddPropertyListProperties(
+                            this.CreateCaptionPropertyFromName(node, false));
+                    }
+                    else
+                        node = UpdateCaptionFromName(node, propertySyntax, false);
                 }
-                else
-                    node = UpdateCaptionFromName(node, propertySyntax, false);
             }
             return base.VisitPage(node);
         }

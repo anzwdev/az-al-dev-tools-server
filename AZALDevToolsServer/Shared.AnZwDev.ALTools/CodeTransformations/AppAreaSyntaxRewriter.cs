@@ -44,6 +44,14 @@ namespace AnZwDev.ALTools.CodeTransformations
             return base.VisitPage(node);
         }
 
+        public override SyntaxNode VisitPageLabel(PageLabelSyntax node)
+        {
+            if (this.HasApplicationArea(node))
+                return base.VisitPageLabel(node);
+            this.NoOfChanges++;
+            return node.AddPropertyListProperties(this.CreateApplicationAreaProperty(node));
+        }
+
         public override SyntaxNode VisitPageField(PageFieldSyntax node)
         {
             if (this.HasApplicationArea(node))
