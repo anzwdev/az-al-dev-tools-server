@@ -18,8 +18,18 @@ namespace AnZwDev.ALTools.Server
 
         public void WriteError(Exception e)
         {
-            if ((this._aLDevToolsServerHost != null) && (this._aLDevToolsServerHost.Logger != null))
-                this._aLDevToolsServerHost.Logger.Write(LogLevel.Error, "Error: " + e.Message + "\n" + e.StackTrace);
+            this.WriteError(e, "Error: ");
         }
+
+        public void WriteError(Exception e, string messageStartPart)
+        {
+            if (String.IsNullOrEmpty(messageStartPart))
+                messageStartPart = "Error: ";
+
+            if ((this._aLDevToolsServerHost != null) && (this._aLDevToolsServerHost.Logger != null))
+                this._aLDevToolsServerHost.Logger.Write(LogLevel.Error, messageStartPart + e.Message + "\n" + e.StackTrace);
+        }
+
+
     }
 }

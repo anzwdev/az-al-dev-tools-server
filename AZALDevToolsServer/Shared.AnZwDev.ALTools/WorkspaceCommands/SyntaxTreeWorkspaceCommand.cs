@@ -71,7 +71,8 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             }
             catch (Exception e)
             {
-                MessageLog.LogError(e);
+                MessageLog.LogError(e, 
+                    $"Error processing file '{path}': ");
             }
         }
 

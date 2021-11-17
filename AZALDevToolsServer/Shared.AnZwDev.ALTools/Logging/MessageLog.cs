@@ -21,5 +21,17 @@ namespace AnZwDev.ALTools.Logging
             }
         }
 
+        public static void LogError(Exception e, string messageStartPart)
+        {
+            try
+            {
+                if (MessageLog.Writer != null)
+                    MessageLog.Writer.WriteError(e, messageStartPart);
+            }
+            catch (Exception)
+            {
+            }
+        }
+
     }
 }
