@@ -1,9 +1,11 @@
 ﻿using AnZwDev.ALTools.ALSymbols;
+using AnZwDev.ALTools.Logging;
 using AnZwDev.ALTools.Workspace;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.CommandLine;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Diagnostics;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
+using Microsoft.Dynamics.Nav.CodeAnalysis.Text;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -21,32 +23,33 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         {
         }
 
-        public override WorkspaceCommandResult Run(string sourceCode, string path, Range range, Dictionary<string, string> parameters)
+        public override WorkspaceCommandResult Run(string sourceCode, string projectPath, string filePath, Range range, Dictionary<string, string> parameters)
         {
             SyntaxTree sourceSyntaxTree = null;
-            WorkspaceCommandResult outVal = null;
-            string sourcePath = null;
-            if (parameters.ContainsKey("sourceFilePath"))
-                sourcePath = parameters["sourceFilePath"];
+            string newSourceCode = null;
+            bool success = true;
+            string errorMessage = null;
 
-            //load project
+            //load project and single file
             List<SyntaxTree> syntaxTrees = new List<SyntaxTree>();
-            Compilation compilation = this.LoadProject(path, syntaxTrees, sourceCode, sourcePath, out sourceSyntaxTree);
-            ALProject project = this.ALDevToolsServer.Workspace.FindProject(path, true);
+            Compilation compilation = this.LoadProject(projectPath, syntaxTrees, sourceCode, filePath, out sourceSyntaxTree);
+            ALProject project = this.ALDevToolsServer.Workspace.FindProject(projectPath, true);
 
-            if (!String.IsNullOrEmpty(sourceCode))
+            if (!String.IsNullOrWhiteSpace(filePath))
             {
-                string newSourceCode = this.ProcessSourceCode(sourceCode, sourceSyntaxTree, compilation, project, range, parameters);
-                outVal = new WorkspaceCommandResult(newSourceCode);
+                if (!String.IsNullOrEmpty(sourceCode))
+                {
+                    (newSourceCode, success, errorMessage) = this.ProcessSourceCode(sourceSyntaxTree, compilation, project, range, parameters);
+                    if (!success)
+                        return new WorkspaceCommandResult(newSourceCode, true, errorMessage);
+                }
             }
             else
-            {
-                int noOfModifiedFiles = this.ProcessFiles(syntaxTrees, compilation, project, parameters);
-                outVal = new WorkspaceCommandResult(null);
-                outVal.SetParameter(NoOfChangedFilesParameterName, noOfModifiedFiles.ToString());
-            }
+                (success, errorMessage) = this.ProcessDirectory(syntaxTrees, compilation, project, parameters);
 
-            return outVal;
+            if (success)
+                return new WorkspaceCommandResult(newSourceCode);
+            return new WorkspaceCommandResult(newSourceCode, true, errorMessage);
         }
 
         #region Project loading
@@ -123,40 +126,66 @@ namespace AnZwDev.ALTools.WorkspaceCommands
 
         #region Project files processing
 
-        protected int ProcessFiles(List<SyntaxTree> syntaxTrees, Compilation compilation, ALProject project, Dictionary<string, string> parameters)
+        protected (bool, string) ProcessDirectory(List<SyntaxTree> syntaxTrees, Compilation compilation, ALProject project, Dictionary<string, string> parameters)
         {
-            int noOfModifiedFiles = 0;
-
             foreach (SyntaxTree syntaxTree in syntaxTrees)
             {
-                SemanticModel semanticModel = compilation.GetSemanticModel(syntaxTree);
-
-                SyntaxNode newRootNode = this.ProcessFile(syntaxTree, semanticModel, project, null, parameters);
-                if (newRootNode != null)
-                {
-                    File.WriteAllText(syntaxTree.FilePath, newRootNode.ToFullString());
-
-                    if (newRootNode != syntaxTree.GetRoot())
-                        noOfModifiedFiles++;
-                }
+                (bool success, string errorMessage) = this.ProcessFile(syntaxTree, compilation, project, null, parameters);
+                if (!success)
+                    return (false, errorMessage);
             }
-
-            return noOfModifiedFiles;
+            return (true, null);
         }
 
-        protected virtual SyntaxNode ProcessFile(SyntaxTree syntaxTree, SemanticModel semanticModel, ALProject project, Range range, Dictionary<string, string> parameters)
+        protected (bool, string) ProcessFile(SyntaxTree syntaxTree, Compilation compilation, ALProject project, Range range, Dictionary<string, string> parameters)
         {
-            return syntaxTree.GetRoot();
+            SyntaxNode rootNode = syntaxTree.GetRoot();
+            if (rootNode != null)
+            {
+                (string newSource, bool success, string errorMessage) = this.ProcessSourceCode(syntaxTree, compilation, project, range, parameters);
+                if ((success) && (!String.IsNullOrWhiteSpace(newSource)))
+                    System.IO.File.WriteAllText(syntaxTree.FilePath, newSource);
+                return (success, errorMessage);
+            }
+            return (true, null);
         }
 
-        protected string ProcessSourceCode(string sourceCode, SyntaxTree sourceSyntaxTree, Compilation compilation, ALProject project, Range range, Dictionary<string, string> parameters)
+        protected (string, bool, string) ProcessSourceCode(SyntaxTree syntaxTree, Compilation compilation, ALProject project, Range range, Dictionary<string, string> parameters)
         {
-            //SyntaxTree syntaxTree = SyntaxTree.ParseObjectText(sourceCode);
-            SemanticModel semanticModel = compilation.GetSemanticModel(sourceSyntaxTree);
-            SyntaxNode newRootNode = this.ProcessFile(sourceSyntaxTree, semanticModel, project, null, parameters);
-            if (newRootNode != null)
-                return newRootNode.ToFullString();
-            return null;
+            try
+            {
+                SyntaxNode rootNode = syntaxTree.GetRoot();
+                if (rootNode != null)
+                {
+                    //convert range to TextSpan
+                    TextSpan span = new TextSpan(0, 0);
+
+                    //fix nodes
+                    SemanticModel semanticModel = compilation.GetSemanticModel(syntaxTree);
+                    SyntaxNode newRootNode = this.ProcessSyntaxNode(syntaxTree, rootNode, semanticModel, project, span, parameters);
+
+                    //return new source code
+                    if (newRootNode != null)
+                        return (newRootNode.ToFullString(), true, null);
+                }
+                return (null, true, null);
+            }
+            catch (Exception ex)
+            {
+                string filePath = syntaxTree.FilePath;
+                string errorMessage = (String.IsNullOrEmpty(filePath)) ?
+                    $"Workspace command {this.Name} error during processing source code" : $"Workspace command {this.Name} error during processing file '{filePath}'";
+                MessageLog.LogError(ex, errorMessage + ": ");
+                return (null, false, errorMessage);
+            }
+        }
+
+        public virtual SyntaxNode ProcessSyntaxNode(SyntaxTree syntaxTree, SyntaxNode node, SemanticModel semanticModel, ALProject project, TextSpan span, Dictionary<string, string> parameters)
+        {
+            bool skipFormatting = ((parameters != null) && (parameters.ContainsKey("skipFormatting")) && (parameters["skipFormatting"] == "true"));
+            if (!skipFormatting)
+                node = FormatSyntaxNode(node);
+            return node;
         }
 
         #endregion

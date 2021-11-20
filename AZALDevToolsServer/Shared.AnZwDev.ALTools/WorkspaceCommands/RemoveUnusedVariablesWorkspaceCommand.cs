@@ -12,7 +12,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
 {
 
 #if BC
-    public class RemoveUnusedVariablesWorkspaceCommand : SemanticModelWorkspaceCommand
+    public class RemoveUnusedVariablesWorkspaceCommand : SemanticModelSyntaxRewriterWorkspaceCommand<RemoveUnusedVariablesSyntaxRewriter>
     {
 
         public static string RemoveGlobalVariablesParameterName = "removeGlobalVariables";
@@ -23,17 +23,12 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         {
         }
 
-        protected override SyntaxNode ProcessFile(SyntaxTree syntaxTree, SemanticModel semanticModel, ALProject project, Range range, Dictionary<string, string> parameters)
+        protected override void SetParameters(SyntaxTree syntaxTree, SyntaxNode node, SemanticModel semanticModel, ALProject project, TextSpan span, Dictionary<string, string> parameters)
         {
-            RemoveUnusedVariablesSyntaxRewriter removeUnusedVariablesSyntaxRewriter = new RemoveUnusedVariablesSyntaxRewriter();
-            removeUnusedVariablesSyntaxRewriter.SemanticModel = semanticModel;
-            removeUnusedVariablesSyntaxRewriter.Project = project;
-            removeUnusedVariablesSyntaxRewriter.RemoveGlobalVariables = parameters.GetBoolValue(RemoveGlobalVariablesParameterName);
-            removeUnusedVariablesSyntaxRewriter.RemoveLocalVariables = parameters.GetBoolValue(RemoveLocalVariablesParameterName);
-            removeUnusedVariablesSyntaxRewriter.RemoveLocalMethodParameters = parameters.GetBoolValue(RemoveLocalMethodParametersParameterName);
-
-            SyntaxNode newNode = removeUnusedVariablesSyntaxRewriter.Visit(syntaxTree.GetRoot());
-            return this.FormatSyntaxNode(newNode);
+            base.SetParameters(syntaxTree, node, semanticModel, project, span, parameters);
+            this.SyntaxRewriter.RemoveGlobalVariables = parameters.GetBoolValue(RemoveGlobalVariablesParameterName);
+            this.SyntaxRewriter.RemoveLocalVariables = parameters.GetBoolValue(RemoveLocalVariablesParameterName);
+            this.SyntaxRewriter.RemoveLocalMethodParameters = parameters.GetBoolValue(RemoveLocalMethodParametersParameterName);
         }
 
     }

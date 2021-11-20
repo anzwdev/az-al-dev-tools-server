@@ -17,9 +17,9 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         {
         }
 
-        protected override void SetParameters(string sourceCode, string path, TextSpan span, Dictionary<string, string> parameters)
+        protected override void SetParameters(string sourceCode, string projectPath, string filePath, TextSpan span, Dictionary<string, string> parameters)
         {
-            base.SetParameters(sourceCode, path, span, parameters);
+            base.SetParameters(sourceCode, projectPath, filePath, span, parameters);
             this.SyntaxRewriter.LockRemovedFields = parameters.GetBoolValue(LockRemovedFieldsParameterName);
         }
 

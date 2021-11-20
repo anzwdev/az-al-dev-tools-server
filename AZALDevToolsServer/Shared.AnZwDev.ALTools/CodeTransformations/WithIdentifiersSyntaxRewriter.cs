@@ -10,10 +10,8 @@ namespace AnZwDev.ALTools.CodeTransformations
 {
 
 #if BC
-    public class WithIdentifiersSyntaxRewriter : SyntaxRewriter
+    public class WithIdentifiersSyntaxRewriter : ALSemanticModelSyntaxRewriter
     {
-        public SemanticModel SemanticModel { get; set; }
-
         public WithIdentifiersSyntaxRewriter()
         {
         }

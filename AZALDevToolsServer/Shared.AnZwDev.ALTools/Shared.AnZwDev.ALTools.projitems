@@ -201,6 +201,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\RemoveUnusedVariablesWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\RemoveVariableWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\RemoveWithWorkspaceCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\SemanticModelSyntaxRewriterWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\SemanticModelWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\SortPermissionSetListWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\SortPermissionsWorkspaceCommand.cs" />

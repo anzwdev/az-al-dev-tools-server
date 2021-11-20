@@ -18,14 +18,18 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         {
         }
 
-        protected override SyntaxNode ProcessFile(SyntaxTree syntaxTree, SemanticModel semanticModel, ALProject project, Range range, Dictionary<string, string> parameters)
+        public override SyntaxNode ProcessSyntaxNode(SyntaxTree syntaxTree, SyntaxNode node, SemanticModel semanticModel, ALProject project, TextSpan span, Dictionary<string, string> parameters)
         {
-            IdentifierCaseSyntaxRewriter identifierCaseSyntaxRewriter = new IdentifierCaseSyntaxRewriter();
-            identifierCaseSyntaxRewriter.SemanticModel = semanticModel;
-            identifierCaseSyntaxRewriter.Project = project;
+            if (node != null)
+            {
+                IdentifierCaseSyntaxRewriter identifierCaseSyntaxRewriter = new IdentifierCaseSyntaxRewriter();
+                identifierCaseSyntaxRewriter.SemanticModel = semanticModel;
+                identifierCaseSyntaxRewriter.Project = project;
 
-            SyntaxNode newNode = identifierCaseSyntaxRewriter.Visit(syntaxTree.GetRoot());
-            return this.FormatSyntaxNode(newNode);
+                node = identifierCaseSyntaxRewriter.Visit(node);
+            }
+
+            return base.ProcessSyntaxNode(syntaxTree, node, semanticModel, project, span, parameters);
         }
 
     }

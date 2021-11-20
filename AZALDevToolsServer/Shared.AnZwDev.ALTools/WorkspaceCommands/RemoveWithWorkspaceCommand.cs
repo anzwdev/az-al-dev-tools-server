@@ -18,18 +18,24 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         {
         }
 
-        protected override SyntaxNode ProcessFile(SyntaxTree syntaxTree, SemanticModel semanticModel, ALProject project, Range range, Dictionary<string, string> parameters)
+        public override SyntaxNode ProcessSyntaxNode(SyntaxTree syntaxTree, SyntaxNode node, SemanticModel semanticModel, ALProject project, TextSpan span, Dictionary<string, string> parameters)
         {
-            //stage 1 - update calls
-            WithIdentifiersSyntaxRewriter identifiersRewriter = new WithIdentifiersSyntaxRewriter();
-            identifiersRewriter.SemanticModel = semanticModel;
-            SyntaxNode newNode = identifiersRewriter.Visit(syntaxTree.GetRoot());
+            if (node != null)
+            {
+                //stage 1 - update calls
+                WithIdentifiersSyntaxRewriter identifiersRewriter = new WithIdentifiersSyntaxRewriter();
+                identifiersRewriter.SemanticModel = semanticModel;
+                node = identifiersRewriter.Visit(node);
 
-            //stage 2 - remove "with" statements
-            WithRemoveSyntaxRewriter withRemoveSyntaxRewriter = new WithRemoveSyntaxRewriter();
-            newNode = withRemoveSyntaxRewriter.Visit(newNode);
+                //stage 2 - remove "with" statements
+                if (node != null)
+                {
+                    WithRemoveSyntaxRewriter withRemoveSyntaxRewriter = new WithRemoveSyntaxRewriter();
+                    node = withRemoveSyntaxRewriter.Visit(node);
+                }
+            }
 
-            return this.FormatSyntaxNode(newNode);
+            return base.ProcessSyntaxNode(syntaxTree, node, semanticModel, project, span, parameters);
         }
 
     }

@@ -12,7 +12,8 @@ namespace AnZwDev.ALTools.Server.Contracts
 
         public string command { get; set; }
         public string source { get; set; }
-        public string path { get; set; }
+        public string projectPath { get; set; }
+        public string filePath { get; set; }
         public Range range { get; set; }
         public Dictionary<string, string> parameters { get; set; }
 
