@@ -179,6 +179,7 @@ namespace AnZwDev.ALTools.CodeTransformations
             //remove unused global variables from the global variables section
             if (deleteVariables.Count > 0)
             {
+                this.NoOfChanges += deleteVariables.Count;
                 GlobalVarSectionSyntax newGlobalVarSection = this.RemoveGlobalVarSectionVariables(globalVariables, deleteVariables);
                 return (newGlobalVarSection, true);
             }
@@ -206,8 +207,9 @@ namespace AnZwDev.ALTools.CodeTransformations
                 Dictionary<string, ISymbol> deleteVariables = new Dictionary<string, ISymbol>();
                 foreach (IVariableSymbol variableSymbol in symbol.LocalVariables)
                 {
-                    if (!variableSymbol.IsSynthesized)
-                        deleteVariables.Add(variableSymbol.Name.ToLower(), variableSymbol);
+                    string localVariableName = variableSymbol.Name.ToLower();
+                    if ((!variableSymbol.IsSynthesized) && (!deleteVariables.ContainsKey(localVariableName)))
+                        deleteVariables.Add(localVariableName, variableSymbol);
                 }
 
                 //add return variable
@@ -216,7 +218,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                     if ((symbol.ReturnValueSymbol != null) && (!symbol.ReturnValueSymbol.IsSynthesized) && (symbol.ReturnValueSymbol.IsNamed))
                     {
                         returnValueName = symbol.ReturnValueSymbol.Name.ToLower();
-                        if (!String.IsNullOrWhiteSpace(returnValueName))
+                        if ((!String.IsNullOrWhiteSpace(returnValueName)) && (!deleteVariables.ContainsKey(returnValueName)))
                             deleteVariables.Add(returnValueName, symbol.ReturnValueSymbol);
                     }
 
@@ -228,7 +230,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                             if (!parameterSymbol.IsSynthesized)
                             {
                                 string parameterName = parameterSymbol.Name.ToLower();
-                                if (!deleteVariables.ContainsKey(parameterName))
+                                if ((!deleteVariables.ContainsKey(parameterName)) && (!deleteVariables.ContainsKey(parameterName)))
                                     deleteVariables.Add(parameterName, parameterSymbol);
                             }
                         }
@@ -243,6 +245,8 @@ namespace AnZwDev.ALTools.CodeTransformations
                 bool updated = false;
                 if (deleteVariables.Count > 0)
                 {
+                    this.NoOfChanges += deleteVariables.Count;
+
                     //remove variables
                     HashSet<string> deleteVariableNames = new HashSet<string>();
                     foreach (string name in deleteVariables.Keys)
@@ -303,7 +307,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                     {
                         case VariableDeclarationSyntax variableDeclaration:
                             name = variableDeclaration.Name.Unquoted()?.ToLower();
-                            if (!String.IsNullOrWhiteSpace(name))
+                            if ((!String.IsNullOrWhiteSpace(name)) && (!namesCollection.Contains(name)))
                                 namesCollection.Add(name);
                             break;
                         case VariableListDeclarationSyntax variableListDeclaration:
@@ -312,7 +316,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                                 foreach (VariableDeclarationNameSyntax variableNameSyntax in variableListDeclaration.VariableNames)
                                 {
                                     name = variableNameSyntax.Name.Unquoted()?.ToLower();
-                                    if (!String.IsNullOrWhiteSpace(name))
+                                    if ((!String.IsNullOrWhiteSpace(name)) && (!namesCollection.Contains(name)))
                                         namesCollection.Add(name);
                                 }
                             }

@@ -68,6 +68,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                         if ((operationInstance.Syntax.Parent != null) &&
                         (operationInstance.Syntax.Parent.Kind.ConvertToLocalType() == ConvertedSyntaxKind.WithStatement))
                         {
+                            this.NoOfChanges++;
                             return SyntaxFactory.MemberAccessExpression(
                                 (CodeExpressionSyntax)operationInstance.Syntax.WithoutTrivia(),
                                 node.WithoutTrivia()).WithTriviaFrom(node);
@@ -80,6 +81,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                             IGlobalReferenceExpression globalRef = (IGlobalReferenceExpression)operationInstance;
                             string name = globalRef.GlobalVariable.Name.ToString();
 
+                            this.NoOfChanges++;
                             return SyntaxFactory.MemberAccessExpression(
                                 SyntaxFactory.IdentifierName(name),
                                 node.WithoutTrivia()).WithTriviaFrom(node);

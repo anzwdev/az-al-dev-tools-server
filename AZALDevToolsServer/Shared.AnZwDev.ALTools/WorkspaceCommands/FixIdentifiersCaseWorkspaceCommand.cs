@@ -14,9 +14,25 @@ namespace AnZwDev.ALTools.WorkspaceCommands
     public class FixIdentifiersCaseWorkspaceCommand : SemanticModelWorkspaceCommand
     {
 
+        protected int _totalNoOfChanges = 0;
+        protected int _noOfChangedFiles = 0;
+
         public FixIdentifiersCaseWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "fixIdentifiersCase")
         {
         }
+
+        public override WorkspaceCommandResult Run(string sourceCode, string projectPath, string filePath, Range range, Dictionary<string, string> parameters)
+        {
+            this._totalNoOfChanges = 0;
+            this._noOfChangedFiles = 0;
+
+            WorkspaceCommandResult result = base.Run(sourceCode, projectPath, filePath, range, parameters);
+
+            result.SetParameter(NoOfChangesParameterName, this._totalNoOfChanges.ToString());
+            result.SetParameter(NoOfChangedFilesParameterName, this._noOfChangedFiles.ToString());
+            return result;
+        }
+
 
         public override SyntaxNode ProcessSyntaxNode(SyntaxTree syntaxTree, SyntaxNode node, SemanticModel semanticModel, ALProject project, TextSpan span, Dictionary<string, string> parameters)
         {
@@ -27,6 +43,12 @@ namespace AnZwDev.ALTools.WorkspaceCommands
                 identifierCaseSyntaxRewriter.Project = project;
 
                 node = identifierCaseSyntaxRewriter.Visit(node);
+
+                if (identifierCaseSyntaxRewriter.NoOfChanges > 0)
+                {
+                    this._noOfChangedFiles++;
+                    this._totalNoOfChanges += identifierCaseSyntaxRewriter.NoOfChanges;
+                }
             }
 
             return base.ProcessSyntaxNode(syntaxTree, node, semanticModel, project, span, parameters);

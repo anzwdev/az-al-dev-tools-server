@@ -43,6 +43,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
                             if ((prevValue != newValue) && (!String.IsNullOrWhiteSpace(newValue)))
                             {
+                                this.NoOfChanges++;
                                 OptionAccessAttributeArgumentSyntax newObjectNameOrIdArgument = SyntaxFactory.OptionAccessAttributeArgument(
                                     SyntaxFactory.OptionAccessExpression(
                                         SyntaxFactory.IdentifierName(SyntaxFactory.Identifier(this.ObjectTypeNameToEnumName(objectType))),
@@ -80,6 +81,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
                     if ((newName != idText) && (!String.IsNullOrWhiteSpace(newName)))
                     {
+                        this.NoOfChanges++;
                         SyntaxToken objectNameValue = SyntaxFactory.Identifier(newName).WithTriviaFrom(objectIdSyntax.Value);
                         IdentifierNameSyntax objectName = SyntaxFactory.IdentifierName(objectNameValue).WithTriviaFrom(objectIdSyntax);
                         ObjectNameOrIdSyntax newNode = SyntaxFactory.ObjectNameOrId(objectName).WithTriviaFrom(node);
@@ -116,6 +118,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                                         string objectName = alAppObject?.Name;
                                         if (!String.IsNullOrWhiteSpace(objectName))
                                         {
+                                            this.NoOfChanges++;
                                             CodeExpressionSyntax newArgumentSyntax = SyntaxFactory.OptionAccessExpression(
                                                 SyntaxFactory.IdentifierName(this.ObjectTypeNameToEnumName(objectType)),
                                                 SyntaxFactory.IdentifierName(objectName)).WithTriviaFrom(argumentSyntax);

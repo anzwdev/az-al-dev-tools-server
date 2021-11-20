@@ -69,7 +69,10 @@ namespace AnZwDev.ALTools.CodeTransformations
                     {
                         SyntaxNode operationNode = operation.Syntax;
                         if (operationNode == node)
+                        {
+                            this.NoOfChanges++;
                             return (SyntaxFactory.InvocationExpression(node).WithTriviaFrom(node), true);
+                        }
                     }
                 }
             }
