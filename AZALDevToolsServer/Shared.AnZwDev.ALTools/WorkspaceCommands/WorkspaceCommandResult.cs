@@ -9,6 +9,9 @@ namespace AnZwDev.ALTools.WorkspaceCommands
 
         public string Source { get; set; }
         public Dictionary<string, string> Parameters { get; set; }
+        public bool Error { get; set; }
+        public string ErrorMessage { get; set; }
+
 
         private static WorkspaceCommandResult _empty = null;
         public static WorkspaceCommandResult Empty 
@@ -25,12 +28,24 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         {
             this.Source = null;
             this.Parameters = null;
+            this.Error = false;
+            this.ErrorMessage = null;
         }
 
         public WorkspaceCommandResult(string newSource)
         {
             this.Source = newSource;
             this.Parameters = null;
+            this.Error = false;
+            this.ErrorMessage = null;
+        }
+
+        public WorkspaceCommandResult(string newSource, bool newError, string newErrorMessage)
+        {
+            this.Source = newSource;
+            this.Parameters = null;
+            this.Error = newError;
+            this.ErrorMessage = newErrorMessage;
         }
 
         public void SetParameter(string name, string value)

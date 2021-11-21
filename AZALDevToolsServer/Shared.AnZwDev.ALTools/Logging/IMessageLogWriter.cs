@@ -8,6 +8,7 @@ namespace AnZwDev.ALTools.Logging
     {
 
         void WriteError(Exception e);
+        void WriteError(Exception e, string messageStartPart);
 
     }
 }

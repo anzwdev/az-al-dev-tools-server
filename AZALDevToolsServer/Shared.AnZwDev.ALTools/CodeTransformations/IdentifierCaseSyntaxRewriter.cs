@@ -46,6 +46,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                 string newName = SystemPartCaseInformation.Values.FixCase(partName);
                 if (newName != partName)
                 {
+                    this.NoOfChanges++;
                     SyntaxToken identifier = node.SystemPartType.Identifier;
                     IdentifierNameSyntax systemPartType = node.SystemPartType.WithIdentifier(
                         SyntaxFactory.Identifier(newName)
@@ -73,7 +74,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                             DotNetTypeInformation typeInformation = this.DotNetInformationProvider.GetDotNetTypeInformation(this.Project, typeAliasName);
                             if ((typeInformation != null) && (typeInformation.AliasName != null) && (typeInformation.AliasName != typeAliasName))
                             {
-                                
+                                this.NoOfChanges++;
                                 IdentifierNameSyntax newIdentifier = SyntaxFactory.IdentifierName(typeInformation.AliasName).WithTriviaFrom(identifier);
                                 ObjectNameOrIdSyntax newSubType = dataType.Subtype.WithIdentifier(newIdentifier);
                                 dataType = dataType.WithSubtype(newSubType);
@@ -162,6 +163,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
                         if ((prevName != newName) && (!String.IsNullOrWhiteSpace(newName)))
                         {
+                            this.NoOfChanges++;
                             SyntaxToken identifier = node.Identifier;
                             node = node.WithIdentifier(
                                 SyntaxFactory.Identifier(newName)

@@ -9,7 +9,7 @@ using System.Text;
 
 namespace AnZwDev.ALTools.CodeTransformations
 {
-    public class WithRemoveSyntaxRewriter : SyntaxRewriter
+    public class WithRemoveSyntaxRewriter : ALSyntaxRewriter
     {
 
         public WithRemoveSyntaxRewriter()
@@ -52,6 +52,7 @@ namespace AnZwDev.ALTools.CodeTransformations
         public override SyntaxNode VisitWithStatement(WithStatementSyntax node)
         {
             //remove "with" but keep trivia as they might contain important information
+            this.NoOfChanges++;
             SyntaxNode newNode = node.Statement //.WithTriviaFrom(node);
                 .WithLeadingTrivia(
                     node.GetLeadingTrivia()
@@ -112,6 +113,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                     newStatementsList.Add(statementSyntax);
             }
 
+            this.NoOfChanges++;
             newStatements = SyntaxFactory.List<StatementSyntax>(newStatementsList);
             return true;
         }

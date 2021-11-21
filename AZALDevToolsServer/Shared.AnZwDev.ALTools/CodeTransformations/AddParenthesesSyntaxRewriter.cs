@@ -18,6 +18,11 @@ namespace AnZwDev.ALTools.CodeTransformations
         {
         }
 
+        public override SyntaxNode Visit(SyntaxNode node)
+        {
+            return base.Visit(node);
+        }
+
         public override SyntaxNode VisitIdentifierName(IdentifierNameSyntax node)
         {
             if (!node.ContainsDiagnostics)
@@ -64,7 +69,10 @@ namespace AnZwDev.ALTools.CodeTransformations
                     {
                         SyntaxNode operationNode = operation.Syntax;
                         if (operationNode == node)
+                        {
+                            this.NoOfChanges++;
                             return (SyntaxFactory.InvocationExpression(node).WithTriviaFrom(node), true);
+                        }
                     }
                 }
             }

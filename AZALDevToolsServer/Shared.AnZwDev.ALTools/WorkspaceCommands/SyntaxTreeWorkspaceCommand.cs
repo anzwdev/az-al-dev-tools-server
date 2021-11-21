@@ -16,66 +16,86 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         {
         }
 
-        public override WorkspaceCommandResult Run(string sourceCode, string path, Range range, Dictionary<string, string> parameters)
+        public override WorkspaceCommandResult Run(string sourceCode, string projectPath, string filePath, Range range, Dictionary<string, string> parameters)
         {
             string newSourceCode = null;
-            if (!String.IsNullOrEmpty(sourceCode))
-                newSourceCode = this.ProcessSourceCode(sourceCode, path, range, parameters);
-            else if (!String.IsNullOrWhiteSpace(path))
-                this.ProcessDirectory(path, parameters);
+            bool success = true;
+            string errorMessage = null;
 
-            return new WorkspaceCommandResult(newSourceCode);
-        }
-
-        protected string ProcessSourceCode(string sourceCode, string path, Range range, Dictionary<string, string> parameters)
-        {
-            //parse source code
-            SourceText sourceText = SourceText.From(sourceCode);
-            SyntaxTree syntaxTree = SyntaxTree.ParseObjectText(sourceText);
-
-            //convert range to TextSpan
-            TextSpan span = new TextSpan(0, 0);
-            if (range != null)
+            if (!String.IsNullOrWhiteSpace(filePath))
             {
-                LinePositionSpan srcRange = new LinePositionSpan(new LinePosition(range.start.line, range.start.character), new LinePosition(range.end.line, range.end.character));
-                span = sourceText.Lines.GetTextSpan(srcRange);
+                if (!String.IsNullOrEmpty(sourceCode))
+                {
+                    (newSourceCode, success, errorMessage) = this.ProcessSourceCode(sourceCode, projectPath, filePath, range, parameters);
+                    if (!success)
+                        return new WorkspaceCommandResult(newSourceCode, true, errorMessage);
+                }
             }
+            else if (!String.IsNullOrWhiteSpace(projectPath))
+                (success, errorMessage) = this.ProcessDirectory(projectPath, parameters);
 
-            //fix nodes
-            SyntaxNode node = this.ProcessSyntaxNode(syntaxTree.GetRoot(), sourceCode, path, span, parameters);
-
-            //return new source code
-            if (node == null)
-                return null;
-
-            return node.ToFullString();
+            if (success)
+                return new WorkspaceCommandResult(newSourceCode);
+            return new WorkspaceCommandResult(newSourceCode, true, errorMessage);
         }
 
-        protected virtual void ProcessDirectory(string path, Dictionary<string, string> parameters)
-        {
-            string[] filePathsList = System.IO.Directory.GetFiles(path, "*.al", System.IO.SearchOption.AllDirectories);
-            for (int i = 0; i < filePathsList.Length; i++)
-            {
-                this.ProcessFile(filePathsList[i], parameters);
-            }
-        }
-
-        protected virtual void ProcessFile(string path, Dictionary<string, string> parameters)
+        protected (string, bool, string) ProcessSourceCode(string sourceCode, string projectPath, string filePath, Range range, Dictionary<string, string> parameters)
         {
             try
             {
-                string source = System.IO.File.ReadAllText(path);
-                string newSource = this.ProcessSourceCode(source, path, null, parameters);
-                if ((newSource != source) && (!String.IsNullOrWhiteSpace(newSource)))
-                    System.IO.File.WriteAllText(path, newSource);
+                //parse source code
+                SourceText sourceText = SourceText.From(sourceCode);
+                SyntaxTree syntaxTree = SyntaxTree.ParseObjectText(sourceText);
+
+                //convert range to TextSpan
+                TextSpan span = new TextSpan(0, 0);
+                if (range != null)
+                {
+                    LinePositionSpan srcRange = new LinePositionSpan(new LinePosition(range.start.line, range.start.character), new LinePosition(range.end.line, range.end.character));
+                    span = sourceText.Lines.GetTextSpan(srcRange);
+                }
+
+                //fix nodes
+                SyntaxNode node = this.ProcessSyntaxNode(syntaxTree.GetRoot(), sourceCode, projectPath, filePath, span, parameters);
+
+                //return new source code
+                if (node == null)
+                    return (null, true, null);
+
+                return (node.ToFullString(), true, null);
+
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                MessageLog.LogError(e);
+                string errorMessage = (String.IsNullOrEmpty(filePath)) ?
+                    $"Workspace command {this.Name} error during processing source code" : $"Workspace command {this.Name} error during processing file '{filePath}'";
+                MessageLog.LogError(ex, errorMessage + ": ");
+                return (null, false, errorMessage);
             }
         }
 
-        public virtual SyntaxNode ProcessSyntaxNode(SyntaxNode node, string sourceCode, string path, TextSpan span, Dictionary<string, string> parameters)
+        protected virtual (bool, string) ProcessDirectory(string projectPath, Dictionary<string, string> parameters)
+        {
+            string[] filePathsList = System.IO.Directory.GetFiles(projectPath, "*.al", System.IO.SearchOption.AllDirectories);
+            for (int i = 0; i < filePathsList.Length; i++)
+            {
+                (bool success, string errorMessage) = this.ProcessFile(projectPath, filePathsList[i], parameters);
+                if (!success)
+                    return (false, errorMessage);
+            }
+            return (true, null);
+        }
+
+        protected virtual (bool, string) ProcessFile(string projectPath, string filePath, Dictionary<string, string> parameters)
+        {
+            string source = System.IO.File.ReadAllText(filePath);
+            (string newSource, bool success, string errorMessage) = this.ProcessSourceCode(source, projectPath, filePath, null, parameters);
+            if ((success) && (newSource != source) && (!String.IsNullOrWhiteSpace(newSource)))
+                System.IO.File.WriteAllText(filePath, newSource);
+            return (success, errorMessage);
+        }
+
+        public virtual SyntaxNode ProcessSyntaxNode(SyntaxNode node, string sourceCode, string projectPath, string filePath, TextSpan span, Dictionary<string, string> parameters)
         {
             bool skipFormatting = ((parameters != null) && (parameters.ContainsKey("skipFormatting")) && (parameters["skipFormatting"] == "true"));
             if (!skipFormatting)

@@ -14,18 +14,44 @@ namespace AnZwDev.ALTools.WorkspaceCommands
     public class FixIdentifiersCaseWorkspaceCommand : SemanticModelWorkspaceCommand
     {
 
+        protected int _totalNoOfChanges = 0;
+        protected int _noOfChangedFiles = 0;
+
         public FixIdentifiersCaseWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "fixIdentifiersCase")
         {
         }
 
-        protected override SyntaxNode ProcessFile(SyntaxTree syntaxTree, SemanticModel semanticModel, ALProject project, Range range, Dictionary<string, string> parameters)
+        public override WorkspaceCommandResult Run(string sourceCode, string projectPath, string filePath, Range range, Dictionary<string, string> parameters)
         {
-            IdentifierCaseSyntaxRewriter identifierCaseSyntaxRewriter = new IdentifierCaseSyntaxRewriter();
-            identifierCaseSyntaxRewriter.SemanticModel = semanticModel;
-            identifierCaseSyntaxRewriter.Project = project;
+            this._totalNoOfChanges = 0;
+            this._noOfChangedFiles = 0;
 
-            SyntaxNode newNode = identifierCaseSyntaxRewriter.Visit(syntaxTree.GetRoot());
-            return this.FormatSyntaxNode(newNode);
+            WorkspaceCommandResult result = base.Run(sourceCode, projectPath, filePath, range, parameters);
+
+            result.SetParameter(NoOfChangesParameterName, this._totalNoOfChanges.ToString());
+            result.SetParameter(NoOfChangedFilesParameterName, this._noOfChangedFiles.ToString());
+            return result;
+        }
+
+
+        public override SyntaxNode ProcessSyntaxNode(SyntaxTree syntaxTree, SyntaxNode node, SemanticModel semanticModel, ALProject project, TextSpan span, Dictionary<string, string> parameters)
+        {
+            if (node != null)
+            {
+                IdentifierCaseSyntaxRewriter identifierCaseSyntaxRewriter = new IdentifierCaseSyntaxRewriter();
+                identifierCaseSyntaxRewriter.SemanticModel = semanticModel;
+                identifierCaseSyntaxRewriter.Project = project;
+
+                node = identifierCaseSyntaxRewriter.Visit(node);
+
+                if (identifierCaseSyntaxRewriter.NoOfChanges > 0)
+                {
+                    this._noOfChangedFiles++;
+                    this._totalNoOfChanges += identifierCaseSyntaxRewriter.NoOfChanges;
+                }
+            }
+
+            return base.ProcessSyntaxNode(syntaxTree, node, semanticModel, project, span, parameters);
         }
 
     }

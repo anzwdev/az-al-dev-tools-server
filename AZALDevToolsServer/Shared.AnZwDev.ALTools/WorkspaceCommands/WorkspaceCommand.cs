@@ -24,7 +24,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             this.Name = newName;
         }
 
-        public virtual WorkspaceCommandResult Run(string sourceCode, string path, Range range, Dictionary<string, string> parameters)
+        public virtual WorkspaceCommandResult Run(string sourceCode, string projectPath, string filePath, Range range, Dictionary<string, string> parameters)
         {
             return WorkspaceCommandResult.Empty;
         }

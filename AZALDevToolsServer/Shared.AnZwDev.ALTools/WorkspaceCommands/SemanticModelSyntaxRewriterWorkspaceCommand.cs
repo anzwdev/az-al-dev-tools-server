@@ -1,5 +1,6 @@
 ﻿using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.CodeTransformations;
+using AnZwDev.ALTools.Workspace;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using System;
@@ -8,12 +9,14 @@ using System.Text;
 
 namespace AnZwDev.ALTools.WorkspaceCommands
 {
-    public class SyntaxRewriterWorkspaceCommand<T> : SyntaxTreeWorkspaceCommand where T: ALSyntaxRewriter, new()
-    {
 
+#if BC
+
+    public class SemanticModelSyntaxRewriterWorkspaceCommand<T> : SemanticModelWorkspaceCommand where T: ALSemanticModelSyntaxRewriter, new()
+    {
         public T SyntaxRewriter { get; }
 
-        public SyntaxRewriterWorkspaceCommand(ALDevToolsServer alDevToolsServer, string name): base(alDevToolsServer, name)
+        public SemanticModelSyntaxRewriterWorkspaceCommand(ALDevToolsServer alDevToolsServer, string name) : base(alDevToolsServer, name)
         {
             this.SyntaxRewriter = new T();
         }
@@ -31,26 +34,30 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             return result;
         }
 
-        public override SyntaxNode ProcessSyntaxNode(SyntaxNode node, string sourceCode, string projectPath, string filePath, TextSpan span, Dictionary<string, string> parameters)
+        public override SyntaxNode ProcessSyntaxNode(SyntaxTree syntaxTree, SyntaxNode node, SemanticModel semanticModel, ALProject project, TextSpan span, Dictionary<string, string> parameters)
         {
-            this.SetParameters(sourceCode, projectPath, filePath, span, parameters);
+            this.SetParameters(syntaxTree, node, semanticModel, project, span, parameters);
             node = this.SyntaxRewriter.ProcessNode(node);
-            node = base.ProcessSyntaxNode(node, sourceCode, projectPath, filePath, span, parameters);
+            node = base.ProcessSyntaxNode(syntaxTree, node, semanticModel, project, span, parameters);
             this.ClearParameters();
             return node;
         }
 
-        protected virtual void SetParameters(string sourceCode, string projectPath, string filePath, TextSpan span, Dictionary<string, string> parameters)
+        protected virtual void SetParameters(SyntaxTree syntaxTree, SyntaxNode node, SemanticModel semanticModel, ALProject project, TextSpan span, Dictionary<string, string> parameters)
         {
-            this.SyntaxRewriter.Project = this.ALDevToolsServer.Workspace.FindProject(projectPath, true);
+            this.SyntaxRewriter.Project = project;
+            this.SyntaxRewriter.SemanticModel = semanticModel;
             this.SyntaxRewriter.Span = span;
         }
 
         protected virtual void ClearParameters()
         {
             this.SyntaxRewriter.Project = null;
+            this.SyntaxRewriter.SemanticModel = null;
         }
 
-
     }
+
+#endif
+
 }

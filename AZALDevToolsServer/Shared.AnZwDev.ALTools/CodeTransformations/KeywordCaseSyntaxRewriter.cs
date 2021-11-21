@@ -23,6 +23,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                 string newName = propertyKind.ToString();
                 if (prevName != newName)
                 {
+                    this.NoOfChanges++;
                     SyntaxToken prevIdentifier = node.Identifier;
                     node = node.WithIdentifier(SyntaxFactory.Identifier(newName).WithTriviaFrom(prevIdentifier));
                 }
@@ -43,7 +44,10 @@ namespace AnZwDev.ALTools.CodeTransformations
                 string prevName = typeName.ValueText;
                 string newName = this.FixTypeNameCase(prevName);
                 if (prevName != newName)
+                {
+                    this.NoOfChanges++;
                     return node.WithTypeName(SyntaxFactory.Identifier(newName).WithTriviaFrom(typeName));
+                }
             }
 
             return node;
@@ -62,7 +66,10 @@ namespace AnZwDev.ALTools.CodeTransformations
                 string prevName = typeName.ValueText;
                 string newName = this.FixTypeNameCase(prevName);
                 if (prevName != newName)
+                {
+                    this.NoOfChanges++;
                     return node.WithTypeName(SyntaxFactory.Identifier(newName).WithTriviaFrom(typeName));
+                }
             }
 
             return node;
@@ -81,7 +88,10 @@ namespace AnZwDev.ALTools.CodeTransformations
                 string prevName = typeName.ValueText;
                 string newName = this.FixTypeNameCase(prevName);
                 if (prevName != newName)
+                {
+                    this.NoOfChanges++;
                     return node.WithTypeName(SyntaxFactory.Identifier(newName).WithTriviaFrom(typeName));
+                }
             }
 
             return node;
@@ -100,7 +110,10 @@ namespace AnZwDev.ALTools.CodeTransformations
                 string prevName = typeName.ValueText;
                 string newName = this.FixTypeNameCase(prevName);
                 if (prevName != newName)
+                {
+                    this.NoOfChanges++;
                     return node.WithTypeName(SyntaxFactory.Identifier(newName).WithTriviaFrom(typeName));
+                }
             }
 
             return node;
@@ -117,6 +130,8 @@ namespace AnZwDev.ALTools.CodeTransformations
         {
             if (token.Kind.IsKeyword())
             {
+                string prevSource = token.ToString().Trim();
+
                 SyntaxTriviaList leadingTrivia = token.LeadingTrivia;
                 SyntaxTriviaList trailingTrivia = token.TrailingTrivia;
                 bool parsed = false;
@@ -176,6 +191,10 @@ namespace AnZwDev.ALTools.CodeTransformations
                 if (!parsed)
                     token = SyntaxFactory.Token(token.Kind);
                 token = token.WithLeadingTrivia(leadingTrivia).WithTrailingTrivia(trailingTrivia);
+
+                string newSource = token.ToString().Trim();
+                if (prevSource != newSource)
+                    this.NoOfChanges++;
             }
             return base.VisitToken(token);
         }
