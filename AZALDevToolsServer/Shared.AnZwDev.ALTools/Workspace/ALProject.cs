@@ -446,33 +446,6 @@ namespace AnZwDev.ALTools.Workspace
 
         #endregion
 
-        #region Project symbols service
-
-        public void GetTables()
-        {
-            foreach (ALProjectDependency dependency in this.Dependencies)
-            {
-                if ((dependency.Symbols != null) && (dependency.Symbols.Tables != null))
-                {
-                    foreach (ALAppTable table in dependency.Symbols.Tables)
-                    {
-                        Console.WriteLine(table.Id.ToString() + " " + table.Name);
-                    }
-                }
-            }
-
-            if ((this.Symbols != null) && (this.Symbols.Tables != null))
-            {
-                foreach (ALAppTable table in this.Symbols.Tables)
-                {
-                    Console.WriteLine(table.Id.ToString() + " " + table.Name);
-                }
-            }
-        }
-
-
-        #endregion
-
         #region Build symbols library
 
         protected string GetFullName()

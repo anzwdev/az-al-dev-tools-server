@@ -49,29 +49,55 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         protected (SyntaxNode, bool) UpdateSyntaxNode(CodeExpressionSyntax node)
         {
-            if (this.SemanticModel.GetOperation(node) is IInvocationExpression operation)
+            bool isAssignmentTarget = false;
+            if (node.Parent is AssignmentStatementSyntax assignmentNode)
+                isAssignmentTarget = (assignmentNode.Target == node);
+
+            if (!isAssignmentTarget)
             {
-                IMethodSymbol targetMethod = operation.TargetMethod;
-                ConvertedMethodKind targetMethodKind = (targetMethod == null) ? ConvertedMethodKind.Method : targetMethod.MethodKind.ConvertToLocalType();
-
-                if ((targetMethod == null) || (targetMethodKind != ConvertedMethodKind.Property))
+                IOperation o = this.SemanticModel.GetOperation(node);
+                if (this.SemanticModel.GetOperation(node) is IInvocationExpression operation)
                 {
-                    bool isBuiltInProperty = false;
-                    if ((targetMethod != null) && (targetMethodKind == ConvertedMethodKind.BuiltInMethod) && (targetMethod is IBuiltInMethodTypeSymbol builtInMethodTypeSymbol))
-                        isBuiltInProperty = builtInMethodTypeSymbol.IsProperty;
-
-                    SyntaxToken lastToken = operation.Syntax.GetLastToken();
-                    bool hasCloseParenToken = ((lastToken != null) && (lastToken.Kind.ConvertToLocalType() == ConvertedSyntaxKind.CloseParenToken));
-
-                    if (
-                        ((targetMethod == null) || (!isBuiltInProperty)) &&
-                        (!hasCloseParenToken))
+                    if (operation.Arguments.Length == 0)
                     {
-                        SyntaxNode operationNode = operation.Syntax;
-                        if (operationNode == node)
+                        SymbolInfo symbolInfo = this.SemanticModel.GetSymbolInfo(node);
+                        bool invalidSymbol = false;
+                        if ((symbolInfo != null) && (symbolInfo.Symbol != null))
                         {
-                            this.NoOfChanges++;
-                            return (SyntaxFactory.InvocationExpression(node).WithTriviaFrom(node), true);
+                            ConvertedSymbolKind symbolKind = symbolInfo.Symbol.Kind.ConvertToLocalType();
+                            invalidSymbol = (symbolKind != ConvertedSymbolKind.Method);
+                        }
+
+                        if (!invalidSymbol)
+                        {
+                            IMethodSymbol targetMethod = operation.TargetMethod;
+                            ConvertedMethodKind targetMethodKind = (targetMethod == null) ? ConvertedMethodKind.Method : targetMethod.MethodKind.ConvertToLocalType();
+                            bool isBuiltInProperty = false;
+                            if ((targetMethodKind == ConvertedMethodKind.BuiltInMethod) && (targetMethod is IBuiltInMethodTypeSymbol builtInMethodTypeSymbol))
+                                isBuiltInProperty = builtInMethodTypeSymbol.IsProperty;
+
+                            bool skipProcessing =
+                                (targetMethod != null) &&
+                                (
+                                    (targetMethodKind == ConvertedMethodKind.Property) ||
+                                    (isBuiltInProperty)
+                                );
+
+                            if (!skipProcessing)
+                            {
+                                SyntaxToken lastToken = operation.Syntax.GetLastToken();
+                                bool hasCloseParenToken = ((lastToken != null) && (lastToken.Kind.ConvertToLocalType() == ConvertedSyntaxKind.CloseParenToken));
+
+                                if (!hasCloseParenToken)
+                                {
+                                    SyntaxNode operationNode = operation.Syntax;
+                                    if (operationNode == node)
+                                    {
+                                        this.NoOfChanges++;
+                                        return (SyntaxFactory.InvocationExpression(node).WithTriviaFrom(node), true);
+                                    }
+                                }
+                            }
                         }
                     }
                 }

@@ -233,7 +233,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\Serialization\ALProjectMetadataSerializer.ProjectDependencyMetadata.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\Serialization\ALProjectMetadataSerializer.ProjectIdRangeMetadata.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\Serialization\ALProjectMetadataSerializer.ProjectMetadata.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\BaseExtendableObjectInformationProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\BaseObjectInformation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\BaseObjectInformationProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\CodeunitInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\CodeunitInformationProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\DotNetInformationProvider.cs" />

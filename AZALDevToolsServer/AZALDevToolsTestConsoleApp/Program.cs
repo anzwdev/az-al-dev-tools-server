@@ -69,7 +69,9 @@ namespace AZALDevToolsTestConsoleApp
             //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject\\Pag50101.asUFDGHQEUGF.al";
             //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject\\net.al";
             //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject\\ObjectIdTestPage.al";
-            filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject\\FunctionsTest.al";
+            //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject\\FunctionsTest.al";
+            //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject\\Pag50103.MyTestPage2.al";
+            filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject\\Rep50100.MyReport.al";
 
             string content = System.IO.File.ReadAllText(filePath);
             Dictionary<string, string> pm = new();
