@@ -27,7 +27,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         public ALAppObjectsCollection<ALAppControlAddIn> ControlAddIns { get; set; }
         public ALAppObjectsCollection<ALAppPageExtension> PageExtensions { get; set; }
         public ALAppObjectsCollection<ALAppTableExtension> TableExtensions { get; set; }
-        public ALAppObjectsCollection<ALAppProfile> Pofiles { get; set; }
+        public ALAppObjectsCollection<ALAppProfile> Profiles { get; set; }
         public ALAppObjectsCollection<ALAppPageCustomization> PageCustomizations { get; set; }
         public ALAppObjectsCollection<ALAppDotNetPackage> DotNetPackages { get; set; }
         public ALAppObjectsCollection<ALAppEnum> EnumTypes { get; set; }
@@ -146,9 +146,9 @@ namespace AnZwDev.ALTools.ALSymbolReferences
                         this.TableExtensions = new ALAppObjectsCollection<ALAppTableExtension>();
                     return this.TableExtensions;
                 case ALSymbolKind.ProfileObject:
-                    if (this.Pofiles == null)
-                        this.Pofiles = new ALAppObjectsCollection<ALAppProfile>();
-                    return this.Pofiles;
+                    if (this.Profiles == null)
+                        this.Profiles = new ALAppObjectsCollection<ALAppProfile>();
+                    return this.Profiles;
                 case ALSymbolKind.PageCustomizationObject:
                     if (this.PageCustomizations == null)
                         this.PageCustomizations = new ALAppObjectsCollection<ALAppPageCustomization>();
@@ -208,7 +208,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
                 case ALSymbolKind.TableExtensionObject:
                     return this.FindObjectByName(this.TableExtensions, name, parsed);
                 case ALSymbolKind.ProfileObject:
-                    return this.FindObjectByName(this.Pofiles, name, parsed);
+                    return this.FindObjectByName(this.Profiles, name, parsed);
                 case ALSymbolKind.PageCustomizationObject:
                     return this.FindObjectByName(this.PageCustomizations, name, parsed);
                 case ALSymbolKind.DotNetPackage:
@@ -272,7 +272,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
                 case ALSymbolKind.TableExtensionObject:
                     return this.FindObjectById(this.TableExtensions, id, parsed);
                 case ALSymbolKind.ProfileObject:
-                    return this.FindObjectById(this.Pofiles, id, parsed);
+                    return this.FindObjectById(this.Profiles, id, parsed);
                 case ALSymbolKind.PageCustomizationObject:
                     return this.FindObjectById(this.PageCustomizations, id, parsed);
                 case ALSymbolKind.DotNetPackage:
@@ -352,7 +352,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             this.ControlAddIns?.AddCollectionToALSymbol(symbol, ALSymbolKind.ControlAddInObjectList);
             this.PageExtensions?.AddCollectionToALSymbol(symbol, ALSymbolKind.PageExtensionObjectList);
             this.TableExtensions?.AddCollectionToALSymbol(symbol, ALSymbolKind.TableExtensionObjectList);
-            this.Pofiles?.AddCollectionToALSymbol(symbol, ALSymbolKind.ProfileObjectList);
+            this.Profiles?.AddCollectionToALSymbol(symbol, ALSymbolKind.ProfileObjectList);
             this.PageCustomizations?.AddCollectionToALSymbol(symbol, ALSymbolKind.PageCustomizationObjectList);
             this.DotNetPackages?.AddCollectionToALSymbol(symbol, ALSymbolKind.DotNetPackageList);
             this.EnumTypes?.AddCollectionToALSymbol(symbol, ALSymbolKind.EnumTypeList);
@@ -392,7 +392,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
                 case ALSymbolKind.TableExtensionObject:
                     return this.TableExtensions?.GetIdsEnumerable();
                 case ALSymbolKind.ProfileObject:
-                    return this.Pofiles?.GetIdsEnumerable();
+                    return this.Profiles?.GetIdsEnumerable();
                 case ALSymbolKind.PageCustomizationObject:
                     return this.PageCustomizations?.GetIdsEnumerable();
                 case ALSymbolKind.DotNetPackage:
@@ -414,6 +414,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return null;
         }
 
+        /*
         public IEnumerable<ALAppObject> GetALAppObjectsEnumerable(ALSymbolKind symbolKind)
         {
             switch (symbolKind)
@@ -437,7 +438,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
                 case ALSymbolKind.TableExtensionObject:
                     return this.TableExtensions?.GetALAppObjectsEnumerable();
                 case ALSymbolKind.ProfileObject:
-                    return this.Pofiles?.GetALAppObjectsEnumerable();
+                    return this.Profiles?.GetALAppObjectsEnumerable();
                 case ALSymbolKind.PageCustomizationObject:
                     return this.PageCustomizations?.GetALAppObjectsEnumerable();
                 case ALSymbolKind.DotNetPackage:
@@ -458,6 +459,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
 
             return null;
         }
+        */
 
         public IEnumerable<ALAppObject> GetAllALAppObjectsEnumerable(HashSet<ALSymbolKind> includeObjects)
         {
@@ -500,8 +502,8 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             if (((includeObjects == null) || (includeObjects.Contains(ALSymbolKind.PermissionSetExtension))) && (this.PermissionSetExtensions != null))
                 foreach (ALAppObject alAppObject in this.PermissionSetExtensions) { yield return alAppObject; }
 
-            if (((includeObjects == null) || (includeObjects.Contains(ALSymbolKind.ProfileObject))) && (this.Pofiles != null))
-                foreach (ALAppObject alAppObject in this.Pofiles) { yield return alAppObject; }
+            if (((includeObjects == null) || (includeObjects.Contains(ALSymbolKind.ProfileObject))) && (this.Profiles != null))
+                foreach (ALAppObject alAppObject in this.Profiles) { yield return alAppObject; }
 
             if (((includeObjects == null) || (includeObjects.Contains(ALSymbolKind.QueryObject))) && (this.Queries != null))
                 foreach (ALAppObject alAppObject in this.Queries) { yield return alAppObject; }

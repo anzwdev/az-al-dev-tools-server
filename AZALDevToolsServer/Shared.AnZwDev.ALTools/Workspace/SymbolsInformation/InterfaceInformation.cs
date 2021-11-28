@@ -15,8 +15,6 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
         public InterfaceInformation(ALAppInterface symbol) : base(symbol)
         {
         }
-            
-
 
     }
 }

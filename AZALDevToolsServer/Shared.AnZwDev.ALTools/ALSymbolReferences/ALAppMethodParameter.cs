@@ -18,12 +18,21 @@ namespace AnZwDev.ALTools.ALSymbolReferences
 
         public override string GetSourceCode()
         {
-            string sourceCode = ALSyntaxHelper.EncodeName(this.Name);
+            StringBuilder stringBuilder = new StringBuilder();
+            this.AppendDefinitionSourceCode(stringBuilder);
+            return stringBuilder.ToString();
+        }
+
+        public void AppendDefinitionSourceCode(StringBuilder builder)
+        {
             if (this.IsVar)
-                sourceCode = "var " + sourceCode;
+                builder.Append("var ");
+            builder.Append(ALSyntaxHelper.EncodeName(this.Name));
             if (this.TypeDefinition != null)
-                sourceCode = sourceCode + ": " + this.TypeDefinition.GetSourceCode();
-            return sourceCode;
+            {
+                builder.Append(": ");
+                this.TypeDefinition.AppendDefinitionSourceCode(builder);
+            }
         }
 
         public override ALSymbolKind GetALSymbolKind()

@@ -2,32 +2,26 @@
 using System.Collections.Generic;
 using System.Text;
 using AnZwDev.ALTools.ALSymbolReferences;
+using AnZwDev.ALTools.ALSymbolReferences.MergedReferences;
 
 namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 {
-    public class InterfaceInformationProvider
+    public class InterfaceInformationProvider : BaseObjectInformationProvider<ALAppInterface>
     {
+
+        protected override MergedALAppObjectsCollection<ALAppInterface> GetALAppObjectsCollection(ALProject project)
+        {
+            return project.AllSymbols.Interfaces;
+        }
 
         public List<InterfaceInformation> GetInterfaces(ALProject project)
         {
-            List<InterfaceInformation> infoList = new List<InterfaceInformation>();
-            foreach (ALProjectDependency dependency in project.Dependencies)
+            List<InterfaceInformation> infoList = new List<InterfaceInformation>();          
+            foreach (ALAppInterface item in project.AllSymbols.Interfaces)
             {
-                if (dependency.Symbols != null)
-                    AddInterfaces(infoList, dependency.Symbols);
+                infoList.Add(new InterfaceInformation(item));
             }
-            if (project.Symbols != null)
-                AddInterfaces(infoList, project.Symbols);
             return infoList;
-        }
-
-        private void AddInterfaces(List<InterfaceInformation> infoList, ALAppSymbolReference symbols)
-        {
-            if (symbols.Interfaces != null)
-            {
-                for (int i = 0; i < symbols.Interfaces.Count; i++)
-                    infoList.Add(new InterfaceInformation(symbols.Interfaces[i]));
-            }
         }
 
     }

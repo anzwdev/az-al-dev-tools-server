@@ -84,6 +84,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppVariable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppXmlPort.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppXmlPortNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\MergedReferences\MergedALAppObjectExtensionsCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\MergedReferences\MergedALAppObjectsCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\MergedReferences\MergedALAppSymbolReference.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\Compiler\ALSymbolReferenceCompiler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\IALAppElementsCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\Serialization\AppFileHelper.cs" />
@@ -177,6 +180,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\DictionaryExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\EnumExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\HashSet_ALSymbolKind_Extensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\IEnumerableExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\List_SyntaxNode_Extensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\MethodInfoExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\PropertyListSyntaxExtensions.cs" />
@@ -217,6 +221,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\WorkspaceCommandResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\WorkspaceCommandsManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\ALProject.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Workspace\ALProjectAllALAppSymbolReferencesCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\ALProjectDependenciesCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\ALProjectDependency.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\ALProjectFile.cs" />
@@ -245,6 +250,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\InterfaceInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\InterfaceInformationProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\LabelInformation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\MethodInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\ObjectIdInformationProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\ObjectIdRangeIdInformationCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\ObjectIdRangeInformation.cs" />

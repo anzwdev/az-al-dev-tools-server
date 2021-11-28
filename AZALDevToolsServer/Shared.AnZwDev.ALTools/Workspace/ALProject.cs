@@ -11,6 +11,7 @@ using AnZwDev.ALTools.Extensions;
 using AnZwDev.ALTools.ALSymbolReferences;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using AnZwDev.ALTools.CodeAnalysis;
+using AnZwDev.ALTools.ALSymbolReferences.MergedReferences;
 
 namespace AnZwDev.ALTools.Workspace
 {
@@ -39,7 +40,17 @@ namespace AnZwDev.ALTools.Workspace
         public List<string> MandatoryAffixes { get; set; }
 
         public ALProjectDependenciesCollection Dependencies { get; }
+        
+        /// <summary>
+        /// Symbols defined in project
+        /// </summary>
         public ALAppSymbolReference Symbols { get; set; }
+        
+        /// <summary>
+        /// All symbols defined in project and in dependencies
+        /// </summary>
+        public MergedALAppSymbolReference AllSymbols { get; }
+
 
         #endregion
 
@@ -59,6 +70,7 @@ namespace AnZwDev.ALTools.Workspace
             this.Dependencies = new ALProjectDependenciesCollection();
             this.Symbols = new ALAppSymbolReference();
             this.Properties = null;
+            this.AllSymbols = new MergedALAppSymbolReference(new ALProjectAllALAppSymbolReferencesCollection(this));
         }
 
         #endregion
