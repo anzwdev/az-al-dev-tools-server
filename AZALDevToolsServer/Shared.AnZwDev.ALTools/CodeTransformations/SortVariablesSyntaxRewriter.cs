@@ -16,6 +16,18 @@ namespace AnZwDev.ALTools.CodeTransformations
         #region Variable comparer
 
 #if BC
+        protected class VariableDeclarationNameComparer : IComparer<VariableDeclarationNameSyntax>
+        {
+            protected static AlphanumComparatorFast _stringComparer = new AlphanumComparatorFast();
+
+            public int Compare(VariableDeclarationNameSyntax x, VariableDeclarationNameSyntax y)
+            {
+                string xName = x.Name?.Unquoted();
+                string yName = y.Name?.Unquoted();
+                return _stringComparer.Compare(xName, yName);
+            }
+        }
+
         protected class VariableComparer : IComparer<VariableDeclarationBaseSyntax>
         {
             protected static string[] _typePriority = {"record ", "report", "codeunit", "xmlport", "page", "query", "notification",
@@ -62,10 +74,22 @@ namespace AnZwDev.ALTools.CodeTransformations
                 if (value != 0)
                     return value;
 
-                string xName = x.GetNameStringValue().ToLower();
-                string yName = y.GetNameStringValue().ToLower();
+                string xName = this.GetVariableName(x);
+                string yName = this.GetVariableName(y);
                 return _stringComparer.Compare(xName, yName);
             }
+
+            protected string GetVariableName(VariableDeclarationBaseSyntax variableDeclarationBaseSyntax)
+            {
+                if (variableDeclarationBaseSyntax is VariableListDeclarationSyntax variableListDeclaration)
+                {
+                    if ((variableListDeclaration.VariableNames != null) && (variableListDeclaration.VariableNames.Count > 0))
+                        return variableListDeclaration.VariableNames[0]?.Name?.Unquoted();
+                }
+                return variableDeclarationBaseSyntax.GetNameStringValue()?.ToLower();
+            }
+
+
         }
 #else
         protected class VariableComparer : IComparer<VariableDeclarationSyntax>
@@ -146,14 +170,53 @@ namespace AnZwDev.ALTools.CodeTransformations
 #if BC
         protected SyntaxList<VariableDeclarationBaseSyntax> SortVariables(SyntaxList<VariableDeclarationBaseSyntax> variables)
         {
-            return SyntaxNodesGroupsTree<VariableDeclarationBaseSyntax>.SortSyntaxList(
-                variables, new VariableComparer());            
+            //sort variable names in variable list declarations
+            bool anyNamesSorted = false;
+            if ((variables != null) && (variables.Count > 0))
+            {
+                VariableDeclarationNameComparer variableNameComparer = new VariableDeclarationNameComparer();
+                for (int i=0; i<variables.Count; i++)
+                {
+                    if (variables[i] is VariableListDeclarationSyntax variableListDeclaration)
+                    {
+                        (VariableListDeclarationSyntax newVariableListDeclaration, bool namesSorted) = this.SortVariableNames(variableListDeclaration, variableNameComparer);
+                        if (namesSorted)
+                        {
+                            variables = variables.Replace(variableListDeclaration, newVariableListDeclaration);
+                            anyNamesSorted = true;
+                        }
+                    }
+                }
+            }
+
+            //sort variables
+            var newVariables = SyntaxNodesGroupsTree<VariableDeclarationBaseSyntax>.SortSyntaxList(
+                variables, new VariableComparer(), out bool sorted);
+            if (sorted || anyNamesSorted)
+                this.NoOfChanges++;
+            return newVariables;
         }
+
+        protected (VariableListDeclarationSyntax, bool) SortVariableNames(VariableListDeclarationSyntax variables, VariableDeclarationNameComparer comparer)
+        {
+            if ((variables.VariableNames != null) && (variables.VariableNames.Count > 1))
+            {
+                var newNames = SyntaxNodesGroupsTree<VariableDeclarationNameSyntax>.SortSeparatedSyntaxList(variables.VariableNames, comparer, out bool sorted);
+                if (sorted)
+                    return (variables.WithVariableNames(newNames), true);
+            }
+            return (variables, false);
+        }
+
+
 #else
         protected SyntaxList<VariableDeclarationSyntax> SortVariables(SyntaxList<VariableDeclarationSyntax> variables)
         {
-            return SyntaxNodesGroupsTree<VariableDeclarationSyntax>.SortSyntaxList(
-                variables, new VariableComparer());
+            var newVariables = SyntaxNodesGroupsTree<VariableDeclarationSyntax>.SortSyntaxList(
+                variables, new VariableComparer(), out bool sorted);
+            if (sorted)
+                this.NoOfChanges++;
+            return newVariables;
         }
 #endif
 

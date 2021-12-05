@@ -344,11 +344,15 @@ namespace AnZwDev.ALTools.CodeTransformations
             if (nodesGroupsTree.Root == null)
                 return members;
 
+            MethodSortInfoComparer<T> comparer = new MethodSortInfoComparer<T>();
+
             //does not have any child groups
             if (!nodesGroupsTree.Root.HasChildGroups)
             {
                 List<MethodSortInfo<T>> list = MethodSortInfo<T>.FromSyntaxList(members);
-                list.Sort(new MethodSortInfoComparer<T>());
+                if (!list.IsOrdered(comparer))
+                    this.NoOfChanges++;
+                list.Sort(comparer);
                 return MethodSortInfo<T>.ToSyntaxList(list);
             }
 
@@ -359,7 +363,9 @@ namespace AnZwDev.ALTools.CodeTransformations
                 if (nodesGroup.SyntaxNodes.Count > 1)
                 {
                     List<MethodSortInfo<T>> list = MethodSortInfo<T>.FromNodesList(nodesGroup.SyntaxNodes);
-                    list.Sort(new MethodSortInfoComparer<T>());
+                    if (!list.IsOrdered(comparer))
+                        this.NoOfChanges++;
+                    list.Sort(comparer);
                     nodesGroup.SyntaxNodes = MethodSortInfo<T>.ToNodesList(list);
                 }
             }

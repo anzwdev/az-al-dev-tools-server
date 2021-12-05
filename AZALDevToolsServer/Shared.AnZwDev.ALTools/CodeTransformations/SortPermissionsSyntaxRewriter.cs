@@ -23,8 +23,11 @@ namespace AnZwDev.ALTools.CodeTransformations
         }
 
         protected SeparatedSyntaxList<PermissionSyntax> Sort(SeparatedSyntaxList<PermissionSyntax> permissions)
-        {
-            return SyntaxNodesGroupsTree<PermissionSyntax>.SortSeparatedSyntaxList(permissions, new PermissionComparer());
+        {            
+            var newPermissions = SyntaxNodesGroupsTree<PermissionSyntax>.SortSeparatedSyntaxList(permissions, new PermissionComparer(), out bool sorted);
+            if (sorted)
+                this.NoOfChanges++;
+            return newPermissions;
         }
 
 

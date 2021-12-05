@@ -1,24 +1,27 @@
-﻿using System;
+﻿using AnZwDev.ALTools.ALSymbols;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
 namespace AnZwDev.ALTools.ALSymbolReferences.MergedReferences
 {
-    public class MergedALAppObjectsCollection<T> : IEnumerable<T> where T : ALAppObject
+    public class MergedALAppObjectsCollection<T> : IReadOnlyALAppObjectsCollection where T : ALAppObject
     {
 
+        public ALSymbolKind ALSymbolKind { get; }             
         protected IReadOnlyList<ALAppSymbolReference> AllSymbolReferences { get; }
         protected Func<ALAppSymbolReference, IList<T>> GetALAppObjectsCollection { get; }
 
 
-        public MergedALAppObjectsCollection(IReadOnlyList<ALAppSymbolReference> allSymbolReferences, Func<ALAppSymbolReference, IList<T>> getALAppObjectsCollection)
+        public MergedALAppObjectsCollection(IReadOnlyList<ALAppSymbolReference> allSymbolReferences, ALSymbolKind aLSymbolKind, Func<ALAppSymbolReference, IList<T>> getALAppObjectsCollection)
         {
+            this.ALSymbolKind = aLSymbolKind;
             this.AllSymbolReferences = allSymbolReferences;
             this.GetALAppObjectsCollection = getALAppObjectsCollection;
         }
 
-        public IEnumerator<T> GetEnumerator()
+        public IEnumerable<T> GetObjects()
         {
             for (int objListIdx=0; objListIdx < this.AllSymbolReferences.Count; objListIdx++)
             {
@@ -30,9 +33,16 @@ namespace AnZwDev.ALTools.ALSymbolReferences.MergedReferences
             }
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
+        public IEnumerable<long> GetIds()
         {
-            return this.GetEnumerator();
+            for (int objListIdx = 0; objListIdx < this.AllSymbolReferences.Count; objListIdx++)
+            {
+                IList<T> objectsList = this.GetALAppObjectsCollection(this.AllSymbolReferences[objListIdx]);
+                if (objectsList != null)
+                    for (int objIdx = 0; objIdx < objectsList.Count; objIdx++)
+                        if (objectsList[objIdx] != null)
+                            yield return objectsList[objIdx].Id;
+            }
         }
 
         public T FindObject(string name)
@@ -81,17 +91,9 @@ namespace AnZwDev.ALTools.ALSymbolReferences.MergedReferences
             return null;
         }
 
-        public IEnumerable<long> GetIdsEnumerable()
+        IEnumerable<ALAppObject> IReadOnlyALAppObjectsCollection.GetObjects()
         {
-            for (int objListIdx = 0; objListIdx < this.AllSymbolReferences.Count; objListIdx++)
-            {
-                IList<T> objectsList = this.GetALAppObjectsCollection(this.AllSymbolReferences[objListIdx]);
-                if (objectsList != null)
-                    for (int objIdx = 0; objIdx < objectsList.Count; objIdx++)
-                        if (objectsList[objIdx] != null)
-                            yield return objectsList[objIdx].Id;
-            }
+            return this.GetObjects();
         }
-
     }
 }

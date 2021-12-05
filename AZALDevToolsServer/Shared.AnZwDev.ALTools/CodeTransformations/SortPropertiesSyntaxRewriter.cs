@@ -60,12 +60,14 @@ namespace AnZwDev.ALTools.CodeTransformations
 #if BC
                 SyntaxList<PropertySyntaxOrEmpty> properties =
                     SyntaxNodesGroupsTree<PropertySyntaxOrEmpty>.SortSyntaxListWithSortInfo(
-                        node.Properties, new PropertyComparer());
+                        node.Properties, new PropertyComparer(), out bool sorted);
 #else
                 SyntaxList<PropertySyntax> properties =
                     SyntaxNodesGroupsTree<PropertySyntax>.SortSyntaxListWithSortInfo(
-                        node.Properties, new PropertyComparer());
+                        node.Properties, new PropertyComparer(), out bool sorted);
 #endif
+                if (sorted)
+                    this.NoOfChanges++;
 
                 node = node.WithProperties(properties);
             }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AnZwDev.ALTools.ALSymbols;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -7,7 +8,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences.MergedReferences
     public class MergedALAppObjectExtensionsCollection<T> : MergedALAppObjectsCollection<T> where T : ALAppObject
     {
 
-        public MergedALAppObjectExtensionsCollection(IReadOnlyList<ALAppSymbolReference> allSymbols, Func<ALAppSymbolReference, IList<T>> getALAppObjectsCollection) : base(allSymbols, getALAppObjectsCollection)
+        public MergedALAppObjectExtensionsCollection(IReadOnlyList<ALAppSymbolReference> allSymbols, ALSymbolKind alSymbolKind, Func<ALAppSymbolReference, IList<T>> getALAppObjectsCollection) : base(allSymbols, alSymbolKind, getALAppObjectsCollection)
         {
         }
 

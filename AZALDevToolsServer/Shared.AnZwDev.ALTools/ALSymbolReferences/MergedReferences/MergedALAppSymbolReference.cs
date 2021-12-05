@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AnZwDev.ALTools.ALSymbols;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -30,24 +31,24 @@ namespace AnZwDev.ALTools.ALSymbolReferences.MergedReferences
         public MergedALAppSymbolReference(IReadOnlyList<ALAppSymbolReference> allSymbolReferences)
         {
             this.AllSymbolReferences = allSymbolReferences;
-            this.Tables = new MergedALAppObjectsCollection<ALAppTable>(this.AllSymbolReferences, x => x?.Tables);
-            this.Pages = new MergedALAppObjectsCollection<ALAppPage>(this.AllSymbolReferences, x => x?.Pages);
-            this.Reports = new MergedALAppObjectsCollection<ALAppReport>(this.AllSymbolReferences, x => x?.Reports);
-            this.XmlPorts = new MergedALAppObjectsCollection<ALAppXmlPort>(this.AllSymbolReferences, x => x?.XmlPorts);
-            this.Queries = new MergedALAppObjectsCollection<ALAppQuery>(this.AllSymbolReferences, x => x?.Queries);
-            this.Codeunits = new MergedALAppObjectsCollection<ALAppCodeunit>(this.AllSymbolReferences, x => x?.Codeunits);
-            this.ControlAddIns = new MergedALAppObjectsCollection<ALAppControlAddIn>(this.AllSymbolReferences, x => x?.ControlAddIns);
-            this.PageExtensions = new MergedALAppObjectExtensionsCollection<ALAppPageExtension>(this.AllSymbolReferences, x => x?.PageExtensions);
-            this.TableExtensions = new MergedALAppObjectExtensionsCollection<ALAppTableExtension>(this.AllSymbolReferences, x => x?.TableExtensions);
-            this.Profiles = new MergedALAppObjectsCollection<ALAppProfile>(this.AllSymbolReferences, x => x?.Profiles);
-            this.PageCustomizations = new MergedALAppObjectsCollection<ALAppPageCustomization>(this.AllSymbolReferences, x => x?.PageCustomizations);
-            this.DotNetPackages = new MergedALAppObjectsCollection<ALAppDotNetPackage>(this.AllSymbolReferences, x => x?.DotNetPackages);
-            this.EnumTypes = new MergedALAppObjectsCollection<ALAppEnum>(this.AllSymbolReferences, x => x?.EnumTypes);
-            this.EnumExtensionTypes = new MergedALAppObjectExtensionsCollection<ALAppEnumExtension>(this.AllSymbolReferences, x => x?.EnumExtensionTypes);
-            this.Interfaces = new MergedALAppObjectsCollection<ALAppInterface>(this.AllSymbolReferences, x => x?.Interfaces);
-            this.ReportExtensions = new MergedALAppObjectExtensionsCollection<ALAppReportExtension>(this.AllSymbolReferences, x => x?.ReportExtensions);
-            this.PermissionSets = new MergedALAppObjectsCollection<ALAppPermissionSet>(this.AllSymbolReferences, x => x?.PermissionSets);
-            this.PermissionSetExtensions = new MergedALAppObjectExtensionsCollection<ALAppPermissionSetExtension>(this.AllSymbolReferences, x => x?.PermissionSetExtensions);
+            this.Tables = new MergedALAppObjectsCollection<ALAppTable>(this.AllSymbolReferences, ALSymbolKind.TableObject, x => x?.Tables);
+            this.Pages = new MergedALAppObjectsCollection<ALAppPage>(this.AllSymbolReferences, ALSymbolKind.PageObject, x => x?.Pages);
+            this.Reports = new MergedALAppObjectsCollection<ALAppReport>(this.AllSymbolReferences, ALSymbolKind.ReportObject, x => x?.Reports);
+            this.XmlPorts = new MergedALAppObjectsCollection<ALAppXmlPort>(this.AllSymbolReferences, ALSymbolKind.XmlPortObject, x => x?.XmlPorts);
+            this.Queries = new MergedALAppObjectsCollection<ALAppQuery>(this.AllSymbolReferences, ALSymbolKind.QueryObject, x => x?.Queries);
+            this.Codeunits = new MergedALAppObjectsCollection<ALAppCodeunit>(this.AllSymbolReferences, ALSymbolKind.CodeunitObject, x => x?.Codeunits);
+            this.ControlAddIns = new MergedALAppObjectsCollection<ALAppControlAddIn>(this.AllSymbolReferences, ALSymbolKind.ControlAddInObject, x => x?.ControlAddIns);
+            this.PageExtensions = new MergedALAppObjectExtensionsCollection<ALAppPageExtension>(this.AllSymbolReferences, ALSymbolKind.PageExtensionObject, x => x?.PageExtensions);
+            this.TableExtensions = new MergedALAppObjectExtensionsCollection<ALAppTableExtension>(this.AllSymbolReferences, ALSymbolKind.TableExtensionObject, x => x?.TableExtensions);
+            this.Profiles = new MergedALAppObjectsCollection<ALAppProfile>(this.AllSymbolReferences, ALSymbolKind.ProfileObject, x => x?.Profiles);
+            this.PageCustomizations = new MergedALAppObjectsCollection<ALAppPageCustomization>(this.AllSymbolReferences, ALSymbolKind.PageCustomizationObject, x => x?.PageCustomizations);
+            this.DotNetPackages = new MergedALAppObjectsCollection<ALAppDotNetPackage>(this.AllSymbolReferences, ALSymbolKind.DotNetPackage, x => x?.DotNetPackages);
+            this.EnumTypes = new MergedALAppObjectsCollection<ALAppEnum>(this.AllSymbolReferences, ALSymbolKind.EnumType, x => x?.EnumTypes);
+            this.EnumExtensionTypes = new MergedALAppObjectExtensionsCollection<ALAppEnumExtension>(this.AllSymbolReferences, ALSymbolKind.EnumExtensionType, x => x?.EnumExtensionTypes);
+            this.Interfaces = new MergedALAppObjectsCollection<ALAppInterface>(this.AllSymbolReferences, ALSymbolKind.Interface, x => x?.Interfaces);
+            this.ReportExtensions = new MergedALAppObjectExtensionsCollection<ALAppReportExtension>(this.AllSymbolReferences, ALSymbolKind.ReportExtensionObject, x => x?.ReportExtensions);
+            this.PermissionSets = new MergedALAppObjectsCollection<ALAppPermissionSet>(this.AllSymbolReferences, ALSymbolKind.PermissionSet, x => x?.PermissionSets);
+            this.PermissionSetExtensions = new MergedALAppObjectExtensionsCollection<ALAppPermissionSetExtension>(this.AllSymbolReferences, ALSymbolKind.PermissionSetExtension, x => x?.PermissionSetExtensions);
         }
 
 

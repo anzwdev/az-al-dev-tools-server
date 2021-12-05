@@ -16,8 +16,9 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
         public List<InterfaceInformation> GetInterfaces(ALProject project)
         {
-            List<InterfaceInformation> infoList = new List<InterfaceInformation>();          
-            foreach (ALAppInterface item in project.AllSymbols.Interfaces)
+            List<InterfaceInformation> infoList = new List<InterfaceInformation>();
+            IEnumerable<ALAppInterface> objectsCollection = project.AllSymbols.Interfaces.GetObjects();
+            foreach (ALAppInterface item in objectsCollection)
             {
                 infoList.Add(new InterfaceInformation(item));
             }

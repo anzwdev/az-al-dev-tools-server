@@ -48,8 +48,10 @@ namespace AnZwDev.ALTools.CodeTransformations
             if (value != null)
             {
                 value = value.WithValues(
-                    SyntaxNodesGroupsTree<IdentifierNameSyntax>.SortSeparatedSyntaxList(value.Values, new IdentifierNameComparer()));
+                    SyntaxNodesGroupsTree<IdentifierNameSyntax>.SortSeparatedSyntaxList(value.Values, new IdentifierNameComparer(), out bool sorted));
                 property = property.WithValue(value);
+                if (sorted)
+                    this.NoOfChanges++;
             }
             return property;
         }
