@@ -1252,7 +1252,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Compiler
             method.Name = node.GetNameStringValue();
             method.MethodKind = 0;
             method.Parameters = CreateMethodParameters(node.ParameterList);
-            if (node.ReturnValue != null)
+            if ((node.ReturnValue != null) && (node.ReturnValue.Kind.ConvertToLocalType() != ConvertedSyntaxKind.None))
                 method.ReturnTypeDefinition = this.CreateTypeDefinition(node.ReturnValue);
             method.Attributes = this.CreateAttributes(node.Attributes);
             //access modifier
@@ -1290,7 +1290,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Compiler
             ALAppMethodParameter parameter = new ALAppMethodParameter();
             parameter.Name = node.GetNameStringValue();
             parameter.TypeDefinition = CreateTypeDefinition(node.Type);
-            parameter.IsVar = (node.VarKeyword != null);
+            parameter.IsVar = ((node.VarKeyword != null) && (node.VarKeyword.Kind.ConvertToLocalType() == ConvertedSyntaxKind.VarKeyword));
 
             return parameter;
         }

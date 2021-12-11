@@ -1,4 +1,5 @@
 ﻿using AnZwDev.ALTools.ALSymbolReferences;
+using AnZwDev.ALTools.ALSymbolReferences.MergedReferences;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,34 +16,9 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
         #region Objects list and search
 
-        protected virtual ALAppObjectsCollection<T> GetALAppObjectList(ALAppSymbolReference symbols)
+        protected virtual MergedALAppObjectsCollection<T> GetALAppObjectsCollection(ALProject project)
         {
             return null;
-        }
-
-        protected IEnumerable<T> GetAllALAppObjects(ALProject project)
-        {
-            return null;
-        }
-
-        protected T FindALAppObject(ALProject project, string name)
-        {
-            IEnumerable<T> allObjects = this.GetAllALAppObjects(project);
-            if (allObjects == null)
-                return null;
-            return allObjects
-                .Where(p => (name.Equals(p.Name, StringComparison.CurrentCultureIgnoreCase)))
-                .FirstOrDefault();
-        }
-
-        protected T FindALAppObject(ALProject project, int id)
-        {
-            IEnumerable<T> allObjects = this.GetAllALAppObjects(project);
-            if (allObjects == null)
-                return null;
-            return allObjects
-                .Where(p => (p.Id == id))
-                .FirstOrDefault();
         }
 
         #endregion
@@ -56,12 +32,25 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
         public IEnumerable<ALAppMethod> GetMethods(ALProject project, string name)
         {
-            return this.GetMethods(project, this.FindALAppObject(project, name));
+            MergedALAppObjectsCollection<T> alObjectsCollection = this.GetALAppObjectsCollection(project);
+            return this.GetMethods(project, alObjectsCollection?.FindObject(name));
         }
 
         public IEnumerable<ALAppMethod> GetMethods(ALProject project, int id)
         {
-            return this.GetMethods(project, this.FindALAppObject(project, id));
+            MergedALAppObjectsCollection<T> alObjectsCollection = this.GetALAppObjectsCollection(project);
+            return this.GetMethods(project, alObjectsCollection?.FindObject(id));
+        }
+
+        public List<MethodInformation> GetMethodsInformation(ALProject project, string name)
+        {
+            List<MethodInformation> methodsInformation = new List<MethodInformation>();
+            IEnumerable<ALAppMethod> alObjectMethods = this.GetMethods(project, name);
+            foreach (ALAppMethod method in alObjectMethods)
+            {
+                methodsInformation.Add(new MethodInformation(method));
+            }
+            return methodsInformation;
         }
 
         #endregion
@@ -75,12 +64,14 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
         public IEnumerable<ALAppVariable> GetVariables(ALProject project, string name)
         {
-            return this.GetVariables(project, this.FindALAppObject(project, name));
+            MergedALAppObjectsCollection<T> alObjectsCollection = this.GetALAppObjectsCollection(project);
+            return this.GetVariables(project, alObjectsCollection?.FindObject(name));
         }
 
         public IEnumerable<ALAppVariable> GetVariables(ALProject project, int id)
         {
-            return this.GetVariables(project, this.FindALAppObject(project, id));
+            MergedALAppObjectsCollection<T> alObjectsCollection = this.GetALAppObjectsCollection(project);
+            return this.GetVariables(project, alObjectsCollection?.FindObject(id));
         }
 
         #endregion

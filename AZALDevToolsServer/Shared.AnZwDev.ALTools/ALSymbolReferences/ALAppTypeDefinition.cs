@@ -22,36 +22,49 @@ namespace AnZwDev.ALTools.ALSymbolReferences
 
         public override string GetSourceCode()
         {
-            string fullName = this.Name;
+            StringBuilder stringBuilder = new StringBuilder();
+            this.AppendDefinitionSourceCode(stringBuilder);
+            return stringBuilder.ToString();
+        }
 
-            if (!this.EmptySubtype())
-                return this.Name + " " + ALSyntaxHelper.EncodeName(this.Subtype.Name.Trim());
-
-            if ((this.TypeArguments != null) && (this.TypeArguments.Count > 0))
-            {
-                fullName = fullName + " of [";
-                for (int i = 0; i < this.TypeArguments.Count; i++)
-                {
-                    if (i > 0)
-                        fullName = fullName + ",";
-                    fullName = fullName + this.TypeArguments[i].GetSourceCode();
-                }
-                fullName = fullName + "]";
-            }
-
+        public void AppendDefinitionSourceCode(StringBuilder builder)
+        {
+            //append array
             if ((this.ArrayDimensions != null) && (this.ArrayDimensions.Count > 0))
             {
-                string array = "array[";
+                builder.Append("array[");
                 for (int i = 0; i < this.ArrayDimensions.Count; i++)
                 {
                     if (i > 0)
-                        array = array + ",";
-                    array = array + this.ArrayDimensions[i].ToString();
+                        builder.Append(",");
+                    builder.Append(this.ArrayDimensions[i].ToString());
                 }
-                fullName = array + "] of " + fullName;
+                builder.Append("] of ");
+            }
+            
+            //type name
+            builder.Append(this.Name);
+            if (!this.EmptySubtype())
+            {
+                builder.Append(" ");
+                builder.Append(ALSyntaxHelper.EncodeName(this.Subtype.Name.Trim()));
+                if (this.Temporary)
+                    builder.Append(" temporary");
             }
 
-            return fullName;
+            //type arguments
+            if ((this.TypeArguments != null) && (this.TypeArguments.Count > 0))
+            {
+                builder.Append(" of [");
+                for (int i = 0; i < this.TypeArguments.Count; i++)
+                {
+                    if (i > 0)
+                        builder.Append(", ");
+                    this.TypeArguments[i].AppendDefinitionSourceCode(builder);
+                }
+                builder.Append("]");
+            }
+
         }
 
         protected override ALSymbol CreateMainALSymbol()

@@ -114,26 +114,31 @@ namespace AnZwDev.ALTools.CodeTransformations
             return list;
         }
 
-        public void SortSyntaxNodes(IComparer<T> comparer)
+        public bool SortSyntaxNodes(IComparer<T> comparer)
         {
             if (this.Root != null)
-                this.Root.SortSyntaxNodes(comparer);
+                return this.Root.SortSyntaxNodes(comparer);
+            return false;
         }
 
-        public void SortSyntaxNodesWithTrivia(IComparer<T> comparer)
+        public bool SortSyntaxNodesWithTrivia(IComparer<T> comparer)
         {
             if (this.Root != null)
-                this.Root.SortSyntaxNodesWithTrivia(comparer);
+                return this.Root.SortSyntaxNodesWithTrivia(comparer);
+            return false;
         }
 
-        public void SortSyntaxNodesWithSortInfo(IComparer<SyntaxNodeSortInfo<T>> comparer)
+        public bool SortSyntaxNodesWithSortInfo(IComparer<SyntaxNodeSortInfo<T>> comparer)
         {
             if (this.Root != null)
-                this.Root.SortSyntaxNodesWithSortInfo(comparer);
+                return this.Root.SortSyntaxNodesWithSortInfo(comparer);
+            return false;
         }
 
-        public static SyntaxList<T> SortSyntaxList(SyntaxList<T> syntaxList, IComparer<T> comparer)
+        public static SyntaxList<T> SortSyntaxList(SyntaxList<T> syntaxList, IComparer<T> comparer, out bool sorted)
         {
+            sorted = false;
+
             if (syntaxList.Count < 2)
                 return syntaxList;
 
@@ -149,16 +154,18 @@ namespace AnZwDev.ALTools.CodeTransformations
             if (!nodesGroupsTree.Root.HasChildGroups)
             {
                 List<T> list = syntaxList.ToList();
-                list.SortWithTrivia(comparer);
+                sorted = list.SortWithTrivia(comparer);
                 return SyntaxFactory.List(list);
             }
 
-            nodesGroupsTree.SortSyntaxNodesWithTrivia(comparer);
+            sorted = nodesGroupsTree.SortSyntaxNodesWithTrivia(comparer);
             return nodesGroupsTree.CreateSyntaxList();
         }
 
-        public static SeparatedSyntaxList<T> SortSeparatedSyntaxList(SeparatedSyntaxList<T> syntaxList, IComparer<T> comparer)
+        public static SeparatedSyntaxList<T> SortSeparatedSyntaxList(SeparatedSyntaxList<T> syntaxList, IComparer<T> comparer, out bool sorted)
         {
+            sorted = false;
+
             if (syntaxList.Count < 2)
                 return syntaxList;
 
@@ -202,6 +209,9 @@ namespace AnZwDev.ALTools.CodeTransformations
             if (!nodesGroupsTree.Root.HasChildGroups)
             {
                 List<T> list = updatedNodes;
+
+                sorted = !list.IsOrdered(comparer);
+
                 list.Sort(comparer);
 
                 if (removeNewLineFromFirstNode)
@@ -215,12 +225,14 @@ namespace AnZwDev.ALTools.CodeTransformations
                 return newSyntaxList.AddRange(list);
             }
 
-            nodesGroupsTree.SortSyntaxNodes(comparer);
+            sorted = nodesGroupsTree.SortSyntaxNodes(comparer);
             return nodesGroupsTree.CreateSeparatedSyntaxList();
         }
 
-        public static SyntaxList<T> SortSyntaxListWithSortInfo(SyntaxList<T> syntaxList, IComparer<SyntaxNodeSortInfo<T>> comparer)
+        public static SyntaxList<T> SortSyntaxListWithSortInfo(SyntaxList<T> syntaxList, IComparer<SyntaxNodeSortInfo<T>> comparer, out bool sorted)
         {
+            sorted = false;
+
             if (syntaxList.Count < 2)
                 return syntaxList;
 
@@ -244,11 +256,11 @@ namespace AnZwDev.ALTools.CodeTransformations
                     SyntaxTriviaList trailingTrivia = list[i].Node.GetTrailingTrivia();
                 }
 
-                list.SortWithTrivia(comparer);
+                sorted = list.SortWithTrivia(comparer);
                 return SyntaxNodeSortInfo<T>.ToSyntaxList(list);
             }
 
-            nodesGroupsTree.SortSyntaxNodesWithSortInfo(comparer);
+            sorted = nodesGroupsTree.SortSyntaxNodesWithSortInfo(comparer);
             return nodesGroupsTree.CreateSyntaxList();
         }
 

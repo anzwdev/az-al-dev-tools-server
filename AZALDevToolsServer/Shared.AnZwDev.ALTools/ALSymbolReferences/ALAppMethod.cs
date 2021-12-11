@@ -40,23 +40,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         protected override ALSymbol CreateMainALSymbol()
         {
             ALSymbol symbol = base.CreateMainALSymbol();
-
-            //build full name
-            string fullName = ALSyntaxHelper.EncodeName(this.Name) + "(";
-            if (this.Parameters != null)
-            {
-                for (int i=0; i<this.Parameters.Count; i++)
-                {
-                    if (i > 0)
-                        fullName = fullName + ", ";
-                    fullName = fullName + this.Parameters[i].GetSourceCode();
-                }
-            }
-            fullName = fullName + ")";
-            if ((this.ReturnTypeDefinition != null) && (!this.ReturnTypeDefinition.IsEmpty()))
-                fullName = fullName + ": " + this.ReturnTypeDefinition.GetSourceCode();
-
-            symbol.fullName = fullName;
+            symbol.fullName = this.GetShortHeaderSourceCode();
             return symbol;
         }
 
@@ -64,6 +48,68 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         {
             this.Parameters?.AddToALSymbol(symbol, ALSymbolKind.ParameterList, "parameters");
             base.AddChildALSymbols(symbol);
+        }
+
+        protected string GetShortHeaderSourceCode()
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            this.AppendShortHeaderSourceCode(stringBuilder);
+            return stringBuilder.ToString();
+        }
+
+        protected void AppendShortHeaderSourceCode(StringBuilder builder)
+        {
+            builder.Append(ALSyntaxHelper.EncodeName(this.Name));
+            builder.Append("(");
+            if (this.Parameters != null)
+            {
+                for (int i = 0; i < this.Parameters.Count; i++)
+                {
+                    if (i > 0)
+                        builder.Append(", ");
+                    this.Parameters[i].AppendDefinitionSourceCode(builder);
+                }
+            }
+            builder.Append(")");
+            if ((this.ReturnTypeDefinition != null) && (!this.ReturnTypeDefinition.IsEmpty()))
+            {
+                builder.Append(": ");
+                this.ReturnTypeDefinition.AppendDefinitionSourceCode(builder);
+            }
+        }
+
+        public string GetHeaderSourceCode()
+        {
+            StringBuilder builder = new StringBuilder();
+            this.AppendHeaderSourceCode(builder);
+            return builder.ToString();
+        }
+
+        public void AppendHeaderSourceCode(StringBuilder builder)
+        {
+            if (this.IsLocal)
+                builder.Append("local ");
+            builder.Append("procedure ");
+            builder.Append(this.Name);
+            builder.Append("(");
+
+            if (this.Parameters != null)
+            {
+                for (int i=0; i<this.Parameters.Count; i++)
+                {
+                    if (i != 0)
+                        builder.Append("; ");
+                    this.Parameters[i].AppendDefinitionSourceCode(builder);
+                }
+            }
+
+            builder.Append(")");
+            if ((this.ReturnTypeDefinition != null) && (!this.ReturnTypeDefinition.IsEmpty()))
+            {
+                builder.Append(": ");
+                this.ReturnTypeDefinition.AppendDefinitionSourceCode(builder);
+            }
+
         }
 
     }

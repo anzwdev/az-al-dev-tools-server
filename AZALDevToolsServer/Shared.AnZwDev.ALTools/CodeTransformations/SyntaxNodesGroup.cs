@@ -112,43 +112,59 @@ namespace AnZwDev.ALTools.CodeTransformations
         #endregion
 
 
-        public void SortSyntaxNodes(IComparer<T> comparer)
+        public bool SortSyntaxNodes(IComparer<T> comparer)
         {
+            bool sorted = false;
+
             if (this.SyntaxNodes.Count > 1)
             {
+                sorted = !this.SyntaxNodes.IsOrdered(comparer);
                 this.SyntaxNodes.Sort(comparer);
             }
             foreach (SyntaxNodesGroup<T> group in this.ChildGroups)
             {
-                group.SortSyntaxNodes(comparer);
+                if (group.SortSyntaxNodes(comparer))
+                    sorted = true;
             }
+
+            return sorted;
         }
 
-        public void SortSyntaxNodesWithTrivia(IComparer<T> comparer)
+        public bool SortSyntaxNodesWithTrivia(IComparer<T> comparer)
         {
+            bool sorted = false;
+
             if (this.SyntaxNodes.Count > 1)
             {
-                this.SyntaxNodes.SortWithTrivia(comparer);
+                sorted = this.SyntaxNodes.SortWithTrivia(comparer);
             }
             foreach (SyntaxNodesGroup<T> group in this.ChildGroups)
             {
-                group.SortSyntaxNodesWithTrivia(comparer);
+                if (group.SortSyntaxNodesWithTrivia(comparer))
+                    sorted = true;
             }
+
+            return sorted;
         }
 
-        public void SortSyntaxNodesWithSortInfo(IComparer<SyntaxNodeSortInfo<T>> comparer)
+        public bool SortSyntaxNodesWithSortInfo(IComparer<SyntaxNodeSortInfo<T>> comparer)
         {
+            bool sorted = false;
+
             if (this.SyntaxNodes.Count > 1)
             {
                 List<SyntaxNodeSortInfo<T>> list = SyntaxNodeSortInfo<T>.FromNodesList(this.SyntaxNodes);
-                list.SortWithTrivia(comparer);
+                sorted = list.SortWithTrivia(comparer);
                 this.SyntaxNodes = SyntaxNodeSortInfo<T>.ToNodesList(list);
             }
 
             foreach (SyntaxNodesGroup<T> group in this.ChildGroups)
             {
-                group.SortSyntaxNodesWithSortInfo(comparer);
+                if (group.SortSyntaxNodesWithSortInfo(comparer))
+                    sorted = true;
             }
+
+            return sorted;
         }
 
 

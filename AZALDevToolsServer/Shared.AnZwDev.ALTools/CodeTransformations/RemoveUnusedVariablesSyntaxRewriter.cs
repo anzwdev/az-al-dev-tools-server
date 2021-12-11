@@ -148,14 +148,24 @@ namespace AnZwDev.ALTools.CodeTransformations
             {
                 for (int idx=0; idx<membersList.Count; idx++)
                 {
-                    if (membersList[idx] is MethodDeclarationSyntax methodDeclaration)
+                    switch (membersList[idx])
                     {
-                        (MethodDeclarationSyntax newMethodDeclaration, bool methodUpdated) = this.RemoveUnusedLocalVariablesFromMethod(methodDeclaration);
-                        if (methodUpdated)
-                        {
-                            membersList[idx] = newMethodDeclaration;
-                            updated = true;
-                        }
+                        case MethodDeclarationSyntax methodDeclaration:
+                            (MethodDeclarationSyntax newMethodDeclaration, bool methodUpdated) = this.RemoveUnusedLocalVariablesFromMethod(methodDeclaration);
+                            if (methodUpdated)
+                            {
+                                membersList[idx] = newMethodDeclaration;
+                                updated = true;
+                            }
+                            break;
+                        case TriggerDeclarationSyntax triggerDeclaration:
+                            (TriggerDeclarationSyntax newTriggerDeclaration, bool triggerUpdated) = this.RemoveUnusedLocalVariablesFromTrigger(triggerDeclaration);
+                            if (triggerUpdated)
+                            {
+                                membersList[idx] = newTriggerDeclaration;
+                                updated = true;
+                            }
+                            break;
                     }
                 }
             }
@@ -187,6 +197,48 @@ namespace AnZwDev.ALTools.CodeTransformations
             return (globalVariables, false);
         }
 
+        protected (TriggerDeclarationSyntax, bool) RemoveUnusedLocalVariablesFromTrigger(TriggerDeclarationSyntax triggerDeclaration)
+        {
+            if (this.RemoveLocalVariables)
+            {
+
+                //collect local variables
+                SymbolInfo info = this.SemanticModel.GetSymbolInfo(triggerDeclaration);
+                IMethodSymbol symbol = SemanticModel.GetDeclaredSymbol(triggerDeclaration) as IMethodSymbol;
+
+                if ((symbol != null) && (symbol.LocalVariables != null))
+                {
+                    //collect variables                
+                    Dictionary<string, ISymbol> deleteVariables = new Dictionary<string, ISymbol>();
+                    this.CollectLocalVariables(deleteVariables, symbol);
+
+                    //analyze variables
+                    if (triggerDeclaration.Body != null)
+                        this.RemoveReferencedVariables(deleteVariables, triggerDeclaration.Body);
+
+                    if (deleteVariables.Count > 0)
+                    {
+                        HashSet<string> deleteVariableNames = new HashSet<string>();
+                        foreach (string name in deleteVariables.Keys)
+                        {
+                            deleteVariableNames.Add(name);
+                        }
+
+                        if ((triggerDeclaration.Variables != null) && (triggerDeclaration.Variables.Variables != null))
+                        {
+                            this.NoOfChanges += deleteVariables.Count;
+                            VarSectionSyntax varSectionSyntax = this.RemoveVarSectionVariables(triggerDeclaration.Variables, deleteVariableNames);
+                            triggerDeclaration = triggerDeclaration.WithVariables(varSectionSyntax);
+
+                            return (triggerDeclaration, true);
+                        }
+                    }
+                }
+            }
+
+            return (triggerDeclaration, false);
+        }
+
         protected (MethodDeclarationSyntax, bool) RemoveUnusedLocalVariablesFromMethod(MethodDeclarationSyntax methodDeclaration)
         {
             string returnValueName = null;
@@ -205,12 +257,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
                 //collect local variables                
                 Dictionary<string, ISymbol> deleteVariables = new Dictionary<string, ISymbol>();
-                foreach (IVariableSymbol variableSymbol in symbol.LocalVariables)
-                {
-                    string localVariableName = variableSymbol.Name.ToLower();
-                    if ((!variableSymbol.IsSynthesized) && (!deleteVariables.ContainsKey(localVariableName)))
-                        deleteVariables.Add(localVariableName, variableSymbol);
-                }
+                this.CollectLocalVariables(deleteVariables, symbol);
 
                 //add return variable
                 if (symbol.IsLocal)
@@ -288,6 +335,16 @@ namespace AnZwDev.ALTools.CodeTransformations
             }
 
             return (methodDeclaration, false);
+        }
+
+        protected void CollectLocalVariables(Dictionary<string, ISymbol> deleteVariables, IMethodSymbol symbol)
+        {
+            foreach (IVariableSymbol variableSymbol in symbol.LocalVariables)
+            {
+                string localVariableName = variableSymbol.Name.ToLower();
+                if ((!variableSymbol.IsSynthesized) && (!deleteVariables.ContainsKey(localVariableName)))
+                    deleteVariables.Add(localVariableName, variableSymbol);
+            }
         }
 
         #endregion
