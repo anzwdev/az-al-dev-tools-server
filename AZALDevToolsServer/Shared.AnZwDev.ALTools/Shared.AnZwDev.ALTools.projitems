@@ -156,6 +156,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\IdentifierCaseSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\IdentifierNameComparer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\KeywordCaseSyntaxRewriter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\LockRemovedFieldsCaptionsSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\ObjectCaptionSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\PageControlCaptionSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\PermissionComparer.cs" />
@@ -205,6 +206,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\ConvertObjectIdsToNamesWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\FixIdentifiersCaseWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\FixKeywordsCaseWorkspaceCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\FormatDocumentWorkspaceCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\LockRemovedFieldsCaptionsWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\RemoveUnusedVariablesWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\RemoveVariableWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\RemoveWithWorkspaceCommand.cs" />
@@ -217,9 +220,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\SortReportColumnsWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\SortTableFieldsWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\SortVariablesWorkspaceCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\SourceTextWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\SyntaxRewriterWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\SyntaxTreeWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\SyntaxTreeWorkspaceCommandsGroup.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\TrimTrailingWhitespaceWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\WorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\WorkspaceCommandResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\WorkspaceCommandsManager.cs" />

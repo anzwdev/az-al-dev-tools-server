@@ -35,11 +35,13 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             this.RegisterCommand(new AddPageControlCaptionWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new AddDataClassificationWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new AddFieldCaptionsWorkspaceCommand(this.ALDevToolsServer));
+            this.RegisterCommand(new LockRemovedFieldsCaptionsWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new AddObjectCaptionsWorkspaceCommand(this.ALDevToolsServer));
 
             this.RegisterCommand(new FixKeywordsCaseWorkspaceCommand(this.ALDevToolsServer));
 
             this.RegisterCommand(new AddObjectsPermissionsWorkspaceCommand(this.ALDevToolsServer));
+            this.RegisterCommand(new TrimTrailingWhitespaceWorkspaceCommand(this.ALDevToolsServer));
 
 #if BC            
             this.RegisterCommand(new RemoveWithWorkspaceCommand(this.ALDevToolsServer));
@@ -49,6 +51,8 @@ namespace AnZwDev.ALTools.WorkspaceCommands
 #endif
             this.RegisterCommand(new RemoveVariableWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new ConvertObjectIdsToNamesWorkspaceCommand(this.ALDevToolsServer));
+
+            this.RegisterCommand(new FormatDocumentWorkspaceCommand(this.ALDevToolsServer));
 
             this.RegisterCommand(groupCommand.AddCommand(new SortProceduresWorkspaceCommand(this.ALDevToolsServer)));
             this.RegisterCommand(groupCommand.AddCommand(new SortVariablesWorkspaceCommand(this.ALDevToolsServer)));
