@@ -1,4 +1,5 @@
 ﻿using AnZwDev.ALTools.ALSymbols;
+using AnZwDev.ALTools.SourceControl;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -42,7 +43,14 @@ namespace AnZwDev.ALTools.WorkspaceCommands
 
         protected virtual (bool, string) ProcessDirectory(string projectPath, Dictionary<string, string> parameters)
         {
-            string[] filePathsList = System.IO.Directory.GetFiles(projectPath, "*.al", System.IO.SearchOption.AllDirectories);
+            string[] filePathsList;
+
+            bool modifiedFilesOnly = this.GetModifiedFilesOnlyValue(parameters);
+            if (modifiedFilesOnly)
+                filePathsList = this.ModifiedFilesNamesList;
+            else
+                filePathsList = System.IO.Directory.GetFiles(projectPath, "*.al", System.IO.SearchOption.AllDirectories);
+
             for (int i = 0; i < filePathsList.Length; i++)
             {
                 (bool success, string errorMessage) = this.ProcessFile(projectPath, filePathsList[i], parameters);

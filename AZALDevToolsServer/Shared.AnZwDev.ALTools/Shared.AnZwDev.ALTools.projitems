@@ -195,6 +195,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\TypeExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Logging\IMessageLogWriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Logging\MessageLog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SourceControl\GitClient.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\AddAppAreasWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\AddDataClassificationWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\AddFieldCaptionsWorkspaceCommand.cs" />

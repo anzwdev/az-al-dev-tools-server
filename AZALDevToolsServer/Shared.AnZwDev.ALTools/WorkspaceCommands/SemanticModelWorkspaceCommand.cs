@@ -1,5 +1,6 @@
 ﻿using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.Logging;
+using AnZwDev.ALTools.SourceControl;
 using AnZwDev.ALTools.Workspace;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.CommandLine;
@@ -126,13 +127,25 @@ namespace AnZwDev.ALTools.WorkspaceCommands
 
         #region Project files processing
 
+        protected bool ValidFile(string filePath)
+        {
+            return this.ModifiedFilesNamesHashSet.Contains(filePath);
+        }
+
         protected (bool, string) ProcessDirectory(List<SyntaxTree> syntaxTrees, Compilation compilation, ALProject project, Dictionary<string, string> parameters)
         {
+            //get modified files if running for modified files only
+            bool modifiedFilesOnly = this.GetModifiedFilesOnlyValue(parameters);
+
+            //process files
             foreach (SyntaxTree syntaxTree in syntaxTrees)
             {
-                (bool success, string errorMessage) = this.ProcessFile(syntaxTree, compilation, project, null, parameters);
-                if (!success)
-                    return (false, errorMessage);
+                if ((!modifiedFilesOnly) || (this.ValidFile(syntaxTree.FilePath)))
+                {
+                    (bool success, string errorMessage) = this.ProcessFile(syntaxTree, compilation, project, null, parameters);
+                    if (!success)
+                        return (false, errorMessage);
+                }
             }
             return (true, null);
         }
@@ -182,7 +195,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
 
         public virtual SyntaxNode ProcessSyntaxNode(SyntaxTree syntaxTree, SyntaxNode node, SemanticModel semanticModel, ALProject project, TextSpan span, Dictionary<string, string> parameters)
         {
-            bool skipFormatting = ((parameters != null) && (parameters.ContainsKey("skipFormatting")) && (parameters["skipFormatting"] == "true"));
+            bool skipFormatting = this.GetSkipFormattingValue(parameters); //((parameters != null) && (parameters.ContainsKey("skipFormatting")) && (parameters["skipFormatting"] == "true"));
             if (!skipFormatting)
                 node = FormatSyntaxNode(node);
             return node;
