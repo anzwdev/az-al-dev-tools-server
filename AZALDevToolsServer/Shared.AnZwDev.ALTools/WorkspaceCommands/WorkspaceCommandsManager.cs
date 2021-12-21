@@ -51,6 +51,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
 #endif
             this.RegisterCommand(new RemoveVariableWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new ConvertObjectIdsToNamesWorkspaceCommand(this.ALDevToolsServer));
+            this.RegisterCommand(new RemoveBeginEndWorkspaceCommandd(this.ALDevToolsServer));
 
             this.RegisterCommand(new FormatDocumentWorkspaceCommand(this.ALDevToolsServer));
 
