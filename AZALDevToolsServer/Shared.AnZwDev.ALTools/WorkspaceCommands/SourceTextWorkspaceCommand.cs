@@ -1,4 +1,5 @@
 ﻿using AnZwDev.ALTools.ALSymbols;
+using AnZwDev.ALTools.Core;
 using AnZwDev.ALTools.SourceControl;
 using System;
 using System.Collections.Generic;
@@ -62,7 +63,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
 
         protected virtual (bool, string) ProcessFile(string projectPath, string filePath, Dictionary<string, string> parameters)
         {
-            string source = System.IO.File.ReadAllText(filePath);
+            string source = FileUtils.SafeReadAllText(filePath);
             (string newSource, bool success, string errorMessage) = this.ProcessSourceCode(source, projectPath, filePath, null, parameters);
             if ((success) && (newSource != source) && (!String.IsNullOrWhiteSpace(newSource)))
                 System.IO.File.WriteAllText(filePath, newSource);

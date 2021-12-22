@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using Newtonsoft.Json;
+using AnZwDev.ALTools.Core;
 
 namespace AnZwDev.ALTools.CodeAnalysis
 {
@@ -33,7 +34,7 @@ namespace AnZwDev.ALTools.CodeAnalysis
             {
                 try
                 {
-                    string data = File.ReadAllText(path);
+                    string data = FileUtils.SafeReadAllText(path);
                     if (!String.IsNullOrWhiteSpace(data))
                         return AppSourceCopSettings.FromString(data);
                 }

@@ -1,4 +1,5 @@
 ﻿using AnZwDev.ALTools.ALSymbols;
+using AnZwDev.ALTools.Core;
 using AnZwDev.ALTools.Logging;
 using AnZwDev.ALTools.SourceControl;
 using AnZwDev.ALTools.Workspace;
@@ -53,7 +54,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             return new WorkspaceCommandResult(newSourceCode, true, errorMessage);
         }
 
-        #region Project loading
+    #region Project loading
 
         protected Compilation LoadProject(string projectPath, List<SyntaxTree> syntaxTrees, string sourceCode, string sourcePath, out SyntaxTree sourceSyntaxTree)
         {
@@ -65,7 +66,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
 
             //load project manifest
             string projectFile = Path.Combine(projectPath, "app.json");
-            ProjectManifest manifest = ProjectManifest.ReadFromString(projectFile, File.ReadAllText(projectFile), diagnostics);
+            ProjectManifest manifest = ProjectManifest.ReadFromString(projectFile, FileUtils.SafeReadAllText(projectFile), diagnostics);
 
             //create compilation
             Compilation compilation = Compilation.Create("MyCompilation", manifest.AppManifest.AppPublisher,
@@ -113,7 +114,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
                 if (sourceFile)
                     content = sourceCode;
                 else
-                    content = File.ReadAllText(filePaths[i]);
+                    content = FileUtils.SafeReadAllText(filePaths[i]);
                 SyntaxTree syntaxTree = SyntaxTree.ParseObjectText(content, filePaths[i]);
                 syntaxTrees.Add(syntaxTree);
 
@@ -123,9 +124,9 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         }
 
 
-        #endregion
+    #endregion
 
-        #region Project files processing
+    #region Project files processing
 
         protected bool ValidFile(string filePath)
         {
@@ -201,7 +202,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             return node;
         }
 
-        #endregion
+    #endregion
 
     }
 #endif

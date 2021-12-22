@@ -7,6 +7,7 @@ using AnZwDev.ALTools.ALSymbolReferences;
 using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.ALSymbols.SymbolReaders;
 using AnZwDev.ALTools.Logging;
+using AnZwDev.ALTools.Core;
 
 namespace AnZwDev.ALTools.Workspace
 {
@@ -76,7 +77,7 @@ namespace AnZwDev.ALTools.Workspace
 
         public string ReadAllText()
         {
-            return File.ReadAllText(this.FullPath);
+            return FileUtils.SafeReadAllText(this.FullPath);
         }
 
         public void WriteAllText(string content)

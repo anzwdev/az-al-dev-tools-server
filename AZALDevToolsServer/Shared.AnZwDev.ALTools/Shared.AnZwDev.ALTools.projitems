@@ -178,6 +178,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\ToolTipSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\WithIdentifiersSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\WithRemoveSyntaxRewriter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\FileUtils.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\PathUtils.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\VersionNumber.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\AlphanumComparatorFast .cs" />

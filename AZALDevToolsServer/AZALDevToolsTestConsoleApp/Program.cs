@@ -7,6 +7,7 @@ using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.ALSymbols.SymbolReaders;
 using AnZwDev.ALTools.CodeAnalysis;
 using AnZwDev.ALTools.CodeTransformations;
+using AnZwDev.ALTools.Core;
 using AnZwDev.ALTools.Server;
 using AnZwDev.ALTools.Workspace;
 using AnZwDev.ALTools.Workspace.SymbolsInformation;
@@ -74,7 +75,7 @@ namespace AZALDevToolsTestConsoleApp
             //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject\\Rep50100.MyReport.al";
             filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject\\MyTestCU.al";
 
-            string content = System.IO.File.ReadAllText(filePath);
+            string content = FileUtils.SafeReadAllText(filePath);
             Dictionary<string, string> pm = new();
             pm.Add("sourceFilePath", filePath);
             pm.Add("skipFormatting", "true");
