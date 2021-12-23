@@ -53,8 +53,6 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             this.RegisterCommand(new ConvertObjectIdsToNamesWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new RemoveBeginEndWorkspaceCommandd(this.ALDevToolsServer));
 
-            this.RegisterCommand(new FormatDocumentWorkspaceCommand(this.ALDevToolsServer));
-
             this.RegisterCommand(groupCommand.AddCommand(new SortProceduresWorkspaceCommand(this.ALDevToolsServer)));
             this.RegisterCommand(groupCommand.AddCommand(new SortVariablesWorkspaceCommand(this.ALDevToolsServer)));
             this.RegisterCommand(groupCommand.AddCommand(new SortPropertiesWorkspaceCommand(this.ALDevToolsServer)));
@@ -62,6 +60,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             this.RegisterCommand(groupCommand.AddCommand(new SortTableFieldsWorkspaceCommand(this.ALDevToolsServer)));
             this.RegisterCommand(groupCommand.AddCommand(new SortPermissionsWorkspaceCommand(this.ALDevToolsServer)));
             this.RegisterCommand(groupCommand.AddCommand(new SortPermissionSetListWorkspaceCommand(this.ALDevToolsServer)));
+            this.RegisterCommand(groupCommand.AddCommand(new FormatDocumentWorkspaceCommand(this.ALDevToolsServer)));
 
             this.RegisterCommand(groupCommand);
         }

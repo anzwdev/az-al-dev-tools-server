@@ -1,4 +1,5 @@
 ﻿using AnZwDev.ALTools.ALSymbols;
+using Microsoft.Dynamics.Nav.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -20,6 +21,10 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             return result;
         }
 
+        public override SyntaxNode ProcessSyntaxNode(SyntaxNode node, string sourceCode, string projectPath, string filePath, TextSpan span, Dictionary<string, string> parameters)
+        {
+            return FormatSyntaxNode(node);
+        }
 
     }
 }
