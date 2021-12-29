@@ -1,20 +1,27 @@
 ﻿using AnZwDev.ALTools.ALSymbolReferences;
+using AnZwDev.ALTools.ALSymbolReferences.MergedReferences;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 {
-    public class BaseExtendableObjectInformationProvider<T,E> : BaseObjectInformationProvider<T> where T: ALAppObject where E: ALAppObject
+    public class BaseExtendableObjectInformationProvider<T,E> : BaseObjectInformationProvider<T> where T: ALAppObject where E: ALAppObject, IALAppObjectExtension
     {
         public BaseExtendableObjectInformationProvider()
         {
         }
 
-        protected IEnumerable<E> FindAllExtensions(ALProject project, T alObject)
+        #region Object list and search
+
+        protected virtual MergedALAppObjectExtensionsCollection<E> GetALAppObjectExtensionsCollection(ALProject project)
         {
             return null;
         }
+
+        #endregion
+
+        #region Methods
 
         protected override IEnumerable<ALAppMethod> GetMethods(ALProject project, T alObject)
         {
@@ -28,7 +35,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             }
 
             //extension methods
-            IEnumerable<E> extensions = this.FindAllExtensions(project, alObject);
+            IEnumerable<E> extensions = this.GetALAppObjectExtensionsCollection(project)?.FindAllExtensions(alObject.Name);
             if (extensions != null)
             {
                 foreach (E ext in extensions)
@@ -44,6 +51,10 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             }
         }
 
+        #endregion
+
+        #region Variables
+
         protected override IEnumerable<ALAppVariable> GetVariables(ALProject project, T alObject)
         {
             //main methods
@@ -56,7 +67,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             }
 
             //extension methods
-            IEnumerable<E> extensions = this.FindAllExtensions(project, alObject);
+            IEnumerable<E> extensions = this.GetALAppObjectExtensionsCollection(project)?.FindAllExtensions(alObject.Name);
             if (extensions != null)
             {
                 foreach (E ext in extensions)
@@ -72,6 +83,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             }
         }
 
+        #endregion
 
     }
 }

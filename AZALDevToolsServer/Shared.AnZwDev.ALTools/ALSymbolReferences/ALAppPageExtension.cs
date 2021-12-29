@@ -7,7 +7,7 @@ using AnZwDev.ALTools.ALSymbols;
 
 namespace AnZwDev.ALTools.ALSymbolReferences
 {
-    public class ALAppPageExtension : ALAppObject
+    public class ALAppPageExtension : ALAppObject, IALAppObjectExtension
     {
 
         public string TargetObject { get; set; }
@@ -38,5 +38,9 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             base.AddChildALSymbols(symbol);
         }
 
+        public string GetTargetObjectName()
+        {
+            return this.TargetObject;
+        }
     }
 }

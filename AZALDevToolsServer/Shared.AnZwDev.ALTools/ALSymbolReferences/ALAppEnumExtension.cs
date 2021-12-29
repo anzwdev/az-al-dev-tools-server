@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AnZwDev.ALTools.ALSymbolReferences
 {
-    public class ALAppEnumExtension : ALAppEnum
+    public class ALAppEnumExtension : ALAppEnum, IALAppObjectExtension
     {
 
         public string TargetObject { get; set; }
@@ -28,5 +28,9 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return ALSymbolKind.EnumExtensionType;
         }
 
+        public string GetTargetObjectName()
+        {
+            return this.TargetObject;
+        }
     }
 }

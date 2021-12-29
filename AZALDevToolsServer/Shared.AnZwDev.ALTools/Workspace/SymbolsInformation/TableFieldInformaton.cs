@@ -25,7 +25,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
         [JsonProperty("description")]
         public string Description { get; set; }
 
-        [JsonProperty("toolTips")]
+        [JsonProperty("toolTips", NullValueHandling = NullValueHandling.Ignore)]
         public List<string> ToolTips { get; set; }
 
         public TableFieldInformaton()

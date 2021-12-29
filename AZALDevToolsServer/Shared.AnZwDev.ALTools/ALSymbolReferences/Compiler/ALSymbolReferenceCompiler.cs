@@ -310,7 +310,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Compiler
         private void ProcessPageField(ALAppPageControl control, PageFieldSyntax node)
         {
             if (node.Expression != null)
-                control.Expression = ALSyntaxHelper.DecodeName(node.Expression.ToString());
+                control.SetSourceExpression(node.Expression.ToString());
         }
 
         private void ProcessPageGroup(ALAppPageControl control, ControlGroupBaseSyntax node)

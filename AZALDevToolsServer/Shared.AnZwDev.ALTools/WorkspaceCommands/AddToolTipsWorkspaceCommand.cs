@@ -1,6 +1,8 @@
 ﻿using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.CodeTransformations;
 using AnZwDev.ALTools.Extensions;
+using AnZwDev.ALTools.Workspace;
+using AnZwDev.ALTools.Workspace.SymbolsInformation;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using System;
 using System.Collections.Generic;
@@ -27,6 +29,18 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             this.SyntaxRewriter.PageActionTooltip = parameters.GetStringValue(ActionTooltipParameterName);
             this.SyntaxRewriter.PageFieldTooltipComment = parameters.GetStringValue(FieldTooltipCommentParameterName);
             this.SyntaxRewriter.UseFieldDescription = parameters.GetBoolValue(UseFieldDescriptionParameterName);
+
+            if (this.SyntaxRewriter.Project?.Symbols?.Tables != null)
+            {
+                PageInformationProvider provider = new PageInformationProvider();
+                this.SyntaxRewriter.ToolTipsCache = provider.CollectProjectTableFieldsToolTips(this.SyntaxRewriter.Project, null);
+            }
+        }
+
+        protected override void ClearParameters()
+        {
+            base.ClearParameters();
+            this.SyntaxRewriter.ToolTipsCache = null;
         }
 
     }

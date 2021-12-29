@@ -77,6 +77,7 @@ namespace AnZwDev.ALTools.Server
             this.Dispatcher.RegisterRequestHandler(new GetQueryDataItemDetailsRequestHandler(this.ALDevToolsServer, this));
             this.Dispatcher.RegisterRequestHandler(new GetPermissionSetsRequestHandler(this.ALDevToolsServer, this));
             this.Dispatcher.RegisterRequestHandler(new GetReportDetailsRequestHandler(this.ALDevToolsServer, this));
+            this.Dispatcher.RegisterRequestHandler(new GetDependenciesListRequestHandler(this.ALDevToolsServer, this));
 
             //next available object id
             this.Dispatcher.RegisterRequestHandler(new GetNextObjectIdRequestHandler(this.ALDevToolsServer, this));

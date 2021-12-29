@@ -5,7 +5,7 @@ using System.Text;
 
 namespace AnZwDev.ALTools.ALSymbolReferences
 {
-    public class ALAppPermissionSetExtension : ALAppObject
+    public class ALAppPermissionSetExtension : ALAppObject, IALAppObjectExtension
     {
 
         public string TargetObject { get; set; }
@@ -19,5 +19,9 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return ALSymbolKind.PermissionSetExtension;
         }
 
+        public string GetTargetObjectName()
+        {
+            return this.TargetObject;
+        }
     }
 }

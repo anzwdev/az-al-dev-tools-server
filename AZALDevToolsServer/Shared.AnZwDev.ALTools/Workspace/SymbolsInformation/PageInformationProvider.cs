@@ -4,21 +4,45 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using AnZwDev.ALTools.ALSymbolReferences;
+using AnZwDev.ALTools.Extensions;
+using AnZwDev.ALTools.ALSymbolReferences.MergedReferences;
+using AnZwDev.ALTools.Workspace.SymbolsInformation.Internal;
 
 namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 {
-    public class PageInformationProvider
+    public class PageInformationProvider : BaseExtendableObjectInformationProvider<ALAppPage, ALAppPageExtension>
     {
 
         public PageInformationProvider()
         {
         }
 
+        #region Objects list and search
+
+        protected override MergedALAppObjectsCollection<ALAppPage> GetALAppObjectsCollection(ALProject project)
+        {
+            return project.AllSymbols.Pages;
+        }
+
+        protected override MergedALAppObjectExtensionsCollection<ALAppPageExtension> GetALAppObjectExtensionsCollection(ALProject project)
+        {
+            return project.AllSymbols.PageExtensions;
+        }
+
+        #endregion
+
         #region Get list of pages
 
         public List<PageInformation> GetPages(ALProject project)
         {
             List<PageInformation> infoList = new List<PageInformation>();
+            IEnumerable<ALAppPage> alAppPagesCollection = this.GetALAppObjectsCollection(project).GetObjects();
+            foreach (ALAppPage alAppPage in alAppPagesCollection)
+            {
+                infoList.Add(new PageInformation(alAppPage));
+            }
+
+            /*
             foreach (ALProjectDependency dependency in project.Dependencies)
             {
                 if (dependency.Symbols != null)
@@ -26,9 +50,11 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             }
             if (project.Symbols != null)
                 AddPages(infoList, project.Symbols);
+            */
             return infoList;
         }
 
+        /*
         private void AddPages(List<PageInformation> infoList, ALAppSymbolReference symbols)
         {
             if (symbols.Pages != null)
@@ -37,151 +63,15 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
                     infoList.Add(new PageInformation(symbols.Pages[i]));
             }
         }
-
-        #endregion
-
-        #region Find page
-
-        protected ALAppPage FindPage(ALProject project, string name)
-        {
-            ALAppPage page = FindPage(project.Symbols, name);
-            if (page != null)
-                return page;
-            foreach (ALProjectDependency dependency in project.Dependencies)
-            {
-                page = FindPage(dependency.Symbols, name);
-                if (page != null)
-                    return page;
-            }
-            return null;
-        }
-
-        protected ALAppPage FindPage(ALProject project, int id)
-        {
-            ALAppPage page = FindPage(project.Symbols, id);
-            if (page != null)
-                return page;
-            foreach (ALProjectDependency dependency in project.Dependencies)
-            {
-                page = FindPage(dependency.Symbols, id);
-                if (page != null)
-                    return page;
-            }
-            return null;
-        }
-
-        protected ALAppPage FindPage(ALAppSymbolReference symbols, string name)
-        {
-            if ((symbols != null) && (symbols.Pages != null))
-                return symbols.Pages
-                    .Where(p => (name.Equals(p.Name, StringComparison.CurrentCultureIgnoreCase)))
-                    .FirstOrDefault();
-            return null;
-        }
-
-        protected ALAppPage FindPage(ALAppSymbolReference symbols, int id)
-        {
-            if ((symbols != null) && (symbols.Pages != null))
-                return symbols.Pages
-                    .Where(p => (p.Id == id))
-                    .FirstOrDefault();
-            return null;
-        }
-
-        #endregion
-
-        #region Find page extension
-
-        protected ALAppPageExtension FindPageExtension(ALAppSymbolReference symbols, string pageName)
-        {
-            if ((symbols != null) && (symbols.PageExtensions != null))
-                return symbols.PageExtensions
-                    .Where(p => (pageName.Equals(p.TargetObject, StringComparison.CurrentCultureIgnoreCase)))
-                    .FirstOrDefault();
-            return null;
-        }
-
-        #endregion
-
-        #region Find pages for table
-
-        protected List<ALAppPage> FindPagesForTable(ALProject project, string tableName)
-        {
-            List<ALAppPage> pagesList = new List<ALAppPage>();
-            this.FindPagesForTable(project.Symbols, tableName, pagesList);
-            foreach (ALProjectDependency dependency in project.Dependencies)
-            {
-                this.FindPagesForTable(dependency.Symbols, tableName, pagesList);
-            }
-            return pagesList;
-        }
-
-        protected void FindPagesForTable(ALAppSymbolReference symbols, string tableName, List<ALAppPage> pagesList)
-        {
-            if ((symbols != null) && (symbols.Pages != null))
-            {
-                foreach (ALAppPage page in symbols.Pages)
-                {
-                    string pageSourceTable = page.GetSourceTable();
-                    if ((pageSourceTable != null) && (pageSourceTable.Equals(tableName, StringComparison.CurrentCultureIgnoreCase)))
-                        pagesList.Add(page);
-                }
-            }
-        }
-
-        #endregion
-
-        #region Find page extesnions for pages
-
-        protected List<ALAppPageExtension> FindPageExtensionsForPages(ALProject project, List<ALAppPage> pagesList)
-        {
-            List<ALAppPageExtension> pageExtensionsList = new List<ALAppPageExtension>();
-            if ((pagesList != null) && (pagesList.Count > 0))
-            {
-                //collect page names
-                HashSet<string> pageNamesSet = new HashSet<string>();
-                foreach (ALAppPage page in pagesList)
-                {
-                    if (page.Name != null)
-                        pageNamesSet.Add(page.Name.ToLower());
-                }
-
-                //find page extensions
-                if (project.Symbols != null)
-                    this.FindPageExtensionsForPages(project.Symbols, pageNamesSet, pageExtensionsList);
-
-                foreach (ALProjectDependency dependency in project.Dependencies)
-                {
-                    this.FindPageExtensionsForPages(dependency.Symbols, pageNamesSet, pageExtensionsList);
-                }
-            }
-            return pageExtensionsList;
-        }
-
-        protected void FindPageExtensionsForPages(ALAppSymbolReference symbols, HashSet<string> pageNamesSet, List<ALAppPageExtension> pageExtensionsList)
-        {
-            if ((symbols != null) && (symbols.PageExtensions != null))
-            {
-                foreach (ALAppPageExtension pageExtension in symbols.PageExtensions)
-                {
-                    if (pageExtension.TargetObject != null)
-                    {
-                        string pageName = pageExtension.TargetObject.ToLower();
-                        if (pageNamesSet.Contains(pageName))
-                            pageExtensionsList.Add(pageExtension);
-                    }
-                }
-            }
-        }
-
+        */
 
         #endregion
 
         #region Get page details
 
-        public PageInformation GetPageDetails(ALProject project, string pageName, bool getExistingFields, bool getAvailableFields)
+        public PageInformation GetPageDetails(ALProject project, string pageName, bool getExistingFields, bool getAvailableFields, bool getToolTips)
         {
-            ALAppPage pageSymbol = this.FindPage(project, pageName);
+            ALAppPage pageSymbol = this.GetALAppObjectsCollection(project).FindObject(pageName);
             if (pageSymbol == null)
                 return null;
             PageInformation pageInformation = new PageInformation(pageSymbol);
@@ -190,7 +80,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             if ((!String.IsNullOrWhiteSpace(pageInformation.Source)) && (getExistingFields || getAvailableFields))
             {
                 TableInformationProvider tableInformationProvider = new TableInformationProvider();
-                List<TableFieldInformaton> allTableFieldsList = tableInformationProvider.GetTableFields(project, pageInformation.Source, false, false, true, true, false);
+                List<TableFieldInformaton> allTableFieldsList = tableInformationProvider.GetTableFields(project, pageInformation.Source, false, false, true, true, false, getToolTips);
 
                 Dictionary<string, TableFieldInformaton> availableTableFieldsDict = allTableFieldsList.ToDictionary();
 
@@ -200,10 +90,10 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
                     this.CollectVisibleFields(pageSymbol.Controls, availableTableFieldsDict, pageTableFields);
 
                 //collect fields from page extensions
-                foreach (ALProjectDependency dependency in project.Dependencies)
+                IEnumerable<ALAppPageExtension> alAppPageExtensionsCollection = this.GetALAppObjectExtensionsCollection(project).FindAllExtensions(pageName);
+                foreach (ALAppPageExtension pageExtensionSymbol in alAppPageExtensionsCollection)
                 {
-                    ALAppPageExtension pageExtensionSymbol = this.FindPageExtension(dependency.Symbols, pageName);
-                    if ((pageExtensionSymbol != null) && (pageExtensionSymbol.ControlChanges != null))
+                    if (pageExtensionSymbol.ControlChanges != null)
                         this.CollectVisibleFields(pageExtensionSymbol.ControlChanges, availableTableFieldsDict, pageTableFields);
                 }
 
@@ -231,15 +121,14 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             for (int i=0; i<controlsList.Count; i++)
             {
                 ALAppPageControl pageControl = controlsList[i];
-                if (!String.IsNullOrWhiteSpace(pageControl.Expression))
+                string sourceExpression = pageControl.GetSourceExpression();
+                if (!String.IsNullOrWhiteSpace(sourceExpression))
                 {
-                    string sourceExpression = pageControl.Expression;
+                    ALMemberAccessExpression memberAccessExpression = ALSyntaxHelper.DecodeMemberAccessExpression(sourceExpression);
+                    sourceExpression = memberAccessExpression.GetValueWithourRec();
                     if (!String.IsNullOrWhiteSpace(sourceExpression))
                     {
-                        sourceExpression = sourceExpression.Trim();
-                        if (sourceExpression.StartsWith("Rec.", StringComparison.CurrentCultureIgnoreCase))
-                            sourceExpression = sourceExpression.Substring(4).Trim();
-                        sourceExpression = ALSyntaxHelper.DecodeName(sourceExpression).ToLower();
+                        sourceExpression = sourceExpression.ToLower();
                         if (availableTableFieldsDict.ContainsKey(sourceExpression))
                         {
                             pageTableFields.Add(availableTableFieldsDict[sourceExpression]);
@@ -259,14 +148,14 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
         public List<TableFieldInformaton> GetAllTableFieldsForPage(ALProject project, string pageName, bool includeDisabled, bool includeObsolete, bool includeNormal, bool includeFlowFields, bool includeFlowFilters)
         {
-            ALAppPage page = this.FindPage(project, pageName);
+            ALAppPage page = this.GetALAppObjectsCollection(project).FindObject(pageName);
             if (page != null)
             {
                 string tableName = page.Properties.GetValue("SourceTable");
                 if (!String.IsNullOrWhiteSpace(tableName))
                 {
                     TableInformationProvider tableInformationProvider = new TableInformationProvider();
-                    return tableInformationProvider.GetTableFields(project, tableName, includeDisabled, includeObsolete, includeNormal, includeFlowFields, includeFlowFilters);
+                    return tableInformationProvider.GetTableFields(project, tableName, includeDisabled, includeObsolete, includeNormal, includeFlowFields, includeFlowFilters, false);
                 }
             }
             return null;
@@ -274,112 +163,104 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
         #endregion
 
-        #region Page variables
+        #region List of tables used on pages in the project
 
-        public List<ALAppVariable> GetPageVariables(ALProject project, string pageName)
+        public IEnumerable<string> GetProjectTablesList(ALProject project)
         {
-            List<ALAppVariable> variables = new List<ALAppVariable>();
-            
-            ALAppPage page = this.FindPage(project, pageName);
-            if ((page != null) && (page.Variables != null) && (page.Variables.Count > 0))
-                variables.AddRange(page.Variables);
-
-            ALAppPageExtension pageExtension = FindPageExtension(project.Symbols, pageName);
-            if ((pageExtension != null) && (pageExtension.Variables != null) && (pageExtension.Variables.Count > 0))
-                variables.AddRange(pageExtension.Variables);
-            foreach (ALProjectDependency dependency in project.Dependencies)
+            HashSet<string> tables = new HashSet<string>();
+            //collect tables from pages
+            if (project.Symbols.Pages != null)
             {
-                pageExtension = FindPageExtension(dependency.Symbols, pageName);
-                if ((pageExtension != null) && (pageExtension.Variables != null) && (pageExtension.Variables.Count > 0))
-                    variables.AddRange(pageExtension.Variables);
+                foreach (ALAppPage page in project.Symbols.Pages)
+                {
+                    string tableName = page.GetSourceTable()?.ToLower();
+                    if ((!String.IsNullOrWhiteSpace(tableName)) && (!tables.Contains(tableName)))
+                        tables.Add(tableName);
+                }
             }
-
-            return variables;
+            //collect tables from page extensions
+            if (project.Symbols.PageExtensions != null)
+            {
+                foreach (ALAppPageExtension pageExtension in project.Symbols.PageExtensions)
+                {
+                    string pageName = pageExtension.GetTargetObjectName();
+                    if (!String.IsNullOrWhiteSpace(pageName))
+                    {
+                        ALAppPage page = project.AllSymbols.Pages.FindObject(pageName);
+                        if (page != null)
+                        {
+                            string tableName = page.GetSourceTable()?.ToLower();
+                            if ((!String.IsNullOrWhiteSpace(tableName)) && (!tables.Contains(tableName)))
+                                tables.Add(tableName);
+                        }
+                    }
+                }
+            }
+            return tables;
         }
 
         #endregion
 
         #region Tooltips information
 
-        public void CollectToolTips(ALProject project, string tableName, List<TableFieldInformaton> tableFieldsList)
+        public Dictionary<string, Dictionary<string, List<string>>> CollectProjectTableFieldsToolTips(ALProject project, IEnumerable<string> dependenciesList)
         {
-            //find pages and page extensions
-            List<ALAppPage> pagesList = this.FindPagesForTable(project, tableName);
-            List<ALAppPageExtension> pageExtensionsList = this.FindPageExtensionsForPages(project, pagesList);
-            
-            //collect fields
-            Dictionary<string, TableFieldInformaton> tableFieldsDictionary = new Dictionary<string, TableFieldInformaton>();
-            foreach (TableFieldInformaton tableField in tableFieldsList)
-            {
-                if (!String.IsNullOrWhiteSpace(tableField.Name))
-                {
-                    string tableFieldName = tableField.Name.ToLower();
-                    if (!tableFieldsDictionary.ContainsKey(tableFieldName))
-                        tableFieldsDictionary.Add(tableFieldName, tableField);
-                }
-            }
-            
-            //process pages
-            foreach (ALAppPage page in pagesList)
-            {
-                this.CollectToolTips(page.Controls, tableFieldsDictionary);
-            }
-
-            //process page extensions
-            foreach (ALAppPageExtension pageExtension in pageExtensionsList)
-            {
-                this.CollectToolTips(pageExtension.ControlChanges, tableFieldsDictionary);
-            }
+            return this.CollectTableFieldsToolTips(project, GetProjectTablesList(project), dependenciesList);
         }
 
-        protected void CollectToolTips(List<ALAppPageControlChange> controlChangesList, Dictionary<string, TableFieldInformaton> tableFields)
+        public Dictionary<string, Dictionary<string, List<string>>> CollectTableFieldsToolTips(ALProject project, IEnumerable<string> tableNamesList, IEnumerable<string> dependenciesList)
         {
-            if (controlChangesList != null)
-            {
-                foreach (ALAppPageControlChange controlChange in controlChangesList)
-                {
-                    this.CollectToolTips(controlChange.Controls, tableFields);
-                }
-            }
-        }
+            HashSet<string> dependenciesHashSet = (dependenciesList != null) ? dependenciesList.ToHashSet() : null;
+            HashSet<string> tableNamesHashSet = tableNamesList.ToLowerCaseHashSet();
+            Dictionary<string, IntPageWithControlsWithPropertyValue> pagesCacheDictionary = new Dictionary<string, IntPageWithControlsWithPropertyValue>();
 
-        protected void CollectToolTips(List<ALAppPageControl> controlsList, Dictionary<string, TableFieldInformaton> tableFields)
-        {
-            if (controlsList != null)
+            //collect pages with controls
+            IEnumerable<ALAppPage> alAppPagesCollection = this.GetALAppObjectsCollection(project).GetObjects(dependenciesHashSet);
+            foreach (ALAppPage alAppPage in alAppPagesCollection)
             {
-                foreach (ALAppPageControl control in controlsList)
+                string tableName = alAppPage.GetSourceTable()?.ToLower();
+                string pageName = alAppPage.Name?.ToLower();
+                if ((!String.IsNullOrWhiteSpace(tableName)) && (tableNamesHashSet.Contains(tableName)) && (!String.IsNullOrWhiteSpace(pageName)) && (!pagesCacheDictionary.ContainsKey(pageName)))
+                    pagesCacheDictionary.Add(pageName, new IntPageWithControlsWithPropertyValue(alAppPage, "ToolTip"));
+            }
+
+            //apply extensions
+            IEnumerable<ALAppPageExtension> alAppPageExtensionsCollection = this.GetALAppObjectExtensionsCollection(project).GetObjects(dependenciesHashSet);
+            foreach (ALAppPageExtension alAppPageExtension in alAppPageExtensionsCollection)
+            {
+                string pageName = alAppPageExtension.GetTargetObjectName()?.ToLower();
+                if ((!String.IsNullOrWhiteSpace(pageName)) && (pagesCacheDictionary.ContainsKey(pageName)))
+                    pagesCacheDictionary[pageName].ApplyPageExtension(alAppPageExtension);
+            }
+
+            //collect property values
+            Dictionary<string, Dictionary<string, List<string>>> tablesPropertyValuesDictionary = new Dictionary<string, Dictionary<string, List<string>>>();
+            foreach (IntPageWithControlsWithPropertyValue pageCache in pagesCacheDictionary.Values)
+            {
+                string tableName = pageCache.SourceTable.ToLower();
+                Dictionary<string, List<string>> tableFieldsProperties = tablesPropertyValuesDictionary.FindOrCreate(tableName);
+                //add fields
+                foreach (IntPageControlWithPropertyValue controlCache in pageCache.Controls.Values)
                 {
-                    //check field and tooltip value
-                    if (!String.IsNullOrWhiteSpace(control.Expression))
+                    if (!String.IsNullOrWhiteSpace(controlCache.PropertyValue))
                     {
-                        string toolTip = control.Properties.GetValue("ToolTip");
-                        if (!String.IsNullOrWhiteSpace(toolTip))
+                        //get field name
+                        string fieldName = null;
+                        ALMemberAccessExpression memberAccessExpression = ALSyntaxHelper.DecodeMemberAccessExpression(controlCache.ControlSource);
+                        fieldName = memberAccessExpression.GetValueWithourRec();
+                        //collect field name
+                        if (!String.IsNullOrWhiteSpace(fieldName))
                         {
-                            string fieldName = null;
-                            ALMemberAccessExpression memberAccessExpression = ALSyntaxHelper.DecodeMemberAccessExpression(control.Expression);
-                            if (String.IsNullOrWhiteSpace(memberAccessExpression.Expression))
-                                fieldName = memberAccessExpression.Name;
-                            else if (memberAccessExpression.Expression.Equals("rec", StringComparison.CurrentCultureIgnoreCase))
-                                fieldName = memberAccessExpression.Expression;
-                            if (!String.IsNullOrWhiteSpace(fieldName))
-                            {
-                                fieldName.ToLower();
-                                if (tableFields.ContainsKey(fieldName))
-                                {
-                                    TableFieldInformaton tableFieldInformaton = tableFields[fieldName];
-                                    if (tableFieldInformaton.ToolTips == null)
-                                        tableFieldInformaton.ToolTips = new List<string>();
-                                    if (!tableFieldInformaton.ToolTips.Contains(toolTip))
-                                        tableFieldInformaton.ToolTips.Add(toolTip);
-                                }
-                            }
+                            fieldName = fieldName.ToLower();
+                            List<string> propertyValues = tableFieldsProperties.FindOrCreate(fieldName);
+                            if (!propertyValues.Contains(controlCache.PropertyValue))
+                                propertyValues.Add(controlCache.PropertyValue);
                         }
                     }
-                    //process child controls
-                    if (control.Controls != null)
-                        this.CollectToolTips(control.Controls, tableFields);
                 }
             }
+
+            return tablesPropertyValuesDictionary;
         }
 
         #endregion

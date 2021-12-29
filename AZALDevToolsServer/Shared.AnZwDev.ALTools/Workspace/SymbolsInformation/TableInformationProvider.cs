@@ -3,14 +3,40 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using AnZwDev.ALTools.ALSymbolReferences;
+using AnZwDev.ALTools.ALSymbolReferences.MergedReferences;
 
 namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 {
-    public class TableInformationProvider
+    public class TableInformationProvider : BaseExtendableObjectInformationProvider<ALAppTable, ALAppTableExtension>
     {
+
+        #region Objects list and search
+
+        protected override MergedALAppObjectsCollection<ALAppTable> GetALAppObjectsCollection(ALProject project)
+        {
+            return project.AllSymbols.Tables;
+        }
+
+        protected override MergedALAppObjectExtensionsCollection<ALAppTableExtension> GetALAppObjectExtensionsCollection(ALProject project)
+        {
+            return project.AllSymbols.TableExtensions;
+        }
+
+        #endregion
 
         #region Get list of tables
 
+        public List<TableInformation> GetTables(ALProject project)
+        {
+            List<TableInformation> infoList = new List<TableInformation>();
+            IEnumerable<ALAppTable> tablesCollection = this.GetALAppObjectsCollection(project)?.GetObjects();
+            if (tablesCollection != null)
+                foreach (ALAppTable table in tablesCollection)
+                    infoList.Add(new TableInformation(table));
+            return infoList;
+        }
+
+        /*
         public List<TableInformation> GetTables(ALProject project)
         {
             List<TableInformation> infoList = new List<TableInformation>();
@@ -32,62 +58,29 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
                     infoList.Add(new TableInformation(symbols.Tables[i]));
             }
         }
+        */
 
         #endregion
 
         #region Find table
 
-        protected ALAppTable FindTable(ALProject project, string name, out ALProject sourceProject)
+        protected (ALAppTable, ALProject) FindTableWithSourceProject(ALProject project, string name)
         {
-            sourceProject = null;
-            ALAppTable table = FindTable(project.Symbols, name);
-            if (table != null)
-            {
-                sourceProject = project;
-                return table;
-            }
-            foreach (ALProjectDependency dependency in project.Dependencies)
-            {
-                table = FindTable(dependency.Symbols, name);
-                if (table != null)
-                {
-                    sourceProject = dependency.SourceProject;
-                    return table;
-                }
-            }
-            return null;
-        }
-
-        protected ALAppTable FindTable(ALProject project, int id)
-        {
-            ALAppTable table = FindTable(project.Symbols, id);
-            if (table != null)
-                return table;
-            foreach (ALProjectDependency dependency in project.Dependencies)
-            {
-                table = FindTable(dependency.Symbols, id);
-                if (table != null)
-                    return table;
-            }
-            return null;
-        }
-
-        protected ALAppTable FindTable(ALAppSymbolReference symbols, string name)
-        {
-            if ((symbols != null) && (symbols.Tables != null))
-                return symbols.Tables
+            ALAppTable table = project.Symbols?.Tables?
                     .Where(p => (name.Equals(p.Name, StringComparison.CurrentCultureIgnoreCase)))
                     .FirstOrDefault();
-            return null;
-        }
+            if (table != null)
+                return (table, project);
 
-        protected ALAppTable FindTable(ALAppSymbolReference symbols, int id)
-        {
-            if ((symbols != null) && (symbols.Tables != null))
-                return symbols.Tables
-                    .Where(p => (p.Id == id))
+            foreach (ALProjectDependency dependency in project.Dependencies)
+            {
+                table = dependency.Symbols?.Tables?
+                    .Where(p => (name.Equals(p.Name, StringComparison.CurrentCultureIgnoreCase)))
                     .FirstOrDefault();
-            return null;
+                if (table != null)
+                    return (table, dependency.SourceProject);
+            }
+            return (null, null);
         }
 
         #endregion
@@ -107,13 +100,12 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
         #region Get table fields
 
-        public List<TableFieldInformaton> GetTableFields(ALProject project, string tableName, bool includeDisabled, bool includeObsolete, bool includeNormal, bool includeFlowFields, bool includeFlowFilters)
+        public List<TableFieldInformaton> GetTableFields(ALProject project, string tableName, bool includeDisabled, bool includeObsolete, bool includeNormal, bool includeFlowFields, bool includeFlowFilters, bool includeToolTips)
         {
             List<TableFieldInformaton> fields = new List<TableFieldInformaton>();
 
             //find table
-            ALProject tableSourceProject;
-            ALAppTable table = this.FindTable(project, tableName, out tableSourceProject);
+            (ALAppTable table, ALProject tableSourceProject) = this.FindTableWithSourceProject(project, tableName);
             if (table == null)
                 return fields;
 
@@ -133,6 +125,25 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
                 tableExtension = FindTableExtension(dependency.Symbols, tableName);
                 if (tableExtension != null)
                     this.AddFields(fields, dependency.SourceProject, tableExtension.Fields, includeDisabled, includeObsolete, includeNormal, includeFlowFields, includeFlowFilters);
+            }
+
+            //collect tooltips
+            if (includeToolTips)
+            {
+                PageInformationProvider pageInformationProvider = new PageInformationProvider();
+                string[] tables = { tableName };
+                Dictionary<string, Dictionary<string, List<string>>> toolTips = pageInformationProvider.CollectTableFieldsToolTips(project, tables, null);
+                string tableKey = tableName.ToLower();
+                if (toolTips.ContainsKey(tableKey))
+                {
+                    Dictionary<string, List<string>> fieldsToolTips = toolTips[tableKey];
+                    for (int i = 0; i < fields.Count; i++)
+                    {
+                        string fieldKey = fields[i].Name?.ToLower();
+                        if ((!String.IsNullOrWhiteSpace(fieldKey)) && (fieldsToolTips.ContainsKey(fieldKey)) && (fieldsToolTips[fieldKey].Count > 0))
+                            fields[i].ToolTips = fieldsToolTips[fieldKey];
+                    }
+                }
             }
 
             //add virtual system fields

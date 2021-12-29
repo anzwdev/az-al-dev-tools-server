@@ -4,10 +4,8 @@ using System.Text;
 
 namespace AnZwDev.ALTools.Server.Contracts.SymbolsInformation
 {
-    public class GetPageDetailsRequest : GetTableBasedSymbolDetailsRequest
+    public class GetDependenciesListResponse
     {
-
-        public bool getToolTips { get; set; }
-
+        public List<string> dependencies { get; set; }
     }
 }

@@ -65,7 +65,7 @@ namespace AZALDevToolsTestConsoleApp.NetFramework
             ALProject project = workspace.Projects[0];
 
             PageInformationProvider pageInformationProvider = new PageInformationProvider();
-            PageInformation pageInformation = pageInformationProvider.GetPageDetails(project, "MyPageCard", true, true);
+            PageInformation pageInformation = pageInformationProvider.GetPageDetails(project, "MyPageCard", true, true, true);
 
             /*
             XmlPortInformationProvider xmlPortInformationProvider = new XmlPortInformationProvider();

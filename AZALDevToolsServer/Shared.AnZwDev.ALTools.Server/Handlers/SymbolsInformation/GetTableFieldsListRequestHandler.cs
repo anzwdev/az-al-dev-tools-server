@@ -26,7 +26,7 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
             if (project != null)
             {
                 TableInformationProvider provider = new TableInformationProvider();
-                response.symbols = provider.GetTableFields(project, parameters.table, parameters.includeDisabled, parameters.includeObsolete, parameters.includeNormal, parameters.includeFlowFields, parameters.includeFlowFilters);
+                response.symbols = provider.GetTableFields(project, parameters.table, parameters.includeDisabled, parameters.includeObsolete, parameters.includeNormal, parameters.includeFlowFields, parameters.includeFlowFilters, parameters.includeToolTips);
                 response.symbols.Sort(new SymbolInformationComparer());
             }
 

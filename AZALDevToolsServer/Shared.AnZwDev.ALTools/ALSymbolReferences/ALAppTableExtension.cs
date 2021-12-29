@@ -7,7 +7,7 @@ using AnZwDev.ALTools.ALSymbols;
 
 namespace AnZwDev.ALTools.ALSymbolReferences
 {
-    public class ALAppTableExtension : ALAppTable
+    public class ALAppTableExtension : ALAppTable, IALAppObjectExtension
     {
 
         public string TargetObject { get; set; }
@@ -29,5 +29,9 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return ALSymbolKind.TableExtensionObject;
         }
 
+        public string GetTargetObjectName()
+        {
+            return this.TargetObject;
+        }
     }
 }

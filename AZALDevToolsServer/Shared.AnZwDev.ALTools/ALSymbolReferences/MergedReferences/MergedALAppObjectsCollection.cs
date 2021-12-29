@@ -23,13 +23,21 @@ namespace AnZwDev.ALTools.ALSymbolReferences.MergedReferences
 
         public IEnumerable<T> GetObjects()
         {
-            for (int objListIdx=0; objListIdx < this.AllSymbolReferences.Count; objListIdx++)
+            return this.GetObjects(null);
+        }
+
+        public IEnumerable<T> GetObjects(HashSet<string> dependenciesNames)
+        {
+            for (int objListIdx = 0; objListIdx < this.AllSymbolReferences.Count; objListIdx++)
             {
-                IList<T> objectsList = this.GetALAppObjectsCollection(this.AllSymbolReferences[objListIdx]);
-                if (objectsList != null)
-                    for (int objIdx=0; objIdx < objectsList.Count; objIdx++)
-                        if (objectsList[objIdx] != null)
-                            yield return objectsList[objIdx];
+                if ((dependenciesNames == null) || (dependenciesNames.Contains(this.AllSymbolReferences[objListIdx].GetNameWithPublisher())))
+                {
+                    IList<T> objectsList = this.GetALAppObjectsCollection(this.AllSymbolReferences[objListIdx]);
+                    if (objectsList != null)
+                        for (int objIdx = 0; objIdx < objectsList.Count; objIdx++)
+                            if (objectsList[objIdx] != null)
+                                yield return objectsList[objIdx];
+                }
             }
         }
 
