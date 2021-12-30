@@ -85,6 +85,12 @@ namespace AZALDevToolsTestConsoleApp
             pm.Add("removeLocalVariables", "true");
             pm.Add("removeLocalMethodParameters", "true");
 
+            pm.Add("dependencyName0", "Microsoft - System");
+            pm.Add("dependencyName1", "Microsoft - Application");
+            pm.Add("dependencyName2", "Microsoft - System Application");
+            pm.Add("dependencyName3", "Microsoft - Base Application");
+
+
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("removeWith", content, projectPath, null, pm);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("addAllObjectsPermissions", content, projectPath, null, pm);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("fixIdentifiersCase", content, projects[0], null, pm);
@@ -93,15 +99,22 @@ namespace AZALDevToolsTestConsoleApp
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("addParentheses", content, projects[0], filePath, null, pm);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("sortVariables", content, projects[0], filePath, null, pm);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("removeBeginEnd", content, projects[0], filePath, null, pm);
-            WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("addToolTips", content, projects[0], filePath, null, pm);
+            //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("addToolTips", content, projects[0], filePath, null, pm);
+            WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("refreshToolTips", content, projects[0], filePath, null, pm);
 
             ALProject project = host.ALDevToolsServer.Workspace.Projects[0];
+
+            
+            PageInformationProvider pageInformationProvider = new PageInformationProvider();
+            List<string> toolTipsList = pageInformationProvider.GetPageFieldAvailableToolTips(project, "Page", "MyTestPage", "", "Rec.\"No.\"");
+
+            PageInformation pageInformation = pageInformationProvider.GetPageDetails(project, "wqefewf", true, true, true, null);
 
             ObjectIdInformationProvider objectIdInformationProvider = new();
             long id = objectIdInformationProvider.GetNextObjectId(project, "Page");
 
             TableInformationProvider tableInformationProvider = new();
-            List<TableFieldInformaton> fields = tableInformationProvider.GetTableFields(project, "Purchase Line", false, false, true, true, true, false);
+            List<TableFieldInformaton> fields = tableInformationProvider.GetTableFields(project, "Purchase Line", false, false, true, true, true, false, null);
             List<TableFieldInformaton> fields2 = fields.Where(p => (p.Name.StartsWith("Description"))).ToList();
 
             ReportInformationProvider reportInformationProvider = new();

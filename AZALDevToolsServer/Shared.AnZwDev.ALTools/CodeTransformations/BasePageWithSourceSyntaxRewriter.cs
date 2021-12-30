@@ -98,7 +98,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                 if (!String.IsNullOrWhiteSpace(sourceTable))
                 {
                     this.TableName = sourceTable;
-                    this.TableFields = this.TableInformationProvider.GetTableFields(this.Project, sourceTable, false, false, true, true, true, false);
+                    this.TableFields = this.TableInformationProvider.GetTableFields(this.Project, sourceTable, false, false, true, true, true, false, null);
                 }
             }
         }
@@ -221,7 +221,7 @@ namespace AnZwDev.ALTools.CodeTransformations
             if (_tablesCollectionWithFields.ContainsKey(tableNameKey))
                 return _tablesCollectionWithFields[tableNameKey];
 
-            List<TableFieldInformaton> fields = this.TableInformationProvider.GetTableFields(this.Project, tableName, false, false, true, true, true, false);
+            List<TableFieldInformaton> fields = this.TableInformationProvider.GetTableFields(this.Project, tableName, false, false, true, true, true, false, null);
             _tablesCollectionWithFields.Add(tableNameKey, fields);
             return fields;
         }

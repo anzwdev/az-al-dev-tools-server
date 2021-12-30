@@ -28,9 +28,10 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
                 if (project != null)
                 {
                     response.dependencies = new List<string>();
-                    for (int i = 0; i < project.AllSymbols.AllSymbolReferences.Count; i++)
+                    for (int i = 0; i < project.Dependencies.Count; i++)
                     {
-                        response.dependencies.Add(project.AllSymbols.AllSymbolReferences[i].GetNameWithPublisher());
+                        if (project.Dependencies[i].Symbols != null)
+                            response.dependencies.Add(project.Dependencies[i].Symbols.GetNameWithPublisher());
                     }
                 }
             }

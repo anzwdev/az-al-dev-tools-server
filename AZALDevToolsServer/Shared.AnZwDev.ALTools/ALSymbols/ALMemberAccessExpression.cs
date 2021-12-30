@@ -16,7 +16,7 @@ namespace AnZwDev.ALTools.ALSymbols
             this.Expression = expression;
         }
 
-        public string GetValueWithourRec()
+        public string GetSourceFieldNameWithoutRec()
         {
             if (String.IsNullOrWhiteSpace(this.Expression))
                 return this.Name;

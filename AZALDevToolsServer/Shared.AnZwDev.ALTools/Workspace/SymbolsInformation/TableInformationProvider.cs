@@ -100,7 +100,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
         #region Get table fields
 
-        public List<TableFieldInformaton> GetTableFields(ALProject project, string tableName, bool includeDisabled, bool includeObsolete, bool includeNormal, bool includeFlowFields, bool includeFlowFilters, bool includeToolTips)
+        public List<TableFieldInformaton> GetTableFields(ALProject project, string tableName, bool includeDisabled, bool includeObsolete, bool includeNormal, bool includeFlowFields, bool includeFlowFilters, bool includeToolTips, IEnumerable<string> toolTipsSourceDependencies)
         {
             List<TableFieldInformaton> fields = new List<TableFieldInformaton>();
 
@@ -132,7 +132,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             {
                 PageInformationProvider pageInformationProvider = new PageInformationProvider();
                 string[] tables = { tableName };
-                Dictionary<string, Dictionary<string, List<string>>> toolTips = pageInformationProvider.CollectTableFieldsToolTips(project, tables, null);
+                Dictionary<string, Dictionary<string, List<string>>> toolTips = pageInformationProvider.CollectTableFieldsToolTips(project, tables, toolTipsSourceDependencies);
                 string tableKey = tableName.ToLower();
                 if (toolTips.ContainsKey(tableKey))
                 {

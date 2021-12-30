@@ -14,6 +14,7 @@ namespace AnZwDev.ALTools.Server.Contracts.SymbolsInformation
         public bool includeFlowFields { get; set; }
         public bool includeFlowFilters { get; set; }
         public bool includeToolTips { get; set; }
+        public string[] toolTipsSourceDependencies { get; set; }
 
     }
 }

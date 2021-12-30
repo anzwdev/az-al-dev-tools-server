@@ -19,11 +19,17 @@ namespace AnZwDev.ALTools.Extensions
                         yield return item;
         }
 
-        public static HashSet<T> ToHashSet<T>(this IEnumerable<T> enumerable)
+        public static HashSet<T> ToHashSet<T>(this IEnumerable<T> enumerable, bool nullIfEmpty)
         {
+            bool isEmpty = true;
             HashSet<T> hashSet = new HashSet<T>();
             foreach (T item in enumerable)
+            {
                 hashSet.Add(item);
+                isEmpty = false;
+            }
+            if (isEmpty)
+                return null;
             return hashSet;
         }
 

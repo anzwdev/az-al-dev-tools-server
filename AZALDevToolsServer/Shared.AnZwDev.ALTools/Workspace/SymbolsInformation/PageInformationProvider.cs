@@ -69,7 +69,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
         #region Get page details
 
-        public PageInformation GetPageDetails(ALProject project, string pageName, bool getExistingFields, bool getAvailableFields, bool getToolTips)
+        public PageInformation GetPageDetails(ALProject project, string pageName, bool getExistingFields, bool getAvailableFields, bool getToolTips, IEnumerable<string> toolTipsSourceDependencies)
         {
             ALAppPage pageSymbol = this.GetALAppObjectsCollection(project).FindObject(pageName);
             if (pageSymbol == null)
@@ -80,7 +80,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             if ((!String.IsNullOrWhiteSpace(pageInformation.Source)) && (getExistingFields || getAvailableFields))
             {
                 TableInformationProvider tableInformationProvider = new TableInformationProvider();
-                List<TableFieldInformaton> allTableFieldsList = tableInformationProvider.GetTableFields(project, pageInformation.Source, false, false, true, true, false, getToolTips);
+                List<TableFieldInformaton> allTableFieldsList = tableInformationProvider.GetTableFields(project, pageInformation.Source, false, false, true, true, false, getToolTips, toolTipsSourceDependencies);
 
                 Dictionary<string, TableFieldInformaton> availableTableFieldsDict = allTableFieldsList.ToDictionary();
 
@@ -125,7 +125,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
                 if (!String.IsNullOrWhiteSpace(sourceExpression))
                 {
                     ALMemberAccessExpression memberAccessExpression = ALSyntaxHelper.DecodeMemberAccessExpression(sourceExpression);
-                    sourceExpression = memberAccessExpression.GetValueWithourRec();
+                    sourceExpression = memberAccessExpression.GetSourceFieldNameWithoutRec();
                     if (!String.IsNullOrWhiteSpace(sourceExpression))
                     {
                         sourceExpression = sourceExpression.ToLower();
@@ -155,7 +155,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
                 if (!String.IsNullOrWhiteSpace(tableName))
                 {
                     TableInformationProvider tableInformationProvider = new TableInformationProvider();
-                    return tableInformationProvider.GetTableFields(project, tableName, includeDisabled, includeObsolete, includeNormal, includeFlowFields, includeFlowFilters, false);
+                    return tableInformationProvider.GetTableFields(project, tableName, includeDisabled, includeObsolete, includeNormal, includeFlowFields, includeFlowFilters, false, null);
                 }
             }
             return null;
@@ -203,6 +203,42 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
         #region Tooltips information
 
+        public List<string> GetPageFieldAvailableToolTips(ALProject project, string objectType, string objectName, string sourceTable, string fieldExpression)
+        {
+            if ((String.IsNullOrWhiteSpace(objectType)) || (String.IsNullOrWhiteSpace(objectName)) || (String.IsNullOrWhiteSpace(fieldExpression)))
+                return null;
+
+            //find source table if not specified
+            if (String.IsNullOrWhiteSpace(sourceTable))
+            {
+                string pageName = null;
+                if (objectType.Equals("PageExtension", StringComparison.CurrentCultureIgnoreCase))
+                    pageName = this.GetALAppObjectExtensionsCollection(project).FindObject(objectName)?.GetTargetObjectName();
+                else if (objectType.Equals("Page", StringComparison.CurrentCultureIgnoreCase))
+                    pageName = objectName;
+                if (pageName != null)
+                    sourceTable = this.GetALAppObjectsCollection(project).FindObject(pageName)?.GetSourceTable();
+                if (String.IsNullOrWhiteSpace(sourceTable))
+                    return null;
+            }
+
+            //find field name
+            ALMemberAccessExpression memberAccessExpression = ALSyntaxHelper.DecodeMemberAccessExpression(fieldExpression);
+            string fieldName = memberAccessExpression.GetSourceFieldNameWithoutRec();
+            if (String.IsNullOrWhiteSpace(fieldName))
+                return null;
+
+            //collect table fields tooltips
+            string[] tableNames = { sourceTable };
+            string tableKey = sourceTable.ToLower();
+            string fieldKey = fieldName.ToLower();
+            Dictionary<string, Dictionary<string, List<string>>> allToolTips = this.CollectTableFieldsToolTips(project, tableNames, null);
+            if ((allToolTips.ContainsKey(tableKey)) && (allToolTips[tableKey].ContainsKey(fieldKey)))
+                return allToolTips[tableKey][fieldKey];
+
+            return null;
+        }
+
         public Dictionary<string, Dictionary<string, List<string>>> CollectProjectTableFieldsToolTips(ALProject project, IEnumerable<string> dependenciesList)
         {
             return this.CollectTableFieldsToolTips(project, GetProjectTablesList(project), dependenciesList);
@@ -210,7 +246,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
         public Dictionary<string, Dictionary<string, List<string>>> CollectTableFieldsToolTips(ALProject project, IEnumerable<string> tableNamesList, IEnumerable<string> dependenciesList)
         {
-            HashSet<string> dependenciesHashSet = (dependenciesList != null) ? dependenciesList.ToHashSet() : null;
+            HashSet<string> dependenciesHashSet = (dependenciesList != null)? dependenciesList.ToHashSet(true) : null;
             HashSet<string> tableNamesHashSet = tableNamesList.ToLowerCaseHashSet();
             Dictionary<string, IntPageWithControlsWithPropertyValue> pagesCacheDictionary = new Dictionary<string, IntPageWithControlsWithPropertyValue>();
 
@@ -247,7 +283,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
                         //get field name
                         string fieldName = null;
                         ALMemberAccessExpression memberAccessExpression = ALSyntaxHelper.DecodeMemberAccessExpression(controlCache.ControlSource);
-                        fieldName = memberAccessExpression.GetValueWithourRec();
+                        fieldName = memberAccessExpression.GetSourceFieldNameWithoutRec();
                         //collect field name
                         if (!String.IsNullOrWhiteSpace(fieldName))
                         {

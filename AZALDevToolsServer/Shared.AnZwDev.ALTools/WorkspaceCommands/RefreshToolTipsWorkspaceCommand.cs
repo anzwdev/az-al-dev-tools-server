@@ -16,6 +16,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
 
         protected override void SetParameters(string sourceCode, string projectPath, string filePath, TextSpan span, Dictionary<string, string> parameters)
         {
+            base.SetParameters(sourceCode, projectPath, filePath, span, parameters);
             if (this.SyntaxRewriter.Project?.Symbols?.Tables != null)
             {
                 //collect list of dependencies
@@ -29,7 +30,6 @@ namespace AnZwDev.ALTools.WorkspaceCommands
                 PageInformationProvider provider = new PageInformationProvider();
                 this.SyntaxRewriter.ToolTipsCache = provider.CollectProjectTableFieldsToolTips(this.SyntaxRewriter.Project, dependencies);
             }
-            base.SetParameters(sourceCode, projectPath, filePath, span, parameters);
         }
 
         protected override void ClearParameters()

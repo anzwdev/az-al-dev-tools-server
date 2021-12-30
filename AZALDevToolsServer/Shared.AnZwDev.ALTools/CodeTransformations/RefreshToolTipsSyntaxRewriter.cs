@@ -8,7 +8,7 @@ using System.Text;
 
 namespace AnZwDev.ALTools.CodeTransformations
 {
-    public class RefreshToolTipsSyntaxRewriter : BasePageWithSourceSyntaxRewriter
+    public class RefreshToolTipsSyntaxRewriter : BaseToolTipsSyntaxRewriter
     {
 
         public Dictionary<string, Dictionary<string, List<string>>> ToolTipsCache { get; set; }
@@ -34,24 +34,12 @@ namespace AnZwDev.ALTools.CodeTransformations
                         if ((fieldToolTipsCache.Count > 0) && (!String.IsNullOrWhiteSpace(fieldToolTipsCache[0])))
                         {
                             string newToolTip = fieldToolTipsCache[0];
-                            
-                            PropertySyntax propertySyntax = node.GetProperty("ToolTip");
-                            if (propertySyntax == null)
+
+                            PageFieldSyntax newNode = this.SetPageFieldToolTip(node, newToolTip);
+                            if (newNode != null)
                             {
                                 NoOfChanges++;
-                                SyntaxTriviaList leadingTriviaList = node.CreateChildNodeIdentTrivia();
-                                SyntaxTriviaList trailingTriviaList = SyntaxFactory.ParseTrailingTrivia("\r\n", 0);
-                                return node.AddPropertyListProperties(
-                                    SyntaxFactoryHelper.ToolTipProperty(newToolTip, "", false)
-                                        .WithLeadingTrivia(leadingTriviaList)
-                                        .WithTrailingTrivia(trailingTriviaList));
-                            }
-                            else
-                            {
-                                NoOfChanges++;
-                                PropertySyntax newPropertySyntax = SyntaxFactoryHelper.ToolTipProperty(newToolTip, "", false)
-                                    .WithTriviaFrom(propertySyntax);
-                                return node.ReplaceNode(propertySyntax, newPropertySyntax);
+                                return newNode;
                             }
                         }
                     }
@@ -59,13 +47,6 @@ namespace AnZwDev.ALTools.CodeTransformations
             }
 
             return base.VisitPageField(node);
-        }
-
-        protected PropertySyntax CreateToolTipProperty(string toolTipValue, SyntaxTriviaList leadingTriviaList, SyntaxTriviaList trailingTriviaList)
-        {
-            return SyntaxFactoryHelper.ToolTipProperty(toolTipValue, "", false)
-                .WithLeadingTrivia(leadingTriviaList)
-                .WithTrailingTrivia(trailingTriviaList);
         }
 
     }

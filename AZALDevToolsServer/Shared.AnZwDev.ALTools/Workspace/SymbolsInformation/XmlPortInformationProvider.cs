@@ -105,7 +105,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             if ((!String.IsNullOrWhiteSpace(tableElementInformation.Source)) && (getExistingFields || getAvailableFields))
             {
                 TableInformationProvider tableInformationProvider = new TableInformationProvider();
-                List<TableFieldInformaton> allTableFieldsList = tableInformationProvider.GetTableFields(project, tableElementInformation.Source, false, false, true, true, false, false);
+                List<TableFieldInformaton> allTableFieldsList = tableInformationProvider.GetTableFields(project, tableElementInformation.Source, false, false, true, true, false, false, null);
 
                 Dictionary<string, TableFieldInformaton> availableTableFieldsDict = allTableFieldsList.ToDictionary();
                 List<TableFieldInformaton> xmlPortTableFields = new List<TableFieldInformaton>();

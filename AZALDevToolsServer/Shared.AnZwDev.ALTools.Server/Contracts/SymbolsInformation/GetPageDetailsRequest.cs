@@ -8,6 +8,7 @@ namespace AnZwDev.ALTools.Server.Contracts.SymbolsInformation
     {
 
         public bool getToolTips { get; set; }
+        public string[] toolTipsSourceDependencies { get; set; }
 
     }
 }
