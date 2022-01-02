@@ -9,13 +9,14 @@ using System.Collections.Generic;
 
 namespace AnZwDev.ALTools.WorkspaceCommands
 {
-    public class SyntaxTreeWorkspaceCommand : WorkspaceCommand
+    public class SyntaxTreeWorkspaceCommand : SourceTextWorkspaceCommand
     {
 
         public SyntaxTreeWorkspaceCommand(ALDevToolsServer alDevToolsServer, string name) : base(alDevToolsServer, name)
         {
         }
 
+        /*
         public override WorkspaceCommandResult Run(string sourceCode, string projectPath, string filePath, Range range, Dictionary<string, string> parameters)
         {
             string newSourceCode = null;
@@ -38,8 +39,9 @@ namespace AnZwDev.ALTools.WorkspaceCommands
                 return new WorkspaceCommandResult(newSourceCode);
             return new WorkspaceCommandResult(newSourceCode, true, errorMessage);
         }
+        */
 
-        protected (string, bool, string) ProcessSourceCode(string sourceCode, string projectPath, string filePath, Range range, Dictionary<string, string> parameters)
+        protected override (string, bool, string) ProcessSourceCode(string sourceCode, string projectPath, string filePath, Range range, Dictionary<string, string> parameters)
         {
             try
             {
@@ -74,6 +76,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             }
         }
 
+        /*
         protected virtual (bool, string) ProcessDirectory(string projectPath, Dictionary<string, string> parameters)
         {
             string[] filePathsList = System.IO.Directory.GetFiles(projectPath, "*.al", System.IO.SearchOption.AllDirectories);
@@ -88,12 +91,13 @@ namespace AnZwDev.ALTools.WorkspaceCommands
 
         protected virtual (bool, string) ProcessFile(string projectPath, string filePath, Dictionary<string, string> parameters)
         {
-            string source = System.IO.File.ReadAllText(filePath);
+            string source = FileUtils.SafeReadAllText(filePath);
             (string newSource, bool success, string errorMessage) = this.ProcessSourceCode(source, projectPath, filePath, null, parameters);
             if ((success) && (newSource != source) && (!String.IsNullOrWhiteSpace(newSource)))
                 System.IO.File.WriteAllText(filePath, newSource);
             return (success, errorMessage);
         }
+        */
 
         public virtual SyntaxNode ProcessSyntaxNode(SyntaxNode node, string sourceCode, string projectPath, string filePath, TextSpan span, Dictionary<string, string> parameters)
         {

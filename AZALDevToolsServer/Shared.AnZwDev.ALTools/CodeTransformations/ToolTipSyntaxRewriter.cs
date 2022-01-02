@@ -17,12 +17,17 @@ namespace AnZwDev.ALTools.CodeTransformations
         public string PageFieldTooltipComment { get; set; }
         public string PageActionTooltip { get; set; }
         public bool UseFieldDescription { get; set; }
+        
+        public Dictionary<string, Dictionary<string, List<string>>> ToolTipsCache { get; set; }
+
 
         public ToolTipSyntaxRewriter()
         {
-            PageActionTooltip = "Executes the %1 action.";
-            PageFieldTooltip = "Specifies the value of %1 field.";
-            PageFieldTooltipComment = "%Caption.Comment%";
+            this.PageActionTooltip = "Executes the %1 action.";
+            this.PageFieldTooltip = "Specifies the value of %1 field.";
+            this.PageFieldTooltipComment = "%Caption.Comment%";
+            this.UseFieldDescription = false;
+            this.ToolTipsCache = null;
         }
 
         protected override SyntaxNode AfterVisitNode(SyntaxNode node)
@@ -43,6 +48,22 @@ namespace AnZwDev.ALTools.CodeTransformations
             TableFieldCaptionInfo captionInfo = this.GetFieldCaption(node);
             if (this.UseFieldDescription)
                 forceToolTipValue = captionInfo.Description;
+            else if ((this.ToolTipsCache != null) && (!String.IsNullOrWhiteSpace(this.TableName)) && (!String.IsNullOrWhiteSpace(captionInfo.FieldName)))
+            {
+                //find first tooltip from other pages
+                string tableNameKey = this.TableName.ToLower();
+                if (this.ToolTipsCache.ContainsKey(tableNameKey))
+                {
+                    Dictionary<string, List<string>> tableToolTipsCache = this.ToolTipsCache[tableNameKey];
+                    string fieldNameKey = captionInfo.FieldName.ToLower();
+                    if (tableToolTipsCache.ContainsKey(fieldNameKey))
+                    {
+                        List<string> fieldToolTipsCache = tableToolTipsCache[fieldNameKey];
+                        if (fieldToolTipsCache.Count > 0)
+                            forceToolTipValue = fieldToolTipsCache[0];
+                    }
+                }
+            }
 
             return node.AddPropertyListProperties(this.CreateToolTipProperty(node, captionInfo.Caption.Value, captionInfo.Caption.Comment, forceToolTipValue));
         }

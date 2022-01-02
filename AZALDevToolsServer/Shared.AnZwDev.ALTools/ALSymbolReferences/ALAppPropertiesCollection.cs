@@ -31,5 +31,17 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return null;
         }
 
+        public ALAppProperty GetOrCreateProperty(string name)
+        {
+            ALAppProperty property = this.GetProperty(name);
+            if (property == null)
+            {
+                property = new ALAppProperty(name, null);
+                this.Add(property);
+            }
+            return property;
+        }
+
+
     }
 }

@@ -123,12 +123,43 @@ namespace AnZwDev.ALTools.Extensions
             return text;
         }
 
-
         public static List<string> ToSingleElementList(this string text)
         {
             List<string> list = new List<string>();
             list.Add(text);
             return list;
+        }
+
+        public static string MultilineTrimEnd(this string text)
+        {
+            if (String.IsNullOrEmpty(text))
+                return text;
+
+            StringBuilder stringBuilder = new StringBuilder();
+            int startPos = 0;
+            int endPos = -1;
+
+            for (int i = 0; i < text.Length; i++)
+            {
+                char character = text[i];
+                bool isNewLine = (character == '\n') || (character == '\r');
+                bool isWhitespace = (Char.IsWhiteSpace(character) && (!isNewLine));
+
+                if (!isWhitespace)
+                {
+                    if (isNewLine)
+                    {
+                        if (endPos >= startPos)
+                            stringBuilder.Append(text.Substring(startPos, endPos + 1 - startPos));
+                        startPos = i;
+                    }
+                    endPos = i;
+                }
+            }
+            if (endPos >= startPos)
+                stringBuilder.Append(text.Substring(startPos, endPos + 1 - startPos));
+
+            return stringBuilder.ToString();
         }
 
     }

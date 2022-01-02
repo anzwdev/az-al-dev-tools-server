@@ -16,5 +16,15 @@ namespace AnZwDev.ALTools.ALSymbols
             this.Expression = expression;
         }
 
+        public string GetSourceFieldNameWithoutRec()
+        {
+            if (String.IsNullOrWhiteSpace(this.Expression))
+                return this.Name;
+            else if (this.Name.Equals("rec", StringComparison.CurrentCultureIgnoreCase))
+                return this.Expression;
+            return null;
+        }
+
+
     }
 }

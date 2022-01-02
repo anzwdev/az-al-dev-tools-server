@@ -28,6 +28,14 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             }
         }
 
+        public IEnumerable<string> GetNamesEnumerable()
+        {
+            for (int i = 0; i < this.Count; i++)
+            {
+                yield return this[i].Name;
+            }
+        }
+
         protected override T FindElement(T element)
         {
             return this.Where(p => (p.Id == element.Id)).FirstOrDefault();

@@ -4,6 +4,7 @@ using System.Text;
 using System.IO;
 using Newtonsoft.Json;
 using AnZwDev.ALTools.Workspace;
+using AnZwDev.ALTools.Core;
 
 namespace AnZwDev.ALTools.Workspace.Serialization
 {
@@ -16,7 +17,7 @@ namespace AnZwDev.ALTools.Workspace.Serialization
 
         public static void LoadFromFile(ALProject project, string path)
         {
-            LoadFromJson(project, File.ReadAllText(path));
+            LoadFromJson(project, FileUtils.SafeReadAllText(path));
         }
 
         public static void LoadFromJson(ALProject project, string jsonContent)

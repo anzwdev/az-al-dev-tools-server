@@ -31,5 +31,14 @@ namespace AnZwDev.ALTools.Extensions
             return value.Split(split);
         }
 
+        public static ET FindOrCreate<KT, ET>(this Dictionary<KT, ET> dictionary, KT key) where ET : new()
+        {
+            if (dictionary.ContainsKey(key))
+                return dictionary[key];
+            ET value = new ET();
+            dictionary.Add(key, value);
+            return value;
+        }
+
     }
 }

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace AnZwDev.ALTools.ALSymbolReferences.MergedReferences
 {
-    public class MergedALAppObjectExtensionsCollection<T> : MergedALAppObjectsCollection<T> where T : ALAppObject
+    public class MergedALAppObjectExtensionsCollection<T> : MergedALAppObjectsCollection<T> where T : ALAppObject, IALAppObjectExtension
     {
 
         public MergedALAppObjectExtensionsCollection(IReadOnlyList<ALAppSymbolReference> allSymbols, ALSymbolKind alSymbolKind, Func<ALAppSymbolReference, IList<T>> getALAppObjectsCollection) : base(allSymbols, alSymbolKind, getALAppObjectsCollection)
@@ -23,12 +23,21 @@ namespace AnZwDev.ALTools.ALSymbolReferences.MergedReferences
             {
                 IList<T> objectsList = this.GetALAppObjectsCollection(this.AllSymbolReferences[objListIdx]);
                 if (objectsList != null)
-                    for (int objIdx = 0; objIdx < objectsList.Count; objIdx++)
-                        if ((objectsList[objIdx] != null) && (this.ExtendsObject(objectsList[objIdx], baseObjectName)))
-                            yield return objectsList[objIdx];
+                {
+                    T objectExtension = this.FindFirstExtension(objectsList, baseObjectName);
+                    if (objectExtension != null)
+                        yield return objectExtension;
+                }
             }
         }
 
+        private T FindFirstExtension(IList<T> objectsList, string baseObjectName)
+        {
+            for (int objIdx = 0; objIdx < objectsList.Count; objIdx++)
+                if ((objectsList[objIdx] != null) && (this.ExtendsObject(objectsList[objIdx], baseObjectName)))
+                    return objectsList[objIdx];
+            return null;
+        }
 
     }
 }

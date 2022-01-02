@@ -166,6 +166,9 @@ namespace AnZwDev.ALTools.ALSymbols
 
         public static ALMemberAccessExpression DecodeMemberAccessExpression(string expression)
         {
+            if (String.IsNullOrWhiteSpace(expression))
+                return new ALMemberAccessExpression("", null);
+
             expression = expression.Trim();
             int pos = FindMemberAccessSeparator(expression);
             if (pos < 0)

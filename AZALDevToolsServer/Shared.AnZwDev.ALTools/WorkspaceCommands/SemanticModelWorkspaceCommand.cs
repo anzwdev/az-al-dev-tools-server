@@ -1,5 +1,7 @@
 ﻿using AnZwDev.ALTools.ALSymbols;
+using AnZwDev.ALTools.Core;
 using AnZwDev.ALTools.Logging;
+using AnZwDev.ALTools.SourceControl;
 using AnZwDev.ALTools.Workspace;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.CommandLine;
@@ -52,7 +54,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             return new WorkspaceCommandResult(newSourceCode, true, errorMessage);
         }
 
-        #region Project loading
+    #region Project loading
 
         protected Compilation LoadProject(string projectPath, List<SyntaxTree> syntaxTrees, string sourceCode, string sourcePath, out SyntaxTree sourceSyntaxTree)
         {
@@ -64,7 +66,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
 
             //load project manifest
             string projectFile = Path.Combine(projectPath, "app.json");
-            ProjectManifest manifest = ProjectManifest.ReadFromString(projectFile, File.ReadAllText(projectFile), diagnostics);
+            ProjectManifest manifest = ProjectManifest.ReadFromString(projectFile, FileUtils.SafeReadAllText(projectFile), diagnostics);
 
             //create compilation
             Compilation compilation = Compilation.Create("MyCompilation", manifest.AppManifest.AppPublisher,
@@ -112,7 +114,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
                 if (sourceFile)
                     content = sourceCode;
                 else
-                    content = File.ReadAllText(filePaths[i]);
+                    content = FileUtils.SafeReadAllText(filePaths[i]);
                 SyntaxTree syntaxTree = SyntaxTree.ParseObjectText(content, filePaths[i]);
                 syntaxTrees.Add(syntaxTree);
 
@@ -122,17 +124,29 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         }
 
 
-        #endregion
+    #endregion
 
-        #region Project files processing
+    #region Project files processing
+
+        protected bool ValidFile(string filePath)
+        {
+            return this.ModifiedFilesNamesHashSet.Contains(filePath);
+        }
 
         protected (bool, string) ProcessDirectory(List<SyntaxTree> syntaxTrees, Compilation compilation, ALProject project, Dictionary<string, string> parameters)
         {
+            //get modified files if running for modified files only
+            bool modifiedFilesOnly = this.GetModifiedFilesOnlyValue(parameters);
+
+            //process files
             foreach (SyntaxTree syntaxTree in syntaxTrees)
             {
-                (bool success, string errorMessage) = this.ProcessFile(syntaxTree, compilation, project, null, parameters);
-                if (!success)
-                    return (false, errorMessage);
+                if ((!modifiedFilesOnly) || (this.ValidFile(syntaxTree.FilePath)))
+                {
+                    (bool success, string errorMessage) = this.ProcessFile(syntaxTree, compilation, project, null, parameters);
+                    if (!success)
+                        return (false, errorMessage);
+                }
             }
             return (true, null);
         }
@@ -182,13 +196,13 @@ namespace AnZwDev.ALTools.WorkspaceCommands
 
         public virtual SyntaxNode ProcessSyntaxNode(SyntaxTree syntaxTree, SyntaxNode node, SemanticModel semanticModel, ALProject project, TextSpan span, Dictionary<string, string> parameters)
         {
-            bool skipFormatting = ((parameters != null) && (parameters.ContainsKey("skipFormatting")) && (parameters["skipFormatting"] == "true"));
+            bool skipFormatting = this.GetSkipFormattingValue(parameters); //((parameters != null) && (parameters.ContainsKey("skipFormatting")) && (parameters["skipFormatting"] == "true"));
             if (!skipFormatting)
                 node = FormatSyntaxNode(node);
             return node;
         }
 
-        #endregion
+    #endregion
 
     }
 #endif

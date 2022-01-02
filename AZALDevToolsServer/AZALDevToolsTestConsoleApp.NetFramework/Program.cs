@@ -4,6 +4,7 @@ using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.ALSymbols.SymbolReaders;
 using AnZwDev.ALTools.CodeAnalysis;
 using AnZwDev.ALTools.CodeTransformations;
+using AnZwDev.ALTools.Core;
 using AnZwDev.ALTools.Server;
 using AnZwDev.ALTools.Workspace;
 using AnZwDev.ALTools.Workspace.SymbolsInformation;
@@ -42,7 +43,7 @@ namespace AZALDevToolsTestConsoleApp.NetFramework
 
             
             filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18\\Pag50104.MyPrefixMyPageCard.al";
-            string content = System.IO.File.ReadAllText(filePath);
+            string content = FileUtils.SafeReadAllText(filePath);
             Dictionary<string, string> pm = new Dictionary<string, string>();
             pm.Add("sourceFilePath", filePath);
             string projectPath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18";
@@ -64,7 +65,7 @@ namespace AZALDevToolsTestConsoleApp.NetFramework
             ALProject project = workspace.Projects[0];
 
             PageInformationProvider pageInformationProvider = new PageInformationProvider();
-            PageInformation pageInformation = pageInformationProvider.GetPageDetails(project, "MyPageCard", true, true);
+            PageInformation pageInformation = pageInformationProvider.GetPageDetails(project, "MyPageCard", true, true, true, null);
 
             /*
             XmlPortInformationProvider xmlPortInformationProvider = new XmlPortInformationProvider();

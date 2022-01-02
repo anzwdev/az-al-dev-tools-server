@@ -564,5 +564,11 @@ namespace AnZwDev.ALTools.ALSymbolReferences
 
         #endregion
 
+        public string GetNameWithPublisher()
+        {
+            return this.Publisher.NotNull() + " - " + this.Name.NotNull();
+        }
+
+
     }
 }

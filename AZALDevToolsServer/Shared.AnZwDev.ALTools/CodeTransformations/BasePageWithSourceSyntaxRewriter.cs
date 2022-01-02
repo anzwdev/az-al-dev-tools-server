@@ -17,6 +17,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         protected TableInformationProvider TableInformationProvider { get; }
         protected List<TableFieldInformaton> TableFields { get; set; }
+        protected String TableName { get; set; }
 
         protected ALSymbolKind _globalVarOwnerKind = ALSymbolKind.Undefined;
         protected string _globalVarOwnerName = null;
@@ -27,6 +28,7 @@ namespace AnZwDev.ALTools.CodeTransformations
         {
             this.TableInformationProvider = new TableInformationProvider();
             this.TableFields = null;
+            this.TableName = null;
         }
 
         public override SyntaxNode VisitReport(ReportSyntax node)
@@ -56,6 +58,7 @@ namespace AnZwDev.ALTools.CodeTransformations
         public override SyntaxNode VisitPageExtension(PageExtensionSyntax node)
         {
             this.TableFields = null;
+            this.TableName = null;
 
             //get list of table fields
             if (node.BaseObject != null)
@@ -67,6 +70,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                 {
                     PageInformationProvider pageInformationProvider = new PageInformationProvider();
                     this.TableFields = pageInformationProvider.GetAllTableFieldsForPage(this.Project, pageName, false, false, true, true, true);
+                    this.TableName = this.Project.AllSymbols.Pages.FindObject(pageName)?.GetSourceTable();
                 }
             }
             else
@@ -86,15 +90,18 @@ namespace AnZwDev.ALTools.CodeTransformations
         {
             //try to find current table
             this.TableFields = null;
+            this.TableName = null;
             PropertyValueSyntax sourceTablePropertyValue = node.GetPropertyValue("SourceTable");
             if (sourceTablePropertyValue != null)
             {
                 string sourceTable = ALSyntaxHelper.DecodeName(sourceTablePropertyValue.ToString());
                 if (!String.IsNullOrWhiteSpace(sourceTable))
-                    this.TableFields = this.TableInformationProvider.GetTableFields(this.Project, sourceTable, false, false, true, true, true);
+                {
+                    this.TableName = sourceTable;
+                    this.TableFields = this.TableInformationProvider.GetTableFields(this.Project, sourceTable, false, false, true, true, true, false, null);
+                }
             }
         }
-
         protected TableFieldCaptionInfo GetFieldCaption(PageFieldSyntax node)
         {
             //try to find source field caption
@@ -126,14 +133,14 @@ namespace AnZwDev.ALTools.CodeTransformations
                     {
                         description = tableField.Description;
                         if ((tableField.CaptionLabel != null) && (!String.IsNullOrWhiteSpace(tableField.CaptionLabel.Value)))
-                            return new TableFieldCaptionInfo(tableField.CaptionLabel, description);
+                            return new TableFieldCaptionInfo(tableField.CaptionLabel, description, fieldName);
                     }
                 }
 
                 if ((String.IsNullOrWhiteSpace(caption)) && (fieldName != null))
                     caption = fieldName.Replace("\"", "").RemovePrefixSuffix(this.Project.MandatoryPrefixes, this.Project.MandatorySuffixes, this.Project.MandatoryAffixes);
             }
-            return new TableFieldCaptionInfo(new LabelInformation("Caption", caption), description);
+            return new TableFieldCaptionInfo(new LabelInformation("Caption", caption), description, null);
         }
 
         protected void SetGlobalVarOwner(ALSymbolKind kind, string name)
@@ -149,7 +156,7 @@ namespace AnZwDev.ALTools.CodeTransformations
             {
                 case ALSymbolKind.PageObject:
                     PageInformationProvider pageInformationProvider = new PageInformationProvider();
-                    this.SetGlobalVariables(pageInformationProvider.GetPageVariables(this.Project, _globalVarOwnerName));
+                    this.SetGlobalVariables(pageInformationProvider.GetVariables(this.Project, _globalVarOwnerName));
                     break;
                 case ALSymbolKind.ReportObject:
                     ReportInformationProvider reportInformationProvider = new ReportInformationProvider();
@@ -169,18 +176,18 @@ namespace AnZwDev.ALTools.CodeTransformations
             }
         }
 
-        protected void SetGlobalVariables(List<ALAppVariable> variables)
+        protected void SetGlobalVariables(IEnumerable<ALAppVariable> variables)
         {
             _globalVariables = new Dictionary<string, ALAppVariable>();
             if (variables != null)
             {
-                for (int i = 0; i < variables.Count; i++)
+                foreach (ALAppVariable alAppVariable in variables)
                 {
-                    if (!String.IsNullOrWhiteSpace(variables[i].Name))
+                    if (!String.IsNullOrWhiteSpace(alAppVariable.Name))
                     {
-                        string name = variables[i].Name.ToLower();
+                        string name = alAppVariable.Name.ToLower();
                         if (!_globalVariables.ContainsKey(name))
-                            _globalVariables.Add(name, variables[i]);
+                            _globalVariables.Add(name, alAppVariable);
                     }
                 }
             }
@@ -214,7 +221,7 @@ namespace AnZwDev.ALTools.CodeTransformations
             if (_tablesCollectionWithFields.ContainsKey(tableNameKey))
                 return _tablesCollectionWithFields[tableNameKey];
 
-            List<TableFieldInformaton> fields = this.TableInformationProvider.GetTableFields(this.Project, tableName, false, false, true, true, true);
+            List<TableFieldInformaton> fields = this.TableInformationProvider.GetTableFields(this.Project, tableName, false, false, true, true, true, false, null);
             _tablesCollectionWithFields.Add(tableNameKey, fields);
             return fields;
         }

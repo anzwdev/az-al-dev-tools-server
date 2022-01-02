@@ -5,7 +5,7 @@ using System.Text;
 
 namespace AnZwDev.ALTools.ALSymbolReferences
 {
-    public class ALAppReportExtension : ALAppObject
+    public class ALAppReportExtension : ALAppObject, IALAppObjectExtension
     {
 
         public string Target { get; set; }
@@ -91,5 +91,9 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             symbol.AddChildSymbol(columnsSymbol);
         }
 
+        public string GetTargetObjectName()
+        {
+            return this.Target;
+        }
     }
 }
