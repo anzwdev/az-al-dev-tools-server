@@ -1,4 +1,5 @@
-﻿using AnZwDev.ALTools.Extensions;
+﻿using AnZwDev.ALTools.Core;
+using AnZwDev.ALTools.Extensions;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using System;
@@ -14,6 +15,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         protected class TableFieldComparer<T> : IComparer<T> where T : FieldBaseSyntax
          {
+            protected static IComparer<string> _stringComparer = new SyntaxNodeNameComparer();
 
             public TableFieldComparer()
             {
@@ -42,14 +44,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                 if (value != 0)
                     return value;
 
-                string xName = x.GetNameStringValue();
-                string yName = y.GetNameStringValue();
-
-                if (xName != null)
-                    return xName.CompareTo(yName);
-                if (yName != null)
-                    return -yName.CompareTo(xName);
-                return 0;
+                return _stringComparer.Compare(x.GetNameStringValue(), y.GetNameStringValue());
             }
         }
 

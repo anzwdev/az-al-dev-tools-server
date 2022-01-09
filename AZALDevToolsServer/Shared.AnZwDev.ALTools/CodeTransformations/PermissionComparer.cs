@@ -1,4 +1,5 @@
 ﻿using AnZwDev.ALTools.ALSymbols;
+using AnZwDev.ALTools.Core;
 using AnZwDev.ALTools.Extensions;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using System;
@@ -19,7 +20,7 @@ namespace AnZwDev.ALTools.CodeTransformations
         protected static int TYPE_XMLPORT = 6;
 
         private Dictionary<string, int> _typePriorities;
-        protected static AlphanumComparatorFast _stringComparer = new AlphanumComparatorFast();
+        protected static IComparer<string> _stringComparer = new SyntaxNodeNameComparer();
 
         public PermissionComparer()
         {

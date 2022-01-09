@@ -1,4 +1,5 @@
-﻿using AnZwDev.ALTools.Extensions;
+﻿using AnZwDev.ALTools.Core;
+using AnZwDev.ALTools.Extensions;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using System;
@@ -18,7 +19,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 #if BC
         protected class VariableDeclarationNameComparer : IComparer<VariableDeclarationNameSyntax>
         {
-            protected static AlphanumComparatorFast _stringComparer = new AlphanumComparatorFast();
+            protected static IComparer<string> _stringComparer = new SyntaxNodeNameComparer();
 
             public int Compare(VariableDeclarationNameSyntax x, VariableDeclarationNameSyntax y)
             {
@@ -32,7 +33,7 @@ namespace AnZwDev.ALTools.CodeTransformations
         {
             protected static string[] _typePriority = {"record ", "report", "codeunit", "xmlport", "page", "query", "notification",
                     "bigtext", "dateformula", "recordid", "recordref", "fieldref", "filterpagebuilder" };
-            protected static AlphanumComparatorFast _stringComparer = new AlphanumComparatorFast();
+            protected static IComparer<string> _stringComparer = new SyntaxNodeNameComparer();
 
             public VariableComparer()
             {
@@ -96,7 +97,7 @@ namespace AnZwDev.ALTools.CodeTransformations
         {
             protected static string[] _typePriority = {"record ", "report", "codeunit", "xmlport", "page", "query", "notification",
                     "bigtext", "dateformula", "recordid", "recordref", "fieldref", "filterpagebuilder" };
-            protected static AlphanumComparatorFast _stringComparer = new AlphanumComparatorFast();
+            protected static IComparer<string> _stringComparer = new SyntaxNodeNameComparer();
 
             public VariableComparer()
             {
@@ -138,9 +139,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                 if (value != 0)
                     return value;
 
-                string xName = x.GetNameStringValue().ToLower();
-                string yName = y.GetNameStringValue().ToLower();
-                return _stringComparer.Compare(xName, yName);
+                return _stringComparer.Compare(x.GetNameStringValue().ToLower(), y.GetNameStringValue().ToLower());
             }
         }
 #endif
