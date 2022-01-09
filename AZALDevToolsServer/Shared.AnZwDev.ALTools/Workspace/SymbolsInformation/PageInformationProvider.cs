@@ -246,7 +246,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
         public Dictionary<string, Dictionary<string, List<string>>> CollectTableFieldsToolTips(ALProject project, IEnumerable<string> tableNamesList, IEnumerable<string> dependenciesList)
         {
-            HashSet<string> dependenciesHashSet = (dependenciesList != null)? dependenciesList.ToHashSet(true) : null;
+            HashSet<string> dependenciesHashSet = ((dependenciesList != null) && (!dependenciesList.Contains("*")))? dependenciesList.ToHashSet(true) : null;
             HashSet<string> tableNamesHashSet = tableNamesList.ToLowerCaseHashSet();
             Dictionary<string, IntPageWithControlsWithPropertyValue> pagesCacheDictionary = new Dictionary<string, IntPageWithControlsWithPropertyValue>();
 
