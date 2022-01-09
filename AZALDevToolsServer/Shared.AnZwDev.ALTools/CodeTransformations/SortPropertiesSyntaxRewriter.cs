@@ -1,4 +1,5 @@
-﻿using Microsoft.Dynamics.Nav.CodeAnalysis;
+﻿using AnZwDev.ALTools.Core;
+using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using System;
 using System.Collections.Generic;
@@ -17,13 +18,15 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         protected class PropertyComparer : IComparer<SyntaxNodeSortInfo<PropertySyntaxOrEmpty>>
         {
+            protected static IComparer<string> _stringComparer = new SyntaxNodeNameComparer();
+
             public PropertyComparer()
             {
             }
 
             public int Compare(SyntaxNodeSortInfo<PropertySyntaxOrEmpty> x, SyntaxNodeSortInfo<PropertySyntaxOrEmpty> y)
             {
-                int val = x.Name.CompareTo(y.Name);
+                int val = _stringComparer.Compare(x.Name, y.Name);
                 if (val != 0)
                     return val;
                 return x.Index - y.Index;
@@ -32,13 +35,15 @@ namespace AnZwDev.ALTools.CodeTransformations
 #else
         protected class PropertyComparer : IComparer<SyntaxNodeSortInfo<PropertySyntax>>
         {
+            protected static IComparer<string> _stringComparer = new SyntaxNodeNameComparer();
+
             public PropertyComparer()
             {
             }
 
             public int Compare(SyntaxNodeSortInfo<PropertySyntax> x, SyntaxNodeSortInfo<PropertySyntax> y)
             {
-                int val = x.Name.CompareTo(y.Name);
+                int val = _stringComparer.Compare(x.Name, y.Name);
                 if (val != 0)
                     return val;
                 return x.Index - y.Index;

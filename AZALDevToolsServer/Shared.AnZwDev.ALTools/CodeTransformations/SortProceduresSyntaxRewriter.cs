@@ -1,5 +1,6 @@
 ﻿using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.ALSymbols.Internal;
+using AnZwDev.ALTools.Core;
 using AnZwDev.ALTools.Extensions;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
@@ -114,7 +115,7 @@ namespace AnZwDev.ALTools.CodeTransformations
         protected class MethodSortInfoComparer<T> : IComparer<MethodSortInfo<T>> where T: SyntaxNode
         {
             protected static Dictionary<ALSymbolKind, int> _typePriority;
-            protected static AlphanumComparatorFast _stringComparer = new AlphanumComparatorFast();
+            protected static IComparer<string> _stringComparer = new SyntaxNodeNameComparer();
             protected static int UndefinedPriority = -1;
 
             public MethodSortInfoComparer()

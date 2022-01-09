@@ -13,9 +13,9 @@ namespace AnZwDev.ALTools.CodeTransformations
     public class SyntaxNodeSortInfo<T> where T: SyntaxNode
     {
 
-        public string Name { get; set; }
-        public int Index { get; set; }
-        internal ConvertedSyntaxKind Kind { get; set; }
+        public string Name { get; }
+        public int Index { get; }
+        internal ConvertedSyntaxKind Kind { get; }
         public T Node { get; set; }
 
         public static List<SyntaxNodeSortInfo<T>> FromSyntaxList(SyntaxList<T> syntaxList)
@@ -58,17 +58,12 @@ namespace AnZwDev.ALTools.CodeTransformations
             return list;
         }
 
-
-        public SyntaxNodeSortInfo()
-        {
-        }
-
         public SyntaxNodeSortInfo(T node, int index)
         {
             this.Index = index;
             this.Node = node;
             this.Kind = node.Kind.ConvertToLocalType();
-            this.Name = this.Node.GetSyntaxNodeName();
+            this.Name = this.Node.GetSyntaxNodeName().NotNull();
         }
 
     }

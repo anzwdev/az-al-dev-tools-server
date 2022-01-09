@@ -1,4 +1,5 @@
-﻿using AnZwDev.ALTools.Extensions;
+﻿using AnZwDev.ALTools.Core;
+using AnZwDev.ALTools.Extensions;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ namespace AnZwDev.ALTools.CodeTransformations
     public class IdentifierNameComparer : IComparer<IdentifierNameSyntax>
     {
 
-        protected static AlphanumComparatorFast _stringComparer = new AlphanumComparatorFast();
+        protected static IComparer<string> _stringComparer = new SyntaxNodeNameComparer();
 
         public int Compare(IdentifierNameSyntax x, IdentifierNameSyntax y)
         {
