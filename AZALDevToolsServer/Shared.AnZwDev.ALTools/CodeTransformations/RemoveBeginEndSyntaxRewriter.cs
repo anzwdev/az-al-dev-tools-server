@@ -150,7 +150,13 @@ namespace AnZwDev.ALTools.CodeTransformations
         {
 #if BC
             if (semicolonToken != null)
-                return semicolonToken.GetAllTrivia().MergeWith(node.GetTrailingTrivia());
+            {
+                List<SyntaxTrivia> trailingTrivia = new List<SyntaxTrivia>();
+                trailingTrivia.AddRange(semicolonToken.GetAllTrivia());
+                trailingTrivia.AddUniqueRange(node.GetTrailingTrivia());
+                //return semicolonToken.GetAllTrivia(); //.MergeWith(node.GetTrailingTrivia());
+                return trailingTrivia;
+            }
 #endif
             return null;
         }
