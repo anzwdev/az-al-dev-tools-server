@@ -75,7 +75,7 @@ namespace AZALDevToolsTestConsoleApp
             //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject\\Rep50100.MyReport.al";
             //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject\\MyTestCU.al";
             filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject\\Cod50100.MyCodeunit.al";
-
+            
             string content = FileUtils.SafeReadAllText(filePath);
             Dictionary<string, string> pm = new();
             pm.Add("sourceFilePath", filePath);

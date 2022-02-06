@@ -39,7 +39,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
 
             if (!String.IsNullOrWhiteSpace(filePath))
             {
-                if (!String.IsNullOrEmpty(sourceCode))
+                if ((!String.IsNullOrEmpty(sourceCode)) && (sourceSyntaxTree != null))
                 {
                     (newSourceCode, success, errorMessage) = this.ProcessSourceCode(sourceSyntaxTree, compilation, project, range, parameters);
                     if (!success)
