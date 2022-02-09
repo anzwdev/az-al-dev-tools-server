@@ -16,6 +16,7 @@ namespace AnZwDev.ALTools.Server.Contracts
         public string filePath { get; set; }
         public Range range { get; set; }
         public Dictionary<string, string> parameters { get; set; }
+        public List<string> excludeFiles { get; set; }
 
     }
 }
