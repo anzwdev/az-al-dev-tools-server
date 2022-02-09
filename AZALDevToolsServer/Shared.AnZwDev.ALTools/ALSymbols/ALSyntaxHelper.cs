@@ -82,6 +82,13 @@ namespace AnZwDev.ALTools.ALSymbols
             return name;
         }
 
+        public static string EncodeName(string name, bool force)
+        {
+            if (force || NameNeedsEcoding(name))
+                return "\"" + name.Replace("\"", "\"\"") + "\"";
+            return name;
+        }
+
         public static string EncodeNamesList(string[] names)
         {
             if ((names != null) && (names.Length > 0))

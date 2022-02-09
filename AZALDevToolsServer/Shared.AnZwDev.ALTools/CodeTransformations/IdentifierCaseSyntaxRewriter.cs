@@ -8,6 +8,7 @@ using System.Text;
 using AnZwDev.ALTools.Extensions;
 using AnZwDev.ALTools.ALLanguageInformation;
 using AnZwDev.ALTools.Workspace.SymbolsInformation;
+using AnZwDev.ALTools.ALSymbols;
 
 namespace AnZwDev.ALTools.CodeTransformations
 {
@@ -159,10 +160,15 @@ namespace AnZwDev.ALTools.CodeTransformations
                                     (symbolKind != ConvertedSymbolKind.DotNet)) 
                                     newName = info.Symbol.Name;
                             }
+
+                            //check if symbol should be escaped
+                            if ((info != null) && (info.Symbol != null) && (KeywordInformation.IsCodeKeyword(newName)) && (!newName.StartsWith("\"")) && (node.IsInsideCodeBlock()))
+                                newName = ALSyntaxHelper.EncodeName(newName, true);
                         }
 
                         if ((prevName != newName) && (!String.IsNullOrWhiteSpace(newName)))
                         {
+
                             this.NoOfChanges++;
                             SyntaxToken identifier = node.Identifier;
                             node = node.WithIdentifier(

@@ -14,6 +14,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\ImageInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\ImageInformationComparer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\ImageInformationProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\KeywordInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\PageActionAreaCaseInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\PageAreaCaseInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\QueryMembersCaseInformation.cs" />
@@ -190,6 +191,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\AlphanumComparatorFast .cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\DictionaryExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\EnumExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\HashSetExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\HashSet_ALSymbolKind_Extensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\IEnumerableExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\IListExtensions.cs" />
