@@ -19,8 +19,14 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         public override SyntaxNode VisitPageField(PageFieldSyntax node)
         {
-            if ((!node.ContainsDiagnostics) && (this.ToolTipsCache != null) && (!String.IsNullOrWhiteSpace(this.TableName)) && (!node.HasProperty("ToolTipML")))
+            if ((!node.ContainsDiagnostics) && 
+                (this.ToolTipsCache != null) && 
+                (!String.IsNullOrWhiteSpace(this.TableName)) && 
+                (!node.HasProperty("ToolTipML")))
             {
+                if ((!this.HasToolTip(node)) && (this.ToolTipDisabled(node)))
+                    return base.VisitPageField(node);
+
                 //find first tooltip from other pages
                 TableFieldCaptionInfo captionInfo = this.GetFieldCaption(node);
                 string tableNameKey = this.TableName.ToLower();

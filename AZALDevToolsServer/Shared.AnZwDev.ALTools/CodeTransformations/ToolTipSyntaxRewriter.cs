@@ -39,7 +39,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         public override SyntaxNode VisitPageField(PageFieldSyntax node)
         {
-            if (this.HasToolTip(node))
+            if ((this.HasToolTip(node)) || (this.ToolTipDisabled(node)))
                 return base.VisitPageField(node);
             this.NoOfChanges++;
 
@@ -74,11 +74,6 @@ namespace AnZwDev.ALTools.CodeTransformations
                 return base.VisitPageAction(node);
             this.NoOfChanges++;
             return node.AddPropertyListProperties(this.CreateToolTipProperty(node));
-        }
-
-        protected bool HasToolTip(SyntaxNode node)
-        {
-            return ((node.HasNonEmptyProperty("ToolTip")) || (node.HasProperty("ToolTipML")));
         }
 
         protected PropertySyntax CreateToolTipProperty(SyntaxNode node, string caption = null, string comment = null, string forceToolTipValue = null)
