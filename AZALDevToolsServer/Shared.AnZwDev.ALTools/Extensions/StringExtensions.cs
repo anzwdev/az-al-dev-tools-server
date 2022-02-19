@@ -162,5 +162,10 @@ namespace AnZwDev.ALTools.Extensions
             return stringBuilder.ToString();
         }
 
+        public static bool ToBool(this string value)
+        {
+            return ((value != null) && (value.Equals("true", StringComparison.CurrentCultureIgnoreCase)));
+        }
+
     }
 }

@@ -108,6 +108,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\Serialization\NavxDependency.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\Serialization\NavxModuleReference.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\Serialization\NavxPackage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\Serialization\NavxResourceExposurePolicy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALFullSyntaxTree.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALFullSyntaxTreeNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALMemberAccessExpression.cs" />
