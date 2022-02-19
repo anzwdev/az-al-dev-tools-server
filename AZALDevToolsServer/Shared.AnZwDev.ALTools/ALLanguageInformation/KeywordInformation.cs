@@ -104,6 +104,20 @@ namespace AnZwDev.ALTools.ALLanguageInformation
                 (_objectTypeKeywords.Contains(keyword));
         }
 
+        public static bool IsAnyKeywordOrDataTypeName(string keyword)
+        {
+            if (keyword == null)
+                return false;
+            keyword = keyword.ToLower();
+            return
+                (_alCodeKeywords.Contains(keyword)) ||
+                (_propertyKeywords.Contains(keyword)) ||
+                (_objectCodeKeywords.Contains(keyword)) ||
+                (_directiveKeywords.Contains(keyword)) ||
+                (_objectTypeKeywords.Contains(keyword)) ||
+                (_dataTypeNames.Contains(keyword));
+        }
+
         public static bool IsDataTypeName(string name)
         {
             return ((name != null) && (_dataTypeNames.Contains(name.ToLower())));
