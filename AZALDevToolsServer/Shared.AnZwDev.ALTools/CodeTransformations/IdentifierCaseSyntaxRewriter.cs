@@ -161,14 +161,17 @@ namespace AnZwDev.ALTools.CodeTransformations
                                     newName = info.Symbol.Name;
                             }
 
-                            //check if symbol should be escaped
-                            if ((info != null) && (info.Symbol != null) && (KeywordInformation.IsCodeKeyword(newName)) && (!newName.StartsWith("\"")) && (node.IsInsideCodeBlock()))
-                                newName = ALSyntaxHelper.EncodeName(newName, true);
+                            //if identifier is escaped keyword then leave it in that state
+                            if (prevName.StartsWith("\""))
+                            {
+                                string decodedPrevName = ALSyntaxHelper.DecodeName(prevName);
+                                if ((decodedPrevName.Equals(newName, StringComparison.CurrentCultureIgnoreCase)) && (KeywordInformation.IsAnyKeyword(newName)))
+                                    newName = ALSyntaxHelper.EncodeName(newName, true);
+                            }
                         }
 
                         if ((prevName != newName) && (!String.IsNullOrWhiteSpace(newName)))
                         {
-
                             this.NoOfChanges++;
                             SyntaxToken identifier = node.Identifier;
                             node = node.WithIdentifier(
