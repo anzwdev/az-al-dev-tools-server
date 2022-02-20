@@ -50,10 +50,10 @@ namespace AZALDevToolsTestConsoleApp.NetFramework
             WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("removeWith", content, projectPath, filePath, null, pm, null);
 
             //Workspace tests
-            string[] projects =
+            ALProjectSource[] projects =
             {
                 //"C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC16\\"
-                "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18"
+                new ALProjectSource("C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18", null)
             };
             
 

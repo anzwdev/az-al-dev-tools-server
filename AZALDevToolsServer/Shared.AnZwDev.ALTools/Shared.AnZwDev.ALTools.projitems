@@ -252,8 +252,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\ALProjectFilesCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\ALProjectFileType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\ALProjectIdRange.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Workspace\ALProjectPathComparer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\ALProjectProperties.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\ALProjectReference.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Workspace\ALProjectSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\ALProjectSymbolsLibrarySource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\ALWorkspace.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\List_ALProjectReference_Extensions.cs" />
