@@ -25,7 +25,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         {
         }
 
-        public override WorkspaceCommandResult Run(string sourceCode, string projectPath, string filePath, Range range, Dictionary<string, string> parameters)
+        public override WorkspaceCommandResult Run(string sourceCode, string projectPath, string filePath, Range range, Dictionary<string, string> parameters, List<string> excludeFiles)
         {
             SyntaxTree sourceSyntaxTree = null;
             string newSourceCode = null;
@@ -39,7 +39,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
 
             if (!String.IsNullOrWhiteSpace(filePath))
             {
-                if (!String.IsNullOrEmpty(sourceCode))
+                if ((!String.IsNullOrEmpty(sourceCode)) && (sourceSyntaxTree != null))
                 {
                     (newSourceCode, success, errorMessage) = this.ProcessSourceCode(sourceSyntaxTree, compilation, project, range, parameters);
                     if (!success)
@@ -47,7 +47,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
                 }
             }
             else
-                (success, errorMessage) = this.ProcessDirectory(syntaxTrees, compilation, project, parameters);
+                (success, errorMessage) = this.ProcessDirectory(syntaxTrees, compilation, project, parameters, excludeFiles);
 
             if (success)
                 return new WorkspaceCommandResult(newSourceCode);
@@ -133,19 +133,24 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             return this.ModifiedFilesNamesHashSet.Contains(filePath);
         }
 
-        protected (bool, string) ProcessDirectory(List<SyntaxTree> syntaxTrees, Compilation compilation, ALProject project, Dictionary<string, string> parameters)
+        protected (bool, string) ProcessDirectory(List<SyntaxTree> syntaxTrees, Compilation compilation, ALProject project, Dictionary<string, string> parameters, List<string> excludeFiles)
         {
             //get modified files if running for modified files only
             bool modifiedFilesOnly = this.GetModifiedFilesOnlyValue(parameters);
+
+            var matcher = new ExcludedFilesMatcher(excludeFiles);
 
             //process files
             foreach (SyntaxTree syntaxTree in syntaxTrees)
             {
                 if ((!modifiedFilesOnly) || (this.ValidFile(syntaxTree.FilePath)))
                 {
-                    (bool success, string errorMessage) = this.ProcessFile(syntaxTree, compilation, project, null, parameters);
-                    if (!success)
-                        return (false, errorMessage);
+                    if (matcher.ValidFile(project.RootPath, syntaxTree.FilePath))
+                    {
+                        (bool success, string errorMessage) = this.ProcessFile(syntaxTree, compilation, project, null, parameters);
+                        if (!success)
+                            return (false, errorMessage);
+                    }
                 }
             }
             return (true, null);

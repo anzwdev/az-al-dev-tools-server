@@ -32,34 +32,58 @@ namespace AnZwDev.ALTools.Workspace
 
         #region Projects management
 
-        public void LoadProjects(string[] workspaceFolders)
+        protected void SortProjects()
+        {
+            this.Projects.Sort(new ALProjectPathComparer());
+        }
+
+        public void LoadProjects(ALProjectSource[] workspaceProjects)
         {
             this.Projects.Clear();
-            foreach (string path in workspaceFolders)
+            foreach (ALProjectSource projectSource in workspaceProjects)
             {
-                this.AddProject(path);
+                this.AddProject(projectSource);
             }
+            this.SortProjects();
             this.ResolveDependencies();
         }
 
-        public void UpdateProjects(string[] addPaths, string[] removePaths)
+        public void UpdateProjectsConfiguration(ALProjectSource[] updateProjects)
+        {
+            if (updateProjects != null)
+                for (int i = 0; i < updateProjects.Length; i++)
+                    this.UpdateProjectConfiguration(updateProjects[i]);
+        }
+
+        protected void UpdateProjectConfiguration(ALProjectSource projectSource)
+        {
+            if (projectSource.folderPath != null)
+            {
+                ALProject project = this.FindProject(projectSource.folderPath);
+                if (project != null)
+                    project.UpdateConfiguration(projectSource);
+            }
+        }
+
+        public void UpdateProjects(ALProjectSource[] addProjects, string[] removePaths)
         {
             if (removePaths != null)
             {
                 for (int i = 0; i < removePaths.Length; i++)
                     this.RemoveProject(removePaths[i]);
             }
-            if (addPaths != null)
+            if (addProjects != null)
             {
-                for (int i = 0; i < addPaths.Length; i++)
-                    this.AddProject(addPaths[i]);
+                for (int i = 0; i < addProjects.Length; i++)
+                    this.AddProject(addProjects[i]);
             }
+            this.SortProjects();
             this.ResolveDependencies();
         }
 
-        protected void AddProject(string path)
+        protected void AddProject(ALProjectSource projectSource)
         {
-            ALProject project = new ALProject(this, path);
+            ALProject project = new ALProject(this, projectSource);
             this.Projects.Add(project);
             project.Load();
         }

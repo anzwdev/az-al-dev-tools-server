@@ -27,7 +27,7 @@ namespace AnZwDev.ALTools.Server.Handlers
             WorkspaceCommandResponse response = new WorkspaceCommandResponse();
             try
             {
-                WorkspaceCommandResult commandResult = this.Server.WorkspaceCommandsManager.RunCommand(parameters.command, parameters.source, parameters.projectPath, parameters.filePath, parameters.range, parameters.parameters);
+                WorkspaceCommandResult commandResult = this.Server.WorkspaceCommandsManager.RunCommand(parameters.command, parameters.source, parameters.projectPath, parameters.filePath, parameters.range, parameters.parameters, parameters.excludeFiles);
 
                 response.source = commandResult.Source;
                 response.parameters = commandResult.Parameters;

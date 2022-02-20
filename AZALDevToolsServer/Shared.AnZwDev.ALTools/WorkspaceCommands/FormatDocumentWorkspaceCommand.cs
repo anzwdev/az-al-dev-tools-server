@@ -13,9 +13,9 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         {
         }
 
-        public override WorkspaceCommandResult Run(string sourceCode, string projectPath, string filePath, Range range, Dictionary<string, string> parameters)
+        public override WorkspaceCommandResult Run(string sourceCode, string projectPath, string filePath, Range range, Dictionary<string, string> parameters, List<string> excludeFiles)
         {
-            WorkspaceCommandResult result = base.Run(sourceCode, projectPath, filePath, range, parameters);
+            WorkspaceCommandResult result = base.Run(sourceCode, projectPath, filePath, range, parameters, excludeFiles);
             result.SetParameter(NoOfChangesParameterName, "");
             result.SetParameter(NoOfChangedFilesParameterName, "");
             return result;

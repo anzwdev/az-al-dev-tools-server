@@ -11,7 +11,9 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Serialization
         {
             NavxPackage package = new NavxPackage();
             package.App = NavAppManifestNavxPackageConverter.CreateNavxApp(navAppManifest);
-
+#if BC
+            package.ResourceExposurePolicy = NavAppManifestNavxPackageConverter.CreateNavxResourceExposurePolicy(navAppManifest.ResourceExposurePolicy);
+#endif
             List<NavxDependency> dependencies = new List<NavxDependency>();
             foreach (Microsoft.Dynamics.Nav.CodeAnalysis.Packaging.NavAppDependency navAppDependency in navAppManifest.Dependencies)
             {
@@ -46,6 +48,20 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Serialization
 
             return app;
         }
+
+#if BC
+        private static NavxResourceExposurePolicy CreateNavxResourceExposurePolicy(Microsoft.Dynamics.Nav.CodeAnalysis.Packaging.ResourceExposurePolicy resourceExposurePolicy)
+        {
+            if (resourceExposurePolicy == null)
+                return null;
+            return new NavxResourceExposurePolicy()
+            {
+                AllowDebugging = resourceExposurePolicy.AllowDebugging,
+                AllowDownloadingSource = resourceExposurePolicy.AllowDownloadingSource,
+                IncludeSourceInSymbolFile = resourceExposurePolicy.IncludeSourceInSymbolFile
+            };
+        }
+#endif
 
         private static NavxDependency CreateNavxDependency(Microsoft.Dynamics.Nav.CodeAnalysis.Packaging.NavAppDependency navAppDependency)
         {

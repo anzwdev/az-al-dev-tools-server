@@ -52,6 +52,8 @@ namespace AnZwDev.ALTools.CodeTransformations
                             return updatedNode;
                         newStatement = this.RemoveSemicolonToken(newStatement);
                     }
+                    else if (this.IsSemicolon(blockSyntax.SemicolonToken))
+                        newStatement = this.AddSemicolonToken(newStatement);
 
                     //trivia
                     IEnumerable<SyntaxTrivia> leadingTrivia = node.GetLeadingTrivia();
@@ -72,6 +74,103 @@ namespace AnZwDev.ALTools.CodeTransformations
             }
 
             return updatedNode;
+        }
+
+        protected bool IsSemicolon(SyntaxToken semicolonToken)
+        {
+            return (semicolonToken != null) && (semicolonToken.Kind.ConvertToLocalType() == ConvertedSyntaxKind.SemicolonToken);
+        }
+
+        protected StatementSyntax AddSemicolonToken(StatementSyntax node)
+        {
+            IEnumerable<SyntaxTrivia> trailingTrivia = null;
+            SyntaxKind semicolonSyntaxKind = ConvertedSyntaxKind.SemicolonToken.Convert<ConvertedSyntaxKind, SyntaxKind>();
+            SyntaxToken semicolonToken;
+
+            switch (node)
+            {
+                case BlockSyntax blockSyntax:
+                    if (this.IsSemicolon(blockSyntax.SemicolonToken))
+                        return node;
+                    trailingTrivia = this.GetStatementTrailingTrivia(node, blockSyntax.SemicolonToken);
+                    node = blockSyntax.WithTrailingTrivia().WithSemicolonToken(SyntaxFactory.Token(semicolonSyntaxKind));
+                    break;
+                case AssignmentStatementSyntax assignmentStatement:
+                    if (this.IsSemicolon(assignmentStatement.SemicolonToken))
+                        return node;
+                    trailingTrivia = this.GetStatementTrailingTrivia(node, assignmentStatement.SemicolonToken);
+                    node = assignmentStatement.WithTrailingTrivia().WithSemicolonToken(SyntaxFactory.Token(semicolonSyntaxKind));
+                    break;
+                case BreakStatementSyntax breakStatement:
+                    if (this.IsSemicolon(breakStatement.SemicolonToken))
+                        return node;
+                    trailingTrivia = this.GetStatementTrailingTrivia(node, breakStatement.SemicolonToken);
+                    node = breakStatement.WithTrailingTrivia().WithSemicolonToken(SyntaxFactory.Token(semicolonSyntaxKind));
+                    break;
+                case CaseStatementSyntax caseStatement:
+                    if (this.IsSemicolon(caseStatement.SemicolonToken))
+                        return node;
+                    trailingTrivia = this.GetStatementTrailingTrivia(node, caseStatement.SemicolonToken);
+                    node = caseStatement.WithTrailingTrivia().WithSemicolonToken(SyntaxFactory.Token(semicolonSyntaxKind));
+                    break;
+                case CompoundAssignmentStatementSyntax compoundAssignmentStatement:
+                    if (this.IsSemicolon(compoundAssignmentStatement.SemicolonToken))
+                        return node;
+                    trailingTrivia = this.GetStatementTrailingTrivia(node, compoundAssignmentStatement.SemicolonToken);
+                    node = compoundAssignmentStatement.WithTrailingTrivia().WithSemicolonToken(SyntaxFactory.Token(semicolonSyntaxKind));
+                    break;
+                case EmptyStatementSyntax emptyStatement:
+                    if (this.IsSemicolon(emptyStatement.SemicolonToken))
+                        return node;
+                    trailingTrivia = this.GetStatementTrailingTrivia(node, emptyStatement.SemicolonToken);
+                    node = emptyStatement.WithTrailingTrivia().WithSemicolonToken(SyntaxFactory.Token(semicolonSyntaxKind));
+                    break;
+                case ExitStatementSyntax exitStatement:
+                    if (this.IsSemicolon(exitStatement.SemicolonToken))
+                        return node;
+                    trailingTrivia = this.GetStatementTrailingTrivia(node, exitStatement.SemicolonToken);
+                    node = exitStatement.WithTrailingTrivia().WithSemicolonToken(SyntaxFactory.Token(semicolonSyntaxKind));
+                    break;
+                case ExpressionStatementSyntax expressionStatement:
+                    if (this.IsSemicolon(expressionStatement.SemicolonToken))
+                        return node;
+                    trailingTrivia = this.GetStatementTrailingTrivia(node, expressionStatement.SemicolonToken);
+                    node = expressionStatement.WithTrailingTrivia().WithSemicolonToken(SyntaxFactory.Token(semicolonSyntaxKind));
+                    break;
+                case RepeatStatementSyntax repeatStatement:
+                    if (this.IsSemicolon(repeatStatement.SemicolonToken))
+                        return node;
+                    trailingTrivia = this.GetStatementTrailingTrivia(node, repeatStatement.SemicolonToken);
+                    node = repeatStatement.WithTrailingTrivia().WithSemicolonToken(SyntaxFactory.Token(semicolonSyntaxKind));
+                    break;
+                case AssertErrorStatementSyntax assertErrorStatement:
+                    node = assertErrorStatement.WithStatement(this.AddSemicolonToken(assertErrorStatement.Statement));
+                    break;
+                case ForEachStatementSyntax forEachStatement:
+                    node = forEachStatement.WithStatement(this.AddSemicolonToken(forEachStatement.Statement));
+                    break;
+                case ForStatementSyntax forStatement:
+                    node = forStatement.WithStatement(this.AddSemicolonToken(forStatement.Statement));
+                    break;
+                case IfStatementSyntax ifStatement:
+                    if (ifStatement.ElseStatement != null)
+                        node = ifStatement.WithElseStatement(this.AddSemicolonToken(ifStatement.ElseStatement));
+                    else
+                        node = ifStatement.WithStatement(this.AddSemicolonToken(ifStatement.Statement));
+                    break;
+                case OrphanedElseStatementSyntax orphanedElseStatement:
+                    node = orphanedElseStatement.WithElseStatement(this.AddSemicolonToken(orphanedElseStatement.ElseStatement));
+                    break;
+                case WhileStatementSyntax whileStatement:
+                    node = whileStatement.WithStatement(this.AddSemicolonToken(whileStatement.Statement));
+                    break;
+                case WithStatementSyntax withStatement:
+                    node = withStatement.WithStatement(this.AddSemicolonToken(withStatement.Statement));
+                    break;
+            }
+            if (trailingTrivia != null)
+                node = node.WithTrailingTrivia(trailingTrivia);
+            return node;
         }
 
         protected StatementSyntax RemoveSemicolonToken(StatementSyntax node)
@@ -150,7 +249,13 @@ namespace AnZwDev.ALTools.CodeTransformations
         {
 #if BC
             if (semicolonToken != null)
-                return semicolonToken.GetAllTrivia().MergeWith(node.GetTrailingTrivia());
+            {
+                List<SyntaxTrivia> trailingTrivia = new List<SyntaxTrivia>();
+                trailingTrivia.AddRange(semicolonToken.GetAllTrivia());
+                trailingTrivia.AddUniqueRange(node.GetTrailingTrivia());
+                //return semicolonToken.GetAllTrivia(); //.MergeWith(node.GetTrailingTrivia());
+                return trailingTrivia;
+            }
 #endif
             return null;
         }

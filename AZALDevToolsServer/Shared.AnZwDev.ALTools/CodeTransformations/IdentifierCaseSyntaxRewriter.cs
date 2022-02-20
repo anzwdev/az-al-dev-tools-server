@@ -8,6 +8,7 @@ using System.Text;
 using AnZwDev.ALTools.Extensions;
 using AnZwDev.ALTools.ALLanguageInformation;
 using AnZwDev.ALTools.Workspace.SymbolsInformation;
+using AnZwDev.ALTools.ALSymbols;
 
 namespace AnZwDev.ALTools.CodeTransformations
 {
@@ -21,6 +22,7 @@ namespace AnZwDev.ALTools.CodeTransformations
     {
 
         public SemanticModel SemanticModel { get; set; }
+        public bool RemoveQuotesFromDataTypeIdentifiers { get; set; }
 
         private DotNetInformationProvider _dotNetInformationProvider;
         protected DotNetInformationProvider DotNetInformationProvider
@@ -158,6 +160,19 @@ namespace AnZwDev.ALTools.CodeTransformations
                                     (symbolKind != ConvertedSymbolKind.DotNetTypeDeclaration) &&
                                     (symbolKind != ConvertedSymbolKind.DotNet)) 
                                     newName = info.Symbol.Name;
+                            }
+
+                            //if identifier is escaped keyword then leave it in that state
+                            if (prevName.StartsWith("\""))
+                            {
+                                string decodedPrevName = ALSyntaxHelper.DecodeName(prevName);
+                                if (
+                                    (decodedPrevName.Equals(newName, StringComparison.CurrentCultureIgnoreCase)) && 
+                                    (
+                                        ((this.RemoveQuotesFromDataTypeIdentifiers) && (KeywordInformation.IsAnyKeyword(newName))) ||
+                                        ((!this.RemoveQuotesFromDataTypeIdentifiers) && (KeywordInformation.IsAnyKeywordOrDataTypeName(newName)))
+                                    ))
+                                    newName = ALSyntaxHelper.EncodeName(newName, true);
                             }
                         }
 

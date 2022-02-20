@@ -67,15 +67,15 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             this.RegisterCommand(groupCommand);
         }
 
-        public WorkspaceCommandResult RunCommand(string commandName, string sourceCode, string projectPath, string filePath, Range range, Dictionary<string, string> parameters)
+        public WorkspaceCommandResult RunCommand(string commandName, string sourceCode, string projectPath, string filePath, Range range, Dictionary<string, string> parameters, List<string> excludeFiles)
         {
             if (_commands.ContainsKey(commandName))
             {
                 WorkspaceCommand command = _commands[commandName];
-                (WorkspaceCommandResult errorResult, bool canRun) = command.CanRun(sourceCode, projectPath, filePath, range, parameters);
+                (WorkspaceCommandResult errorResult, bool canRun) = command.CanRun(sourceCode, projectPath, filePath, range, parameters, excludeFiles);
                 if (!canRun)
                     return errorResult;
-                return _commands[commandName].Run(sourceCode, projectPath, filePath, range, parameters);
+                return _commands[commandName].Run(sourceCode, projectPath, filePath, range, parameters, excludeFiles);
             }
             else
                 throw new Exception($"Workspace command {commandName} not found.");

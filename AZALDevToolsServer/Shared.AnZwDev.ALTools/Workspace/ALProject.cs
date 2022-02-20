@@ -23,6 +23,7 @@ namespace AnZwDev.ALTools.Workspace
         public ALWorkspace Workspace { get; set; }
         public ALProjectFilesCollection Files { get; }
         public string RootPath { get; set; }
+        public string PackageCachePath { get; set; }
 
         private ALProjectProperties _properties;
         public ALProjectProperties Properties 
@@ -60,12 +61,17 @@ namespace AnZwDev.ALTools.Workspace
         {
         }
 
-        public ALProject(ALWorkspace workspace, string rootPath)
+        public ALProject(ALWorkspace workspace, ALProjectSource projectSource)
         {
+            
+            if (!String.IsNullOrWhiteSpace(projectSource?.packageCachePath))
+                this.PackageCachePath = projectSource.packageCachePath;
+            else
+                this.PackageCachePath = ".alpackages";
             this.MandatoryPrefixes = null;
             this.MandatorySuffixes = null;
             this.Workspace = workspace;
-            this.RootPath = rootPath;
+            this.RootPath = projectSource?.folderPath;
             this.Files = new ALProjectFilesCollection(this);
             this.Dependencies = new ALProjectDependenciesCollection();
             this.Symbols = new ALAppSymbolReference();
@@ -149,7 +155,11 @@ namespace AnZwDev.ALTools.Workspace
 
         public string GetALPackagesPath()
         {
-            return Path.Combine(this.RootPath, ".alpackages");
+            var absolute_path = Path.Combine(this.RootPath, this.PackageCachePath);
+            absolute_path = Path.GetFullPath((new Uri(absolute_path)).LocalPath);
+
+            return absolute_path;// Path.GetFullPath((new Uri(absolute_path)).LocalPath);
+            //return Path.Combine(this.RootPath, this.PackageCachePath);
         }
 
         public void ResolveDependencies()
@@ -295,6 +305,16 @@ namespace AnZwDev.ALTools.Workspace
         #endregion
 
         #region Change tracking
+
+        public void UpdateConfiguration(ALProjectSource projectSource)
+        {
+            string newALPackagesPath = String.IsNullOrWhiteSpace(projectSource?.packageCachePath) ? ".alpackages" : projectSource.packageCachePath;
+            if (newALPackagesPath != this.PackageCachePath)
+            {
+                this.PackageCachePath = newALPackagesPath;
+                this.ResolveDependencies();
+            }
+        }
 
         public void OnDocumentOpen(string path)
         {

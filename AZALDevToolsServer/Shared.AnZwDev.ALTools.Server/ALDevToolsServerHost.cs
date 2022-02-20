@@ -102,6 +102,8 @@ namespace AnZwDev.ALTools.Server
             this.Dispatcher.RegisterNotificationHandler(new FileSystemFileDeleteNotificationHandler(this.ALDevToolsServer, this));
             this.Dispatcher.RegisterNotificationHandler(new FileSystemFileChangeNotificationHandler(this.ALDevToolsServer, this));
 
+            this.Dispatcher.RegisterNotificationHandler(new ConfigurationChangeNotificationHandler(this.ALDevToolsServer, this));
+
             //language handlers
             this.Dispatcher.RegisterRequestHandler(new GetImagesRequestHandler(this.ALDevToolsServer, this));
 

@@ -1,5 +1,6 @@
 ﻿using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.Workspace.SymbolsInformation;
+using AnZwDev.ALTools.ALSymbols.Internal;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using System;
@@ -96,6 +97,46 @@ namespace AnZwDev.ALTools.Extensions
             }
 
             return null;
+        }
+
+        public static bool IsInsideCodeBlock(this SyntaxNode node)
+        {
+            while (node != null)
+            {
+                var kind = node.Kind.ConvertToLocalType();
+                switch (kind)
+                {
+                    case ConvertedSyntaxKind.Block:
+                    case ConvertedSyntaxKind.IfStatement:
+                    case ConvertedSyntaxKind.ForStatement:
+                    case ConvertedSyntaxKind.ForEachStatement:
+                    case ConvertedSyntaxKind.RepeatStatement:
+                    case ConvertedSyntaxKind.WhileStatement:
+                    case ConvertedSyntaxKind.CaseStatement:
+                        return true;
+                    case ConvertedSyntaxKind.CodeunitObject:
+                    case ConvertedSyntaxKind.ControlAddInObject:
+                    case ConvertedSyntaxKind.PageObject:
+                    case ConvertedSyntaxKind.TableObject:
+                    case ConvertedSyntaxKind.ReportObject:
+                    case ConvertedSyntaxKind.QueryObject:
+                    case ConvertedSyntaxKind.XmlPortObject:
+                    case ConvertedSyntaxKind.TableExtensionObject:
+                    case ConvertedSyntaxKind.PageExtensionObject:
+                    case ConvertedSyntaxKind.PermissionSet:
+                    case ConvertedSyntaxKind.PermissionSetExtension:
+                    case ConvertedSyntaxKind.EnumType:
+                    case ConvertedSyntaxKind.EnumExtensionType:
+                    case ConvertedSyntaxKind.ProfileExtensionObject:
+                    case ConvertedSyntaxKind.ProfileObject:
+                    case ConvertedSyntaxKind.PageCustomizationObject:
+                    case ConvertedSyntaxKind.Interface:
+                    case ConvertedSyntaxKind.CompilationUnit:
+                        return false;
+                }
+                node = node.Parent;
+            }
+            return false;
         }
 
         #region Nav2018 helpers

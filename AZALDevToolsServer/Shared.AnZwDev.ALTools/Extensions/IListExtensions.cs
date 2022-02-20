@@ -19,5 +19,15 @@ namespace AnZwDev.ALTools.Extensions
             return true;
         }
 
+        public static void AddUniqueRange<T>(this IList<T> list, IEnumerable<T> valuesEnumerable)
+        {
+            if (valuesEnumerable != null)
+                foreach (T value in valuesEnumerable)
+                {
+                    if (!list.Contains(value))
+                        list.Add(value);
+                }
+        }
+
     }
 }

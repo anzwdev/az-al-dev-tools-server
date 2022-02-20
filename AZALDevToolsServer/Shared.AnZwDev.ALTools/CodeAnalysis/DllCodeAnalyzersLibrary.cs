@@ -17,7 +17,13 @@ namespace AnZwDev.ALTools.CodeAnalysis
             this.ALDevToolsServer = newALDevToolsServer;
 
             newName = newName.Trim();
-            if ((newName.StartsWith("${")) && (newName.EndsWith("}")))
+            if (newName.StartsWith("${analyzerFolder}"))
+            {
+                newName = newName.Replace("${analyzerFolder}", "");
+                this.FilePath = System.IO.Path.Combine(this.ALDevToolsServer.ExtensionBinPath, "Analyzers", newName);
+                this.Name = System.IO.Path.GetFileNameWithoutExtension(this.FilePath);
+            } 
+            else if ((newName.StartsWith("${")) && (newName.EndsWith("}")))
             {
                 newName = newName.Substring(2, newName.Length - 3);
                 this.Name = newName;

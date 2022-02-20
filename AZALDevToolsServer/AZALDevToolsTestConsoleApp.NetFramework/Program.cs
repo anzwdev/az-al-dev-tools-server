@@ -47,14 +47,13 @@ namespace AZALDevToolsTestConsoleApp.NetFramework
             Dictionary<string, string> pm = new Dictionary<string, string>();
             pm.Add("sourceFilePath", filePath);
             string projectPath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18";
-            WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("removeWith", content, projectPath, filePath, null, pm);
-          
+            WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("removeWith", content, projectPath, filePath, null, pm, null);
 
             //Workspace tests
-            string[] projects =
+            ALProjectSource[] projects =
             {
                 //"C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC16\\"
-                "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18"
+                new ALProjectSource("C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18", null)
             };
             
 

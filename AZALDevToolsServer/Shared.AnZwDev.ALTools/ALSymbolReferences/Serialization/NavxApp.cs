@@ -1,4 +1,5 @@
 ﻿using AnZwDev.ALTools.Core;
+using AnZwDev.ALTools.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -39,14 +40,14 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Serialization
         public string PropagateDependenciesText 
         {
             get { return this.PropagateDependencies.ToString(); }
-            set { this.PropagateDependencies = TextToBool(value); }
+            set { this.PropagateDependencies = value.ToBool(); }
         }
 
         [XmlAttribute("ShowMyCode")]
         public string ShowMyCodeText 
         { 
             get { return this.ShowMyCode.ToString(); }
-            set { this.ShowMyCode = TextToBool(value); }
+            set { this.ShowMyCode = value.ToBool(); }
         }
 
         [XmlIgnore]
@@ -70,11 +71,6 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Serialization
                 (this.Name == navxApp.Name) &&
                 (this.Publisher == navxApp.Publisher) &&
                 ((!compareVersion) || (this.Version.Equal(navxApp.Version)));
-        }
-
-        protected bool TextToBool(string value)
-        {
-            return ((value != null) && (value.Equals("true", StringComparison.CurrentCultureIgnoreCase)));
         }
 
     }

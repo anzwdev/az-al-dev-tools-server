@@ -14,7 +14,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         {
         }
 
-        public override WorkspaceCommandResult Run(string sourceCode, string projectPath, string filePath, Range range, Dictionary<string, string> parameters)
+        public override WorkspaceCommandResult Run(string sourceCode, string projectPath, string filePath, Range range, Dictionary<string, string> parameters, List<string> excludeFiles)
         {
             string newSourceCode = null;
             bool success = true;
@@ -30,7 +30,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
                 }
             }
             else if (!String.IsNullOrWhiteSpace(projectPath))
-                (success, errorMessage) = this.ProcessDirectory(projectPath, parameters);
+                (success, errorMessage) = this.ProcessDirectory(projectPath, parameters, excludeFiles);
 
             if (success)
                 return new WorkspaceCommandResult(newSourceCode);
@@ -42,7 +42,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             return (sourceCode, true, null);
         }
 
-        protected virtual (bool, string) ProcessDirectory(string projectPath, Dictionary<string, string> parameters)
+        protected virtual (bool, string) ProcessDirectory(string projectPath, Dictionary<string, string> parameters, List<string> excludeFiles)
         {
             string[] filePathsList;
 
@@ -52,11 +52,16 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             else
                 filePathsList = System.IO.Directory.GetFiles(projectPath, "*.al", System.IO.SearchOption.AllDirectories);
 
+            var matcher = new ExcludedFilesMatcher(excludeFiles);
+
             for (int i = 0; i < filePathsList.Length; i++)
             {
-                (bool success, string errorMessage) = this.ProcessFile(projectPath, filePathsList[i], parameters);
-                if (!success)
-                    return (false, errorMessage);
+                if (matcher.ValidFile(projectPath, filePathsList[i]))
+                {
+                    (bool success, string errorMessage) = this.ProcessFile(projectPath, filePathsList[i], parameters);
+                    if (!success)
+                        return (false, errorMessage);
+                }
             }
             return (true, null);
         }

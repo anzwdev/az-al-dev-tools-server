@@ -53,9 +53,18 @@ namespace AnZwDev.ALTools.CodeTransformations
             {
                 if (node.Type != null)
                 {
-                    if (node.Type.DataType != null)
-                        return node.Type.DataType.ToString().Replace("\"", "").ToLower().Trim();
-                     return node.Type.ToString().ToLower().Replace("\"", "").Trim();
+                    string typeName = (node.Type.DataType != null) ? node.Type.DataType.ToString() : node.Type.ToString();
+                    if (typeName != null)
+                    {
+                        typeName = typeName.Replace("\"", "").ToLower().Trim();
+
+                        //ignore text value for labels and text constants
+                        if (typeName.StartsWith("label", StringComparison.CurrentCultureIgnoreCase))
+                            typeName = "label";
+                        else if (typeName.StartsWith("textconst", StringComparison.CurrentCultureIgnoreCase))
+                            typeName = "textconst";
+                    }
+                    return typeName;
                 }
                 return "";
             }

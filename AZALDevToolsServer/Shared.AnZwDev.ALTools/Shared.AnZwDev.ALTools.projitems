@@ -14,6 +14,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\ImageInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\ImageInformationComparer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\ImageInformationProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\KeywordInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\PageActionAreaCaseInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\PageAreaCaseInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\QueryMembersCaseInformation.cs" />
@@ -107,6 +108,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\Serialization\NavxDependency.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\Serialization\NavxModuleReference.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\Serialization\NavxPackage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\Serialization\NavxResourceExposurePolicy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALFullSyntaxTree.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALFullSyntaxTreeNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALMemberAccessExpression.cs" />
@@ -183,6 +185,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\ToolTipSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\WithIdentifiersSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\WithRemoveSyntaxRewriter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\ExcludedFilesMatcher.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\FileUtils.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\PathUtils.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\SyntaxNodeNameComparer.cs" />
@@ -190,6 +193,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\AlphanumComparatorFast .cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\DictionaryExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\EnumExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\HashSetExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\HashSet_ALSymbolKind_Extensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\IEnumerableExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\IListExtensions.cs" />
@@ -248,8 +252,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\ALProjectFilesCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\ALProjectFileType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\ALProjectIdRange.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Workspace\ALProjectPathComparer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\ALProjectProperties.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\ALProjectReference.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Workspace\ALProjectSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\ALProjectSymbolsLibrarySource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\ALWorkspace.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\List_ALProjectReference_Extensions.cs" />

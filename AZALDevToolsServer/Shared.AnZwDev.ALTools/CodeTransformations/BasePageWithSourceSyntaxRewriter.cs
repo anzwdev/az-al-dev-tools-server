@@ -226,5 +226,21 @@ namespace AnZwDev.ALTools.CodeTransformations
             return fields;
         }
 
+        protected bool ToolTipDisabled(SyntaxNode node)
+        {
+            PropertySyntax propertySyntax = node.GetProperty("ShowCaption");
+            if ((propertySyntax != null) && (propertySyntax.Value != null))
+            {
+                string value = propertySyntax.Value.ToString();
+                return ((value != null) && (value.Equals("false", StringComparison.CurrentCultureIgnoreCase)));
+            }
+            return false;
+        }
+
+        protected bool HasToolTip(SyntaxNode node)
+        {
+            return ((node.HasNonEmptyProperty("ToolTip")) || (node.HasProperty("ToolTipML")));
+        }
+
     }
 }

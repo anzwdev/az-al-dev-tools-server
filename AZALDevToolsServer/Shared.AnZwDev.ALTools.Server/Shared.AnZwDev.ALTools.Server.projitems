@@ -14,6 +14,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\AppPackageSymbolsResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\BaseOpenSymbolsLibraryResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\BaseSymbolsResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\ChangeTracking\ConfigurationChangeNotificationRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\ChangeTracking\DocumentChangeNotificationRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\ChangeTracking\DocumentContentChangeResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\CloseSymbolsLibraryRequest.cs" />
@@ -97,6 +98,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\AppPackageSymbolsRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\BaseALNotificationHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\BaseALRequestHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\ChangeTracking\ConfigurationChangeNotificationHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\ChangeTracking\DocumentContentChangeRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\ChangeTracking\DocumentCloseNotificationHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\ChangeTracking\DocumentOpenNotificationHandler.cs" />

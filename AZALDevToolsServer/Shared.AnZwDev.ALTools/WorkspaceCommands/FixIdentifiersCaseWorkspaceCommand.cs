@@ -1,5 +1,6 @@
 ﻿using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.CodeTransformations;
+using AnZwDev.ALTools.Extensions;
 using AnZwDev.ALTools.Workspace;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
@@ -14,6 +15,8 @@ namespace AnZwDev.ALTools.WorkspaceCommands
     public class FixIdentifiersCaseWorkspaceCommand : SemanticModelWorkspaceCommand
     {
 
+        public static string RemoveQuotesFromDataTypeIdentifiersParameterName = "removeQuotesFromDataTypeIdentifiers";
+
         protected int _totalNoOfChanges = 0;
         protected int _noOfChangedFiles = 0;
 
@@ -21,12 +24,12 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         {
         }
 
-        public override WorkspaceCommandResult Run(string sourceCode, string projectPath, string filePath, Range range, Dictionary<string, string> parameters)
+        public override WorkspaceCommandResult Run(string sourceCode, string projectPath, string filePath, Range range, Dictionary<string, string> parameters, List<string> excludeFiles)
         {
             this._totalNoOfChanges = 0;
             this._noOfChangedFiles = 0;
 
-            WorkspaceCommandResult result = base.Run(sourceCode, projectPath, filePath, range, parameters);
+            WorkspaceCommandResult result = base.Run(sourceCode, projectPath, filePath, range, parameters, excludeFiles);
 
             result.SetParameter(NoOfChangesParameterName, this._totalNoOfChanges.ToString());
             result.SetParameter(NoOfChangedFilesParameterName, this._noOfChangedFiles.ToString());
@@ -41,6 +44,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
                 IdentifierCaseSyntaxRewriter identifierCaseSyntaxRewriter = new IdentifierCaseSyntaxRewriter();
                 identifierCaseSyntaxRewriter.SemanticModel = semanticModel;
                 identifierCaseSyntaxRewriter.Project = project;
+                identifierCaseSyntaxRewriter.RemoveQuotesFromDataTypeIdentifiers = parameters.GetBoolValue(RemoveQuotesFromDataTypeIdentifiersParameterName);
 
                 node = identifierCaseSyntaxRewriter.Visit(node);
 

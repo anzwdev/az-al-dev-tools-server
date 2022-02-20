@@ -22,6 +22,9 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Serialization
         [XmlArrayItem("Module")]
         public NavxModuleReference[] InternalsVisibleTo { get; set; }
 
+        [XmlElement("ResourceExposurePolicy")]
+        public NavxResourceExposurePolicy ResourceExposurePolicy { get; set; }
+
         public NavxPackage()
         {
         }
