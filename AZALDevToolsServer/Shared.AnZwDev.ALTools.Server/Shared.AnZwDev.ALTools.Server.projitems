@@ -26,6 +26,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\ChangeTracking\FilesRenameDetailsNotificationRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\ChangeTracking\FilesRenameNotificationRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\ChangeTracking\FileSystemChangeNotificationRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\FindDuplicatedCodeRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\FindDuplicatedCodeResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\GetALAppContentRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\GetALAppContentResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\GetCodeAnalyzersRulesRequest.cs" />
@@ -114,6 +116,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\CloseSyntaxTreeNotificationHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\DocumentSymbolsRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\ExitNotificationHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\FindDuplicatedCodeRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\GetALAppContentRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\GetCodeAnalyzersRulesRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\GetFullSyntaxTreeRequestHandler.cs" />

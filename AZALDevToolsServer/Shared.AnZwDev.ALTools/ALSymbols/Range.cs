@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Dynamics.Nav.CodeAnalysis.Text;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,6 +22,11 @@ namespace AnZwDev.ALTools.ALSymbols
             UpdateStatus();
         }
 
+        public Range(FileLinePositionSpan span): this(span.StartLinePosition.Line, span.StartLinePosition.Character, span.EndLinePosition.Line, span.EndLinePosition.Character)
+        {
+            UpdateStatus();
+        }
+
         public Range(Position newStart, Position newEnd)
         {
             this.start = newStart;
@@ -38,6 +44,11 @@ namespace AnZwDev.ALTools.ALSymbols
         {
             this.isEmpty = ((this.start == null) || (this.end == null));
             this.isSingleLine = (this.isEmpty) || (this.start.line == this.end.line);
+        }
+
+        public virtual string GetUniqueKey()
+        {
+            return $"{start.line}_{start.character}_{end.line}_{end.character}";
         }
 
     }

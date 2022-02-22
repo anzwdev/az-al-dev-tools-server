@@ -8,6 +8,7 @@ using AnZwDev.ALTools.ALSymbols.SymbolReaders;
 using AnZwDev.ALTools.CodeAnalysis;
 using AnZwDev.ALTools.CodeTransformations;
 using AnZwDev.ALTools.Core;
+using AnZwDev.ALTools.DuplicateCodeSearch;
 using AnZwDev.ALTools.Server;
 using AnZwDev.ALTools.Workspace;
 using AnZwDev.ALTools.Workspace.SymbolsInformation;
@@ -58,11 +59,16 @@ namespace AZALDevToolsTestConsoleApp
             //test project
             ALProjectSource[] projects =
             {
-                new ALProjectSource("C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject", null)
+                //new ALProjectSource("C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject", null)
                 //"C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18"               
+                new ALProjectSource("C:\\Projects\\Sandboxes\\al-test-projects\\tnp\\TNP-AL-Extensions\\project_fullers_general", null)
             };
             host.ALDevToolsServer.Workspace.LoadProjects(projects);
             host.ALDevToolsServer.Workspace.ResolveDependencies();
+
+
+            DCDuplicateCodeAnalyzer duplicateAnalyzer = new DCDuplicateCodeAnalyzer();
+            var duplicatesList = duplicateAnalyzer.FindDuplicates(host.ALDevToolsServer.Workspace);
 
             //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18\\Pag50104.MyPrefixMyPageCard.al";
             //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18\\permissionset-Ext50101.MyPermSetExt03.al";
