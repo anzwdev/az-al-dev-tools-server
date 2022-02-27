@@ -67,7 +67,7 @@ namespace AZALDevToolsTestConsoleApp
             host.ALDevToolsServer.Workspace.ResolveDependencies();
 
 
-            DCDuplicateCodeAnalyzer duplicateAnalyzer = new DCDuplicateCodeAnalyzer();
+            DCDuplicateCodeAnalyzer duplicateAnalyzer = new DCDuplicateCodeAnalyzer(3);
             var duplicatesList = duplicateAnalyzer.FindDuplicates(host.ALDevToolsServer.Workspace);
 
             //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18\\Pag50104.MyPrefixMyPageCard.al";

@@ -15,7 +15,7 @@ namespace AnZwDev.ALTools.DuplicateCodeSearch
             if (x == null)
                 return -1;
 
-            int value = (y.NoOfStatements - x.NoOfStatements);
+            int value = (y.noOfStatements - x.noOfStatements);
             if (value != 0)
                 return value;
 

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace AnZwDev.ALTools.Server.Contracts
 {
-    public class FindDuplicatedCodeRequest
+    public class FindDuplicateCodeRequest
     {
         public int minNoOfStatements { get; set; }
     }

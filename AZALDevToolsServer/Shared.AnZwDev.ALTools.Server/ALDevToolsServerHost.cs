@@ -55,7 +55,7 @@ namespace AnZwDev.ALTools.Server
 
             //code analyzers
             this.Dispatcher.RegisterRequestHandler(new GetCodeAnalyzersRulesRequestHandler(this.ALDevToolsServer, this));
-            this.Dispatcher.RegisterRequestHandler(new FindDuplicatedCodeRequestHandler(this.ALDevToolsServer, this));
+            this.Dispatcher.RegisterRequestHandler(new FindDuplicateCodeRequestHandler(this.ALDevToolsServer, this));
 
             //code transformations
             this.Dispatcher.RegisterRequestHandler(new WorkspaceCommandRequestHandler(this.ALDevToolsServer, this));

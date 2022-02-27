@@ -7,12 +7,12 @@ namespace AnZwDev.ALTools.DuplicateCodeSearch
 {
     public class DCDuplicate
     {
-        public int NoOfStatements { get; }
+        public int noOfStatements { get; }
         public List<DocumentRange> ranges { get; } = new List<DocumentRange>();
 
         public DCDuplicate(int noOfStatements)
         {
-            this.NoOfStatements = noOfStatements;
+            this.noOfStatements = noOfStatements;
         }
 
     }

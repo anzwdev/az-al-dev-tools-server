@@ -5,13 +5,13 @@ using System.Text;
 
 namespace AnZwDev.ALTools.Server.Contracts
 {
-    public class FindDuplicatedCodeResponse
+    public class FindDuplicateCodeResponse
     {
         public List<DCDuplicate> duplicates { get; set; }
         bool isError { get; set; }
         public string message { get; set; }
 
-        public FindDuplicatedCodeResponse()
+        public FindDuplicateCodeResponse()
         {
             isError = false;
             message = null;

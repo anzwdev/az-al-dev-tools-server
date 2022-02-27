@@ -9,17 +9,17 @@ using System.Threading.Tasks;
 
 namespace AnZwDev.ALTools.Server.Handlers
 {
-    public class FindDuplicatedCodeRequestHandler : BaseALRequestHandler<FindDuplicatedCodeRequest, FindDuplicatedCodeResponse>
+    public class FindDuplicateCodeRequestHandler : BaseALRequestHandler<FindDuplicateCodeRequest, FindDuplicateCodeResponse>
     {
 
-        public FindDuplicatedCodeRequestHandler(ALDevToolsServer server, LanguageServerHost languageServerHost) : base(server, languageServerHost, "al/findDuplicatedCode")
+        public FindDuplicateCodeRequestHandler(ALDevToolsServer server, LanguageServerHost languageServerHost) : base(server, languageServerHost, "al/findDuplicateCode")
         {
         }
 
 #pragma warning disable 1998
-        protected override async Task<FindDuplicatedCodeResponse> HandleMessage(FindDuplicatedCodeRequest parameters, RequestContext<FindDuplicatedCodeResponse> context)
+        protected override async Task<FindDuplicateCodeResponse> HandleMessage(FindDuplicateCodeRequest parameters, RequestContext<FindDuplicateCodeResponse> context)
         {
-            FindDuplicatedCodeResponse response = new FindDuplicatedCodeResponse();
+            FindDuplicateCodeResponse response = new FindDuplicateCodeResponse();
             try
             {
                 DCDuplicateCodeAnalyzer analyzer = new DCDuplicateCodeAnalyzer(parameters.minNoOfStatements);
