@@ -6,17 +6,15 @@ namespace AnZwDev.ALTools.DuplicateCodeSearch
 {
     public class DCStatementsBlock
     {
-        public string SourceFilePath { get; set; }
+        public string SourceFilePath { get; }
+        public DCCodeBlockType CodeBlockType { get; }
 
         public List<DCStatementInstance> Statements { get; } = new List<DCStatementInstance>();
 
-        public DCStatementsBlock()
-        {
-        }
-
-        public DCStatementsBlock(string sourceFilePath)
+        public DCStatementsBlock(string sourceFilePath, DCCodeBlockType codeBlockType)
         {
             this.SourceFilePath = sourceFilePath;
+            this.CodeBlockType = codeBlockType;
         }
 
     }

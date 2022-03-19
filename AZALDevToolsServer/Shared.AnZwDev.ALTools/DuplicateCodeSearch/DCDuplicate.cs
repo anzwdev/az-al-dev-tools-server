@@ -8,11 +8,13 @@ namespace AnZwDev.ALTools.DuplicateCodeSearch
     public class DCDuplicate
     {
         public int noOfStatements { get; }
+        public DCCodeBlockType codeBlockType { get; }
         public List<DocumentRange> ranges { get; } = new List<DocumentRange>();
 
-        public DCDuplicate(int noOfStatements)
+        public DCDuplicate(int newNoOfStatements, DCCodeBlockType newCodeBlockType)
         {
-            this.noOfStatements = noOfStatements;
+            this.noOfStatements = newNoOfStatements;
+            this.codeBlockType = newCodeBlockType;
         }
 
     }

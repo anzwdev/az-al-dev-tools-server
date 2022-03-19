@@ -11,12 +11,14 @@ namespace AnZwDev.ALTools.DuplicateCodeSearch
         public DocumentRange SourceCodeBlock { get; }
         public DocumentRange DestinationCodeBlock { get; set; }
         public int NoOfStatements { get; }
+        public DCCodeBlockType CodeBlockType { get; set; }
 
-        public DCDuplicatePair(DocumentRange source, DocumentRange dest, int noOfStatements)
+        public DCDuplicatePair(DocumentRange source, DocumentRange dest, int noOfStatements, DCCodeBlockType codeBlockType)
         {
             this.SourceCodeBlock = source;
             this.DestinationCodeBlock = dest;   
             this.NoOfStatements = noOfStatements;
+            this.CodeBlockType = codeBlockType;
         }
 
 

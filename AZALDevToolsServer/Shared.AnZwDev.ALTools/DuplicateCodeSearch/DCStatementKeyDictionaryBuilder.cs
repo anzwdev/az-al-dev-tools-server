@@ -6,6 +6,7 @@ using System.Text;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using AnZwDev.ALTools.Extensions;
 using AnZwDev.ALTools.ALSymbols;
+using AnZwDev.ALTools.ALSymbols.Internal;
 
 namespace AnZwDev.ALTools.DuplicateCodeSearch
 {
@@ -35,22 +36,117 @@ namespace AnZwDev.ALTools.DuplicateCodeSearch
 
         public override SyntaxNode VisitTriggerDeclaration(TriggerDeclarationSyntax node)
         {
-            VisitMethodOrTriggerDeclaration(node);
+            VisitMethodOrTriggerDeclaration(node, DCCodeBlockType.Trigger);
             return base.VisitTriggerDeclaration(node);
         }
 
         public override SyntaxNode VisitMethodDeclaration(MethodDeclarationSyntax node)
         {
-            VisitMethodOrTriggerDeclaration(node);
+            VisitMethodOrTriggerDeclaration(node, DCCodeBlockType.Method);
             return base.VisitMethodDeclaration(node);
         }
 
-        protected void VisitMethodOrTriggerDeclaration(MethodOrTriggerDeclarationSyntax node)
+        protected void VisitMethodOrTriggerDeclaration(MethodOrTriggerDeclarationSyntax node, DCCodeBlockType codeBlockType)
         {
             if (node.Body != null)
             {
-                DCStatementsBlock statementsBlock = new DCStatementsBlock(_sourceFilePath);
+                DCStatementsBlock statementsBlock = new DCStatementsBlock(_sourceFilePath, codeBlockType);
+                AppendMethodOrTriggerHeader(node, statementsBlock);
                 AppendStatement(node.Body, statementsBlock);
+            }
+        }
+
+        protected void AppendMethodOrTriggerHeader(MethodOrTriggerDeclarationSyntax node, DCStatementsBlock statementsBlock)
+        {
+            AppendMethodOrTriggerKeyword(node, statementsBlock);
+            AppendFullNode(node.Name, statementsBlock, true);
+            AppendParametersList(node.ParameterList, statementsBlock);
+            AppendReturnValue(node.ReturnValue, statementsBlock);
+            AppendVariablesList(node.Variables, statementsBlock);
+        }
+
+        protected void AppendMethodOrTriggerKeyword(MethodOrTriggerDeclarationSyntax node, DCStatementsBlock statementsBlock)
+        {
+            switch (node)
+            {
+                case MethodDeclarationSyntax methodDeclaration:
+                    AppendMethodKeyword(methodDeclaration, statementsBlock);
+                    break;
+                case TriggerDeclarationSyntax triggerDeclaration:
+                    AppendTriggerKeyword(triggerDeclaration, statementsBlock);
+                    break;
+            }
+        }
+
+        protected void AppendMethodKeyword(MethodDeclarationSyntax node, DCStatementsBlock statementsBlock)
+        {
+#if BC
+            if ((node.AccessModifier != null) && (node.AccessModifier.Kind.ConvertToLocalType() != ConvertedSyntaxKind.None))
+                AppendToken(node.AccessModifier, statementsBlock);
+#else
+            if ((node.LocalKeyword != null) && (node.LocalKeyword.Kind.ConvertToLocalType() == ConvertedSyntaxKind.LocalKeyword))
+                AppendToken(node.LocalKeyword, statementsBlock);
+#endif
+            AppendToken(node.ProcedureKeyword, statementsBlock);
+        }
+
+        protected void AppendTriggerKeyword(TriggerDeclarationSyntax node, DCStatementsBlock statementsBlock)
+        {
+            AppendToken(node.TriggerKeyword, statementsBlock);
+        }
+
+        protected void AppendReturnValue(ReturnValueSyntax node, DCStatementsBlock statementsBlock)
+        {
+            if ((node != null) && (node.DataType != null))
+                AppendFullNode(node, statementsBlock, true);
+        }
+
+        protected void AppendParametersList(ParameterListSyntax node, DCStatementsBlock statementsBlock)
+        {
+            if (IsBracket(node.OpenParenthesisToken))
+                AppendToken(node.OpenParenthesisToken, statementsBlock);
+            if ((node?.Parameters != null) && (node.Parameters.Count > 0))
+            {
+                foreach (ParameterSyntax parameterNode in node.Parameters)
+                    AppendParameter(parameterNode, statementsBlock);
+            }
+            if (IsBracket(node.CloseParenthesisToken))
+                AppendToken(node.CloseParenthesisToken, statementsBlock);
+        }
+
+        protected bool IsBracket(SyntaxToken token)
+        {
+            if (token != null)
+            {
+                var kind = token.Kind.ConvertToLocalType();
+                switch (kind)
+                {
+                    case ConvertedSyntaxKind.OpenBraceToken:
+                    case ConvertedSyntaxKind.CloseBraceToken:
+                    case ConvertedSyntaxKind.CloseBracketToken:
+                    case ConvertedSyntaxKind.OpenBracketToken:
+                    case ConvertedSyntaxKind.OpenParenToken:
+                    case ConvertedSyntaxKind.CloseParenToken:
+                        return true;
+                }
+            }
+            return false;
+        }
+
+        protected void AppendParameter(ParameterSyntax node, DCStatementsBlock statementsBlock)
+        {
+            AppendFullNode(node, statementsBlock, true);
+        }
+
+        protected void AppendVariablesList(VarSectionSyntax node, DCStatementsBlock statementsBlock)
+        {
+            if ((node?.Variables != null) && (node.Variables.Count > 0))
+            {
+                AppendToken(node.VarKeyword, statementsBlock);
+                foreach (var variable in node.Variables)
+                {
+                    AppendFullNode(node, statementsBlock, true);
+                }
             }
         }
 
@@ -187,19 +283,24 @@ namespace AnZwDev.ALTools.DuplicateCodeSearch
                 statementsBlock);
         }
 
-        protected void AppendFullNode(SyntaxNode node, DCStatementsBlock statementsBlock)
+        protected void AppendFullNode(SyntaxNode node, DCStatementsBlock statementsBlock, bool ignore = false)
         {
-            StringBuilder keyBuilder = new StringBuilder();
-            foreach (SyntaxToken token in node.DescendantTokens())
+            if (node != null)
             {
-                keyBuilder.Append(token.ToString());
-            }
+                StringBuilder keyBuilder = new StringBuilder();
+                IEnumerable<SyntaxToken> tokens = node.DescendantTokens();
+                if (tokens == null)
+                    keyBuilder.Append(node.ToString());
+                else
+                    foreach (SyntaxToken token in node.DescendantTokens())
+                        keyBuilder.Append(token.ToString());
 
-            AppendStatementInstance(
-                keyBuilder.ToString().ToLower(), 
-                false,
-                new Range(node.SyntaxTree.GetLineSpan(node.Span)), 
-                statementsBlock);
+                AppendStatementInstance(
+                    keyBuilder.ToString().ToLower(),
+                    ignore,
+                    new Range(node.SyntaxTree.GetLineSpan(node.Span)),
+                    statementsBlock);
+            }
         }
 
         protected void AppendStatementInstance(string keyValue, bool ignore, Range range, DCStatementsBlock statementsBlock)

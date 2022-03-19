@@ -83,6 +83,10 @@ namespace AnZwDev.ALTools.DuplicateCodeSearch
 
             if (noOfStatements >= this.MinNoOfStatements)
             {
+                DCCodeBlockType codeBlockType = DCCodeBlockType.CodeBlock;
+                if ((sourceStartIndex == 0) && (sourceEndIndex == (sourceInstance.StatementsBlock.Statements.Count - 1)))
+                    codeBlockType = sourceInstance.StatementsBlock.CodeBlockType;
+
                 duplicatePairs.Add(
                         new DocumentRange(
                             sourceInstance.StatementsBlock.SourceFilePath,
@@ -92,7 +96,8 @@ namespace AnZwDev.ALTools.DuplicateCodeSearch
                             destInstance.StatementsBlock.SourceFilePath,
                             destInstance.StatementsBlock.Statements[destStartIndex].Range.start,
                             destInstance.StatementsBlock.Statements[destEndIndex].Range.end),
-                        noOfStatements);
+                        noOfStatements,
+                        codeBlockType);
             }
         }
 

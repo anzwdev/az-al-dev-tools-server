@@ -197,6 +197,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)DuplicateCodeSearch\DCDuplicatePair.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DuplicateCodeSearch\DCDuplicateCodeAnalyzer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DuplicateCodeSearch\DCDuplicatePairCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DuplicateCodeSearch\DCCodeBlockType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DuplicateCodeSearch\DCStatementInstance.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DuplicateCodeSearch\DCStatementKey.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DuplicateCodeSearch\DCStatementsBlock.cs" />

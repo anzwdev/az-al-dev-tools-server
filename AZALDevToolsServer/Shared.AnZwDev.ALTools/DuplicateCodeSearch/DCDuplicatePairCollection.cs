@@ -12,13 +12,13 @@ namespace AnZwDev.ALTools.DuplicateCodeSearch
         {
         }
 
-        public void Add(DocumentRange sourceRange, DocumentRange destRange, int noOfStatements)
+        public void Add(DocumentRange sourceRange, DocumentRange destRange, int noOfStatements, DCCodeBlockType codeBlockType)
         {
             string sourceKey = sourceRange.GetUniqueKey();
             if (this.ContainsKey(sourceKey))
                 this[sourceKey].DestinationCodeBlock = destRange;
             else
-                this.Add(sourceKey, new DCDuplicatePair(sourceRange, destRange, noOfStatements));
+                this.Add(sourceKey, new DCDuplicatePair(sourceRange, destRange, noOfStatements, codeBlockType));
         }
 
     }

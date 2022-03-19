@@ -20,7 +20,7 @@ namespace AnZwDev.ALTools.DuplicateCodeSearch
                 duplicate = this[key];
             else
             {
-                duplicate = new DCDuplicate(pair.NoOfStatements);
+                duplicate = new DCDuplicate(pair.NoOfStatements, pair.CodeBlockType);
                 duplicate.ranges.Add(pair.DestinationCodeBlock);
                 this.Add(key, duplicate);
             }
