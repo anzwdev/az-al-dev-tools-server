@@ -37,7 +37,7 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
                         parameters.includeReportExtensions, parameters.includePermissionSets, parameters.includePermissionSetExtensions);
 
                     ObjectInformationProvider objectIdInformationProvider = new ObjectInformationProvider();
-                    response.symbols = objectIdInformationProvider.GetProjectObjects(project, includeObjects, parameters.includeDependencies);
+                    response.symbols = objectIdInformationProvider.GetProjectObjects(project, includeObjects, parameters.includeDependencies, parameters.includeObsolete);
                 }
             }
             catch (Exception e)
