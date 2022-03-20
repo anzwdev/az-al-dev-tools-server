@@ -24,7 +24,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
             //check if it is field access parameter that should not have record variable name at the fromt
             //i.e. Rec.Setrange(FieldName, ...);
-            if (node.Parent.Kind == SyntaxKind.ArgumentList)
+            if (node.Parent.Kind.ConvertToLocalType() == ConvertedSyntaxKind.ArgumentList)
             {
                 //get parameter index
                 ArgumentListSyntax argumentList = (ArgumentListSyntax)node.Parent;
@@ -32,7 +32,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                 {
                     int parameterIndex = argumentList.Arguments.IndexOf(node);
                     IOperation methodOperation = this.SemanticModel.GetOperation(argumentList.Parent);
-                    if ((methodOperation != null) && (methodOperation.Kind == OperationKind.InvocationExpression))
+                    if ((methodOperation != null) && (methodOperation.Kind.ConvertToLocalType() == ConvertedOperationKind.InvocationExpression))
                     {
                         IInvocationExpression invocationExpression = methodOperation as IInvocationExpression;
                         if ((invocationExpression != null) && (invocationExpression.TargetMethod != null) && (invocationExpression.TargetMethod.Parameters != null))
