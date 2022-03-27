@@ -9,28 +9,35 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
     public class ObjectInformationProvider
     {
 
-        public List<ObjectInformation> GetProjectObjects(ALProject project, HashSet<ALSymbolKind> includeObjects, bool includeDependencies)
+        public List<ObjectInformation> GetProjectObjects(ALProject project, HashSet<ALSymbolKind> includeObjects, bool includeDependencies, bool includeObsolete)
         {
             List<ObjectInformation> objectInformationCollection = new List<ObjectInformation>();
-            this.AddObjects(project.Symbols, includeObjects, objectInformationCollection);
+            this.AddObjects(project.Symbols, includeObjects, objectInformationCollection, includeObsolete);
             if ((includeDependencies) && (project.Dependencies != null))
             {
                 for (int i=0; i<project.Dependencies.Count; i++)
                 {
-                    this.AddObjects(project.Dependencies[i].Symbols, includeObjects, objectInformationCollection);
+                    this.AddObjects(project.Dependencies[i].Symbols, includeObjects, objectInformationCollection, includeObsolete);
                 }
             }    
             return objectInformationCollection;
         }
 
-        protected void AddObjects(ALAppSymbolReference appSymbolReference, HashSet<ALSymbolKind> includeObjects, List<ObjectInformation> objectInformationCollection)
+        protected void AddObjects(ALAppSymbolReference appSymbolReference, HashSet<ALSymbolKind> includeObjects, List<ObjectInformation> objectInformationCollection, bool includeObsolete)
         {
             if (appSymbolReference != null)
             {
                 IEnumerable<ALAppObject> alAppObjectsEnumerable = appSymbolReference.GetAllALAppObjectsEnumerable(includeObjects);
                 foreach (ALAppObject alAppObject in alAppObjectsEnumerable)
                 {
-                    objectInformationCollection.Add(new ObjectInformation(alAppObject));
+                    bool validObject = true;
+                    if (!includeObsolete)
+                    {
+                        string obsoleteState = alAppObject?.Properties?.GetValue("ObsoleteState");
+                        validObject = ((String.IsNullOrWhiteSpace(obsoleteState)) || (!obsoleteState.Equals("Removed", StringComparison.CurrentCultureIgnoreCase)));
+                    }
+                    if (validObject)
+                        objectInformationCollection.Add(new ObjectInformation(alAppObject));
                 }
             }
         }

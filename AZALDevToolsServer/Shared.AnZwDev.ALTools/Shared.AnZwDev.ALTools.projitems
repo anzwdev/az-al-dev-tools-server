@@ -124,6 +124,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSyntaxTree.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSyntaxTreesCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSyntaxTreeSymbol.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\DocumentRange.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\Internal\ConvertedActionKind.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\Internal\ConvertedChangeKind.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\Internal\ConvertedControlKind.cs" />
@@ -190,6 +191,18 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\PathUtils.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\SyntaxNodeNameComparer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\VersionNumber.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DuplicateCodeSearch\DCDuplicate.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DuplicateCodeSearch\DCDuplicateCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DuplicateCodeSearch\DCDuplicateComparer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DuplicateCodeSearch\DCDuplicatePair.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DuplicateCodeSearch\DCDuplicateCodeAnalyzer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DuplicateCodeSearch\DCDuplicatePairCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DuplicateCodeSearch\DCCodeBlockType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DuplicateCodeSearch\DCStatementInstance.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DuplicateCodeSearch\DCStatementKey.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DuplicateCodeSearch\DCStatementsBlock.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DuplicateCodeSearch\DCStatementKeyDictionary.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DuplicateCodeSearch\DCStatementKeyDictionaryBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\AlphanumComparatorFast .cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\DictionaryExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\EnumExtensions.cs" />

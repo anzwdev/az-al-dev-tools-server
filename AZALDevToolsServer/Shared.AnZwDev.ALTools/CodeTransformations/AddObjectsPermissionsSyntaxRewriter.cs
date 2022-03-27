@@ -137,7 +137,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                 includeObjects.Add(ALSymbolKind.TableObject);
 
             ObjectInformationProvider provider = new ObjectInformationProvider();
-            List<ObjectInformation> objectsList = provider.GetProjectObjects(this.Project, includeObjects, false);
+            List<ObjectInformation> objectsList = provider.GetProjectObjects(this.Project, includeObjects, false, false);
 
             SyntaxTriviaList leadingTriviaList = SyntaxFactory.TriviaList(SyntaxFactory.WhiteSpace("\r\n"), SyntaxFactory.WhiteSpace("        "));
             SyntaxTriviaList spaceTriviaList = SyntaxFactory.TriviaList(SyntaxFactory.WhiteSpace(" "));

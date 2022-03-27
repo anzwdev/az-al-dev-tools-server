@@ -26,5 +26,6 @@ namespace AnZwDev.ALTools.Server.Contracts.SymbolsInformation
         public bool includePermissionSetExtensions;
 
         public bool includeDependencies;
+        public bool includeObsolete;
     }
 }
