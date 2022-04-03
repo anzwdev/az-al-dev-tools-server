@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AnZwDev.ALTools.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -160,6 +161,75 @@ namespace AnZwDev.ALTools.Extensions
                 stringBuilder.Append(text.Substring(startPos, endPos + 1 - startPos));
 
             return stringBuilder.ToString();
+        }
+
+        public static string RemoveDuplicateEmptyLines(this string text)
+        {
+            if (String.IsNullOrEmpty(text))
+                return text;
+
+            StringBuilder stringBuilder = new StringBuilder();
+            StringLineReader stringReader = new StringLineReader(text);
+            string prevEmptyLine = null;
+            string prevContentLine = null;
+            bool hasContent = false;
+            string[] noEmptyLineBeforePart = { "}", "end;", "end.", "until ", "until\t", "until(" };
+            string[] noEmptyLineAfter = { "{" };
+            string[] noEmptyLinesBeforeFullText = { "end", "until" };
+
+            while (stringReader.TryReadLineAndTrimEnd(out string line, out string newLineSeparator))
+            {
+                if (line == null)
+                {
+                    if (hasContent)
+                        prevEmptyLine = newLineSeparator;
+                }
+                else
+                {
+                    if (prevEmptyLine != null)
+                    {
+                        string trimmedLine = line.TrimStart();
+                        if (
+                            (!trimmedLine.EqualsAny(noEmptyLinesBeforeFullText)) && 
+                            (!trimmedLine.StartsWithAny(noEmptyLineBeforePart)) &&
+                            ((prevContentLine == null) || (!prevContentLine.EndsWithAny(noEmptyLineAfter))))
+                            stringBuilder.Append(prevEmptyLine);
+                        prevEmptyLine = null;
+                    }
+                    stringBuilder.Append(line);
+                    if (newLineSeparator != null)
+                        stringBuilder.Append(newLineSeparator);
+
+                    hasContent = true;
+                    prevContentLine = line;
+                }
+            }
+
+            return stringBuilder.ToString();
+        }
+
+        public static bool StartsWithAny(this string text, string[] startParts)
+        {
+            for (int i = 0; i < startParts.Length; i++)
+                if (text.StartsWith(startParts[i], StringComparison.CurrentCultureIgnoreCase))
+                    return true;
+            return false;
+        }
+
+        public static bool EndsWithAny(this string text, string[] endsParts)
+        {
+            for (int i = 0; i < endsParts.Length; i++)
+                if (text.EndsWith(endsParts[i], StringComparison.CurrentCultureIgnoreCase))
+                    return true;
+            return false;
+        }
+
+        public static bool EqualsAny(this string text, string[] values)
+        {
+            for (int i = 0; i < values.Length; i++)
+                if (text.Equals(values[i], StringComparison.CurrentCultureIgnoreCase))
+                    return true;
+            return false;
         }
 
         public static bool ToBool(this string value)

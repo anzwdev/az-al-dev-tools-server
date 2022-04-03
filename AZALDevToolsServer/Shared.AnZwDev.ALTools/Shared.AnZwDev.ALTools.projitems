@@ -168,6 +168,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\ObjectCaptionSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\PageControlCaptionSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\PermissionComparer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\RemoveEmptyLinesSyntaxRewriter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\RemoveEmptySectionsSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\RemoveUnusedVariablesSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\RemoveVariableSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\SetPageFieldToolTipSyntaxRewriter.cs" />
@@ -189,6 +191,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\ExcludedFilesMatcher.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\FileUtils.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\PathUtils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\StringLineReader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\SyntaxNodeNameComparer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\VersionNumber.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DuplicateCodeSearch\DCDuplicate.cs" />
@@ -204,6 +207,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)DuplicateCodeSearch\DCStatementKeyDictionary.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DuplicateCodeSearch\DCStatementKeyDictionaryBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\AlphanumComparatorFast .cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\CharExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\DictionaryExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\EnumExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\HashSetExtensions.cs" />
@@ -236,6 +240,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\LockRemovedFieldsCaptionsWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\RefreshToolTipsWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\RemoveBeginEndWorkspaceCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\RemoveEmptyLinesWorkspaceCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\RemoveEmptySectionsWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\RemoveUnusedVariablesWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\RemoveVariableWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\RemoveWithWorkspaceCommand.cs" />

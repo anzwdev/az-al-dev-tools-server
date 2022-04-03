@@ -16,31 +16,6 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         {
         }
 
-        /*
-        public override WorkspaceCommandResult Run(string sourceCode, string projectPath, string filePath, Range range, Dictionary<string, string> parameters)
-        {
-            string newSourceCode = null;
-            bool success = true;
-            string errorMessage = null;
-
-            if (!String.IsNullOrWhiteSpace(filePath))
-            {
-                if (!String.IsNullOrEmpty(sourceCode))
-                {
-                    (newSourceCode, success, errorMessage) = this.ProcessSourceCode(sourceCode, projectPath, filePath, range, parameters);
-                    if (!success)
-                        return new WorkspaceCommandResult(newSourceCode, true, errorMessage);
-                }
-            }
-            else if (!String.IsNullOrWhiteSpace(projectPath))
-                (success, errorMessage) = this.ProcessDirectory(projectPath, parameters);
-
-            if (success)
-                return new WorkspaceCommandResult(newSourceCode);
-            return new WorkspaceCommandResult(newSourceCode, true, errorMessage);
-        }
-        */
-
         protected override (string, bool, string) ProcessSourceCode(string sourceCode, string projectPath, string filePath, Range range, Dictionary<string, string> parameters)
         {
             try
