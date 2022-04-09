@@ -162,7 +162,10 @@ namespace AnZwDev.ALTools.CodeTransformations
                 }
             }
 
-            return SyntaxFactory.List<T>(newNodes);
+            if (newNodes != null)
+                return SyntaxFactory.List<T>(newNodes);
+
+            return nodesList;
         }
 
         protected bool UpdateRequired(IEnumerable<SyntaxTrivia> triviaList, int requiredNoOfLines)
