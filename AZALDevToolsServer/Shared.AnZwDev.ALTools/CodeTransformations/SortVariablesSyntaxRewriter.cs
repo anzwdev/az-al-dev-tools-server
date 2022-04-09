@@ -14,6 +14,8 @@ namespace AnZwDev.ALTools.CodeTransformations
     public class SortVariablesSyntaxRewriter: ALSyntaxRewriter
     {
 
+        public bool SortByMainTypeNameOnly { get; set; }
+
         #region Variable comparer
 
 #if BC
@@ -35,8 +37,11 @@ namespace AnZwDev.ALTools.CodeTransformations
                     "bigtext", "dateformula", "recordid", "recordref", "fieldref", "filterpagebuilder" };
             protected static IComparer<string> _stringComparer = new SyntaxNodeNameComparer();
 
-            public VariableComparer()
+            public bool SortByMainTypeNameOnly { get; set; }
+
+            public VariableComparer(bool sortByMainTypeOnly)
             {
+                this.SortByMainTypeNameOnly = sortByMainTypeOnly;
             }
 
             protected int GetDataTypePriority(string dataTypeName)
@@ -54,10 +59,16 @@ namespace AnZwDev.ALTools.CodeTransformations
                 if (node.Type != null)
                 {
                     string typeName = (node.Type.DataType != null) ? node.Type.DataType.ToString() : node.Type.ToString();
+
+                    if (this.SortByMainTypeNameOnly)
+                    {
+                        if ((node.Type.DataType != null) && (node.Type.DataType is SubtypedDataTypeSyntax subtypedType) && (subtypedType.TypeName.ValueText != null))
+                            typeName = subtypedType.TypeName.ValueText + " ";
+                    }
+
                     if (typeName != null)
                     {
-                        typeName = typeName.Replace("\"", "").ToLower().Trim();
-
+                        typeName = typeName.Replace("\"", "").ToLower().TrimStart();
                         //ignore text value for labels and text constants
                         if (typeName.StartsWith("label", StringComparison.CurrentCultureIgnoreCase))
                             typeName = "label";
@@ -199,7 +210,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
             //sort variables
             var newVariables = SyntaxNodesGroupsTree<VariableDeclarationBaseSyntax>.SortSyntaxList(
-                variables, new VariableComparer(), out bool sorted);
+                variables, new VariableComparer(this.SortByMainTypeNameOnly), out bool sorted);
             if (sorted || anyNamesSorted)
                 this.NoOfChanges++;
             return newVariables;
