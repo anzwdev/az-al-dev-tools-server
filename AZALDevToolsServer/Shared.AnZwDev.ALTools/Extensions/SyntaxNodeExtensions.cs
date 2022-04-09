@@ -139,6 +139,18 @@ namespace AnZwDev.ALTools.Extensions
             return false;
         }
 
+        public static bool HasNonEmptyTrivia(this SyntaxNode node)
+        {
+            if ((!node.GetLeadingTrivia().IsNullOrWhiteSpace()) || (!node.GetTrailingTrivia().IsNullOrWhiteSpace()))
+                return true;
+
+            foreach (var token in node.DescendantTokens())
+                if ((!token.LeadingTrivia.IsNullOrWhiteSpace()) || (!token.TrailingTrivia.IsNullOrWhiteSpace()))
+                    return true;
+
+            return false;
+        }
+
         #region Nav2018 helpers
 
 #if NAV2018

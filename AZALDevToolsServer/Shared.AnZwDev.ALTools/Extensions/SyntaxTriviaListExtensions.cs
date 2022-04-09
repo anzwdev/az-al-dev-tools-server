@@ -84,5 +84,18 @@ namespace AnZwDev.ALTools.Extensions
             return newTriviaList;
         }
 
+        public static bool IsNullOrWhiteSpace(this IEnumerable<SyntaxTrivia> triviaList)
+        {
+            if (triviaList == null)
+                return true;
+            foreach (SyntaxTrivia trivia in triviaList)
+            {
+                ConvertedSyntaxKind kind = trivia.Kind.ConvertToLocalType();
+                if ((kind != ConvertedSyntaxKind.WhiteSpaceTrivia) && (kind != ConvertedSyntaxKind.EndOfLineTrivia))
+                    return false;
+            }
+            return true;
+        }
+
     }
 }
