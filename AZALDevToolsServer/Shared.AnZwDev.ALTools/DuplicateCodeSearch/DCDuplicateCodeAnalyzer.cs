@@ -19,11 +19,19 @@ namespace AnZwDev.ALTools.DuplicateCodeSearch
             this.MinNoOfStatements = minNoOfStatements;
         }
 
-        public List<DCDuplicate> FindDuplicates(ALWorkspace workspace)
+        public List<DCDuplicate> FindDuplicates(ALWorkspace workspace, string path)
         {
             DCStatementKeyDictionaryBuilder statementsBuilder = new DCStatementKeyDictionaryBuilder();
-            foreach (ALProject project in workspace.Projects)
-                statementsBuilder.VisitProjectFolder(project.RootPath);
+
+            ALProject singleProject = null;
+            if (!String.IsNullOrWhiteSpace(path))
+                singleProject = workspace.FindProject(path);
+
+            if (singleProject != null)
+                statementsBuilder.VisitProjectFolder(singleProject.RootPath);
+            else
+                foreach (ALProject project in workspace.Projects)
+                    statementsBuilder.VisitProjectFolder(project.RootPath);
 
             DCDuplicatePairCollection duplicatePairs = new DCDuplicatePairCollection();
             foreach (DCStatementKey statementKey in statementsBuilder.StatementsDictionary.Values)
