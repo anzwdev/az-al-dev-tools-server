@@ -10,7 +10,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
     public class SortVariablesWorkspaceCommand : SyntaxRewriterWorkspaceCommand<SortVariablesSyntaxRewriter>
     {
 
-        public static string SortModeParameterName = "sortMode";
+        public static string SortModeParameterName = "variablesSortMode";
 
         public SortVariablesWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "sortVariables")
         {
