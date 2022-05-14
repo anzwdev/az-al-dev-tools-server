@@ -116,6 +116,28 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         #endregion
 
+        public override SyntaxNode VisitTriggerDeclaration(TriggerDeclarationSyntax node)
+        {
+            if ((this.RemoveLocalVariables) || (this.RemoveLocalMethodParameters))
+            {
+                (TriggerDeclarationSyntax newTriggerDeclaration, bool triggerUpdated) = this.RemoveUnusedLocalVariablesFromTrigger(node);
+                if (triggerUpdated)
+                    return newTriggerDeclaration;
+            }
+            return base.VisitTriggerDeclaration(node);
+        }
+
+        public override SyntaxNode VisitMethodDeclaration(MethodDeclarationSyntax node)
+        {
+            if ((this.RemoveLocalVariables) || (this.RemoveLocalMethodParameters))
+            {
+                (MethodDeclarationSyntax newMethodDeclaration, bool methodUpdated) = this.RemoveUnusedLocalVariablesFromMethod(node);
+                if (methodUpdated)
+                    return newMethodDeclaration;
+            }
+            return base.VisitMethodDeclaration(node);
+        }
+
         #region Remove usused variables from object members
 
         protected (SyntaxList<MemberSyntax>, bool) RemoveUnusedVariablesFromNode(SyntaxNode node, SyntaxList<MemberSyntax> members)
@@ -144,6 +166,7 @@ namespace AnZwDev.ALTools.CodeTransformations
             }
 
             //remove local variables
+            /*
             if ((this.RemoveLocalVariables) || (this.RemoveLocalMethodParameters))
             {
                 for (int idx=0; idx<membersList.Count; idx++)
@@ -169,6 +192,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                     }
                 }
             }
+            */
 
             //return results
             if (updated)
