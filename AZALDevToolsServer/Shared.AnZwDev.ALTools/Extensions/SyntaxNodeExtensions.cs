@@ -151,6 +151,19 @@ namespace AnZwDev.ALTools.Extensions
             return false;
         }
 
+        internal static SyntaxNode FindParentByKind(this SyntaxNode node, params ConvertedSyntaxKind[] parentNodeKind)
+        {
+            while (node != null)
+            {
+                ConvertedSyntaxKind kind = node.Kind.ConvertToLocalType();
+                for (int i = 0; i < parentNodeKind.Length; i++)
+                    if (parentNodeKind[i] == kind)
+                        return node;
+                node = node.Parent;
+            }
+            return null;
+        }
+
         #region Nav2018 helpers
 
 #if NAV2018
