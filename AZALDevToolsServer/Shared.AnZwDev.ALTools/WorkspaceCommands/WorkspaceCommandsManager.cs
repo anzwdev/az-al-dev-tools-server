@@ -65,6 +65,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             this.RegisterCommand(groupCommand.AddCommand(new SortPermissionsWorkspaceCommand(this.ALDevToolsServer)));
             this.RegisterCommand(groupCommand.AddCommand(new SortPermissionSetListWorkspaceCommand(this.ALDevToolsServer)));
             this.RegisterCommand(groupCommand.AddCommand(new FormatDocumentWorkspaceCommand(this.ALDevToolsServer)));
+            this.RegisterCommand(groupCommand.AddCommand(new SortCustomizationsWorkspaceCommand(this.ALDevToolsServer)));
 
             this.RegisterCommand(groupCommand);
         }
