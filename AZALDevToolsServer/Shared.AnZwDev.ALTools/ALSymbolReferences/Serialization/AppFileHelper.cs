@@ -72,7 +72,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Serialization
                     FileStream stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                     return stream;
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     openCount--;
                     if (openCount <= 0)

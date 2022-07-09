@@ -85,7 +85,6 @@ namespace AnZwDev.ALTools.CodeTransformations
         {
             IEnumerable<SyntaxTrivia> trailingTrivia = null;
             SyntaxKind semicolonSyntaxKind = ConvertedSyntaxKind.SemicolonToken.Convert<ConvertedSyntaxKind, SyntaxKind>();
-            SyntaxToken semicolonToken;
 
             switch (node)
             {
