@@ -84,7 +84,7 @@ namespace AnZwDev.ALTools.Workspace
                 else
                 {
                     location.schema = ALSymbolSourceLocationSchema.ALPreview;
-                    location.sourcePath = alAppObject.GetALSymbolKind().ToObjectTypeName() + "/" + alAppObject.Id.ToString() + "/" + alAppObject.Name + ".dal";
+                    location.sourcePath = alAppObject.GetALSymbolKind().ToObjectTypeName() + "/" + alAppObject.Id.ToString() + "/" + System.Net.WebUtility.UrlEncode(alAppObject.Name) + ".dal";
                 }
             }
         }

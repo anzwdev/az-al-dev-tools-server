@@ -68,5 +68,34 @@ namespace AnZwDev.ALTools.Extensions
             return newList;
         }
 
+        public static List<SyntaxTrivia> FirstLineOnly(this IEnumerable<SyntaxTrivia> triviaList, bool includeEndOfLine)
+        {           
+            List<SyntaxTrivia> newTriviaList = new List<SyntaxTrivia>();
+            foreach (SyntaxTrivia trivia in triviaList)
+            {
+                bool endOfLine = (trivia.Kind.ConvertToLocalType() == ConvertedSyntaxKind.EndOfLineTrivia);
+
+                if ((!endOfLine) || (includeEndOfLine))
+                    newTriviaList.Add(trivia);
+
+                if (endOfLine)
+                    return newTriviaList;
+            }
+            return newTriviaList;
+        }
+
+        public static bool IsNullOrWhiteSpace(this IEnumerable<SyntaxTrivia> triviaList)
+        {
+            if (triviaList == null)
+                return true;
+            foreach (SyntaxTrivia trivia in triviaList)
+            {
+                ConvertedSyntaxKind kind = trivia.Kind.ConvertToLocalType();
+                if ((kind != ConvertedSyntaxKind.WhiteSpaceTrivia) && (kind != ConvertedSyntaxKind.EndOfLineTrivia))
+                    return false;
+            }
+            return true;
+        }
+
     }
 }

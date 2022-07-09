@@ -23,7 +23,7 @@ namespace AnZwDev.ALTools.Server.Handlers
             try
             {
                 DCDuplicateCodeAnalyzer analyzer = new DCDuplicateCodeAnalyzer(parameters.minNoOfStatements);
-                response.duplicates = analyzer.FindDuplicates(this.Server.Workspace);
+                response.duplicates = analyzer.FindDuplicates(this.Server.Workspace, parameters.path);
             }
             catch (Exception e)
             {

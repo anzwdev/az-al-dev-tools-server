@@ -111,7 +111,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
                 List<TableFieldInformaton> xmlPortTableFields = new List<TableFieldInformaton>();
 
                 if (xmlPortTableElement.Schema != null)
-                    this.CollectXmlPortTableFields(tableElementInformation.Source, xmlPortTableElement.Schema, availableTableFieldsDict, xmlPortTableFields);
+                    this.CollectXmlPortTableFields(tableElementInformation.Name, xmlPortTableElement.Schema, availableTableFieldsDict, xmlPortTableFields);
 
 
                 if (getExistingFields)

@@ -44,6 +44,10 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         protected PropertySyntax Sort(PropertySyntax property)
         {
+            property = property.SortCommaSeparatedPropertyValue(out bool sorted);
+            if (sorted)
+                NoOfChanges++;
+            /*
             CommaSeparatedPropertyValueSyntax value = property.Value as CommaSeparatedPropertyValueSyntax;
             if (value != null)
             {
@@ -53,10 +57,9 @@ namespace AnZwDev.ALTools.CodeTransformations
                 if (sorted)
                     this.NoOfChanges++;
             }
+            */
             return property;
         }
-
-
 
     }
 }

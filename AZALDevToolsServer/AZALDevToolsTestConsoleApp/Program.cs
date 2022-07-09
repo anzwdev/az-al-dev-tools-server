@@ -59,16 +59,15 @@ namespace AZALDevToolsTestConsoleApp
             //test project
             ALProjectSource[] projects =
             {
-                //new ALProjectSource("C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject", null)
-                //"C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18"               
-                new ALProjectSource("C:\\Projects\\Sandboxes\\al-test-projects\\tnp\\TNP-AL-Extensions\\project_fullers_general", null)
+                new ALProjectSource("C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject", null)
+                //"C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18"                
             };
             host.ALDevToolsServer.Workspace.LoadProjects(projects);
             host.ALDevToolsServer.Workspace.ResolveDependencies();
 
 
             DCDuplicateCodeAnalyzer duplicateAnalyzer = new DCDuplicateCodeAnalyzer(3);
-            var duplicatesList = duplicateAnalyzer.FindDuplicates(host.ALDevToolsServer.Workspace);
+            var duplicatesList = duplicateAnalyzer.FindDuplicates(host.ALDevToolsServer.Workspace, null);
 
             //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18\\Pag50104.MyPrefixMyPageCard.al";
             //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18\\permissionset-Ext50101.MyPermSetExt03.al";
@@ -80,13 +79,16 @@ namespace AZALDevToolsTestConsoleApp
             //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject\\Rep50100.MyReport.al";
             //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject\\MyTestCU.al";
             //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject\\Cod50100.MyCodeunit.al";
-            filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject\\Rep50100.MyReport.al";
+            //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject\\Rep50100.MyReport.al";
             //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject\\MyTable.al";
+            //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject\\PageEmptySectionsTest.al";
+            filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject\\WithTestsCU.al";
 
             string content = FileUtils.SafeReadAllText(filePath);
             Dictionary<string, string> pm = new();
             pm.Add("sourceFilePath", filePath);
             pm.Add("skipFormatting", "true");
+            pm.Add("sortMode", "mainTypeNameOnly");
 
             pm.Add("removeGlobalVariables", "true");
             pm.Add("removeLocalVariables", "true");
@@ -97,18 +99,19 @@ namespace AZALDevToolsTestConsoleApp
             pm.Add("dependencyName2", "Microsoft - System Application");
             pm.Add("dependencyName3", "Microsoft - Base Application");
 
-
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("removeWith", content, projectPath, null, pm);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("addAllObjectsPermissions", content, projectPath, null, pm);
-            WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("fixIdentifiersCase", content, projects[0].folderPath, filePath, null, pm, null);
+            //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("fixIdentifiersCase", content, projects[0].folderPath, filePath, null, pm, null);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("removeUnusedVariables", content, projects[0], filePath, null, pm);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("convertObjectIdsToNames", content, projects[0], null, pm);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("addParentheses", content, projects[0], filePath, null, pm);
-            //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("sortVariables", content, projects[0], filePath, null, pm);
+            WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("sortVariables", content, projects[0].folderPath, filePath, null, pm, null);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("removeBeginEnd", content, projects[0], filePath, null, pm);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("addToolTips", content, projects[0], filePath, null, pm);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("refreshToolTips", content, projects[0], filePath, null, pm);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("sortProperties", content, projects[0], filePath, null, pm);
+            //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("removeEmptyLines", content, projects[0].folderPath, filePath, null, pm, null);
+            //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("removeEmptySections", content, projects[0].folderPath, filePath, null, pm, null);
 
             ALProject project = host.ALDevToolsServer.Workspace.Projects[0];
 

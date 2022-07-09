@@ -139,6 +139,31 @@ namespace AnZwDev.ALTools.Extensions
             return false;
         }
 
+        public static bool HasNonEmptyTrivia(this SyntaxNode node)
+        {
+            if ((!node.GetLeadingTrivia().IsNullOrWhiteSpace()) || (!node.GetTrailingTrivia().IsNullOrWhiteSpace()))
+                return true;
+
+            foreach (var token in node.DescendantTokens())
+                if ((!token.LeadingTrivia.IsNullOrWhiteSpace()) || (!token.TrailingTrivia.IsNullOrWhiteSpace()))
+                    return true;
+
+            return false;
+        }
+
+        internal static SyntaxNode FindParentByKind(this SyntaxNode node, params ConvertedSyntaxKind[] parentNodeKind)
+        {
+            while (node != null)
+            {
+                ConvertedSyntaxKind kind = node.Kind.ConvertToLocalType();
+                for (int i = 0; i < parentNodeKind.Length; i++)
+                    if (parentNodeKind[i] == kind)
+                        return node;
+                node = node.Parent;
+            }
+            return null;
+        }
+
         #region Nav2018 helpers
 
 #if NAV2018

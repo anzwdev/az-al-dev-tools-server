@@ -23,7 +23,7 @@ namespace AnZwDev.ALTools.Workspace
         public ALWorkspace Workspace { get; set; }
         public ALProjectFilesCollection Files { get; }
         public string RootPath { get; set; }
-        public string PackageCachePath { get; set; }
+        public string PackageCachePath { get; private set; }
 
         private ALProjectProperties _properties;
         public ALProjectProperties Properties 

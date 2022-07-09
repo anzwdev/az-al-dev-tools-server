@@ -7,6 +7,7 @@ using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace AnZwDev.ALTools.CodeTransformations
@@ -19,7 +20,6 @@ namespace AnZwDev.ALTools.CodeTransformations
         public bool UseFieldDescription { get; set; }
         
         public Dictionary<string, Dictionary<string, List<string>>> ToolTipsCache { get; set; }
-
 
         public ToolTipSyntaxRewriter()
         {
@@ -39,7 +39,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         public override SyntaxNode VisitPageField(PageFieldSyntax node)
         {
-            if ((this.HasToolTip(node)) || (this.ToolTipDisabled(node)))
+            if ((!CanAddToolTip(node)) || (this.HasToolTip(node)) || (this.ToolTipDisabled(node)))
                 return base.VisitPageField(node);
             this.NoOfChanges++;
 
@@ -70,7 +70,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         public override SyntaxNode VisitPageAction(PageActionSyntax node)
         {
-            if (this.HasToolTip(node))
+            if ((!CanAddToolTip(node)) || (this.HasToolTip(node)))
                 return base.VisitPageAction(node);
             this.NoOfChanges++;
             return node.AddPropertyListProperties(this.CreateToolTipProperty(node));
@@ -142,6 +142,38 @@ namespace AnZwDev.ALTools.CodeTransformations
                 template = template.Replace("%Caption.Comment%", comment);
 
             return template;
+        }
+
+        protected bool CanAddToolTip(SyntaxNode node)
+        {
+            while (node != null)
+            {
+                var kind = node.Kind.ConvertToLocalType();
+                switch (kind)
+                {
+                    case ConvertedSyntaxKind.RequestPage:
+                    case ConvertedSyntaxKind.RequestPageExtension:
+                        return true;
+                    case ConvertedSyntaxKind.PageObject:
+                        string pageType = ALSyntaxHelper.DecodeName(node.GetProperty("PageType")?.Value?.ToString());
+                        return ((pageType == null) || (!pageType.Equals("API", StringComparison.CurrentCultureIgnoreCase)));
+                    case ConvertedSyntaxKind.PageExtensionObject:
+                        var pageExtension = node as PageExtensionSyntax;
+                        string basePageName = ALSyntaxHelper.DecodeName(pageExtension?.BaseObject?.ToString());
+                        if (!String.IsNullOrWhiteSpace(basePageName))
+                        {
+                            var basePage = this.Project.AllSymbols.Pages.FindObject(basePageName);
+                            if ((basePage != null) && (basePage.Properties != null))
+                            {
+                                var basePageType = basePage.Properties.Where(p => ((p.Name != null) && (p.Name.Equals("PageType", StringComparison.CurrentCultureIgnoreCase)))).FirstOrDefault();
+                                return ((basePageType?.Value == null) || (!basePageType.Value.Equals("API", StringComparison.CurrentCultureIgnoreCase)));
+                            }
+                        }
+                        return true;
+                }
+                node = node.Parent;
+            }
+            return true;
         }
 
 

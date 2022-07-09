@@ -44,6 +44,8 @@ namespace AnZwDev.ALTools.WorkspaceCommands
 
             this.RegisterCommand(new AddObjectsPermissionsWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new TrimTrailingWhitespaceWorkspaceCommand(this.ALDevToolsServer));
+            this.RegisterCommand(new RemoveEmptyLinesWorkspaceCommand(this.ALDevToolsServer));
+            this.RegisterCommand(new RemoveEmptySectionsWorkspaceCommand(this.ALDevToolsServer));
 
 #if BC            
             this.RegisterCommand(new RemoveWithWorkspaceCommand(this.ALDevToolsServer));
@@ -63,6 +65,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             this.RegisterCommand(groupCommand.AddCommand(new SortPermissionsWorkspaceCommand(this.ALDevToolsServer)));
             this.RegisterCommand(groupCommand.AddCommand(new SortPermissionSetListWorkspaceCommand(this.ALDevToolsServer)));
             this.RegisterCommand(groupCommand.AddCommand(new FormatDocumentWorkspaceCommand(this.ALDevToolsServer)));
+            this.RegisterCommand(groupCommand.AddCommand(new SortCustomizationsWorkspaceCommand(this.ALDevToolsServer)));
 
             this.RegisterCommand(groupCommand);
         }

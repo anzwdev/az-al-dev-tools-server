@@ -237,6 +237,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                     case "tableno":
                     case "sourcetable":
                         return "table";
+                    case "rolecenter":
                     case "cardpageid":
                     case "drilldownpageid":
                     case "lookuppageid":
