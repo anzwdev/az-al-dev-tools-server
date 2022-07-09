@@ -34,8 +34,9 @@ namespace AnZwDev.ALTools.WorkspaceCommands
 
             //load project and single file
             List<SyntaxTree> syntaxTrees = new List<SyntaxTree>();
-            Compilation compilation = this.LoadProject(projectPath, syntaxTrees, sourceCode, filePath, out sourceSyntaxTree);
             ALProject project = this.ALDevToolsServer.Workspace.FindProject(projectPath, true);
+            Compilation compilation = this.LoadProject(projectPath, syntaxTrees, sourceCode, filePath, project.PackageCachePath, out sourceSyntaxTree);
+            
 
             if (!String.IsNullOrWhiteSpace(filePath))
             {
@@ -56,7 +57,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
 
     #region Project loading
 
-        protected Compilation LoadProject(string projectPath, List<SyntaxTree> syntaxTrees, string sourceCode, string sourcePath, out SyntaxTree sourceSyntaxTree)
+        protected Compilation LoadProject(string projectPath, List<SyntaxTree> syntaxTrees, string sourceCode, string sourcePath, string alPackagesPath, out SyntaxTree sourceSyntaxTree)
         {
             //load all syntax trees
             syntaxTrees.Clear();
@@ -75,7 +76,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
                 new CompilationOptions());
 
             LocalCacheSymbolReferenceLoader referenceLoader =
-                this.SafeCreateLocalCacheSymbolReferenceLoader(Path.Combine(projectPath, ".alpackages"));
+                this.SafeCreateLocalCacheSymbolReferenceLoader(Path.Combine(projectPath, alPackagesPath));
             
             compilation = compilation
                 .WithReferenceLoader(referenceLoader)
