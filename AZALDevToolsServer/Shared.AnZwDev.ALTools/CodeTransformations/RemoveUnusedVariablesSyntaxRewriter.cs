@@ -24,97 +24,20 @@ namespace AnZwDev.ALTools.CodeTransformations
             this.RemoveLocalMethodParameters = true;
         }
 
-        #region Visit objects to update variables
-
-        public override SyntaxNode VisitCodeunit(CodeunitSyntax node)
+        public override SyntaxNode VisitGlobalVarSection(GlobalVarSectionSyntax node)
         {
-            if (!node.ContainsDiagnostics)
+            if (this.RemoveGlobalVariables)
             {
-                (SyntaxList<MemberSyntax> newMembers, bool changed) = this.RemoveUnusedVariablesFromNode(node, node.Members);
-                if (changed)
-                    node = node.WithMembers(newMembers);
+                var appObject = node.FindParentApplicationObject();
+                if (appObject != null)
+                {
+                    (GlobalVarSectionSyntax newGlobalVariables, bool globalsUpdated) = this.RemoveUnusedGlobalVariablesFromNode(appObject, node);
+                    if (globalsUpdated)
+                        return newGlobalVariables;
+                }
             }
-            return base.VisitCodeunit(node);
+            return base.VisitGlobalVarSection(node);
         }
-
-        public override SyntaxNode VisitPage(PageSyntax node)
-        {
-            if (!node.ContainsDiagnostics)
-            {
-                (SyntaxList<MemberSyntax> newMembers, bool changed) = this.RemoveUnusedVariablesFromNode(node, node.Members);
-                if (changed)
-                    node = node.WithMembers(newMembers);
-            }
-            return base.VisitPage(node);
-        }
-
-        public override SyntaxNode VisitPageExtension(PageExtensionSyntax node)
-        {
-            if (!node.ContainsDiagnostics)
-            {
-                (SyntaxList<MemberSyntax> newMembers, bool changed) = this.RemoveUnusedVariablesFromNode(node, node.Members);
-                if (changed)
-                    node = node.WithMembers(newMembers);
-            }
-            return base.VisitPageExtension(node);
-        }
-
-        public override SyntaxNode VisitTable(TableSyntax node)
-        {
-            if (!node.ContainsDiagnostics)
-            {
-                (SyntaxList<MemberSyntax> newMembers, bool changed) = this.RemoveUnusedVariablesFromNode(node, node.Members);
-                if (changed)
-                    node = node.WithMembers(newMembers);
-            }
-            return base.VisitTable(node);
-        }
-
-        public override SyntaxNode VisitTableExtension(TableExtensionSyntax node)
-        {
-            if (!node.ContainsDiagnostics)
-            {
-                (SyntaxList<MemberSyntax> newMembers, bool changed) = this.RemoveUnusedVariablesFromNode(node, node.Members);
-                if (changed)
-                    node = node.WithMembers(newMembers);
-            }
-            return base.VisitTableExtension(node);
-        }
-
-        public override SyntaxNode VisitReport(ReportSyntax node)
-        {
-            if (!node.ContainsDiagnostics)
-            {
-                (SyntaxList<MemberSyntax> newMembers, bool changed) = this.RemoveUnusedVariablesFromNode(node, node.Members);
-                if (changed)
-                    node = node.WithMembers(newMembers);
-            }
-            return base.VisitReport(node);
-        }
-
-        public override SyntaxNode VisitXmlPort(XmlPortSyntax node)
-        {
-            if (!node.ContainsDiagnostics)
-            {
-                (SyntaxList<MemberSyntax> newMembers, bool changed) = this.RemoveUnusedVariablesFromNode(node, node.Members);
-                if (changed)
-                    node = node.WithMembers(newMembers);
-            }
-            return base.VisitXmlPort(node);
-        }
-
-        public override SyntaxNode VisitQuery(QuerySyntax node)
-        {
-            if (!node.ContainsDiagnostics)
-            {
-                (SyntaxList<MemberSyntax> newMembers, bool changed) = this.RemoveUnusedVariablesFromNode(node, node.Members);
-                if (changed)
-                    node = node.WithMembers(newMembers);
-            }
-            return base.VisitQuery(node);
-        }
-
-        #endregion
 
         public override SyntaxNode VisitTriggerDeclaration(TriggerDeclarationSyntax node)
         {
@@ -139,68 +62,6 @@ namespace AnZwDev.ALTools.CodeTransformations
         }
 
         #region Remove usused variables from object members
-
-        protected (SyntaxList<MemberSyntax>, bool) RemoveUnusedVariablesFromNode(SyntaxNode node, SyntaxList<MemberSyntax> members)
-        {
-            bool updated = false;               
-                
-            //prepare list of members
-            List<MemberSyntax> membersList = members.ToList();
-
-            //remove global variables
-            if (this.RemoveGlobalVariables)
-            {
-                GlobalVarSectionSyntax globalVariables = members.Where(p => (p.Kind.ConvertToLocalType() == ConvertedSyntaxKind.GlobalVarSection)).FirstOrDefault() as GlobalVarSectionSyntax;
-                if (globalVariables != null)
-                {
-                    (GlobalVarSectionSyntax newGlobalVariables, bool globalsUpdated) = this.RemoveUnusedGlobalVariablesFromNode(node, globalVariables);
-                    if (globalsUpdated)
-                    {
-                        if (newGlobalVariables == null)
-                            membersList.Remove(globalVariables);
-                        else
-                            membersList[members.IndexOf(globalVariables)] = newGlobalVariables;
-                        updated = true;
-                    }
-                }
-            }
-
-            //remove local variables
-            /*
-            if ((this.RemoveLocalVariables) || (this.RemoveLocalMethodParameters))
-            {
-                for (int idx=0; idx<membersList.Count; idx++)
-                {
-                    switch (membersList[idx])
-                    {
-                        case MethodDeclarationSyntax methodDeclaration:
-                            (MethodDeclarationSyntax newMethodDeclaration, bool methodUpdated) = this.RemoveUnusedLocalVariablesFromMethod(methodDeclaration);
-                            if (methodUpdated)
-                            {
-                                membersList[idx] = newMethodDeclaration;
-                                updated = true;
-                            }
-                            break;
-                        case TriggerDeclarationSyntax triggerDeclaration:
-                            (TriggerDeclarationSyntax newTriggerDeclaration, bool triggerUpdated) = this.RemoveUnusedLocalVariablesFromTrigger(triggerDeclaration);
-                            if (triggerUpdated)
-                            {
-                                membersList[idx] = newTriggerDeclaration;
-                                updated = true;
-                            }
-                            break;
-                    }
-                }
-            }
-            */
-
-            //return results
-            if (updated)
-                return (SyntaxFactory.List(membersList), true);
-
-            return (members, false);
-        }
-
 
         protected (GlobalVarSectionSyntax, bool) RemoveUnusedGlobalVariablesFromNode(SyntaxNode node, GlobalVarSectionSyntax globalVariables)
         {

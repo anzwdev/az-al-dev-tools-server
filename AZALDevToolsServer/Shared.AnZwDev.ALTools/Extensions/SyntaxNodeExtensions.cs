@@ -164,6 +164,17 @@ namespace AnZwDev.ALTools.Extensions
             return null;
         }
 
+        internal static SyntaxNode FindParentApplicationObject(this SyntaxNode node)
+        {
+            while (node != null)
+            {
+                if (node.Kind.IsApplicationObject())
+                    return node;
+                node = node.Parent;
+            }
+            return null;
+        }
+
         #region Nav2018 helpers
 
 #if NAV2018
