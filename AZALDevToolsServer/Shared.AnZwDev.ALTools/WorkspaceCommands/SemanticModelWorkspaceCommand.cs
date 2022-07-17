@@ -102,6 +102,9 @@ namespace AnZwDev.ALTools.WorkspaceCommands
 
         protected void LoadProjectALFiles(string projectPath, List<SyntaxTree> syntaxTrees, string sourceCode, string sourcePath, out SyntaxTree sourceSyntaxTree)
         {
+
+
+
             bool useSource = (!String.IsNullOrWhiteSpace(sourcePath));
             if (useSource)
                 sourcePath = Path.GetFullPath(sourcePath);
@@ -110,7 +113,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             string[] filePaths = Directory.GetFiles(projectPath, "*.al", SearchOption.AllDirectories);
             for (int i = 0; i < filePaths.Length; i++)
             {
-                bool sourceFile = ((useSource) && (sourcePath.Equals(Path.GetFullPath(filePaths[i]))));
+                bool sourceFile = ((useSource) && (sourcePath.Equals(Path.GetFullPath(filePaths[i]), PathUtils.GetPathComparison())));
                 string content;
                 if (sourceFile)
                     content = sourceCode;

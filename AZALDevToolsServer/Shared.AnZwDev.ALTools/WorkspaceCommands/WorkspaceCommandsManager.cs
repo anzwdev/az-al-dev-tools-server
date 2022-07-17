@@ -52,6 +52,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             this.RegisterCommand(new FixIdentifiersCaseWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new RemoveUnusedVariablesWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new AddParenthesesWorkspaceCommand(this.ALDevToolsServer));
+            this.RegisterCommand(new RemoveStrSubstNoFromErrorWorkspaceCommand(this.ALDevToolsServer));
 #endif
             this.RegisterCommand(new RemoveVariableWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new ConvertObjectIdsToNamesWorkspaceCommand(this.ALDevToolsServer));
