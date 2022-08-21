@@ -14,7 +14,7 @@ namespace AnZwDev.ALTools.CodeTransformations
     public class SortVariablesSyntaxRewriter: ALSyntaxRewriter
     {
 
-        public bool SortByMainTypeNameOnly { get; set; }
+        public VariablesSortMode SortMode { get; set; }
 
         #region Variable comparer
 
@@ -36,12 +36,13 @@ namespace AnZwDev.ALTools.CodeTransformations
             protected static string[] _typePriority = {"record ", "report", "codeunit", "xmlport", "page", "query", "notification",
                     "bigtext", "dateformula", "recordid", "recordref", "fieldref", "filterpagebuilder" };
             protected static IComparer<string> _stringComparer = new SyntaxNodeNameComparer();
+            protected Dictionary<string, int> OriginalOrder { get; private set; }
+            public VariablesSortMode SortMode { get; set; }
 
-            public bool SortByMainTypeNameOnly { get; set; }
-
-            public VariableComparer(bool sortByMainTypeOnly)
+            public VariableComparer(VariablesSortMode sortMode, SyntaxList<VariableDeclarationBaseSyntax> originalList)
             {
-                this.SortByMainTypeNameOnly = sortByMainTypeOnly;
+                this.SortMode = sortMode;
+                this.OriginalOrder = GetVariablesOrder(originalList);
             }
 
             protected int GetDataTypePriority(string dataTypeName)
@@ -60,7 +61,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                 {
                     string typeName = (node.Type.DataType != null) ? node.Type.DataType.ToString() : node.Type.ToString();
 
-                    if (this.SortByMainTypeNameOnly)
+                    if (this.SortMode.SortByMainTypeNameOnly())
                     {
                         if ((node.Type.DataType != null) && (node.Type.DataType is SubtypedDataTypeSyntax subtypedType) && (subtypedType.TypeName.ValueText != null))
                             typeName = subtypedType.TypeName.ValueText + " ";
@@ -97,7 +98,27 @@ namespace AnZwDev.ALTools.CodeTransformations
 
                 string xName = this.GetVariableName(x);
                 string yName = this.GetVariableName(y);
-                return _stringComparer.Compare(xName, yName);
+
+                if (this.SortMode.SortByVariableName())
+                    return _stringComparer.Compare(xName, yName);
+                return CompareOriginalOrder(xName, yName);
+            }
+
+            protected int CompareOriginalOrder(string xName, string yName)
+            {
+                if (this.OriginalOrder == null)                    
+                    return 0;
+
+                bool xExists = this.OriginalOrder.ContainsKey(xName);
+                bool yExists = this.OriginalOrder.ContainsKey(yName);
+
+                if (xExists && yExists)
+                    return this.OriginalOrder[xName].CompareTo(this.OriginalOrder[yName]);
+                if (xExists)
+                    return 1;
+                if (yExists)
+                    return -1;
+                return 0;
             }
 
             protected string GetVariableName(VariableDeclarationBaseSyntax variableDeclarationBaseSyntax)
@@ -110,6 +131,17 @@ namespace AnZwDev.ALTools.CodeTransformations
                 return variableDeclarationBaseSyntax.GetNameStringValue()?.ToLower();
             }
 
+            private Dictionary<string, int> GetVariablesOrder(SyntaxList<VariableDeclarationBaseSyntax> variables)
+            {
+                Dictionary<string, int> variablesOrder = new Dictionary<string, int>();
+                for (int i = 0; i < variables.Count; i++)
+                {
+                    string name = this.GetVariableName(variables[i]);
+                    if (!variablesOrder.ContainsKey(name))
+                        variablesOrder.Add(name, i);
+                }
+                return variablesOrder;
+            }
 
         }
 #else
@@ -118,9 +150,12 @@ namespace AnZwDev.ALTools.CodeTransformations
             protected static string[] _typePriority = {"record ", "report", "codeunit", "xmlport", "page", "query", "notification",
                     "bigtext", "dateformula", "recordid", "recordref", "fieldref", "filterpagebuilder" };
             protected static IComparer<string> _stringComparer = new SyntaxNodeNameComparer();
+            protected Dictionary<string, int> OriginalOrder { get; private set; }
+            public VariablesSortMode SortMode { get; set; }
 
-            public VariableComparer()
+            public VariableComparer(SyntaxList<VariableDeclarationSyntax> originalList)
             {
+                this.OriginalOrder = GetVariablesOrder(originalList);
             }
 
             protected int GetDataTypePriority(string dataTypeName)
@@ -159,8 +194,48 @@ namespace AnZwDev.ALTools.CodeTransformations
                 if (value != 0)
                     return value;
 
-                return _stringComparer.Compare(x.GetNameStringValue().ToLower(), y.GetNameStringValue().ToLower());
+                string xName = GetVariableName(x);
+                string yName = GetVariableName(y);
+
+                if (this.SortMode.SortByVariableName())
+                    return _stringComparer.Compare(xName, yName);
+                return CompareOriginalOrder(xName, yName);
             }
+
+            private string GetVariableName(VariableDeclarationSyntax variable)
+            {
+                return variable.GetNameStringValue().ToLower();
+            }
+
+            private Dictionary<string, int> GetVariablesOrder(SyntaxList<VariableDeclarationSyntax> variables)
+            {
+                Dictionary<string, int> variablesOrder = new Dictionary<string, int>();
+                for (int i = 0; i < variables.Count; i++)
+                {
+                    string name = GetVariableName(variables[i]);
+                    if (!variablesOrder.ContainsKey(name))
+                        variablesOrder.Add(name, i);
+                }
+                return variablesOrder;
+            }
+
+            protected int CompareOriginalOrder(string xName, string yName)
+            {
+                if (this.OriginalOrder == null)                    
+                    return 0;
+
+                bool xExists = this.OriginalOrder.ContainsKey(xName);
+                bool yExists = this.OriginalOrder.ContainsKey(yName);
+
+                if (xExists && yExists)
+                    return this.OriginalOrder[xName].CompareTo(this.OriginalOrder[yName]);
+                if (xExists)
+                    return 1;
+                if (yExists)
+                    return -1;
+                return 0;
+            }
+
         }
 #endif
 
@@ -191,7 +266,7 @@ namespace AnZwDev.ALTools.CodeTransformations
         {
             //sort variable names in variable list declarations
             bool anyNamesSorted = false;
-            if ((variables != null) && (variables.Count > 0))
+            if ((this.SortMode.SortByVariableName()) && (variables != null) && (variables.Count > 0))
             {
                 VariableDeclarationNameComparer variableNameComparer = new VariableDeclarationNameComparer();
                 for (int i=0; i<variables.Count; i++)
@@ -210,7 +285,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
             //sort variables
             var newVariables = SyntaxNodesGroupsTree<VariableDeclarationBaseSyntax>.SortSyntaxList(
-                variables, new VariableComparer(this.SortByMainTypeNameOnly), out bool sorted);
+                variables, new VariableComparer(this.SortMode, variables), out bool sorted);
             if (sorted || anyNamesSorted)
                 this.NoOfChanges++;
             return newVariables;
@@ -232,7 +307,7 @@ namespace AnZwDev.ALTools.CodeTransformations
         protected SyntaxList<VariableDeclarationSyntax> SortVariables(SyntaxList<VariableDeclarationSyntax> variables)
         {
             var newVariables = SyntaxNodesGroupsTree<VariableDeclarationSyntax>.SortSyntaxList(
-                variables, new VariableComparer(), out bool sorted);
+                variables, new VariableComparer(variables), out bool sorted);
             if (sorted)
                 this.NoOfChanges++;
             return newVariables;

@@ -16,26 +16,29 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         public override SyntaxNode VisitInvocationExpression(InvocationExpressionSyntax node)
         {
-            var name = ALSyntaxHelper.DecodeName(node.Expression?.ToString());
-            if ((name != null) && 
-                (name.Equals("Error", StringComparison.CurrentCultureIgnoreCase)) &&
-                (node.ArgumentList?.Arguments != null) &&
-                (node.ArgumentList.Arguments.Count == 1) &&
-                (node.ArgumentList.Arguments[0] is InvocationExpressionSyntax argsInvocationExpressionSyntax))
+            if (!node.ContainsDiagnostics)
             {
-                var operation = SemanticModel.GetOperation(node);
-                if ((operation != null) && (operation is IInvocationExpression invocationExpression))
+                var name = ALSyntaxHelper.DecodeName(node.Expression?.ToString());
+                if ((name != null) &&
+                    (name.Equals("Error", StringComparison.CurrentCultureIgnoreCase)) &&
+                    (node.ArgumentList?.Arguments != null) &&
+                    (node.ArgumentList.Arguments.Count == 1) &&
+                    (node.ArgumentList.Arguments[0] is InvocationExpressionSyntax argsInvocationExpressionSyntax))
                 {
-                    if ((invocationExpression.Arguments != null) &&
-                        (!invocationExpression.Arguments.IsEmpty) &&
-                        ("error".Equals(invocationExpression.TargetMethod?.Name, StringComparison.CurrentCultureIgnoreCase)) &&
-                        (invocationExpression.Arguments[0].Value is IInvocationExpression argInvocationExpression))
+                    var operation = SemanticModel.GetOperation(node);
+                    if ((operation != null) && (operation is IInvocationExpression invocationExpression))
                     {
-                        if ("strsubstno".Equals(argInvocationExpression.TargetMethod?.Name, StringComparison.CurrentCultureIgnoreCase))
+                        if ((invocationExpression.Arguments != null) &&
+                            (!invocationExpression.Arguments.IsEmpty) &&
+                            ("error".Equals(invocationExpression.TargetMethod?.Name, StringComparison.CurrentCultureIgnoreCase)) &&
+                            (invocationExpression.Arguments[0].Value is IInvocationExpression argInvocationExpression))
                         {
-                            var newArgsList = argsInvocationExpressionSyntax.ArgumentList;
-                            node = node.WithArgumentList(newArgsList);
-                            NoOfChanges++;
+                            if ("strsubstno".Equals(argInvocationExpression.TargetMethod?.Name, StringComparison.CurrentCultureIgnoreCase))
+                            {
+                                var newArgsList = argsInvocationExpressionSyntax.ArgumentList;
+                                node = node.WithArgumentList(newArgsList);
+                                NoOfChanges++;
+                            }
                         }
                     }
                 }

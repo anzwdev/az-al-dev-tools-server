@@ -29,9 +29,13 @@ namespace AnZwDev.ALTools.Core
 
         public static StringComparison GetPathComparison()
         {
+#if BC
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 return StringComparison.CurrentCultureIgnoreCase;
             return StringComparison.CurrentCulture;
+#else
+            return StringComparison.CurrentCultureIgnoreCase;
+#endif
         }
 
 

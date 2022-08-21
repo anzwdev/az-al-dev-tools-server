@@ -19,7 +19,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         protected override void SetParameters(string sourceCode, string projectPath, string filePath, TextSpan span, Dictionary<string, string> parameters)
         {
             base.SetParameters(sourceCode, projectPath, filePath, span, parameters);
-            this.SyntaxRewriter.SortByMainTypeNameOnly = (parameters.GetStringValue(SortModeParameterName) == "mainTypeNameOnly");
+            this.SyntaxRewriter.SortMode = VariableSortModeExtensions.FromString(parameters.GetStringValue(SortModeParameterName));
         }
 
 

@@ -156,6 +156,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\AppAreaSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\BasePageWithSourceSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\BaseToolTipsSyntaxRewriter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\FixTextOverflowAssignmentSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\RefreshToolTipsSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\RemoveBeginEndSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\ConvertObjectIdsToNamesSyntaxRewriter.cs" />
@@ -188,6 +189,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\SyntaxNodeSortInfoListSyntaxNodeProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\TableFieldCaptionInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\ToolTipSyntaxRewriter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\VariableSortModeExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\VariablesSortMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\WithIdentifiersSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\WithRemoveSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\ExcludedFilesMatcher.cs" />
