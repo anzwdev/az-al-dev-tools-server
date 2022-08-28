@@ -46,6 +46,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             this.RegisterCommand(new TrimTrailingWhitespaceWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new RemoveEmptyLinesWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new RemoveEmptySectionsWorkspaceCommand(this.ALDevToolsServer));
+            this.RegisterCommand(new RemoveEmptyTriggersWorkspaceCommand(this.ALDevToolsServer));
 
 #if BC            
             this.RegisterCommand(new RemoveWithWorkspaceCommand(this.ALDevToolsServer));
