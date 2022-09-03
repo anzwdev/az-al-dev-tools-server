@@ -97,5 +97,32 @@ namespace AnZwDev.ALTools.Extensions
             return true;
         }
 
+        public static bool ContainsDirectives(this IEnumerable<SyntaxTrivia> triviaList)
+        {
+            if (triviaList == null)
+                return false;
+            foreach (SyntaxTrivia trivia in triviaList)
+            {
+                ConvertedSyntaxKind kind = trivia.Kind.ConvertToLocalType();
+                switch (kind)
+                {
+                    case ConvertedSyntaxKind.BadDirectiveTrivia:
+                    case ConvertedSyntaxKind.BadPragmaDirectiveTrivia:
+                    case ConvertedSyntaxKind.DefineDirectiveTrivia:
+                    case ConvertedSyntaxKind.ElifDirectiveTrivia:
+                    case ConvertedSyntaxKind.ElseDirectiveTrivia:
+                    case ConvertedSyntaxKind.EndRegionDirectiveTrivia:
+                    case ConvertedSyntaxKind.IfDirectiveTrivia:
+                    case ConvertedSyntaxKind.PragmaImplicitWithDirectiveTrivia:
+                    case ConvertedSyntaxKind.PragmaWarningDirectiveTrivia:
+                    case ConvertedSyntaxKind.PreprocessingMessageTrivia:
+                    case ConvertedSyntaxKind.RegionDirectiveTrivia:
+                    case ConvertedSyntaxKind.UndefDirectiveTrivia:
+                        return true;
+                }
+            }
+            return false;
+        }
+
     }
 }

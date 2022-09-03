@@ -13,6 +13,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
     {
         public static string RemoveTriggersParameterName = "removeTriggers";
         public static string RemoveSubscribersParameterName = "removeSubscribers";
+        public static string IgnoreCommentsParameterName = "ignoreComments";
 
         public RemoveEmptyTriggersWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "removeEmptyTriggers")
         {
@@ -23,6 +24,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             base.SetParameters(sourceCode, projectPath, filePath, span, parameters);
             this.SyntaxRewriter.RemoveTriggers = parameters.GetBoolValue(RemoveTriggersParameterName);
             this.SyntaxRewriter.RemoveSubscribers = parameters.GetBoolValue(RemoveSubscribersParameterName);
+            this.SyntaxRewriter.IgnoreComments = parameters.GetBoolValue(IgnoreCommentsParameterName);
         }
 
     }
