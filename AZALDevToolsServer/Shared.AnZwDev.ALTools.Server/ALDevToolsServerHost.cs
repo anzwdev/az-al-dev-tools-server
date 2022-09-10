@@ -84,6 +84,9 @@ namespace AnZwDev.ALTools.Server
             //next available object id
             this.Dispatcher.RegisterRequestHandler(new GetNextObjectIdRequestHandler(this.ALDevToolsServer, this));
 
+            //code completion
+            this.Dispatcher.RegisterRequestHandler(new CodeCompletionRequestHandler(this.ALDevToolsServer, this));
+
             //standard notification handlers
             this.Dispatcher.RegisterNotificationHandler(new ExitNotificationHandler(this));
 

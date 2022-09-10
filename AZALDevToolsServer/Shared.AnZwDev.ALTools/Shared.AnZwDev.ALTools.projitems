@@ -148,6 +148,14 @@
     <Compile Include="$(MSBuildThisFileDirectory)CodeAnalysis\CompilerCodeAnalyzersLibrary.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeAnalysis\DllCodeAnalyzersLibrary.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeAnalysis\SyntaxFactoryHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeCompletion\CodeCompletionItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeCompletion\CodeCompletionItemComparer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeCompletion\CodeCompletionItemTag.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeCompletion\CodeCompletionProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeCompletion\CodeCompletionProvidersCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeCompletion\CompletionItemKind.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeCompletion\VariableDataTypesCompletionProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeCompletion\VariableNamesCompletionProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\AddObjectsPermissionsSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\AddParenthesesSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\ALCaptionsSyntaxRewriter.cs" />
@@ -227,6 +235,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\PropertySyntaxExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\StringExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\SyntaxNodeExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\SyntaxTokenExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\SyntaxTreeExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\SyntaxTriviaListExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\TypeExtensions.cs" />
@@ -289,6 +298,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\ALProjectSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\ALProjectSymbolsLibrarySource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\ALWorkspace.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Workspace\ALWorkspaceActiveDocument.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\List_ALProjectReference_Extensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\ProjectSymbolReferencesBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\Serialization\ALProjectMetadataSerializer.cs" />

@@ -1,8 +1,10 @@
 ﻿using AnZwDev.ALTools.Extensions;
+using Microsoft.Dynamics.Nav.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace AnZwDev.ALTools.ALSymbols
@@ -101,6 +103,14 @@ namespace AnZwDev.ALTools.ALSymbols
                 return list;
             }
             return "";
+        }
+
+
+        private static readonly Regex InvalidObjectVariableNameRegEx = new Regex("[^a-zA-Z0-9]", RegexOptions.Compiled);
+
+        public static string ObjectNameToVariableNamePart(string name)
+        {
+            return InvalidObjectVariableNameRegEx.Replace(name, String.Empty);
         }
 
         public static ALSymbolKind MemberAttributeToMethodKind(string name)
