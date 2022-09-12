@@ -22,6 +22,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\ChangeTracking\DocumentContentChangeRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\CodeCompletionRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\CodeCompletionResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\DocumentPositionRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\DocumentSymbolsRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\DocumentSymbolsResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\ChangeTracking\FilesNotificationRequest.cs" />
@@ -38,6 +39,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\GetFullSyntaxTreeResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\GetLibrarySymbolLocationRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\GetLibrarySymbolLocationResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\HoverRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\HoverResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\ReferencesRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\ReferencesResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetDependenciesListRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetDependenciesListResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetInterfaceMethodsListRequest.cs" />
@@ -130,9 +135,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\GetProjectSymbolLocationRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\GetSyntaxTreeRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\GetSyntaxTreeSymbolRequestHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\HoverRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\LanguageInformation\GetImagesRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\LibrarySymbolsDetailsRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\ProjectSymbolsRequestHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\ReferencesRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\ShutdownRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\SymbolsInformation\GetCodeunitsListRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\SymbolsInformation\GetDependenciesListRequestHandler.cs" />

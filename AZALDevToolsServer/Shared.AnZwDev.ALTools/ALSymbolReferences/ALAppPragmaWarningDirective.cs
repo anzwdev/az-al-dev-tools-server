@@ -1,6 +1,7 @@
 ﻿using AnZwDev.ALTools.ALSymbols;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace AnZwDev.ALTools.ALSymbolReferences
@@ -15,6 +16,14 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         {
             Disabled = disabled;
             Rules = rules;
+        }
+
+        public bool ContainsRule(string ruleId)
+        {
+            return
+                (Rules == null) ||
+                (Rules.Count == 0) ||
+                (Rules.Contains(ruleId));
         }
 
     }

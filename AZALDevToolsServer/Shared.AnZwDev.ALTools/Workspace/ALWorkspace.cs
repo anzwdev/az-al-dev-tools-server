@@ -265,5 +265,17 @@ namespace AnZwDev.ALTools.Workspace
 
         #endregion
 
+        public SyntaxTree GetSyntaxTree(bool activeDocument, string source)
+        {
+            SyntaxTree syntaxTree = null;
+            if (activeDocument)
+                syntaxTree = ActiveDocument.SyntaxTree;
+
+            if ((syntaxTree == null) && (!String.IsNullOrWhiteSpace(source)))
+                syntaxTree = SyntaxTree.ParseObjectText(source);
+
+            return syntaxTree;
+        }
+
     }
 }

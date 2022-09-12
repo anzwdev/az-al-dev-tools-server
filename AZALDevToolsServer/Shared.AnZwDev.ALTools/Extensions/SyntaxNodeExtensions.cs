@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using Microsoft.Dynamics.Nav.EditorServices.Protocol;
 
 namespace AnZwDev.ALTools.Extensions
 {
@@ -175,6 +176,16 @@ namespace AnZwDev.ALTools.Extensions
             return null;
         }
 
+        public static SyntaxNode FindNodeOnLeftOfPosition(this SyntaxNode node, int position)
+        {
+            if (node != null)
+            {
+                var token = node.FindTokenOnLeftOfPosition(position);
+                return token.Parent;
+            }
+            return null;
+        }
+
         #region Nav2018 helpers
 
 #if NAV2018
@@ -211,8 +222,8 @@ namespace AnZwDev.ALTools.Extensions
 
 #endif
 
-        #endregion
+            #endregion
 
 
-    }
+        }
 }

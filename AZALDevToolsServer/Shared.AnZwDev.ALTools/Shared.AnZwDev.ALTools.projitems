@@ -234,6 +234,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\IListExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\List_SyntaxNode_Extensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\MethodInfoExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\PragmaWarningDirectiveTriviaSyntaxExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\PropertyListSyntaxExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\PropertySyntaxExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\StringExtensions.cs" />
@@ -242,8 +243,14 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\SyntaxTreeExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\SyntaxTriviaListExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\TypeExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Hover\HoverProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Hover\HoverProvidersCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Hover\WarningDirectivesHoverProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Logging\IMessageLogWriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Logging\MessageLog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Navigation\ReferencesProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Navigation\ReferencesProvidersCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Navigation\WarningDirectivesReferencesProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SourceControl\GitClient.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\AddAppAreasWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\AddDataClassificationWorkspaceCommand.cs" />
