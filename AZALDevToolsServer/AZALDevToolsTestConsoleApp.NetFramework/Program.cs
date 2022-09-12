@@ -53,7 +53,7 @@ namespace AZALDevToolsTestConsoleApp.NetFramework
             ALProjectSource[] projects =
             {
                 //"C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC16\\"
-                new ALProjectSource("C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18", null)
+                new ALProjectSource("C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18", null, null)
             };
             
 

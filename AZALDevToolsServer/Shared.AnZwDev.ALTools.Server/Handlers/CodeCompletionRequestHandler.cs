@@ -16,7 +16,7 @@ namespace AnZwDev.ALTools.Server.Handlers
 
         public CodeCompletionRequestHandler(ALDevToolsServer server, LanguageServerHost languageServerHost) : base(server, languageServerHost, "al/codecompletion")
         {
-            _codeCompletionProviders = new CodeCompletionProvidersCollection();
+            _codeCompletionProviders = new CodeCompletionProvidersCollection(this.Server);
         }
 
 #pragma warning disable 1998

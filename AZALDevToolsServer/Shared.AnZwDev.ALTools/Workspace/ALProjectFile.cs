@@ -28,7 +28,7 @@ namespace AnZwDev.ALTools.Workspace
         public List<ALAppObject> Symbols
         {
             get { return _symbols; }
-            set
+            private set
             {
                 if (_symbols != value)
                 {
@@ -40,6 +40,8 @@ namespace AnZwDev.ALTools.Workspace
                 }
             }
         }
+
+        public List<ALAppDirective> Directives { get; private set; }
 
         private bool _isDirty;
         public bool IsDirty 
@@ -93,7 +95,7 @@ namespace AnZwDev.ALTools.Workspace
         {
             if ((this.IsDirty) && (_syntaxTree != null))
             {
-                this.Symbols = this.Project.Workspace.SymbolReferenceCompiler.CreateObjectsList(this.FullPath, _syntaxTree);
+                (this.Symbols, this.Directives) = this.Project.Workspace.SymbolReferenceCompiler.CreateObjectsAndDirectivesList(this.FullPath, _syntaxTree);
                 if (cleanDirtyState)
                     this.IsDirty = false;
             }
@@ -103,7 +105,7 @@ namespace AnZwDev.ALTools.Workspace
 
         public void CompileSymbolReferences(string source)
         {
-            this.Symbols = this.Project.Workspace.SymbolReferenceCompiler.CreateObjectsList(this.FullPath, source);
+            (this.Symbols, this.Directives) = this.Project.Workspace.SymbolReferenceCompiler.CreateObjectsAndDirectivesList(this.FullPath, source);
             this.IsDirty = false;
         }
 
@@ -171,6 +173,7 @@ namespace AnZwDev.ALTools.Workspace
         {
             this.IsDirty = false;
             this.Symbols = null;
+            this.Directives = null;
         }
 
         public void OnRename(string newRelativePath)

@@ -19,7 +19,7 @@ namespace AnZwDev.ALTools.CodeCompletion
         private static string _variableNamesName = "VariableNames";
         private static string _tempPrefix = "Temp";
 
-        public VariableNamesCompletionProvider(bool includeDataType) : base(includeDataType ? _variableNamesWithTypeName : _variableNamesName)
+        public VariableNamesCompletionProvider(ALDevToolsServer server, bool includeDataType) : base(server, includeDataType ? _variableNamesWithTypeName : _variableNamesName)
         {
             IncludeDataType = includeDataType;
         }

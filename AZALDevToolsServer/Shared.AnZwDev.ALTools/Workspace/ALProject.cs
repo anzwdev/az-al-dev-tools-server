@@ -24,6 +24,7 @@ namespace AnZwDev.ALTools.Workspace
         public ALProjectFilesCollection Files { get; }
         public string RootPath { get; set; }
         public string PackageCachePath { get; private set; }
+        public List<string> CodeAnalyzers { get; private set; }
 
         private ALProjectProperties _properties;
         public ALProjectProperties Properties 
@@ -314,6 +315,7 @@ namespace AnZwDev.ALTools.Workspace
                 this.PackageCachePath = newALPackagesPath;
                 this.ResolveDependencies();
             }
+            this.CodeAnalyzers = projectSource.codeAnalyzers;
         }
 
         public void OnDocumentOpen(string path)

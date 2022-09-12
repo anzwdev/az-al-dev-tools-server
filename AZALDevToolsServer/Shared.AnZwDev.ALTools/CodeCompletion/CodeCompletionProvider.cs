@@ -12,9 +12,12 @@ namespace AnZwDev.ALTools.CodeCompletion
     {
 
         public string Name { get; }
-        public CodeCompletionProvider(string name)
+        public ALDevToolsServer Server { get; }
+
+        public CodeCompletionProvider(ALDevToolsServer server, string name)
         {
             Name = name;
+            Server = server;
         }
 
         public virtual void CollectCompletionItems(ALProject project, SyntaxTree syntaxTree, SyntaxNode syntaxNode, int position, List<CodeCompletionItem> completionItems)

@@ -13,13 +13,17 @@ namespace AnZwDev.ALTools.CodeCompletion
     public class CodeCompletionProvidersCollection
     {
 
+        public ALDevToolsServer Server { get; }
+
         private Dictionary<string, CodeCompletionProvider> _completionProviders = new Dictionary<string, CodeCompletionProvider>();
 
-        public CodeCompletionProvidersCollection()
+        public CodeCompletionProvidersCollection(ALDevToolsServer server)
         {
-            this.Add(new VariableNamesCompletionProvider(true));
-            this.Add(new VariableNamesCompletionProvider(false));
-            this.Add(new VariableDataTypesCompletionProvider());
+            this.Server = server;
+
+            this.Add(new VariableNamesCompletionProvider(Server, true));
+            this.Add(new VariableNamesCompletionProvider(Server, false));
+            this.Add(new VariableDataTypesCompletionProvider(Server));
         }
 
         private void Add(CodeCompletionProvider provider)

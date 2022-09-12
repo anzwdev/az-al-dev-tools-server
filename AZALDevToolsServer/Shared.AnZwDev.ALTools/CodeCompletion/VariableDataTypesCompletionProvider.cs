@@ -14,7 +14,7 @@ namespace AnZwDev.ALTools.CodeCompletion
     public class VariableDataTypesCompletionProvider : CodeCompletionProvider
     {
 
-        public VariableDataTypesCompletionProvider() : base("VariableDataTypes")
+        public VariableDataTypesCompletionProvider(ALDevToolsServer server) : base(server, "VariableDataTypes")
         {
         }
 

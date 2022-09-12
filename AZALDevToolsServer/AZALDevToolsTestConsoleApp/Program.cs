@@ -59,7 +59,7 @@ namespace AZALDevToolsTestConsoleApp
             //test project
             ALProjectSource[] projects =
             {
-                new ALProjectSource("C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject", null)
+                new ALProjectSource("C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject", null, null)
                 //"C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18"                
             };
             host.ALDevToolsServer.Workspace.LoadProjects(projects);

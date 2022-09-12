@@ -22,10 +22,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\SystemPartCaseInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppAccessMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppBaseSymbolsLibrarySource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppDirective.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppObjectIdMap.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppObjectsCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppPermissionSet.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppPermissionSetExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppPragmaWarningDirective.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppReportExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppRequestPageExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppSymbolsLibrarySource.cs" />
@@ -154,6 +156,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)CodeCompletion\CodeCompletionProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeCompletion\CodeCompletionProvidersCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeCompletion\CompletionItemKind.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeCompletion\DirectiveCompletionProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeCompletion\VariableDataTypesCompletionProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeCompletion\VariableNamesCompletionProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\AddObjectsPermissionsSyntaxRewriter.cs" />
@@ -345,6 +348,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\TableFieldInformaton.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\TableInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\TableInformationProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\WarningDirectiveInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\WarningDirectiveInfoKind.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\WarningDirectivesInformationProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\XmlPortInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\XmlPortInformationProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\XmlPortTableElementInformation.cs" />
