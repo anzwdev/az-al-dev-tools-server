@@ -96,7 +96,8 @@ namespace AnZwDev.ALTools.CodeTransformations
                 //get caption from control name
                 else if (String.IsNullOrWhiteSpace(caption))
                 {
-                    caption = node.GetNameStringValue().RemovePrefixSuffix(this.Project.MandatoryPrefixes, this.Project.MandatorySuffixes, this.Project.MandatoryAffixes);
+                    caption = node.GetNameStringValue().RemovePrefixSuffix(
+                        this.Project.MandatoryPrefixes, this.Project.MandatorySuffixes, this.Project.MandatoryAffixes, this.Project.AdditionalMandatoryAffixesPatterns);
                     comment = null;
                 }
 

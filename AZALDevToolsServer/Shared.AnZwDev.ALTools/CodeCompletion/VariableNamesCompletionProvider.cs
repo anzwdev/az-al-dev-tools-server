@@ -181,8 +181,8 @@ namespace AnZwDev.ALTools.CodeCompletion
         {
             foreach (var type in typesCollection)
             {
-                var varName = ALSyntaxHelper.ObjectNameToVariableNamePart(type.Name)
-                    .RemovePrefixSuffix(project.MandatoryPrefixes, project.MandatorySuffixes, project.MandatoryAffixes);
+                var varName = ALSyntaxHelper.ObjectNameToVariableNamePart(
+                    type.Name.RemovePrefixSuffix(project.MandatoryPrefixes, project.MandatorySuffixes, project.MandatoryAffixes, project.AdditionalMandatoryAffixesPatterns));
 
                 var addTemporary = (asTemporaryVariable) && (!varName.StartsWith(_tempPrefix, StringComparison.CurrentCultureIgnoreCase));
 

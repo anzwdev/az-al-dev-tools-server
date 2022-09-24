@@ -103,7 +103,7 @@ namespace AnZwDev.ALTools.CodeCompletion
             {
                 var varName = ALSyntaxHelper.ObjectNameToVariableNamePart(type.Name)
                     .ToLower()
-                    .RemovePrefixSuffix(project.MandatoryPrefixes, project.MandatorySuffixes, project.MandatoryAffixes);
+                    .RemovePrefixSuffix(project.MandatoryPrefixes, project.MandatorySuffixes, project.MandatoryAffixes, project.AdditionalMandatoryAffixesPatterns);
                 if (name.Contains(varName))
                 {
                     var varDataType = type.GetALSymbolKind().ToVariableTypeName() + " " + ALSyntaxHelper.EncodeName(type.Name);

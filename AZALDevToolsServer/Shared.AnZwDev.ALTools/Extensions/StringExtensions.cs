@@ -1,4 +1,5 @@
 ﻿using AnZwDev.ALTools.Core;
+using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace AnZwDev.ALTools.Extensions
         {
             string mergedText = "";
             bool textIsEmpty = true;
-            for (int i=0; i<values.Length; i++)
+            for (int i = 0; i < values.Length; i++)
             {
                 if (!String.IsNullOrWhiteSpace(values[i]))
                 {
@@ -44,7 +45,7 @@ namespace AnZwDev.ALTools.Extensions
 
         public static bool EqualsToOneOf(this string value, params string[] compValues)
         {
-            for (int i=0; i<compValues.Length; i++)
+            for (int i = 0; i < compValues.Length; i++)
             {
                 if (value.Equals(compValues[i]))
                     return true;
@@ -55,7 +56,7 @@ namespace AnZwDev.ALTools.Extensions
         public static int IndexOfFirst(this string text, int startIndex, params string[] values)
         {
             int pos = -1;
-            for (int i=0; i<values.Length; i++)
+            for (int i = 0; i < values.Length; i++)
             {
                 int partPos = text.IndexOf(values[i], startIndex);
                 if ((partPos >= 0) && ((pos < 0) || (pos > partPos)))
@@ -64,7 +65,7 @@ namespace AnZwDev.ALTools.Extensions
             return pos;
         }
 
-        public static string RemovePrefixSuffix(this string text, List<string> prefixes, List<string> suffixes, List<string> affixes)
+        public static string RemovePrefixSuffix(this string text, List<string> prefixes, List<string> suffixes, List<string> affixes, List<string> additionalAffixesPatterns)
         {
             if (text != null)
             {
@@ -79,13 +80,16 @@ namespace AnZwDev.ALTools.Extensions
                 if (found)
                     return text;
 
-                //remove first prefix/suffix
-                text = text.RemoveSuffix(affixes, out found);
+                //remove first affix
+                text = text.RemoveAffix(affixes, out found);
                 if (found)
                     return text;
-                text = text.RemovePrefix(affixes, out found);
+
+                //check additional affixes
+                text = text.RemoveAffixPattern(additionalAffixesPatterns, out found);
                 if (found)
                     return text;
+
             }
             return text;
         }
@@ -123,6 +127,104 @@ namespace AnZwDev.ALTools.Extensions
             }
             return text;
         }
+
+        public static string RemoveAffix(this string text, List<string> affixes, out bool found)
+        {
+            found = false;
+            if (affixes != null)
+            {
+                text = text.RemoveSuffix(affixes, out found);
+                if (found)
+                    return text;
+                text = text.RemovePrefix(affixes, out found);
+                if (found)
+                    return text;
+            }
+            return text;
+        }
+
+
+        public static string RemovePrefixPattern(this string text, List<string> prefixesPatterns, out bool found)
+        {
+            found = false;
+            if (prefixesPatterns != null)
+            {
+                for (int i = 0; i < prefixesPatterns.Count; i++)
+                {
+                    if ((!String.IsNullOrWhiteSpace(prefixesPatterns[i])) && (text.StartsWithPatternIgnoreCase(prefixesPatterns[i])))
+                    {
+                        found = true;
+                        return text.Substring(prefixesPatterns[i].Length).Trim();
+                    }
+                }
+            }
+            return text;
+        }
+
+        public static string RemoveSuffixPattern(this string text, List<string> suffixesPatterns, out bool found)
+        {
+            found = false;
+            if (suffixesPatterns != null)
+            {
+                for (int i = 0; i < suffixesPatterns.Count; i++)
+                {
+                    if ((!String.IsNullOrWhiteSpace(suffixesPatterns[i])) && (text.EndsWithPatternIgnoreCase(suffixesPatterns[i])))
+                    {
+                        found = true;
+                        return text.Substring(0, text.Length - suffixesPatterns[i].Length).Trim();
+                    }
+                }
+            }
+            return text;
+        }
+
+
+        public static string RemoveAffixPattern(this string text, List<string> affixesPatterns, out bool found)
+        {
+            found = false;
+            if (affixesPatterns != null)
+            {
+                text = text.RemoveSuffixPattern(affixesPatterns, out found);
+                if (found)
+                    return text;
+                text = text.RemovePrefixPattern(affixesPatterns, out found);
+                if (found)
+                    return text;
+            }
+            return text;
+        }
+
+        public static bool StartsWithPatternIgnoreCase(this string text, string pattern)
+        {
+            if ((text == null) || (pattern == null))
+                return (text == pattern);
+
+            if (text.Length < pattern.Length)
+                return false;
+            
+            for (int i = 0; i < pattern.Length; i++)
+                if (!text[i].IsPatternEqualIgnoreCase(pattern[i]))
+                    return false;
+
+            return true;
+        }
+
+        public static bool EndsWithPatternIgnoreCase(this string text, string pattern)
+        {
+            if ((text == null) || (pattern == null))
+                return (text == pattern);
+
+            if (text.Length < pattern.Length)
+                return false;
+
+            int textStartPos = text.Length - pattern.Length;
+            for (int i = 0; i < pattern.Length; i++)
+                if (!text[textStartPos + i].IsPatternEqualIgnoreCase(pattern[i]))
+                    return false;
+
+            return true;
+        }
+
 
         public static List<string> ToSingleElementList(this string text)
         {
