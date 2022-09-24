@@ -306,6 +306,30 @@ namespace AnZwDev.ALTools.ALSymbols
             return null;
         }
 
+        public static string ToVariableTypeName(this ALSymbolKind kind)
+        {
+            switch (kind)
+            {
+                case ALSymbolKind.TableObject:
+                    return "Record";
+                case ALSymbolKind.CodeunitObject:
+                    return "Codeunit";
+                case ALSymbolKind.PageObject:
+                    return "Page";
+                case ALSymbolKind.ReportObject:
+                    return "Report";
+                case ALSymbolKind.QueryObject:
+                    return "Query";
+                case ALSymbolKind.XmlPortObject:
+                    return "XmlPort";
+                case ALSymbolKind.EnumType:
+                    return "Enum";
+                case ALSymbolKind.Interface:
+                    return "Interface";
+            }
+            return null;
+        }
+
         public static ALSymbolKind FromObjectTypeName(string name)
         {
             name = name.ToLower();

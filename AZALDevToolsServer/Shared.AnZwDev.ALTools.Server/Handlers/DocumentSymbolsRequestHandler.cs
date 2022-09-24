@@ -31,7 +31,10 @@ namespace AnZwDev.ALTools.Server.Handlers
                 if (String.IsNullOrWhiteSpace(parameters.source))
                     response.root = symbolTreeBuilder.ProcessSourceFile(parameters.path);
                 else
-                    response.root = symbolTreeBuilder.ProcessSourceCode(parameters.source);
+                {
+                    response.root = symbolTreeBuilder.ProcessSourceCodeAndUpdateActiveDocument(
+                        parameters.path, parameters.source, Server.Workspace, parameters.isActiveDocument);
+                }
             }
             catch (Exception e)
             {

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Xml.Linq;
 using AnZwDev.ALTools.ALSymbolReferences;
 using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.ALSymbols.Internal;
 using AnZwDev.ALTools.Extensions;
+using AnZwDev.ALTools.WorkspaceCommands;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 
@@ -15,6 +17,17 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Compiler
 
         public ALSymbolReferenceCompiler()
         {
+        }
+
+        public (List<ALAppObject>, List<ALAppDirective>) CreateObjectsAndDirectivesList(string sourcePath, string source)
+        {
+            return CreateObjectsAndDirectivesList(sourcePath, SyntaxTree.ParseObjectText(source));
+        }
+
+        public (List<ALAppObject>, List<ALAppDirective>) CreateObjectsAndDirectivesList(string sourcePath, SyntaxTree syntaxTree)
+        {
+            return (CreateObjectsList(sourcePath, syntaxTree),
+                CreateDirectivesList(syntaxTree));
         }
 
         public List<ALAppObject> CreateObjectsList(string sourcePath, string source)
@@ -40,9 +53,68 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Compiler
             return null;
         }
 
-        #region Process syntax nodes
+        #region Process directives
 
-        protected void ProcessSyntaxNodesList(IEnumerable<SyntaxNode> nodesList, List<ALAppObject> alObjectsList)
+        private List<ALAppDirective> CreateDirectivesList(SyntaxTree syntaxTree)
+        {
+#if BC
+            var node = syntaxTree.GetRoot();
+            var directiveSyntax = node?.GetFirstDirective();
+            if (directiveSyntax != null)
+            {
+                List<ALAppDirective> alDirectivesList = new List<ALAppDirective>();
+                while (directiveSyntax != null)
+                {
+                    var alDirective = CreateALAppDirective(syntaxTree, directiveSyntax);
+                    if (alDirective != null)
+                        alDirectivesList.Add(alDirective);
+                    directiveSyntax = directiveSyntax.GetNextDirective();
+                }
+                return alDirectivesList;
+            }
+#endif
+            return null;
+        }
+
+#if BC
+
+        private ALAppDirective CreateALAppDirective(SyntaxTree syntaxTree, DirectiveTriviaSyntax directiveSyntax)
+        {
+            switch (directiveSyntax)
+            {
+                case PragmaWarningDirectiveTriviaSyntax pragmaWarningDirectiveTriviaSyntax:
+                    return new ALAppPragmaWarningDirective(
+                        new Range(syntaxTree.GetLineSpan(directiveSyntax.FullSpan)),
+                        pragmaWarningDirectiveTriviaSyntax.DisableOrRestoreKeyword.Kind.ConvertToLocalType() == ConvertedSyntaxKind.DisableKeyword,
+                        GetRulesIds(pragmaWarningDirectiveTriviaSyntax.ErrorCodes));
+                case PragmaImplicitWithDirectiveTriviaSyntax pragmaImplicitWithDirectiveTriviaSyntax:
+                    break;
+            }
+            return null;
+        }
+
+        private List<string> GetRulesIds(SeparatedSyntaxList<CodeExpressionSyntax> errorCodes)
+        {
+            if ((errorCodes == null) || (errorCodes.Count == 0))
+                return null;
+            List<string> rules = new List<string>();
+            for (int i=0; i<errorCodes.Count; i++)
+            {
+                string code = errorCodes[i].ToString();
+                if (!String.IsNullOrWhiteSpace(code))
+                    rules.Add(code);
+            }
+            return rules;
+        }
+
+#endif
+
+#endregion
+
+
+#region Process syntax nodes
+
+protected void ProcessSyntaxNodesList(IEnumerable<SyntaxNode> nodesList, List<ALAppObject> alObjectsList)
         {
             if (nodesList != null)
             {

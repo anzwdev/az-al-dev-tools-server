@@ -12,6 +12,7 @@ namespace AnZwDev.ALTools.Server.Contracts
         public string source { get; set; }
         public string path { get; set; }
         public bool includeProperties { get; set; }
+        public bool isActiveDocument { get; set; }
 
     }
 }

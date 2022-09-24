@@ -20,6 +20,7 @@ namespace AnZwDev.ALTools.Workspace
         public List<ALProject> Projects { get; }
         public ALSymbolReferenceCompiler SymbolReferenceCompiler { get; }
         public AppPackagesSymbolReferencesCache SymbolReferencesCache { get; }
+        public ALWorkspaceActiveDocument ActiveDocument { get; }
 
         #endregion
 
@@ -28,6 +29,7 @@ namespace AnZwDev.ALTools.Workspace
             this.Projects = new List<ALProject>();
             this.SymbolReferenceCompiler = new ALSymbolReferenceCompiler();
             this.SymbolReferencesCache = new AppPackagesSymbolReferencesCache();
+            this.ActiveDocument = new ALWorkspaceActiveDocument(this);
         }
 
         #region Projects management
@@ -263,6 +265,17 @@ namespace AnZwDev.ALTools.Workspace
 
         #endregion
 
+        public SyntaxTree GetSyntaxTree(bool activeDocument, string source)
+        {
+            SyntaxTree syntaxTree = null;
+            if (activeDocument)
+                syntaxTree = ActiveDocument.SyntaxTree;
+
+            if ((syntaxTree == null) && (!String.IsNullOrWhiteSpace(source)))
+                syntaxTree = SyntaxTree.ParseObjectText(source);
+
+            return syntaxTree;
+        }
 
     }
 }

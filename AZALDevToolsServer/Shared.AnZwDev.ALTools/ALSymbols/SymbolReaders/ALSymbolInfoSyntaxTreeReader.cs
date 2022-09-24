@@ -1,6 +1,7 @@
 ﻿using AnZwDev.ALTools.ALSymbols.Internal;
 using AnZwDev.ALTools.Extensions;
 using AnZwDev.ALTools.Logging;
+using AnZwDev.ALTools.Workspace;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using System;
@@ -42,10 +43,18 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             }
         }
 
-        public ALSymbol ProcessSourceCode(string source)
+        public ALSymbol ProcessSourceCodeAndUpdateActiveDocument(string path, string source, ALWorkspace workspace, bool updateActiveDocument)
         {
-            SyntaxTree sourceTree = SyntaxTreeExtensions.SafeParseObjectText(source);
-            return ProcessSyntaxTree(sourceTree);
+            SyntaxTree syntaxTree = SyntaxTreeExtensions.SafeParseObjectText(source);
+            if (updateActiveDocument)
+                workspace.ActiveDocument.Update(path, syntaxTree);
+            return ProcessSyntaxTree(syntaxTree);
+        }
+
+        private ALSymbol ProcessSourceCode(string source)
+        {
+            SyntaxTree syntaxTree = SyntaxTreeExtensions.SafeParseObjectText(source);
+            return ProcessSyntaxTree(syntaxTree);
         }
 
         public ALSymbol ProcessSyntaxTree(SyntaxTree syntaxTree)

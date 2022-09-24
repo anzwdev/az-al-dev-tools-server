@@ -46,13 +46,17 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             this.RegisterCommand(new TrimTrailingWhitespaceWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new RemoveEmptyLinesWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new RemoveEmptySectionsWorkspaceCommand(this.ALDevToolsServer));
+            this.RegisterCommand(new RemoveEmptyTriggersWorkspaceCommand(this.ALDevToolsServer));
 
 #if BC            
             this.RegisterCommand(new RemoveWithWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new FixIdentifiersCaseWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new RemoveUnusedVariablesWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new AddParenthesesWorkspaceCommand(this.ALDevToolsServer));
+            this.RegisterCommand(new RemoveStrSubstNoFromErrorWorkspaceCommand(this.ALDevToolsServer));
+            this.RegisterCommand(new RemoveEventPublishersWorkspaceCommand(this.ALDevToolsServer));
 #endif
+
             this.RegisterCommand(new RemoveVariableWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new ConvertObjectIdsToNamesWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new RemoveBeginEndWorkspaceCommandd(this.ALDevToolsServer));

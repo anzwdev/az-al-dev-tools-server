@@ -97,7 +97,7 @@ namespace AnZwDev.ALTools.Extensions
             {
                 for (int i = 0; i < prefixes.Count; i++)
                 {
-                    if ((!String.IsNullOrWhiteSpace(prefixes[i])) && (text.StartsWith(prefixes[i])))
+                    if ((!String.IsNullOrWhiteSpace(prefixes[i])) && (text.StartsWith(prefixes[i], StringComparison.CurrentCultureIgnoreCase)))
                     {
                         found = true;
                         return text.Substring(prefixes[i].Length).Trim();
@@ -114,7 +114,7 @@ namespace AnZwDev.ALTools.Extensions
             {
                 for (int i = 0; i < suffixes.Count; i++)
                 {
-                    if ((!String.IsNullOrWhiteSpace(suffixes[i])) && (text.EndsWith(suffixes[i])))
+                    if ((!String.IsNullOrWhiteSpace(suffixes[i])) && (text.EndsWith(suffixes[i], StringComparison.CurrentCultureIgnoreCase)))
                     {
                         found = true;
                         return text.Substring(0, text.Length - suffixes[i].Length).Trim();

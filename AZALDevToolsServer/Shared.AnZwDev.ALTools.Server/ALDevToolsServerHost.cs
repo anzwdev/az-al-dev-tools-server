@@ -80,9 +80,15 @@ namespace AnZwDev.ALTools.Server
             this.Dispatcher.RegisterRequestHandler(new GetPermissionSetsRequestHandler(this.ALDevToolsServer, this));
             this.Dispatcher.RegisterRequestHandler(new GetReportDetailsRequestHandler(this.ALDevToolsServer, this));
             this.Dispatcher.RegisterRequestHandler(new GetDependenciesListRequestHandler(this.ALDevToolsServer, this));
+            this.Dispatcher.RegisterRequestHandler(new GetWarningDirectivesRequestHandler(this.ALDevToolsServer, this));
 
             //next available object id
             this.Dispatcher.RegisterRequestHandler(new GetNextObjectIdRequestHandler(this.ALDevToolsServer, this));
+
+            //code completion, hover, references
+            this.Dispatcher.RegisterRequestHandler(new CodeCompletionRequestHandler(this.ALDevToolsServer, this));
+            this.Dispatcher.RegisterRequestHandler(new HoverRequestHandler(this.ALDevToolsServer, this));
+            this.Dispatcher.RegisterRequestHandler(new ReferencesRequestHandler(this.ALDevToolsServer, this));
 
             //standard notification handlers
             this.Dispatcher.RegisterNotificationHandler(new ExitNotificationHandler(this));
