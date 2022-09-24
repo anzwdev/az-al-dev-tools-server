@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
-using Microsoft.Dynamics.Nav.EditorServices.Protocol;
 
 namespace AnZwDev.ALTools.Extensions
 {

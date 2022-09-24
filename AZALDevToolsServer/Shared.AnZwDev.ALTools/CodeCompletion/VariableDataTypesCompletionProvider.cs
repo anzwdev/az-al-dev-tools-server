@@ -14,6 +14,8 @@ namespace AnZwDev.ALTools.CodeCompletion
     public class VariableDataTypesCompletionProvider : CodeCompletionProvider
     {
 
+        private static string[] _commitCharacters = { ";" };
+
         public VariableDataTypesCompletionProvider(ALDevToolsServer server) : base(server, "VariableDataTypes")
         {
         }
@@ -108,6 +110,7 @@ namespace AnZwDev.ALTools.CodeCompletion
                     if ((temporaryRecordVariable) && (!varName.StartsWith("Temp", StringComparison.CurrentCultureIgnoreCase)))
                         varDataType = varDataType + " temporary";
                     var item = new CodeCompletionItem(varDataType, CompletionItemKind.Class);
+                    item.commitCharacters = _commitCharacters;
                     completionItems.Add(item);
                 }
             }

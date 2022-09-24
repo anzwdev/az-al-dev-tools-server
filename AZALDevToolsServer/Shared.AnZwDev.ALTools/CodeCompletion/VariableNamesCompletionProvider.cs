@@ -18,6 +18,7 @@ namespace AnZwDev.ALTools.CodeCompletion
         private static string _variableNamesWithTypeName = "VariableNamesWithType";
         private static string _variableNamesName = "VariableNames";
         private static string _tempPrefix = "Temp";
+        private static string[] _fullDeclarationCommitCharacters = { ";" };
 
         public VariableNamesCompletionProvider(ALDevToolsServer server, bool includeDataType) : base(server, includeDataType ? _variableNamesWithTypeName : _variableNamesName)
         {
@@ -51,7 +52,11 @@ namespace AnZwDev.ALTools.CodeCompletion
         {
             switch (syntaxNode)
             {
+#if BC
+                case VarSectionBaseSyntax varSection:
+#else
                 case VarSectionSyntax varSection:
+#endif
                     return (varSection.VarKeyword != null) && (varSection.VarKeyword.Span.End < position);
                 case BlockSyntax blockSyntax:
                     return (blockSyntax.BeginKeywordToken != null) && (blockSyntax.BeginKeywordToken.Span.Start > position);
@@ -75,9 +80,54 @@ namespace AnZwDev.ALTools.CodeCompletion
 
         private bool ValidDeclarationNode(SyntaxNode declarationSyntaxNode, IdentifierNameSyntax nameSyntaxNode, int position)
         {
+            //check if previouls variable declaration has ";"
+            if (!FirstOrClosedPrevVarDeclaration(declarationSyntaxNode))
+                return false;
             return
                 ((nameSyntaxNode == null) && (IsBeforeColonToken(declarationSyntaxNode, position))) ||
                 ((nameSyntaxNode != null) && (nameSyntaxNode.Span.Start <= position) && (nameSyntaxNode.Span.End >= position));
+        }
+
+        private bool FirstOrClosedPrevVarDeclaration(SyntaxNode declarationSyntaxNode)
+        {
+            var containerSyntax = declarationSyntaxNode.FindParentByKind(ConvertedSyntaxKind.VarSection, ConvertedSyntaxKind.GlobalVarSection);
+#if BC
+            var varSection = containerSyntax as VarSectionBaseSyntax;
+#else
+            var varSection = containerSyntax as VarSectionSyntax;
+#endif
+
+            if (varSection != null)
+            {
+                int position = declarationSyntaxNode.FullSpan.Start - 1;
+                SyntaxNode prevDeclaration = null;
+                if (varSection.Variables != null)
+                    for (int i = 0; (i < varSection.Variables.Count) && (varSection.Variables[i].FullSpan.Start <= position); i++)
+                        prevDeclaration = varSection.Variables[i];
+
+                if (prevDeclaration == null)
+                    return true;
+
+                if (ClosedVariableDeclarationSemicolon(prevDeclaration, true))
+                    return true;
+
+                return prevDeclaration.GetTrailingTrivia().HasNewLine();
+            }
+            return true;
+        }
+
+        private bool ClosedVariableDeclarationSemicolon(SyntaxNode node, bool defaultValue = false)
+        {
+            switch (node)
+            {
+                case VariableDeclarationSyntax prevVariableDeclaration:
+                    return ((prevVariableDeclaration.SemicolonToken.Kind.ConvertToLocalType() == ConvertedSyntaxKind.SemicolonToken) && (prevVariableDeclaration.SemicolonToken.Span.Length > 0));
+#if BC
+                case VariableListDeclarationSyntax prevVariableListDeclaration:
+                    return ((prevVariableListDeclaration.SemicolonToken.Kind.ConvertToLocalType() == ConvertedSyntaxKind.SemicolonToken) && (prevVariableListDeclaration.SemicolonToken.Span.Length > 0));
+#endif
+            }
+            return defaultValue;
         }
 
         private ParameterSyntax FindParameterSyntax(ParameterListSyntax parameterList, int position)
@@ -149,6 +199,8 @@ namespace AnZwDev.ALTools.CodeCompletion
                 }
                 var item = new CodeCompletionItem(source, CompletionItemKind.Field);
                 item.filterText = varName;
+                if (IncludeDataType)
+                    item.commitCharacters = _fullDeclarationCommitCharacters;
                 completionItems.Add(item);
             }
         }
