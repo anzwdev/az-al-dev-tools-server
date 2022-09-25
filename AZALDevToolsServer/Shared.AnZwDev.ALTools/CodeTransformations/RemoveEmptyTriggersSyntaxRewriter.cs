@@ -24,6 +24,13 @@ namespace AnZwDev.ALTools.CodeTransformations
             if (RemoveTriggers && IsEmptyMethod(node))
             {
                 NoOfChanges++;
+
+                var mergedList = new DirectiveTriviaMergedList();
+                mergedList.AddRange(node.GetLeadingTrivia());
+                mergedList.AddRange(node.GetTrailingTrivia());
+                if (mergedList.List.Count > 0)
+                    return SyntaxFactory.EmptyStatement().WithLeadingTrivia(mergedList.List);
+
                 return null;
             }
             return base.VisitTriggerDeclaration(node);
@@ -43,9 +50,10 @@ namespace AnZwDev.ALTools.CodeTransformations
         {
             bool hasTrivia = IgnoreComments ? BodyHasDirectives(syntax) : BodyHasNonEmptyTrivia(syntax);
             bool hasStatements = (syntax.Body?.Statements != null) && (syntax.Body.Statements.Count > 0);
+            bool hasDirectivesOutside = syntax.GetLeadingTrivia().ContainsDirectives() || syntax.GetTrailingTrivia().ContainsDirectives();
 
             return
-                (!hasTrivia) && (!hasStatements);
+                (!hasTrivia) && (!hasStatements) && (!hasDirectivesOutside);
         }
 
         private bool BodyHasNonEmptyTrivia(MethodOrTriggerDeclarationSyntax syntax)

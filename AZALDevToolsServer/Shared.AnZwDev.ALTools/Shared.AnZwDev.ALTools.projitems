@@ -167,6 +167,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\AppAreaSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\BasePageWithSourceSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\BaseToolTipsSyntaxRewriter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\DirectiveTriviaMergedList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\FixTextOverflowAssignmentSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\RefreshToolTipsSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\RemoveBeginEndSyntaxRewriter.cs" />
