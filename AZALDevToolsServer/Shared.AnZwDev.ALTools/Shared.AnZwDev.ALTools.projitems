@@ -132,6 +132,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\Internal\ConvertedControlKind.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\Internal\ConvertedMethodKind.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\Internal\ConvertedNavTypeKind.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\Internal\ConvertedObsoleteState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\Internal\ConvertedOperationKind.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\Internal\ConvertedSymbolKind.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\Internal\ConvertedSyntaxKind.cs" />

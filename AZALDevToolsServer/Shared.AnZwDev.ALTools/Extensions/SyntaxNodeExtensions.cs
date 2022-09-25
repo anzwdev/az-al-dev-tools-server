@@ -5,8 +5,8 @@ using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Text;
+using System.Linq;
 
 namespace AnZwDev.ALTools.Extensions
 {
@@ -185,6 +185,52 @@ namespace AnZwDev.ALTools.Extensions
             return null;
         }
 
+#if BC
+        public static ConvertedObsoleteState GetObsoleteState(this SyntaxNode node)
+        {
+            switch (node)
+            {
+                case MethodDeclarationSyntax methodDeclaration:
+                    if (methodDeclaration.Attributes.Any(p => (ALSyntaxHelper.DecodeName(p.Name?.ToString()?.ToLower()) == "obsolete")))
+                        return ConvertedObsoleteState.Pending;
+                    break;
+                default:
+                    var propertySyntax = node.GetProperty("ObsoleteState");
+                    if (propertySyntax != null)
+                    {
+                        var value = ALSyntaxHelper.DecodeName(propertySyntax.Value?.ToString());
+                        if ((!String.IsNullOrWhiteSpace(value)) && (Enum.TryParse<ConvertedObsoleteState>(value, true, out var state)))
+                            return state;
+                    }
+                    break;
+            }
+
+            return ConvertedObsoleteState.None;     
+        }
+
+        public static bool IsInsideObsoleteSyntaxTreeBranch(this SyntaxNode node, ConvertedObsoleteState level)
+        {
+            if (level == ConvertedObsoleteState.None)
+                return false;
+            while (node != null)
+            {
+                var nodeLevel = node.GetObsoleteState();
+                if (nodeLevel >= level)
+                    return true;
+                node = node.Parent;
+            }
+            return false;
+        }
+
+#else
+
+        public static bool IsInsideObsoleteSyntaxTreeBranch(this SyntaxNode node, ConvertedObsoleteState level)
+        {
+            return false;
+        }
+
+#endif
+
         #region Nav2018 helpers
 
 #if NAV2018
@@ -221,8 +267,8 @@ namespace AnZwDev.ALTools.Extensions
 
 #endif
 
-            #endregion
+        #endregion
 
 
-        }
+    }
 }
