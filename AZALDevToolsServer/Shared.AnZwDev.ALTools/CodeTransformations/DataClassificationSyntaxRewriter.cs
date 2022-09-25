@@ -62,6 +62,17 @@ namespace AnZwDev.ALTools.CodeTransformations
                         return node.ReplaceNode(propertySyntax, this.CreateDataClassificationProperty(node));
                     }
                 }
+            } 
+            else
+            {
+                PropertySyntax propertySyntax = node.GetProperty("DataClassification");
+                if (propertySyntax != null)
+                {
+                    NoOfChanges++;
+                    return node.WithPropertyList(
+                        node.PropertyList.WithProperties(
+                            node.PropertyList.Properties.Remove(propertySyntax)));
+                }
             }
             return base.VisitField(node);
         }
