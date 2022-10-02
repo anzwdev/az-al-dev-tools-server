@@ -339,5 +339,12 @@ namespace AnZwDev.ALTools.Extensions
             return ((value != null) && (value.Equals("true", StringComparison.CurrentCultureIgnoreCase)));
         }
 
+        public static T ToEnum<T>(this string value) where T : struct
+        {
+            if (Enum.TryParse<T>(value, true, out T result))
+                return result;
+            return default(T);
+        }
+
     }
 }
