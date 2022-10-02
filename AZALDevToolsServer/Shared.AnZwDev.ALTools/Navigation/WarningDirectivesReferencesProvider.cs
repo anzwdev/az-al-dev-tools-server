@@ -11,6 +11,8 @@ using System.Text;
 
 namespace AnZwDev.ALTools.Navigation
 {
+
+#if BC
     public class WarningDirectivesReferencesProvider : ReferencesProvider
     {
 
@@ -67,4 +69,5 @@ namespace AnZwDev.ALTools.Navigation
         }
 
     }
+#endif
 }

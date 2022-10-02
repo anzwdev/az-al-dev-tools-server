@@ -138,7 +138,8 @@ namespace AnZwDev.ALTools.CodeTransformations
                 }
 
                 if ((String.IsNullOrWhiteSpace(caption)) && (fieldName != null))
-                    caption = fieldName.Replace("\"", "").RemovePrefixSuffix(this.Project.MandatoryPrefixes, this.Project.MandatorySuffixes, this.Project.MandatoryAffixes);
+                    caption = fieldName.Replace("\"", "").RemovePrefixSuffix(
+                        this.Project.MandatoryPrefixes, this.Project.MandatorySuffixes, this.Project.MandatoryAffixes, this.Project.AdditionalMandatoryAffixesPatterns);
             }
             return new TableFieldCaptionInfo(new LabelInformation("Caption", caption), description, null);
         }

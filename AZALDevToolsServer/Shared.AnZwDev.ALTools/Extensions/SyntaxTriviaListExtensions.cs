@@ -97,6 +97,19 @@ namespace AnZwDev.ALTools.Extensions
             return true;
         }
 
+        public static bool HasNewLine(this IEnumerable<SyntaxTrivia> triviaList)
+        {
+            if (triviaList == null)
+                return false;
+            foreach (SyntaxTrivia trivia in triviaList)
+            {
+                if (trivia.Kind.ConvertToLocalType() == ConvertedSyntaxKind.EndOfLineTrivia)
+                    return true;
+            }
+            return false;
+        }
+
+
         public static bool ContainsDirectives(this IEnumerable<SyntaxTrivia> triviaList)
         {
             if (triviaList == null)

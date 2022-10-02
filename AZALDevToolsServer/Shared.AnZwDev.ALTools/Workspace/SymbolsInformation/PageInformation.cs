@@ -9,6 +9,9 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
     public class PageInformation : TableBasedSymbolWithIdInformation
     {
 
+        [JsonProperty("applicationArea")]
+        public string ApplicationArea { get; set; }
+
         public PageInformation()
         {
         }
@@ -19,6 +22,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             {
                 this.Caption = page.Properties.GetValue("Caption");
                 this.Source = page.Properties.GetValue("SourceTable");
+                this.ApplicationArea = page.Properties.GetValue("ApplicationArea");
             }
         }
 

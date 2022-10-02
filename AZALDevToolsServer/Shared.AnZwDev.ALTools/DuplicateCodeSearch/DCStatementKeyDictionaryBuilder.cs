@@ -14,10 +14,12 @@ namespace AnZwDev.ALTools.DuplicateCodeSearch
     {
 
         protected string _sourceFilePath;
+        public ConvertedObsoleteState SkipObsoleteCodeLevel { get; }
         public DCStatementKeyDictionary StatementsDictionary { get; } = new DCStatementKeyDictionary();
 
-        public DCStatementKeyDictionaryBuilder()
+        public DCStatementKeyDictionaryBuilder(ConvertedObsoleteState skipObsoleteCodeLevel)
         {
+            SkipObsoleteCodeLevel = skipObsoleteCodeLevel;
         }
 
         public void VisitProjectFolder(string filePath)
@@ -48,7 +50,7 @@ namespace AnZwDev.ALTools.DuplicateCodeSearch
 
         protected void VisitMethodOrTriggerDeclaration(MethodOrTriggerDeclarationSyntax node, DCCodeBlockType codeBlockType)
         {
-            if (node.Body != null)
+            if ((ValidNode(node)) && (node.Body != null))
             {
                 DCStatementsBlock statementsBlock = new DCStatementsBlock(_sourceFilePath, codeBlockType);
                 AppendMethodOrTriggerHeader(node, statementsBlock);
@@ -309,6 +311,13 @@ namespace AnZwDev.ALTools.DuplicateCodeSearch
             DCStatementInstance statementInstance = new DCStatementInstance(statementsBlock, key, range, statementsBlock.Statements.Count);
             statementsBlock.Statements.Add(statementInstance);
             key.StatementInstances.Add(statementInstance);
+        }
+
+        private bool ValidNode(SyntaxNode node)
+        {
+            return
+                (SkipObsoleteCodeLevel == ConvertedObsoleteState.None) ||
+                (!node.IsInsideObsoleteSyntaxTreeBranch(SkipObsoleteCodeLevel));
         }
 
     }

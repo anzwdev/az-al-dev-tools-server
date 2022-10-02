@@ -40,7 +40,7 @@ namespace AnZwDev.ALTools.Workspace
         public List<string> MandatoryPrefixes { get; set; }
         public List<string> MandatorySuffixes { get; set; }
         public List<string> MandatoryAffixes { get; set; }
-
+        public List<string> AdditionalMandatoryAffixesPatterns { get; set; }
         public ALProjectDependenciesCollection Dependencies { get; }
         
         /// <summary>
@@ -69,6 +69,8 @@ namespace AnZwDev.ALTools.Workspace
                 this.PackageCachePath = projectSource.packageCachePath;
             else
                 this.PackageCachePath = ".alpackages";
+            this.CodeAnalyzers = projectSource?.codeAnalyzers;
+            this.AdditionalMandatoryAffixesPatterns = projectSource?.additionalMandatoryAffixesPatterns;
             this.MandatoryPrefixes = null;
             this.MandatorySuffixes = null;
             this.Workspace = workspace;
@@ -316,6 +318,7 @@ namespace AnZwDev.ALTools.Workspace
                 this.ResolveDependencies();
             }
             this.CodeAnalyzers = projectSource.codeAnalyzers;
+            this.AdditionalMandatoryAffixesPatterns = projectSource.additionalMandatoryAffixesPatterns;
         }
 
         public void OnDocumentOpen(string path)

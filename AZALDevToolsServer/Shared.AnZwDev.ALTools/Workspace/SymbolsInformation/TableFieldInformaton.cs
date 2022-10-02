@@ -60,7 +60,8 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             {
                 string caption = this.Name;
                 if (project != null)
-                    caption = caption.RemovePrefixSuffix(project.MandatoryPrefixes, project.MandatorySuffixes, project.MandatoryAffixes);
+                    caption = caption.RemovePrefixSuffix(
+                        project.MandatoryPrefixes, project.MandatorySuffixes, project.MandatoryAffixes, project.AdditionalMandatoryAffixesPatterns);
                 this.Caption = caption;
                 this.CaptionLabel.SetValue(this.Caption);
             }

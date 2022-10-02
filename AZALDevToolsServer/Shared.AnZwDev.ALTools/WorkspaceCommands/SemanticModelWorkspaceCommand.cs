@@ -69,11 +69,16 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             string projectFile = Path.Combine(projectPath, "app.json");
             ProjectManifest manifest = ProjectManifest.ReadFromString(projectFile, FileUtils.SafeReadAllText(projectFile), diagnostics);
 
+            //initialize compilation options
+            var compilationOptions = new CompilationOptions(
+                target: manifest.AppManifest.Target,
+                compilerFeatures: manifest.AppManifest.CompilerFeatures);
+
             //create compilation
             Compilation compilation = Compilation.Create("MyCompilation", manifest.AppManifest.AppPublisher,
                 manifest.AppManifest.AppVersion, manifest.AppManifest.AppId,
                 null, syntaxTrees,
-                new CompilationOptions());
+                compilationOptions);
 
             LocalCacheSymbolReferenceLoader referenceLoader =
                 this.SafeCreateLocalCacheSymbolReferenceLoader(Path.Combine(projectPath, alPackagesPath));

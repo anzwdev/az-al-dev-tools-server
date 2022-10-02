@@ -1,4 +1,5 @@
 ﻿using AnZwDev.ALTools.ALSymbols;
+using AnZwDev.ALTools.ALSymbols.Internal;
 using AnZwDev.ALTools.Workspace;
 using System;
 using System.Collections.Generic;
@@ -11,17 +12,19 @@ namespace AnZwDev.ALTools.DuplicateCodeSearch
     {
 
         public int MinNoOfStatements { get; }
+        public ConvertedObsoleteState SkipObsoleteCodeLevel { get; }
 
-        public DCDuplicateCodeAnalyzer(int minNoOfStatements)
+        public DCDuplicateCodeAnalyzer(int minNoOfStatements, ConvertedObsoleteState skipObsoleteCodeLevel)
         {
             if (minNoOfStatements < 2)
                 minNoOfStatements = 2;
             this.MinNoOfStatements = minNoOfStatements;
+            this.SkipObsoleteCodeLevel = skipObsoleteCodeLevel;
         }
 
         public List<DCDuplicate> FindDuplicates(ALWorkspace workspace, string path)
         {
-            DCStatementKeyDictionaryBuilder statementsBuilder = new DCStatementKeyDictionaryBuilder();
+            DCStatementKeyDictionaryBuilder statementsBuilder = new DCStatementKeyDictionaryBuilder(SkipObsoleteCodeLevel);
 
             ALProject singleProject = null;
             if (!String.IsNullOrWhiteSpace(path))

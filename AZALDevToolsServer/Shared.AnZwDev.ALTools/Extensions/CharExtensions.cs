@@ -12,5 +12,15 @@ namespace AnZwDev.ALTools.Extensions
             return (character == '\n') || (character == '\r');
         }
 
+        public static bool IsPatternEqualIgnoreCase(this char character, char patternCharacter)
+        {
+            return (patternCharacter == '?') || (Char.ToUpper(character) == Char.ToUpper(patternCharacter));
+        }
+
+        public static bool IsPatternEqual(this char character, char patternCharacter)
+        {
+            return (patternCharacter == '?') || (character == patternCharacter);
+        }
+
     }
 }

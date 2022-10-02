@@ -39,6 +39,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             this.RegisterCommand(new AddFieldCaptionsWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new LockRemovedFieldsCaptionsWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new AddObjectCaptionsWorkspaceCommand(this.ALDevToolsServer));
+            this.RegisterCommand(new MakeFlowFieldsReadOnlyWorkspaceCommand(this.ALDevToolsServer));
 
             this.RegisterCommand(new FixKeywordsCaseWorkspaceCommand(this.ALDevToolsServer));
 
@@ -55,6 +56,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             this.RegisterCommand(new AddParenthesesWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new RemoveStrSubstNoFromErrorWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new RemoveEventPublishersWorkspaceCommand(this.ALDevToolsServer));
+            this.RegisterCommand(new RemoveRedundantAppAreasWorkspaceCommand(this.ALDevToolsServer));
 #endif
 
             this.RegisterCommand(new RemoveVariableWorkspaceCommand(this.ALDevToolsServer));

@@ -1,5 +1,6 @@
 ﻿using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.CodeTransformations;
+using AnZwDev.ALTools.Extensions;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
     {
 
         public static string AppAreaParameterName = "appArea";
+        public static string AppAreaModeParameterName = "appAreaMode";
 
         public AddAppAreasWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "addAppAreas")
         {
@@ -23,6 +25,8 @@ namespace AnZwDev.ALTools.WorkspaceCommands
                 this.SyntaxRewriter.ApplicationAreaName = parameters[AppAreaParameterName];
             if (String.IsNullOrWhiteSpace(this.SyntaxRewriter.ApplicationAreaName))
                 this.SyntaxRewriter.ApplicationAreaName = "All";
+            if (parameters.ContainsKey(AppAreaModeParameterName))
+                this.SyntaxRewriter.ApplicationAreaMode = parameters[AppAreaModeParameterName].ToEnum<AppAreaMode>();
         }
 
     }
