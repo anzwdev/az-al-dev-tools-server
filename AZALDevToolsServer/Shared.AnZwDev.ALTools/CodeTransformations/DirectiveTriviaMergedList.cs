@@ -3,6 +3,7 @@ using AnZwDev.ALTools.Extensions;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 
 namespace AnZwDev.ALTools.CodeTransformations
@@ -11,11 +12,41 @@ namespace AnZwDev.ALTools.CodeTransformations
     {
 
         public List<SyntaxTrivia> List { get; }
-        private bool _addNewLine = false;
+        private bool _addNewLine = true;
 
         public DirectiveTriviaMergedList()
         {
             List = new List<SyntaxTrivia>();
+        }
+
+        public void Clear()
+        {
+            List.Clear();
+            _addNewLine = true;
+        }
+
+        public void AddAllExceptClosingRegions(IEnumerable<SyntaxTrivia> collection)
+        {
+            bool regionTriviaAdded = false;
+            foreach (var trivia in collection)
+            {
+                var kind = trivia.Kind.ConvertToLocalType();
+                var canAdd = true;
+                
+                switch (kind)
+                {
+                    case ConvertedSyntaxKind.RegionDirectiveTrivia:
+                        regionTriviaAdded = true;
+                        break;
+                    case ConvertedSyntaxKind.EndRegionDirectiveTrivia:
+                        if (!regionTriviaAdded)
+                            canAdd = !RemoveLastRegion();
+                        break;
+                }
+
+                if (canAdd)
+                    List.Add(trivia);
+            }
         }
 
         public void AddRange(IEnumerable<SyntaxTrivia> collection)
@@ -61,12 +92,25 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         private bool RemoveLastRegion()
         {
-            for (int i=List.Count - 1; i>=0; i++)
-                if (List[i].Kind.ConvertToLocalType() == ConvertedSyntaxKind.RegionDirectiveTrivia)
+            for (int i = List.Count - 1; i>=0; i--)
+            {
+                var kind = List[i].Kind.ConvertToLocalType();
+                switch (kind)
                 {
-                    List.RemoveAt(i);
-                    return true;
+                    case ConvertedSyntaxKind.RegionDirectiveTrivia:
+                        var lastValidIndex = i - 1;
+                        while ((lastValidIndex >= 0) && (List[lastValidIndex].Kind.ConvertToLocalType() != ConvertedSyntaxKind.EndOfLineTrivia))
+                            lastValidIndex--;
+                        lastValidIndex++;
+                        List.RemoveRange(lastValidIndex, List.Count - lastValidIndex);
+                        return true;
+                    case ConvertedSyntaxKind.WhiteSpaceTrivia:
+                    case ConvertedSyntaxKind.EndOfLineTrivia:
+                        break;
+                    default:
+                        return false;
                 }
+            }
             return false;
         }
 
