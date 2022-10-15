@@ -24,6 +24,7 @@ namespace AnZwDev.ALTools.CodeTransformations
         private string _pageAppArea = null;
         private string _pageMembersAppArea = null;
         private PageMembersAppAreaState _pageMembersAppAreaState = PageMembersAppAreaState.NotChecked;
+        private bool _pageAppAreaProcessingActive = false;
 
         public RemoveRedundandAppAreasSyntaxRewriter()
         {
@@ -38,9 +39,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         public override SyntaxNode VisitPage(PageSyntax node)
         {
-            _pageAppArea = GetApplicationAreaValue(node);
-            _pageMembersAppArea = null;
-            _pageMembersAppAreaState = PageMembersAppAreaState.NotChecked;
+            InitProcessingVariables(node);
 
             var newNode = base.VisitPage(node);
 
@@ -52,10 +51,50 @@ namespace AnZwDev.ALTools.CodeTransformations
                 _pageAppArea = _pageMembersAppArea;
 
                 //run processing again to remove redundant application areas
-                return base.VisitPage(node);
+                newNode = base.VisitPage(node);
             }
 
+            ClearProcessingVariables();
+
             return newNode;
+        }
+
+        public override SyntaxNode VisitReport(ReportSyntax node)
+        {
+            InitProcessingVariables(node);
+
+            var newNode = base.VisitReport(node);
+
+            node = newNode as ReportSyntax;
+            if ((node != null) && (String.IsNullOrWhiteSpace(_pageAppArea)) && (!String.IsNullOrWhiteSpace(_pageMembersAppArea)) && (_pageMembersAppAreaState == PageMembersAppAreaState.Equal))
+            {
+                NoOfChanges++;
+                node = node.AddPropertyListProperties(this.CreateApplicationAreaProperty(node, _pageMembersAppArea));
+                _pageAppArea = _pageMembersAppArea;
+
+                //run processing again to remove redundant application areas
+                newNode = base.VisitReport(node);
+            }
+
+            ClearProcessingVariables();
+
+            return newNode;
+        }
+
+        private void InitProcessingVariables(SyntaxNode node)
+        {
+            _pageAppArea = GetApplicationAreaValue(node);
+            _pageMembersAppArea = null;
+            _pageMembersAppAreaState = PageMembersAppAreaState.NotChecked;
+            _pageAppAreaProcessingActive = true;
+        }
+
+        private void ClearProcessingVariables()
+        {
+            _pageAppArea = null;
+            _pageMembersAppArea = null;
+            _pageMembersAppAreaState = PageMembersAppAreaState.NotChecked;
+            _pageAppAreaProcessingActive = false;
         }
 
         public override SyntaxNode VisitPageLabel(PageLabelSyntax node)
@@ -118,13 +157,16 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         private (PropertyListSyntax, bool) CheckAndRemovePageMemberAppArea(SyntaxNode node, PropertyListSyntax propertyList)
         {
-            PropertySyntax appAreaProperty = node.GetProperty("ApplicationArea");
-            string memberAppArea = ALSyntaxHelper.DecodeName(appAreaProperty?.Value?.ToString());
+            if (_pageAppAreaProcessingActive)
+            {
+                PropertySyntax appAreaProperty = node.GetProperty("ApplicationArea");
+                string memberAppArea = ALSyntaxHelper.DecodeName(appAreaProperty?.Value?.ToString());
 
-            CheckIfMemberAppAreasAreTheSame(memberAppArea);
+                CheckIfMemberAppAreasAreTheSame(memberAppArea);
 
-            if (ShouldRemoveAppArea(memberAppArea))
-                return (RemoveProperty(propertyList, appAreaProperty), true);
+                if (ShouldRemoveAppArea(memberAppArea))
+                    return (RemoveProperty(propertyList, appAreaProperty), true);
+            }
 
             return (propertyList, false);
         }
