@@ -90,6 +90,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\IALAppObjectExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\IReadOnlyALAppObjectsCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\MergedReferences\ALAppObjectWithExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\MergedReferences\ISymbolReferencesList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\MergedReferences\MergedALAppObjectExtensionsCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\MergedReferences\MergedALAppObjectsCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\MergedReferences\MergedALAppSymbolReference.cs" />

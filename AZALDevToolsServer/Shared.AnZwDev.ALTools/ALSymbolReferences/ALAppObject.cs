@@ -54,6 +54,18 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return ALAppAccessMode.Public;
         }
 
+        public bool IsInternal()
+        {
+            if (this.Properties != null)
+            {
+                var internalProperty = this.Properties
+                    .Where(p => ((p.Name != null) && (p.Name.Equals("Access", StringComparison.CurrentCultureIgnoreCase))))
+                    .FirstOrDefault();
+                if (internalProperty != null)
+                    return ((internalProperty.Value != null) && (internalProperty.Value.Equals("Internal", StringComparison.CurrentCultureIgnoreCase)));
+            }
+            return false;
+        }
 
     }
 }

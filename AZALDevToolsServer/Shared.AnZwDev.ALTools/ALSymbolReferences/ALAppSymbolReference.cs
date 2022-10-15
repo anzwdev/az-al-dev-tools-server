@@ -569,6 +569,22 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return this.Publisher.NotNull() + " - " + this.Name.NotNull();
         }
 
+        public bool InternalsVisibleToApp(string appId)
+        {
+            if (String.IsNullOrWhiteSpace(appId))
+                return true;
+            appId = appId.Trim();
+            if (appId.Equals(this.AppId, StringComparison.CurrentCultureIgnoreCase))
+                return true;
+
+            //check InternalsVisibleTo setting
+
+
+
+            return false;
+
+        }
+
 
     }
 }
