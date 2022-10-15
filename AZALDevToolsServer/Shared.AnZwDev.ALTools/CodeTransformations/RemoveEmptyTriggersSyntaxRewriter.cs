@@ -422,7 +422,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                 case TriggerDeclarationSyntax triggerSyntax:
                     return (RemoveTriggers && IsEmptyMethod(triggerSyntax));
                 case MethodDeclarationSyntax methodSyntax:
-                    return (RemoveSubscribers && IsEmptyMethod(methodSyntax) && IsEventSubscriber(methodSyntax));
+                    return (RemoveSubscribers && IsEmptyMethod(methodSyntax) && (methodSyntax.IsEventSubscriber()));
             }
             return base.CanRemoveMember(node);
         }
@@ -435,13 +435,6 @@ namespace AnZwDev.ALTools.CodeTransformations
 
             return
                 (!hasTrivia) && (!hasStatements);// && (!hasDirectivesOutside);
-        }
-
-        private bool IsEventSubscriber(MethodDeclarationSyntax syntax)
-        {
-            return
-                (syntax.Attributes != null) &&
-                (syntax.Attributes.Where(p => (p.Name != null) && (p.Name.ToString().Equals("EventSubscriber", StringComparison.CurrentCultureIgnoreCase))).Any());
         }
 
     }

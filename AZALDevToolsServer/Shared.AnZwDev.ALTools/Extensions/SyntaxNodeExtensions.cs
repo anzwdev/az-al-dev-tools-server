@@ -287,6 +287,14 @@ namespace AnZwDev.ALTools.Extensions
             return null;
         }
 
+        internal static bool IsConvertedSyntaxKind(this SyntaxNode node, params ConvertedSyntaxKind[] kind)
+        {
+            if (node == null)
+                return false;
+            var nodeKind = node.Kind.ConvertToLocalType();
+            return kind.Contains(nodeKind);
+        }
+
         #region Nav2018 helpers
 
 #if NAV2018

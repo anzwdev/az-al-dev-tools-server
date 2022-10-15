@@ -52,10 +52,16 @@ namespace AnZwDev.ALTools.CodeCompletion
                 case VariableDeclarationSyntax variableSyntax:
                     return variableSyntax;
                 case ParameterSyntax parameter:
+                    if (!this.IsValidParametersOwner(syntaxNode))
+                        return null;
                     return parameter;
                 case ReturnValueSyntax returnValue:
+                    if (!this.IsValidParametersOwner(syntaxNode))
+                        return null;
                     return returnValue;
                 case ParameterListSyntax parameterList:
+                    if (!this.IsValidParametersOwner(syntaxNode))
+                        return null;
                     if ((parameterList.CloseParenthesisToken.IsEmptyOrAfter(position)) &&
                         (parameterList.Parameters != null) &&
                         (parameterList.Parameters.Count > 0))
@@ -65,6 +71,23 @@ namespace AnZwDev.ALTools.CodeCompletion
                     return null;
             }
             return null;
+        }
+
+        private bool IsValidParametersOwner(SyntaxNode syntaxNode)
+        {
+            var parameterOwner = syntaxNode.FindParentByKind(ConvertedSyntaxKind.MethodDeclaration, ConvertedSyntaxKind.TriggerDeclaration);
+            
+            //suggest parameters for procedures only                    
+            //for triggers it should not be enabled as they have predefined list of parameters
+            if (!parameterOwner.IsConvertedSyntaxKind(ConvertedSyntaxKind.MethodDeclaration))
+                return false;
+
+            //do not suggest parameters for event subscribers
+            var parameterOwnerMethodDeclaration = parameterOwner as MethodDeclarationSyntax;
+            if ((parameterOwnerMethodDeclaration != null) && (parameterOwnerMethodDeclaration.IsEventSubscriber()))
+                return false;
+
+            return true;
         }
 
         private IdentifierNameSyntax GetDeclarationName(SyntaxNode node)
