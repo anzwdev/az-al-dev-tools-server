@@ -8,7 +8,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences.MergedReferences
     public class MergedALAppSymbolReference
     {
 
-        public IReadOnlyList<ALAppSymbolReference> AllSymbolReferences { get; }
+        public ISymbolReferencesList AllSymbolReferences { get; }
         public MergedALAppObjectsCollection<ALAppTable> Tables { get; }
         public MergedALAppObjectsCollection<ALAppPage> Pages { get; }
         public MergedALAppObjectsCollection<ALAppReport> Reports { get; }
@@ -28,7 +28,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences.MergedReferences
         public MergedALAppObjectsCollection<ALAppPermissionSet> PermissionSets { get; }
         public MergedALAppObjectExtensionsCollection<ALAppPermissionSetExtension> PermissionSetExtensions { get; }
 
-        public MergedALAppSymbolReference(IReadOnlyList<ALAppSymbolReference> allSymbolReferences)
+        public MergedALAppSymbolReference(ISymbolReferencesList allSymbolReferences)
         {
             this.AllSymbolReferences = allSymbolReferences;
             this.Tables = new MergedALAppObjectsCollection<ALAppTable>(this.AllSymbolReferences, ALSymbolKind.TableObject, x => x?.Tables);

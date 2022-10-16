@@ -1,4 +1,5 @@
 ﻿using AnZwDev.ALTools.ALSymbolReferences;
+using AnZwDev.ALTools.ALSymbolReferences.MergedReferences;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Text;
 namespace AnZwDev.ALTools.Workspace
 {
 
-    public class ALProjectAllALAppSymbolReferencesCollection : IReadOnlyList<ALAppSymbolReference>
+    public class ALProjectAllALAppSymbolReferencesCollection : ISymbolReferencesList
     {
 
         protected ALProject ALProject { get; }
@@ -23,6 +24,13 @@ namespace AnZwDev.ALTools.Workspace
                 return this.ALProject.Dependencies[index - 1].Symbols;
             }
             set => throw new NotImplementedException(); 
+        }
+
+        public bool InternalsVisible(int index)
+        {
+            if (index == 0)
+                return true;
+            return this.ALProject.Dependencies[index - 1].InternalsVisible;
         }
 
         public ALProjectAllALAppSymbolReferencesCollection(ALProject newProject)

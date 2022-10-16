@@ -9,12 +9,11 @@ using System.Xml.Linq;
 
 namespace AnZwDev.ALTools.CodeTransformations
 {
-    public class RemoveEmptyTriggersSyntaxRewriter : ALSyntaxRewriter
+    public class RemoveEmptyTriggersSyntaxRewriter : BaseRemoveEmptyNodesSyntaxRewriter
     {
 
         public bool RemoveTriggers { get; set; }
         public bool RemoveSubscribers { get; set; }
-        public bool IgnoreComments { get; set; }
 
         public RemoveEmptyTriggersSyntaxRewriter()
         {
@@ -416,81 +415,26 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         #endregion
 
-        private (SyntaxList<T>, DirectiveTriviaMergedList remainingTrivia, bool) ProcessMembersList<T>(SyntaxList<T> sourceNodesCollection) where T : MemberSyntax
+        protected override bool CanRemoveMember(SyntaxNode node)
         {
-            bool removed = false;
-            List<T> newList = new List<T>();
-            var mergedTrivia = new DirectiveTriviaMergedList();
-
-            foreach (var sourceNode in sourceNodesCollection)
-            {
-                if (CanRemoveMember(sourceNode))
-                {
-                    removed = true;
-                    CollectRemovedNodeTrivia(sourceNode, mergedTrivia);
-                }
-                else if (mergedTrivia.List.Count > 0)
-                {
-                    mergedTrivia.AddAllExceptClosingRegions(sourceNode.GetLeadingTrivia());
-                    newList.Add(sourceNode.WithLeadingTrivia(mergedTrivia.List));
-                    mergedTrivia.Clear();
-                }
-                else
-                    newList.Add(sourceNode);
-            }
-
-            if (removed)
-                return (SyntaxFactory.List(newList), mergedTrivia, true);
-            return (sourceNodesCollection, null, false);
-        }
-
-        private bool CanRemoveMember(MemberSyntax member)
-        {
-            switch (member)
+            switch (node)
             {
                 case TriggerDeclarationSyntax triggerSyntax:
                     return (RemoveTriggers && IsEmptyMethod(triggerSyntax));
                 case MethodDeclarationSyntax methodSyntax:
-                    return (RemoveSubscribers && IsEmptyMethod(methodSyntax) && IsEventSubscriber(methodSyntax));
+                    return (RemoveSubscribers && IsEmptyMethod(methodSyntax) && (methodSyntax.IsEventSubscriber()));
             }
-            return false;
-        }
-
-        private void CollectRemovedNodeTrivia(SyntaxNode node, DirectiveTriviaMergedList mergedList)
-        {
-            mergedList.AddRange(node.GetLeadingTrivia());
-            mergedList.AddRange(node.GetTrailingTrivia());
+            return base.CanRemoveMember(node);
         }
 
         private bool IsEmptyMethod(MethodOrTriggerDeclarationSyntax syntax)
         {
-            bool hasTrivia = IgnoreComments ? BodyHasDirectives(syntax) : BodyHasNonEmptyTrivia(syntax);
-            bool hasStatements = (syntax.Body?.Statements != null) && (syntax.Body.Statements.Count > 0);
+            bool hasTrivia = ContentIsNotEmpty(syntax.Body?.BeginKeywordToken, syntax.Body?.EndKeywordToken);
+            bool hasStatements = HasNodes(syntax.Body?.Statements);
             //bool hasDirectivesOutside = syntax.GetLeadingTrivia().ContainsDirectives() || syntax.GetTrailingTrivia().ContainsDirectives();
 
             return
                 (!hasTrivia) && (!hasStatements);// && (!hasDirectivesOutside);
-        }
-
-        private bool BodyHasNonEmptyTrivia(MethodOrTriggerDeclarationSyntax syntax)
-        {
-            return           
-                ((syntax.Body?.BeginKeywordToken != null) && (!syntax.Body.BeginKeywordToken.TrailingTrivia.IsNullOrWhiteSpace())) ||
-                ((syntax.Body?.EndKeywordToken != null) && (!syntax.Body.EndKeywordToken.LeadingTrivia.IsNullOrWhiteSpace()));
-        }
-
-        private bool BodyHasDirectives(MethodOrTriggerDeclarationSyntax syntax)
-        {
-            return
-                ((syntax.Body?.BeginKeywordToken != null) && (syntax.Body.BeginKeywordToken.TrailingTrivia.ContainsDirectives())) ||
-                ((syntax.Body?.EndKeywordToken != null) && (syntax.Body.EndKeywordToken.LeadingTrivia.ContainsDirectives()));
-        }
-
-        private bool IsEventSubscriber(MethodDeclarationSyntax syntax)
-        {
-            return
-                (syntax.Attributes != null) &&
-                (syntax.Attributes.Where(p => (p.Name != null) && (p.Name.ToString().Equals("EventSubscriber", StringComparison.CurrentCultureIgnoreCase))).Any());
         }
 
     }

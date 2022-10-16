@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using System.Xml.Linq;
+using System.Runtime.CompilerServices;
 
 namespace AnZwDev.ALTools.Extensions
 {
@@ -151,6 +153,15 @@ namespace AnZwDev.ALTools.Extensions
             return false;
         }
 
+        public static bool HasNonEmptyTriviaInside(this SyntaxNode node)
+        {
+            foreach (var token in node.DescendantTokens())
+                if ((!token.LeadingTrivia.IsNullOrWhiteSpace()) || (!token.TrailingTrivia.IsNullOrWhiteSpace()))
+                    return true;
+
+            return false;
+        }
+
         internal static SyntaxNode FindParentByKind(this SyntaxNode node, params ConvertedSyntaxKind[] parentNodeKind)
         {
             while (node != null)
@@ -230,6 +241,59 @@ namespace AnZwDev.ALTools.Extensions
         }
 
 #endif
+
+        public static IEnumerable<MemberSyntax> GetObjectMembersEnumerable(this SyntaxNode node)
+        {
+            if (node is ObjectSyntax objectSyntax)
+                return objectSyntax.Members;
+            return null;
+        }
+
+        public static SyntaxNode ReplaceObjectMembers(this SyntaxNode node, SyntaxList<MemberSyntax> members)
+        {
+            switch (node)
+            {
+                case TableSyntax tableSyntax:
+                    return tableSyntax.WithMembers(members);
+                case TableExtensionSyntax tableExtensionSyntax:
+                    return tableExtensionSyntax.WithMembers(members);
+                case PageSyntax pageSyntax:
+                    return pageSyntax.WithMembers(members);
+                case PageExtensionSyntax pageExtensionSyntax:
+                    return pageExtensionSyntax.WithMembers(members);
+                case CodeunitSyntax codeunitSyntax:
+                    return codeunitSyntax.WithMembers(members);
+                case ReportSyntax reportSyntax:
+                    return reportSyntax.WithMembers(members);
+#if BC
+                case ReportExtensionSyntax reportExtensionSyntax:
+                    return reportExtensionSyntax.WithMembers(members);
+#endif
+                case XmlPortSyntax xmlPortSyntax:
+                    return xmlPortSyntax.WithMembers(members);
+                case ControlAddInSyntax controlAddInSyntax:
+                    return controlAddInSyntax.WithMembers(members);
+                case QuerySyntax querySyntax:
+                    return querySyntax.WithMembers(members);
+            }
+            return node;            
+        }
+
+        public static IEnumerable<TriggerDeclarationSyntax> GetNodeTriggersEnumerable(this SyntaxNode node)
+        {
+            var triggersProperty = node.GetType().GetProperty("Triggers");
+            if (triggersProperty != null)
+                return triggersProperty.GetValue(node) as IEnumerable<TriggerDeclarationSyntax>;
+            return null;
+        }
+
+        internal static bool IsConvertedSyntaxKind(this SyntaxNode node, params ConvertedSyntaxKind[] kind)
+        {
+            if (node == null)
+                return false;
+            var nodeKind = node.Kind.ConvertToLocalType();
+            return kind.Contains(nodeKind);
+        }
 
         #region Nav2018 helpers
 

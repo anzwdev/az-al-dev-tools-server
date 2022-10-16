@@ -90,6 +90,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\IALAppObjectExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\IReadOnlyALAppObjectsCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\MergedReferences\ALAppObjectWithExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\MergedReferences\ISymbolReferencesList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\MergedReferences\MergedALAppObjectExtensionsCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\MergedReferences\MergedALAppObjectsCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\MergedReferences\MergedALAppSymbolReference.cs" />
@@ -144,6 +145,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\SymbolReaders\ALSymbolInfoSyntaxTreeReader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\SymbolReaders\ALSyntaxTreeSymbolsReader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALToolsConst.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\BaseRemoveEmptyNodesSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeAnalysis\AppSourceCopSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeAnalysis\CodeAnalyzerRule.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeAnalysis\CodeAnalyzersLibrariesCollection.cs" />
@@ -238,6 +240,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\IEnumerableExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\IListExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\List_SyntaxNode_Extensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\MethodDeclarationSyntaxExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\MethodInfoExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\PragmaWarningDirectiveTriviaSyntaxExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\PropertyListSyntaxExtensions.cs" />

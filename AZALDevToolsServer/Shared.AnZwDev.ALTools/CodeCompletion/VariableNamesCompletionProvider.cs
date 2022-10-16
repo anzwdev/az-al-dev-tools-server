@@ -69,11 +69,14 @@ namespace AnZwDev.ALTools.CodeCompletion
                     break;
                 case BlockSyntax blockSyntax:
                     validNode =
+                        (blockSyntax.Parent.IsConvertedSyntaxKind(ConvertedSyntaxKind.MethodDeclaration)) &&
                         (blockSyntax.BeginKeywordToken != null) &&
                         (blockSyntax.BeginKeywordToken.Span.Start > position);
                     addSemicolon = true;
                     break;
                 case ParameterListSyntax parameterListSyntax:
+                    if (!this.IsValidParametersOwner(syntaxNode))
+                        return (false, false);
                     var parameterSyntax = FindParameterSyntax(parameterListSyntax, position);
                     validNode = 
                         (
@@ -89,6 +92,13 @@ namespace AnZwDev.ALTools.CodeCompletion
                 default:
                     var declarationSyntaxNode = syntaxNode.FindParentByKind(ConvertedSyntaxKind.VariableDeclaration, ConvertedSyntaxKind.Parameter, ConvertedSyntaxKind.ReturnValue);
                     var nameSyntaxNode = GetDeclarationName(declarationSyntaxNode);
+
+                    if ((declarationSyntaxNode != null) && 
+                        (declarationSyntaxNode.Kind.ConvertToLocalType() == ConvertedSyntaxKind.ReturnValue) &&
+                        (!this.IsValidParametersOwner(declarationSyntaxNode))
+                    )
+                        return (false, false);
+
                     validNode = 
                         (declarationSyntaxNode != null) && 
                         (ValidDeclarationNode(declarationSyntaxNode, nameSyntaxNode, position));
@@ -99,6 +109,23 @@ namespace AnZwDev.ALTools.CodeCompletion
             }
 
             return (validNode, addSemicolon);
+        }
+
+        private bool IsValidParametersOwner(SyntaxNode syntaxNode)
+        {
+            var parameterOwner = syntaxNode.FindParentByKind(ConvertedSyntaxKind.MethodDeclaration, ConvertedSyntaxKind.TriggerDeclaration);
+
+            //suggest parameters for procedures only                    
+            //for triggers it should not be enabled as they have predefined list of parameters
+            if (!parameterOwner.IsConvertedSyntaxKind(ConvertedSyntaxKind.MethodDeclaration))
+                return false;
+
+            //do not suggest parameters for event subscribers
+            var parameterOwnerMethodDeclaration = parameterOwner as MethodDeclarationSyntax;
+            if ((parameterOwnerMethodDeclaration != null) && (parameterOwnerMethodDeclaration.IsEventSubscriber()))
+                return false;
+
+            return true;
         }
 
         private bool ValidDeclarationNode(SyntaxNode declarationSyntaxNode, IdentifierNameSyntax nameSyntaxNode, int position)
