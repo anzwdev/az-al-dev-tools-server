@@ -390,8 +390,8 @@ namespace AnZwDev.ALTools.CodeTransformations
                     return
                         (RemovePageFieldGroups) &&
                         (!HasNodes(pageGroupSyntax.Controls)) &&
+                        (!HasNodes(pageGroupSyntax.PropertyList?.Properties)) &&
                         (!ContentIsNotEmpty(pageGroupSyntax.OpenBraceToken, pageGroupSyntax.CloseBraceToken));
-
                 case PageExtensionLayoutSyntax pageExtensionLayoutSyntax:
                     return
                         (!HasNodes(pageExtensionLayoutSyntax.Changes)) &&
