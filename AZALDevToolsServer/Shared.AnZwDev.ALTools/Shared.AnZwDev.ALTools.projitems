@@ -242,6 +242,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\List_SyntaxNode_Extensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\MethodDeclarationSyntaxExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\MethodInfoExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\PageGroupSyntaxExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\PragmaWarningDirectiveTriviaSyntaxExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\PropertyListSyntaxExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\PropertySyntaxExtensions.cs" />

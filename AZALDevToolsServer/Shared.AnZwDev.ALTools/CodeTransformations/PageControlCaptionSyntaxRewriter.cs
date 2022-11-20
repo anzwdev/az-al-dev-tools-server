@@ -16,23 +16,30 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         public bool SetActionsCaptions { get; set; }
         public bool SetGroupsCaptions { get; set; }
+        public bool SetRepeatersCaptions { get; set; }
         public bool SetActionGroupsCaptions { get; set; }
         public bool SetPartsCaptions { get; set; }
         public bool SetFieldsCaptions { get; set; }
         public bool SetLabelCaptions { get; set; }
+        public bool SortProperties { get; set; }
+
+        private SortPropertiesSyntaxRewriter _sortPropertiesSyntaxRewriter;
 
         public PageControlCaptionSyntaxRewriter()
         {
             SetActionsCaptions = false;
             SetGroupsCaptions = false;
+            SetRepeatersCaptions = false;
             SetPartsCaptions = false;
             SetFieldsCaptions = false;
             SetLabelCaptions = false;
+            SortProperties = true;
+            _sortPropertiesSyntaxRewriter = new SortPropertiesSyntaxRewriter();
         }
 
         public override SyntaxNode VisitPageField(PageFieldSyntax node)
         {
-            if ((this.SetFieldsCaptions) && (!node.HasProperty("CaptionML")))
+            if ((this.SetFieldsCaptions) && (!node.HasProperty("CaptionML")) && (CaptionVisible(node)))
             {
                 PropertySyntax propertySyntax = node.GetProperty("Caption");
                 if ((propertySyntax == null) || (String.IsNullOrWhiteSpace(propertySyntax.Value.ToString())))
@@ -45,8 +52,14 @@ namespace AnZwDev.ALTools.CodeTransformations
                         PropertySyntax newPropertySyntax = this.CreateCaptionProperty(node, captionLabel.Value, captionLabel.Comment);
                         NoOfChanges++;
                         if (propertySyntax == null)
-                            return node.AddPropertyListProperties(newPropertySyntax);
-                        return node.ReplaceNode(propertySyntax, newPropertySyntax);
+                            node = node.AddPropertyListProperties(newPropertySyntax);
+                        else
+                            node = node.ReplaceNode(propertySyntax, newPropertySyntax);
+
+                        if (SortProperties)
+                            node = node.WithPropertyList(_sortPropertiesSyntaxRewriter.SortPropertyList(node.PropertyList, out _));
+ 
+                        return node;
                     }
                 }
             }
@@ -55,7 +68,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         public override SyntaxNode VisitPageLabel(PageLabelSyntax node)
         {
-            if ((this.SetLabelCaptions) && (!node.HasProperty("CaptionML")))
+            if ((this.SetLabelCaptions) && (!node.HasProperty("CaptionML")) && (CaptionVisible(node)))
             {
                 PropertySyntax propertySyntax = node.GetProperty("Caption");
                 if ((propertySyntax == null) || (String.IsNullOrWhiteSpace(propertySyntax.Value.ToString())))
@@ -70,6 +83,8 @@ namespace AnZwDev.ALTools.CodeTransformations
                             node = node.AddPropertyListProperties(newPropertySyntax);
                         else
                             node = node.ReplaceNode(propertySyntax, newPropertySyntax);
+                        if (SortProperties)
+                            node = node.WithPropertyList(_sortPropertiesSyntaxRewriter.SortPropertyList(node.PropertyList, out _));
                     }
                 }
             }
@@ -78,7 +93,9 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         public override SyntaxNode VisitPageGroup(PageGroupSyntax node)
         {
-            if ((this.SetGroupsCaptions) && (!node.HasProperty("CaptionML")))
+            bool setCaptions = node.IsRepeater() ? this.SetRepeatersCaptions : this.SetGroupsCaptions;
+
+            if ((setCaptions) && (!node.HasProperty("CaptionML")) && (CaptionVisible(node)))
             {
                 PropertySyntax propertySyntax = node.GetProperty("Caption");
                 if ((propertySyntax == null) || (String.IsNullOrWhiteSpace(propertySyntax.Value.ToString())))
@@ -93,6 +110,8 @@ namespace AnZwDev.ALTools.CodeTransformations
                             node = node.AddPropertyListProperties(newPropertySyntax);
                         else
                             node = node.ReplaceNode(propertySyntax, newPropertySyntax);
+                        if (SortProperties)
+                            node = node.WithPropertyList(_sortPropertiesSyntaxRewriter.SortPropertyList(node.PropertyList, out _));
                     }
                 }
             }
@@ -101,7 +120,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         public override SyntaxNode VisitPageActionGroup(PageActionGroupSyntax node)
         {
-            if ((this.SetActionGroupsCaptions) && (!node.HasProperty("CaptionML")))
+            if ((this.SetActionGroupsCaptions) && (!node.HasProperty("CaptionML")) && (CaptionVisible(node)))
             {
                 PropertySyntax propertySyntax = node.GetProperty("Caption");
                 if ((propertySyntax == null) || (String.IsNullOrWhiteSpace(propertySyntax.Value.ToString())))
@@ -116,6 +135,8 @@ namespace AnZwDev.ALTools.CodeTransformations
                             node = node.AddPropertyListProperties(newPropertySyntax);
                         else
                             node = node.ReplaceNode(propertySyntax, newPropertySyntax);
+                        if (SortProperties)
+                            node = node.WithPropertyList(_sortPropertiesSyntaxRewriter.SortPropertyList(node.PropertyList, out _));
                     }
                 }
             }
@@ -124,7 +145,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         public override SyntaxNode VisitPageAction(PageActionSyntax node)
         {
-            if ((this.SetActionsCaptions) && (!node.HasProperty("CaptionML")))
+            if ((this.SetActionsCaptions) && (!node.HasProperty("CaptionML")) && (CaptionVisible(node)))
             {
                 PropertySyntax propertySyntax = node.GetProperty("Caption");
                 if ((propertySyntax == null) || (String.IsNullOrWhiteSpace(propertySyntax.Value.ToString())))
@@ -136,8 +157,12 @@ namespace AnZwDev.ALTools.CodeTransformations
                         PropertySyntax newPropertySyntax = this.CreateCaptionProperty(node, caption, null);
                         NoOfChanges++;
                         if (propertySyntax == null)
-                            return node.AddPropertyListProperties(newPropertySyntax);
-                        return node.ReplaceNode(propertySyntax, newPropertySyntax);
+                            node = node.AddPropertyListProperties(newPropertySyntax);
+                        else
+                            node = node.ReplaceNode(propertySyntax, newPropertySyntax);
+                        if (SortProperties)
+                            node = node.WithPropertyList(_sortPropertiesSyntaxRewriter.SortPropertyList(node.PropertyList, out _));
+                        return node;
                     }
                 }
             }
@@ -146,7 +171,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         public override SyntaxNode VisitPagePart(PagePartSyntax node)
         {
-            if ((this.SetPartsCaptions) && (!node.HasProperty("CaptionML")))
+            if ((this.SetPartsCaptions) && (!node.HasProperty("CaptionML")) && (CaptionVisible(node)))
             {
                 PropertySyntax propertySyntax = node.GetProperty("Caption");
                 if ((propertySyntax == null) || (String.IsNullOrWhiteSpace(propertySyntax.Value.ToString())))
@@ -161,8 +186,12 @@ namespace AnZwDev.ALTools.CodeTransformations
                         PropertySyntax newPropertySyntax = this.CreateCaptionProperty(node, caption, null);
                         NoOfChanges++;
                         if (propertySyntax == null)
-                            return node.AddPropertyListProperties(newPropertySyntax);
-                        return node.ReplaceNode(propertySyntax, newPropertySyntax);
+                            node = node.AddPropertyListProperties(newPropertySyntax);
+                        else
+                            node = node.ReplaceNode(propertySyntax, newPropertySyntax);
+                        if (SortProperties)
+                            node = node.WithPropertyList(_sortPropertiesSyntaxRewriter.SortPropertyList(node.PropertyList, out _));
+                        return node;
                     }
                 }
             }
@@ -179,6 +208,11 @@ namespace AnZwDev.ALTools.CodeTransformations
                 .WithTrailingTrivia(trailingTriviaList);
         }
 
+        private bool CaptionVisible(SyntaxNode node)
+        {
+            PropertySyntax showCaptionProperty = node.GetProperty("ShowCaption");
+            return !showCaptionProperty.IsNotNullAndEquals("false");
+        }
 
     }
 }

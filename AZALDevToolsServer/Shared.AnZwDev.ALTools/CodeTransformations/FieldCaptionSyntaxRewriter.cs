@@ -18,7 +18,7 @@ namespace AnZwDev.ALTools.CodeTransformations
             this.LockRemovedFields = false;
         }
 
-        public override SyntaxNode VisitField(FieldSyntax node)
+        public override SyntaxNode VisitField(FieldSyntax node) 
         {
             if (!node.HasProperty("CaptionML"))
             {
