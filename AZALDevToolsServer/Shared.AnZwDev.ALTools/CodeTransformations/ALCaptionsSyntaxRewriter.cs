@@ -11,8 +11,14 @@ namespace AnZwDev.ALTools.CodeTransformations
     public class ALCaptionsSyntaxRewriter : ALSyntaxRewriter
     {
 
+        public bool SortProperties { get; set; }
+
+        protected SortPropertiesSyntaxRewriter SortPropertiesSyntaxRewriter { get; }
+
         public ALCaptionsSyntaxRewriter()
         {
+            SortProperties = false;
+            SortPropertiesSyntaxRewriter = new SortPropertiesSyntaxRewriter();
         }
 
         protected T UpdateCaptionFromName<T>(T node, PropertySyntax oldCaptionPropertySyntax, bool locked) where T : SyntaxNode

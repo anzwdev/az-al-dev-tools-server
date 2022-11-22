@@ -1,5 +1,4 @@
-﻿using AnZwDev.ALTools.ALSymbols;
-using AnZwDev.ALTools.CodeTransformations;
+﻿using AnZwDev.ALTools.CodeTransformations;
 using AnZwDev.ALTools.Extensions;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using System;
@@ -8,13 +7,15 @@ using System.Text;
 
 namespace AnZwDev.ALTools.WorkspaceCommands
 {
-    public class AddFieldCaptionsWorkspaceCommand : SyntaxRewriterWorkspaceCommand<FieldCaptionSyntaxRewriter>
+
+#if BC
+
+    public class AddEnumCaptionsWorkspaceCommand : SyntaxRewriterWorkspaceCommand<EnumCaptionSyntaxRewriter>
     {
 
-        public static string LockRemovedFieldsParameterName = "lockRemovedFields";
         public static string SortPropertiesParameterName = "sortProperties";
 
-        public AddFieldCaptionsWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "addFieldCaptions")
+        public AddEnumCaptionsWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "addEnumCaptions")
         {
         }
 
@@ -22,9 +23,10 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         {
             base.SetParameters(sourceCode, projectPath, filePath, span, parameters);
             this.SyntaxRewriter.SortProperties = parameters.GetBoolValue(SortPropertiesParameterName);
-            this.SyntaxRewriter.LockRemovedFields = parameters.GetBoolValue(LockRemovedFieldsParameterName);
         }
 
-
     }
+
+#endif
+
 }
