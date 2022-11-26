@@ -59,6 +59,7 @@ namespace AnZwDev.ALTools.CodeTransformations
             return newNode;
         }
 
+        /*
         public override SyntaxNode VisitReport(ReportSyntax node)
         {
             InitProcessingVariables(node);
@@ -80,6 +81,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
             return newNode;
         }
+        */
 
         private void InitProcessingVariables(SyntaxNode node)
         {
