@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using AnZwDev.ALTools.ALSymbols;
@@ -10,6 +12,8 @@ namespace AnZwDev.ALTools.ALSymbolReferences
     public class ALAppMethod : ALAppElementWithName
     {
 
+        public bool IsInternal { get; set; }
+        public bool IsProtected { get; set; }
         public bool IsLocal { get; set; }
         public string AccessModifier { get; set; }
         public int MethodKind { get; set; }
@@ -32,6 +36,10 @@ namespace AnZwDev.ALTools.ALSymbolReferences
                         return kind;
                 }
             }
+            if (this.IsInternal)
+                return ALSymbolKind.InternalMethodDeclaration;
+            if (this.IsProtected)
+                return ALSymbolKind.ProtectedMethodDeclaration;
             if (this.IsLocal)
                 return ALSymbolKind.LocalMethodDeclaration;
             return ALSymbolKind.MethodDeclaration;
@@ -87,8 +95,13 @@ namespace AnZwDev.ALTools.ALSymbolReferences
 
         public void AppendHeaderSourceCode(StringBuilder builder)
         {
+            if (this.IsInternal)
+                builder.Append("internal ");
+            if (this.IsProtected)
+                builder.Append("protected ");
             if (this.IsLocal)
                 builder.Append("local ");
+
             builder.Append("procedure ");
             builder.Append(this.Name);
             builder.Append("(");

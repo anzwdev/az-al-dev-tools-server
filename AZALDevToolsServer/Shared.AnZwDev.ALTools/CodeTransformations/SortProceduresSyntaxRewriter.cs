@@ -52,11 +52,11 @@ namespace AnZwDev.ALTools.CodeTransformations
                             switch (methodNode.AccessModifier.Kind.ConvertToLocalType())
                             {
                                 case ConvertedSyntaxKind.ProtectedKeyword:
-                                    return ALSymbolKind.LocalMethodDeclaration;
+                                    return ALSymbolKind.ProtectedMethodDeclaration;
                                 case ConvertedSyntaxKind.LocalKeyword:
                                     return ALSymbolKind.LocalMethodDeclaration;
                                 case ConvertedSyntaxKind.InternalKeyword:
-                                    return ALSymbolKind.LocalMethodDeclaration;
+                                    return ALSymbolKind.InternalMethodDeclaration;
                             }
                         }
 #endif
@@ -142,6 +142,8 @@ namespace AnZwDev.ALTools.CodeTransformations
                         ALSymbolKind.SessionSettingsHandlerDeclaration,
                         ALSymbolKind.StrMenuHandlerDeclaration,
                         ALSymbolKind.MethodDeclaration,
+                        ALSymbolKind.InternalMethodDeclaration,
+                        ALSymbolKind.ProtectedMethodDeclaration,
                         ALSymbolKind.LocalMethodDeclaration,
                         ALSymbolKind.EventSubscriberDeclaration,
                         ALSymbolKind.EventDeclaration,

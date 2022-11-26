@@ -1337,6 +1337,8 @@ protected void ProcessSyntaxNodesList(IEnumerable<SyntaxNode> nodesList, List<AL
                 {
                     method.AccessModifier = method.AccessModifier.ToLower();
                     method.IsLocal = method.AccessModifier.Equals("local");
+                    method.IsProtected = method.AccessModifier.Equals("protected");
+                    method.IsInternal = method.AccessModifier.Equals("internal");
                 }
             }
 #endif
