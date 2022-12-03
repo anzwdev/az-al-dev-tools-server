@@ -172,6 +172,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\BasePageWithSourceSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\BaseToolTipsSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\DirectiveTriviaMergedList.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\EnumCaptionSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\FixTextOverflowAssignmentSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\MakeFlowFieldsReadOnlySyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\RemoveRedundandAppAreasSyntaxRewriter.cs" />
@@ -242,6 +243,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\List_SyntaxNode_Extensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\MethodDeclarationSyntaxExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\MethodInfoExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\PageGroupSyntaxExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\PragmaWarningDirectiveTriviaSyntaxExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\PropertyListSyntaxExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\PropertySyntaxExtensions.cs" />
@@ -262,6 +264,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)SourceControl\GitClient.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\AddAppAreasWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\AddDataClassificationWorkspaceCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\AddEnumCaptionsWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\AddFieldCaptionsWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\AddObjectCaptionsWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\AddObjectsPermissionsWorkspaceCommand.cs" />

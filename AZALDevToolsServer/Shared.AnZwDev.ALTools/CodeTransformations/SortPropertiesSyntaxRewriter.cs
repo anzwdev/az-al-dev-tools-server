@@ -62,22 +62,28 @@ namespace AnZwDev.ALTools.CodeTransformations
         {
             if ((this.NodeInSpan(node)) && (node.Properties != null) && (node.Properties.Count > 1) && (!node.ContainsDiagnostics))
             {
-#if BC
-                SyntaxList<PropertySyntaxOrEmpty> properties =
-                    SyntaxNodesGroupsTree<PropertySyntaxOrEmpty>.SortSyntaxListWithSortInfo(
-                        node.Properties, new PropertyComparer(), out bool sorted);
-#else
-                SyntaxList<PropertySyntax> properties =
-                    SyntaxNodesGroupsTree<PropertySyntax>.SortSyntaxListWithSortInfo(
-                        node.Properties, new PropertyComparer(), out bool sorted);
-#endif
+                node = SortPropertyList(node, out bool sorted);
                 if (sorted)
                     this.NoOfChanges++;
-
-                node = node.WithProperties(properties);
             }
             return base.VisitPropertyList(node);
         }
+
+        public PropertyListSyntax SortPropertyList(PropertyListSyntax node, out bool sorted)
+        {
+#if BC
+            SyntaxList<PropertySyntaxOrEmpty> properties =
+                SyntaxNodesGroupsTree<PropertySyntaxOrEmpty>.SortSyntaxListWithSortInfo(
+                    node.Properties, new PropertyComparer(), out sorted);
+#else
+            SyntaxList<PropertySyntax> properties =
+                SyntaxNodesGroupsTree<PropertySyntax>.SortSyntaxListWithSortInfo(
+                    node.Properties, new PropertyComparer(), out sorted);
+#endif
+            return node.WithProperties(properties);
+        }
+
+
 
     }
 }

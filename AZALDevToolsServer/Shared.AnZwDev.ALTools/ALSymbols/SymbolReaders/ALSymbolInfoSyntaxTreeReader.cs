@@ -622,7 +622,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                     return true;
                 case ConvertedSyntaxKind.MemberAttribute:
                     string memberAttributeName = node.GetSyntaxNodeName().NotNull();
-                    if ((parent.kind == ALSymbolKind.MethodDeclaration) || (parent.kind == ALSymbolKind.LocalMethodDeclaration))
+                    if ((parent.kind == ALSymbolKind.MethodDeclaration) || (parent.kind == ALSymbolKind.LocalMethodDeclaration) || (parent.kind == ALSymbolKind.InternalMethodDeclaration) || (parent.kind == ALSymbolKind.ProtectedMethodDeclaration))
                     {
                         ALSymbolKind newKind = ALSyntaxHelper.MemberAttributeToMethodKind(memberAttributeName);
                         if (newKind != ALSymbolKind.Undefined)
@@ -819,11 +819,11 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                 switch (methodSyntax.AccessModifier.Kind.ConvertToLocalType())
                 {
                     case ConvertedSyntaxKind.ProtectedKeyword:
-                        return ALSymbolKind.LocalMethodDeclaration;
+                        return ALSymbolKind.ProtectedMethodDeclaration;
                     case ConvertedSyntaxKind.LocalKeyword:
                         return ALSymbolKind.LocalMethodDeclaration;
                     case ConvertedSyntaxKind.InternalKeyword:
-                        return ALSymbolKind.LocalMethodDeclaration;
+                        return ALSymbolKind.InternalMethodDeclaration;
                 }
             }
 #endif

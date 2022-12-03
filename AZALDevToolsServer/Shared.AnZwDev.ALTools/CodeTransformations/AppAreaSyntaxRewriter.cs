@@ -73,9 +73,10 @@ namespace AnZwDev.ALTools.CodeTransformations
                 node = node.AddPropertyListProperties(this.CreateApplicationAreaProperty(node));
             }
 
-            _childControlsCanInheritAppAreas = true;
+            //!!! Do not inherit application areas on report request pages
+            //_childControlsCanInheritAppAreas = true;
             var newNode = base.VisitReport(node);
-            _childControlsCanInheritAppAreas = false;
+            //_childControlsCanInheritAppAreas = false;
 
             return newNode;
         }

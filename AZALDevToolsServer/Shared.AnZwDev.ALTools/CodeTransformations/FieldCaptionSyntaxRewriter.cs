@@ -18,17 +18,18 @@ namespace AnZwDev.ALTools.CodeTransformations
             this.LockRemovedFields = false;
         }
 
-        public override SyntaxNode VisitField(FieldSyntax node)
+        public override SyntaxNode VisitField(FieldSyntax node) 
         {
             if (!node.HasProperty("CaptionML"))
             {
                 bool lockCaption = (this.LockRemovedFields && this.IsFieldRemoved(node));
 
                 PropertySyntax propertySyntax = node.GetProperty("Caption");
+                bool changed = false;
                 if (propertySyntax == null)
                 {
-                    NoOfChanges++;
-                    return node.AddPropertyListProperties(
+                    changed = true;
+                    node = node.AddPropertyListProperties(
                         this.CreateCaptionPropertyFromName(node, lockCaption));
                 }
                 else
@@ -36,9 +37,17 @@ namespace AnZwDev.ALTools.CodeTransformations
                     string valueText = propertySyntax.Value.ToString();
                     if (String.IsNullOrWhiteSpace(valueText))
                     {
-                        NoOfChanges++;
-                        return node.ReplaceNode(propertySyntax, this.CreateCaptionPropertyFromName(node, lockCaption));
+                        changed = true;
+                        node = node.ReplaceNode(propertySyntax, this.CreateCaptionPropertyFromName(node, lockCaption));
                     }
+                }
+
+                if (changed)
+                {
+                    NoOfChanges++;
+                    if (SortProperties)
+                        node = node.WithPropertyList(SortPropertiesSyntaxRewriter.SortPropertyList(node.PropertyList, out _));
+                    return node;
                 }
             }
 

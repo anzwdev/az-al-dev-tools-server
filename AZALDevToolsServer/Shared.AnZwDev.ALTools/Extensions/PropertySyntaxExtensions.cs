@@ -22,5 +22,18 @@ namespace AnZwDev.ALTools.Extensions
             return property;
         }
 
+        public static bool IsNullOrEquals(this PropertySyntax propertySyntax, string value, StringComparison stringComparison = StringComparison.CurrentCultureIgnoreCase)
+        {
+            var propertyValueText = propertySyntax?.Value?.ToString();
+            return (propertyValueText == null) || (propertyValueText.Equals(value, stringComparison));
+        }
+
+        public static bool IsNotNullAndEquals(this PropertySyntax propertySyntax, string value, StringComparison stringComparison = StringComparison.CurrentCultureIgnoreCase)
+        {
+            var propertyValueText = propertySyntax?.Value?.ToString();
+            return (propertyValueText != null) && (propertyValueText.Equals(value, stringComparison));
+        }
+
+
     }
 }

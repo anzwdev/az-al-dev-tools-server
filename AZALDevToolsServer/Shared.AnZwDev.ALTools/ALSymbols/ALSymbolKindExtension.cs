@@ -40,6 +40,8 @@ namespace AnZwDev.ALTools.ALSymbols
                 case ALSymbolKind.TriggerDeclaration: return "trigger";
                 case ALSymbolKind.EventTriggerDeclaration: return "event trigger";
                 case ALSymbolKind.LocalMethodDeclaration: return "local procedure";
+                case ALSymbolKind.InternalMethodDeclaration: return "internal procedure";
+                case ALSymbolKind.ProtectedMethodDeclaration: return "protected procedure";
                 case ALSymbolKind.MethodDeclaration: return "procedure";
                 case ALSymbolKind.EventDeclaration: return "event";
                 case ALSymbolKind.Parameter: return "parameter";
