@@ -8,10 +8,20 @@ namespace AnZwDev.ALTools.ALSymbolReferences
     {
 
         public Dictionary<int, ALAppTable> TableIdMap { get; }
+        public Dictionary<int, ALAppReport> ReportIdMap { get; }
+        public Dictionary<int, ALAppCodeunit> CodeunitIdMap { get; }
+        public Dictionary<int, ALAppXmlPort> XmlPortIdMap { get; }
+        public Dictionary<int, ALAppPage> PageIdMap { get; }
+        public Dictionary<int, ALAppQuery> QueryIdMap { get; }
 
         public ALAppObjectIdMap()
         {
-            this.TableIdMap = new Dictionary<int, ALAppTable>();
+            TableIdMap = new Dictionary<int, ALAppTable>();
+            ReportIdMap = new Dictionary<int, ALAppReport>();
+            CodeunitIdMap = new Dictionary<int, ALAppCodeunit>();
+            XmlPortIdMap = new Dictionary<int, ALAppXmlPort>();
+            PageIdMap = new Dictionary<int, ALAppPage>();
+            QueryIdMap = new Dictionary<int, ALAppQuery>();
         }
 
         public void Clear()

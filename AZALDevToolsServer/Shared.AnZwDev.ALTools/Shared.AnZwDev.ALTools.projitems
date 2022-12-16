@@ -25,8 +25,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppDirective.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppObjectIdMap.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppObjectsCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppPermission.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\Extensions\ALAppPermissionObjectTypeExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\Extensions\ALAppPermissionValueExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppPermissionSet.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppPermissionSetExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppPermissionValue.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppPragmaWarningDirective.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppReportExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppRequestPageExtension.cs" />
@@ -89,6 +93,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppXmlPortNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\IALAppObjectExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\IReadOnlyALAppObjectsCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\MergedPermissions\MergedALAppPermission.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\MergedPermissions\MergedALAppPermissionsCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\MergedPermissions\MergedALAppPermissionSet.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\MergedReferences\ALAppObjectWithExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\MergedReferences\ISymbolReferencesList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\MergedReferences\MergedALAppObjectExtensionsCollection.cs" />
@@ -97,6 +104,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\Compiler\ALSymbolReferenceCompiler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\IALAppElementsCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\MergedReferences\MergedAllALAppObjectsCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppPermissionObjectType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\Serialization\AppFileHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\Serialization\AppPackageDataStream.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\Serialization\AppPackageInformation.cs" />
@@ -350,6 +358,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\ObjectInformationProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\PageInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\PageInformationProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\PermissionInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\PermissionSetInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\PermissionSetInformationProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\QueryDataItemInformation.cs" />

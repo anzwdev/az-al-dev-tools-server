@@ -3,6 +3,7 @@ using Microsoft.Dynamics.Nav.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -59,13 +60,28 @@ namespace AnZwDev.ALTools.ALSymbols
             return "";
         }
 
+        public static bool IsArrayOfStrings(string value)
+        {
+            if (value.StartsWith("'"))
+            {
+                bool inString = false;
+                for (int i=0; i<value.Length; i++)
+                {
+                    if (value[i] == '\'')
+                        inString = !inString;
+                    else if ((value[i] == ',') && (!inString))
+                        return true;
+                }    
+            }
+            return false;
+        }
 
         public static string DecodeName(string name)
         {
             if (name != null)
             {
                 name = name.Trim();
-                if (name.StartsWith("\""))
+                if ((name.StartsWith("\"")) && (!IsArrayOfNames(name)))
                 {
                     name = name.Substring(1);
                     if (name.EndsWith("\""))
@@ -76,6 +92,23 @@ namespace AnZwDev.ALTools.ALSymbols
             }
             return "";
         }
+
+        public static bool IsArrayOfNames(string value)
+        {
+            if (value.StartsWith("\""))
+            {
+                bool inName = false;
+                for (int i = 0; i < value.Length; i++)
+                {
+                    if (value[i] == '"')
+                        inName = !inName;
+                    else if ((value[i] == ',') && (!inName))
+                        return true;
+                }
+            }
+            return false;
+        }
+
 
         public static string EncodeName(string name)
         {
@@ -233,6 +266,36 @@ namespace AnZwDev.ALTools.ALSymbols
                 case "dataset": return "DataSet";
             }
             return name;
+        }
+
+        public static List<string> DecodeNamesList(string value)
+        {
+            if (String.IsNullOrWhiteSpace(value))
+                return null;
+
+            List<string> namesList = new List<string>();
+            int startPos = 0;
+            bool inName = false;
+            for (int endPos = 0; endPos < value.Length; endPos++)
+            {
+                switch (value[endPos])
+                {
+                    case '"':
+                        inName = !inName;
+                        break;
+                    case ',':
+                        if (!inName)
+                        {
+                            namesList.Add(DecodeName(value.Substring(startPos, endPos - startPos)));
+                            startPos = endPos + 1;
+                        }
+                        break;
+                }
+            }
+            if (startPos < value.Length)
+                namesList.Add(DecodeName(value.Substring(startPos)));
+
+            return namesList;
         }
 
 

@@ -12,5 +12,12 @@ namespace AnZwDev.ALTools.Extensions
             return new HashSet<string>(values);
         }
 
+        public static void AddRange(this HashSet<string> hashSet, IEnumerable<string> values)
+        {
+            if (values != null)
+                foreach (var value in values)
+                    hashSet.Add(value);
+        }
+
     }
 }

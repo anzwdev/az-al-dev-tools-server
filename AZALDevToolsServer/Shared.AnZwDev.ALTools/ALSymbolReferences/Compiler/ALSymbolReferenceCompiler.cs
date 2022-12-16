@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml.Linq;
 using AnZwDev.ALTools.ALSymbolReferences;
+using AnZwDev.ALTools.ALSymbolReferences.Extensions;
 using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.ALSymbols.Internal;
 using AnZwDev.ALTools.Extensions;
@@ -1230,7 +1231,45 @@ protected void ProcessSyntaxNodesList(IEnumerable<SyntaxNode> nodesList, List<AL
         {
             ALAppPermissionSet alObject = new ALAppPermissionSet();
             this.ProcessApplicationObject(alObject, node);
+            alObject.Permissions = CreatePermissionsList(node.GetPropertyValue("Permissions") as PermissionPropertyValueSyntax);
             return alObject;
+        }
+
+        private ALAppElementsCollection<ALAppPermission> CreatePermissionsList(PermissionPropertyValueSyntax permissionsPropertyValue)
+        {
+            if (permissionsPropertyValue == null)
+                return null;
+
+            ALAppElementsCollection<ALAppPermission> alAppPermissionsCollection = new ALAppElementsCollection<ALAppPermission>();
+
+            if ((permissionsPropertyValue.PermissionProperties != null) && (permissionsPropertyValue.PermissionProperties.Count > 0))
+                foreach (var permissionProperty in permissionsPropertyValue.PermissionProperties)
+                {
+                    var objectType = ALSyntaxHelper.DecodeName(permissionProperty.ObjectType.ToString());
+                    var asteriskPermission = permissionProperty.AsteriskToken.ToString();
+                    var objectName = ALSyntaxHelper.DecodeName(permissionProperty.ObjectReference?.ToString());
+                    var objectPermission = ALSyntaxHelper.DecodeName(permissionProperty.Permissions.ToString());
+                    var objectId = -1;
+                    if ((String.IsNullOrWhiteSpace(objectName)) && (!String.IsNullOrWhiteSpace(asteriskPermission)))
+                    {
+                        objectName = "*";
+                        objectId = 0;
+                    }
+
+                    if ((!String.IsNullOrWhiteSpace(objectType)) && (!String.IsNullOrWhiteSpace(objectName)))
+                    {
+                        ALAppPermission alAppPermission = new ALAppPermission()
+                        {
+                            PermissionObject = ALAppPermissionObjectTypeExtensions.FromString(objectType),
+                            Id = objectId,
+                            Value = ALAppPermissionValueExtensions.FromString(objectPermission),
+                            ObjectName = objectName
+                        };
+                        alAppPermissionsCollection.Add(alAppPermission);
+                    }
+                }
+
+            return alAppPermissionsCollection;
         }
 
 #endif
@@ -1246,6 +1285,7 @@ protected void ProcessSyntaxNodesList(IEnumerable<SyntaxNode> nodesList, List<AL
             this.ProcessApplicationObject(alObject, node);
             if (node.BaseObject != null)
                 alObject.TargetObject = ALSyntaxHelper.DecodeName(node.BaseObject.ToString());
+            alObject.Permissions = CreatePermissionsList(node.GetPropertyValue("Permissions") as PermissionPropertyValueSyntax);
             return alObject;
         }
 #endif
@@ -1653,3 +1693,4 @@ protected void ProcessSyntaxNodesList(IEnumerable<SyntaxNode> nodesList, List<AL
 
     }
 }
+ 

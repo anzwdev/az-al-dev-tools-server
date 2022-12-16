@@ -525,6 +525,11 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         public void AddToObjectsIdMap(ALAppObjectIdMap idMap)
         {
             idMap.AddRange(idMap.TableIdMap, this.Tables);
+            idMap.AddRange(idMap.ReportIdMap, this.Reports);
+            idMap.AddRange(idMap.CodeunitIdMap, this.Codeunits);
+            idMap.AddRange(idMap.XmlPortIdMap, this.XmlPorts);
+            idMap.AddRange(idMap.PageIdMap, this.Pages);
+            idMap.AddRange(idMap.QueryIdMap, this.Queries);
         }
 
         public bool IdReferencesReplaced()
@@ -537,6 +542,14 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             if (this.Pages != null)
                 for (int i = 0; i < this.Pages.Count; i++)
                     this.Pages[i].ReplaceIdReferences(idMap);
+
+            if (this.PermissionSets != null)
+                for (int i = 0; i < this.PermissionSets.Count; i++)
+                    this.PermissionSets[i].ReplaceIdReferences(idMap);
+
+            if (this.PermissionSetExtensions != null)
+                for (int i = 0; i < this.PermissionSetExtensions.Count; i++)
+                    this.PermissionSetExtensions[i].ReplaceIdReferences(idMap);
 
             this._idReferencesReplaced = true;
         }
