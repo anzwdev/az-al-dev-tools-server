@@ -2,6 +2,7 @@
 using AnZwDev.ALTools.CodeTransformations;
 using AnZwDev.ALTools.Workspace;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
+using Microsoft.Dynamics.Nav.CodeAnalysis.CommandLine;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using System;
 using System.Collections.Generic;
@@ -60,6 +61,13 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             }
 
             return base.ProcessSyntaxNode(syntaxTree, node, semanticModel, project, span, parameters);
+        }
+
+        protected override CompilerFeatures GetCompilerFeatures(ProjectManifest manifest)
+        {
+            var features = base.GetCompilerFeatures(manifest);
+            features &= (~CompilerFeatures.NoImplicitWith);
+            return features;
         }
 
     }

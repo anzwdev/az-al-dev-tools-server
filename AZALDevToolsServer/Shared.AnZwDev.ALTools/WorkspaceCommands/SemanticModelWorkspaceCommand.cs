@@ -70,9 +70,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             ProjectManifest manifest = ProjectManifest.ReadFromString(projectFile, FileUtils.SafeReadAllText(projectFile), diagnostics);
 
             //initialize compilation options
-            var compilationOptions = new CompilationOptions(
-                target: manifest.AppManifest.Target,
-                compilerFeatures: manifest.AppManifest.CompilerFeatures);
+            var compilationOptions = CreateCompilationOptions(manifest);
 
             //create compilation
             Compilation compilation = Compilation.Create("MyCompilation", manifest.AppManifest.AppPublisher,
@@ -88,6 +86,18 @@ namespace AnZwDev.ALTools.WorkspaceCommands
                 .WithReferences(manifest.GetAllReferences());
 
             return compilation;
+        }
+
+        protected virtual CompilerFeatures GetCompilerFeatures(ProjectManifest manifest)
+        {
+            return manifest.AppManifest.CompilerFeatures;
+        }
+
+        protected virtual CompilationOptions CreateCompilationOptions(ProjectManifest manifest)
+        {
+            return new CompilationOptions(
+                target: manifest.AppManifest.Target,
+                compilerFeatures: GetCompilerFeatures(manifest));
         }
 
         protected LocalCacheSymbolReferenceLoader SafeCreateLocalCacheSymbolReferenceLoader(string packagesCachePath)

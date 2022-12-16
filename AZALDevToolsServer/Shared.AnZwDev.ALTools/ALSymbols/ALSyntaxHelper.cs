@@ -298,7 +298,48 @@ namespace AnZwDev.ALTools.ALSymbols
             return namesList;
         }
 
+        public static List<string> GetWords(string value, int maxNo, int maxLength)
+        {
+            if (String.IsNullOrWhiteSpace(value))
+                return null;
+            
+            List<string> words = new List<string>();
+            bool inName = false;
+            bool inString = false;
+            int startPos = 0;
+            for (int endPos = 0; endPos < value.Length; endPos++)
+            {
+                switch (value[endPos])
+                {
+                    case '"':
+                        if (!inString)
+                            inName = !inName;
+                        break;
+                    case '\'':
+                        if (!inName)
+                            inString = !inString;
+                        break;
+                    case ' ':
+                    case '\n':
+                    case '\r':
+                    case '\t':
+                    case ',':
+                        if ((!inName) && (!inString) && (endPos > startPos))
+                        {
+                            var element = value.Substring(startPos, endPos - startPos).Trim();
+                            words.Add(element);
+                            startPos = endPos + 1;
+                        }
+                        break;
+                }
 
+                if ((words.Count >= maxNo) || ((endPos - startPos) > maxLength))
+                    return words;
+            }
+            if (startPos < value.Length)
+                words.Add(value.Substring(startPos).Trim());
 
+            return words;
+        }
     }
 }
