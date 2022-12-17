@@ -62,6 +62,36 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
         #endregion
 
+        #region Get table details
+
+        public TableInformation GetTableInformation(ALProject project, string tableName, bool includeDisabled, bool includeObsolete, bool includeNormal, bool includeFlowFields, bool includeFlowFilters, bool includeToolTips, IEnumerable<string> toolTipsSourceDependencies)
+        {
+            (var alTable, var fields) = GetTableFieldsWithALAppTable(project, tableName, includeDisabled, includeObsolete, includeNormal, includeFlowFields, includeFlowFilters, includeToolTips, toolTipsSourceDependencies);
+            
+            if (alTable == null)
+                return null;
+
+            TableInformation information = new TableInformation(alTable);
+            information.Fields = fields;
+            information.PrimaryKeys = new List<TableFieldInformaton>();
+
+            var pk = alTable.GetPrimaryKey();
+            if (pk?.FieldNames != null)
+                for (int i = 0; i < pk.FieldNames.Length; i++)
+                    if (pk.FieldNames[i] != null)
+                    {
+                        var field = information.Fields
+                            .Where(p => (p.Name != null) && (pk.FieldNames[i].Equals(p.Name, StringComparison.CurrentCultureIgnoreCase)))
+                            .FirstOrDefault();
+                        if (field != null)
+                            information.PrimaryKeys.Add(field);
+                    }
+
+            return information;
+        }
+
+        #endregion
+
         #region Find table
 
         protected (ALAppTable, ALProject) FindTableWithSourceProject(ALProject project, string name)
@@ -102,12 +132,18 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
         public List<TableFieldInformaton> GetTableFields(ALProject project, string tableName, bool includeDisabled, bool includeObsolete, bool includeNormal, bool includeFlowFields, bool includeFlowFilters, bool includeToolTips, IEnumerable<string> toolTipsSourceDependencies)
         {
+            (var _, var fields) = GetTableFieldsWithALAppTable(project, tableName, includeDisabled, includeObsolete, includeNormal, includeFlowFields, includeFlowFilters, includeToolTips, toolTipsSourceDependencies);
+            return fields;
+        }
+
+        private (ALAppTable, List<TableFieldInformaton>) GetTableFieldsWithALAppTable(ALProject project, string tableName, bool includeDisabled, bool includeObsolete, bool includeNormal, bool includeFlowFields, bool includeFlowFilters, bool includeToolTips, IEnumerable<string> toolTipsSourceDependencies)
+        {
             List<TableFieldInformaton> fields = new List<TableFieldInformaton>();
 
             //find table
             (ALAppTable table, ALProject tableSourceProject) = this.FindTableWithSourceProject(project, tableName);
             if (table == null)
-                return fields;
+                return (null, fields);
 
             //add fields from table
             this.AddFields(fields, tableSourceProject, table.Fields, includeDisabled, includeObsolete, includeNormal, includeFlowFields, includeFlowFilters);
@@ -149,7 +185,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             //add virtual system fields
             this.AddSystemFields(fields);
 
-            return fields;
+            return (table, fields);
         }
 
         protected void AddFields(List<TableFieldInformaton> fields, ALProject project, ALAppElementsCollection<ALAppTableField> fieldReferencesList, bool includeDisabled, bool includeObsolete, bool includeNormal, bool includeFlowFields, bool includeFlowFilters)

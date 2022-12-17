@@ -9,17 +9,19 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
     public class TableInformation : BaseObjectInformation
     {
 
-        [JsonProperty("id", NullValueHandling = NullValueHandling.Ignore)]
-        public List<TableFieldInformaton> Fields { get; set; }
+        [JsonProperty("fields", NullValueHandling = NullValueHandling.Ignore)]
+        public List<TableFieldInformaton> Fields { get; set; } = null;
+
+        [JsonProperty("primaryKeys", NullValueHandling = NullValueHandling.Ignore)]
+        public List<TableFieldInformaton> PrimaryKeys { get; set; } = null;
+
 
         public TableInformation()
         {
-            this.Fields = null;
         }
 
         public TableInformation(ALAppTable table): base(table)
         {
-            this.Fields = null;
         }
 
 

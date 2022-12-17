@@ -32,5 +32,12 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             base.AddChildALSymbols(symbol);
         }
 
+        public ALAppTableKey GetPrimaryKey()
+        {
+            if ((Keys != null) && (Keys.Count > 0))
+                return Keys[0];
+            return null;
+        }
+
     }
 }
