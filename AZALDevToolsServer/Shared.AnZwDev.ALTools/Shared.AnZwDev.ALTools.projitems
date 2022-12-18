@@ -153,6 +153,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\SymbolReaders\ALSymbolInfoSyntaxTreeReader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\SymbolReaders\ALSyntaxTreeSymbolsReader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALToolsConst.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\AddReferencedTablesPermissionsSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\AddTableDataCaptionFieldsRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\AddDropDownFieldGroupsRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\BaseRemoveEmptyNodesSyntaxRewriter.cs" />
@@ -274,6 +275,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)SourceControl\GitClient.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\AddAppAreasWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\AddDropDownFieldGroupsWorkspaceCommand .cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\AddReferencedTablesPermissionsWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\AddTableDataCaptionFieldsWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\AddDataClassificationWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\AddEnumCaptionsWorkspaceCommand.cs" />

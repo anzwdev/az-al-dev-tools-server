@@ -65,5 +65,14 @@ namespace AnZwDev.ALTools.ALSymbolReferences.MergedPermissions
                     yield return permission;
         }
 
+        public bool IsEmpty()
+        {
+            if (_permissionsDictionary.Count > 0)
+                foreach (var value in _permissionsDictionary.Values)
+                    if (value.Count > 0)
+                        return false;
+            return true;
+        }
+
     }
 }

@@ -48,5 +48,34 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Extensions
             return ALAppPermissionValue.Empty;
         }
 
+        public static string ToALString(this ALAppPermissionValue enumValue)
+        {
+            string alValue = "";
+
+            if ((enumValue & ALAppPermissionValue.R) == ALAppPermissionValue.R)
+                alValue = alValue + "R";
+            if ((enumValue & ALAppPermissionValue.I) == ALAppPermissionValue.I)
+                alValue = alValue + "I";
+            if ((enumValue & ALAppPermissionValue.M) == ALAppPermissionValue.M)
+                alValue = alValue + "M";
+            if ((enumValue & ALAppPermissionValue.D) == ALAppPermissionValue.D)
+                alValue = alValue + "D";
+            if ((enumValue & ALAppPermissionValue.X) == ALAppPermissionValue.X)
+                alValue = alValue + "X";
+
+            if ((enumValue & ALAppPermissionValue.IndirectR) == ALAppPermissionValue.IndirectR)
+                alValue = alValue + "r";
+            if ((enumValue & ALAppPermissionValue.IndirectI) == ALAppPermissionValue.IndirectI)
+                alValue = alValue + "i";
+            if ((enumValue & ALAppPermissionValue.IndirectM) == ALAppPermissionValue.IndirectM)
+                alValue = alValue + "m";
+            if ((enumValue & ALAppPermissionValue.IndirectD) == ALAppPermissionValue.IndirectD)
+                alValue = alValue + "d";
+            if ((enumValue & ALAppPermissionValue.IndirectX) == ALAppPermissionValue.IndirectX)
+                alValue = alValue + "x";
+
+            return alValue;
+        }
+
     }
 }

@@ -60,6 +60,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             this.RegisterCommand(new RemoveEventPublishersWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new RemoveRedundantAppAreasWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new AddEnumCaptionsWorkspaceCommand(this.ALDevToolsServer));
+            this.RegisterCommand(new AddReferencedTablesPermissionsWorkspaceCommand(this.ALDevToolsServer));
 #endif
 
             this.RegisterCommand(new RemoveVariableWorkspaceCommand(this.ALDevToolsServer));

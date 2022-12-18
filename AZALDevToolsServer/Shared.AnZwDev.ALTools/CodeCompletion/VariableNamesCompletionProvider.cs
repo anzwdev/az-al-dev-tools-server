@@ -250,6 +250,8 @@ namespace AnZwDev.ALTools.CodeCompletion
                         source = source + ";";
                 }
                 var item = new CodeCompletionItem(source, CompletionItemKind.Field);
+                item.filterText = source.Replace(":", "");
+
                 if ((IncludeDataType) && (!addSemicolon))
                     item.commitCharacters = _fullDeclarationCommitCharacters;
 

@@ -1,4 +1,7 @@
-﻿using System;
+﻿using AnZwDev.ALTools.ALSymbols.Internal;
+using AnZwDev.ALTools.Extensions;
+using Microsoft.Dynamics.Nav.CodeAnalysis;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -34,6 +37,32 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Extensions
                 }
             }
             return ALAppPermissionObjectType.Undefined;
+        }
+
+        public static ALAppPermissionObjectType FromSymbolKind(ConvertedSymbolKind kind)
+        {
+            switch (kind)
+            {
+                case ConvertedSymbolKind.Record:
+                case ConvertedSymbolKind.Table:
+                    return ALAppPermissionObjectType.Table;
+                case ConvertedSymbolKind.Report:
+                    return ALAppPermissionObjectType.Report;
+                case ConvertedSymbolKind.Codeunit:
+                    return ALAppPermissionObjectType.Codeunit;
+                case ConvertedSymbolKind.XmlPort:
+                    return ALAppPermissionObjectType.XmlPort;
+                case ConvertedSymbolKind.Page:
+                    return ALAppPermissionObjectType.Page;
+                case ConvertedSymbolKind.Query:
+                    return ALAppPermissionObjectType.Query;
+            }
+            return ALAppPermissionObjectType.Undefined;
+        }
+
+        public static ALAppPermissionObjectType FromSymbolKind(SymbolKind kind)
+        {
+            return FromSymbolKind(kind.ConvertToLocalType());
         }
 
     }

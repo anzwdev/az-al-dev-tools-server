@@ -41,6 +41,19 @@ namespace AnZwDev.ALTools.Extensions
                     (!emptyValue.Equals(propertySyntax.Value.ToString(), StringComparison.CurrentCultureIgnoreCase))));
         }
 
+        public static bool CheckIfPropertyValueEquals(this SyntaxNode node, string propertyName, bool value)
+        {
+            if (value)
+                return node.CheckIfPropertyValueEquals(propertyName, "true");
+            return node.CheckIfPropertyValueEquals(propertyName, "false");
+        }
+
+        public static bool CheckIfPropertyValueEquals(this SyntaxNode node, string propertyName, string value)
+        {
+            string propertyValue = node.GetPropertyValue(propertyName)?.ToString()?.Trim();
+            return ((propertyValue != null) && (propertyValue.Equals(value, StringComparison.CurrentCultureIgnoreCase)));
+        }
+
         public static SyntaxTriviaList CreateChildNodeIdentTrivia(this SyntaxNode node)
         {
             //calculate indent

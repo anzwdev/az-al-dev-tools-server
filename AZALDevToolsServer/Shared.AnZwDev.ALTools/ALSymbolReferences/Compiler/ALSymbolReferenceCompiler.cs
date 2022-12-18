@@ -1235,7 +1235,7 @@ protected void ProcessSyntaxNodesList(IEnumerable<SyntaxNode> nodesList, List<AL
             return alObject;
         }
 
-        private ALAppElementsCollection<ALAppPermission> CreatePermissionsList(PermissionPropertyValueSyntax permissionsPropertyValue)
+        public ALAppElementsCollection<ALAppPermission> CreatePermissionsList(PermissionPropertyValueSyntax permissionsPropertyValue)
         {
             if (permissionsPropertyValue == null)
                 return null;
