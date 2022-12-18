@@ -153,8 +153,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\SymbolReaders\ALSymbolInfoSyntaxTreeReader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\SymbolReaders\ALSyntaxTreeSymbolsReader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALToolsConst.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\AddDataCaptionRewriter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\AddDropDownFieldGroupRewriter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\AddTableDataCaptionFieldsRewriter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\AddDropDownFieldGroupsRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\BaseRemoveEmptyNodesSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeAnalysis\AppSourceCopSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeAnalysis\CodeAnalyzerRule.cs" />
@@ -273,7 +273,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Navigation\WarningDirectivesReferencesProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SourceControl\GitClient.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\AddAppAreasWorkspaceCommand.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\AddDataCaptionsAndDropDownGroupsWorkspaceCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\AddDropDownFieldGroupsWorkspaceCommand .cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\AddTableDataCaptionFieldsWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\AddDataClassificationWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\AddEnumCaptionsWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\AddFieldCaptionsWorkspaceCommand.cs" />
@@ -371,6 +372,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\ReportDataItemInformationFieldsBuffer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\ReportInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\ReportInformationProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\Sorting\SymbolWithIdInformationIdComparer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\SymbolInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\SymbolInformationComparer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\SymbolInformationListExtensions.cs" />

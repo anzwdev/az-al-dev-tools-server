@@ -97,6 +97,9 @@ namespace AZALDevToolsTestConsoleApp
             pm.Add("removeLocalVariables", "true");
             pm.Add("removeLocalMethodParameters", "false");
 
+            pm.Add("fieldsNamesPatterns0", "Description");
+            pm.Add("fieldsNamesPatterns1", "Description 2");
+
             //pm.Add("dependencyName0", "Microsoft - System");
             //pm.Add("dependencyName1", "Microsoft - Application");
             //pm.Add("dependencyName2", "Microsoft - System Application");
@@ -118,7 +121,8 @@ namespace AZALDevToolsTestConsoleApp
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("removeEmptySections", content, projects[0].folderPath, filePath, null, pm, null);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("removeStrSubstNoFromError", content, projects[0].folderPath, filePath, null, pm, null);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("removeRedundantAppAreas", content, projects[0].folderPath, filePath, null, pm, null);
-            WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("addDataCaptionsDropDownGroups", content, projects[0].folderPath, filePath, null, pm, null);
+            WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("addTableDataCaptionFields", content, projects[0].folderPath, filePath, null, pm, null);
+            //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("addDropDownFieldGroups", content, projects[0].folderPath, filePath, null, pm, null);
 
 
             ALProject project = host.ALDevToolsServer.Workspace.Projects[0];

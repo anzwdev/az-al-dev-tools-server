@@ -37,12 +37,17 @@ namespace AnZwDev.ALTools.CodeTransformations
             string value = node.GetNameStringValue().RemovePrefixSuffix(
                 this.Project.MandatoryPrefixes, this.Project.MandatorySuffixes, this.Project.MandatoryAffixes, this.Project.AdditionalMandatoryAffixesPatterns);
 
+            var propertySyntax = SyntaxFactoryHelper.CaptionProperty(value, null, locked);
+
+            /*
             SyntaxTriviaList leadingTriviaList = node.CreateChildNodeIdentTrivia();
             SyntaxTriviaList trailingTriviaList = SyntaxFactory.ParseTrailingTrivia("\r\n", 0);
-
-            return SyntaxFactoryHelper.CaptionProperty(value, null, locked)
+            propertySyntax = propertySyntax
                 .WithLeadingTrivia(leadingTriviaList)
                 .WithTrailingTrivia(trailingTriviaList);
+            */
+
+            return propertySyntax;
         }
 
     }

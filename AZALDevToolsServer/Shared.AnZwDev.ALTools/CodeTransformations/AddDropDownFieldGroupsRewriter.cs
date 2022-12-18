@@ -12,7 +12,7 @@ namespace AnZwDev.ALTools.CodeTransformations
     public class AddDropDownFieldGroupsRewriter : ALSyntaxRewriter
     {
 
-        public List<string> FieldsPatterns { get; set; } = null;
+        public List<string> FieldNamesPatterns { get; set; } = null;
 
         public override SyntaxNode VisitTable(TableSyntax node)
         {
@@ -24,7 +24,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                 if (tableName != null)
                 {
                     var matcher = new TableFieldsInformationPatternMatcher();
-                    var collectedFields = matcher.Match(Project, tableName, true, FieldsPatterns, true, true, false);
+                    var collectedFields = matcher.Match(Project, tableName, true, FieldNamesPatterns, true, true, false);
 
                     if (collectedFields.Count > 0)
                     {
@@ -33,6 +33,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                             fieldNamesSyntaxList.Add(SyntaxFactory.IdentifierName(collectedFields[i].Name));
 
                         var fieldNamesSyntaxSeparatedList = new SeparatedSyntaxList<IdentifierNameSyntax>();
+                        fieldNamesSyntaxSeparatedList = fieldNamesSyntaxSeparatedList.AddRange(fieldNamesSyntaxList);
                         var dropDownGroup = SyntaxFactory.FieldGroup("DropDown").WithFields(fieldNamesSyntaxSeparatedList);
 
                         var newFieldGroups = (node.FieldGroups == null)?
@@ -40,6 +41,8 @@ namespace AnZwDev.ALTools.CodeTransformations
                             node.FieldGroups.AddFieldGroups(dropDownGroup);
 
                         node = node.WithFieldGroups(newFieldGroups);
+
+                        NoOfChanges++;
                     }
                 }
             }

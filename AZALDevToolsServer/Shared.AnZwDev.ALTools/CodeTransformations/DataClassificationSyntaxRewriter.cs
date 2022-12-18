@@ -79,9 +79,21 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         protected PropertySyntax CreateDataClassificationProperty(SyntaxNode node)
         {
+            var propertySyntax = SyntaxFactory.Property(
+                "DataClassification",
+                SyntaxFactory.EnumPropertyValue(SyntaxFactory.IdentifierName(this.DataClassification)));
+
+            /*
             SyntaxTriviaList leadingTriviaList = node.CreateChildNodeIdentTrivia();
             SyntaxTriviaList trailingTriviaList = SyntaxFactory.ParseTrailingTrivia("\r\n", 0);
+            propertySyntax = propertySyntax
+                .WithLeadingTrivia(leadingTriviaList)
+                .WithTrailingTrivia(trailingTriviaList);
+            */
 
+            return propertySyntax;
+
+            /*
             return SyntaxFactory.Property(
                 SyntaxFactory.PropertyName(SyntaxFactory.Identifier("DataClassification"))
                     .WithTrailingTrivia(SyntaxFactory.ParseTrailingTrivia(" ")),
@@ -89,6 +101,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                     .WithLeadingTrivia(SyntaxFactory.ParseLeadingTrivia(" ")))
                 .WithLeadingTrivia(leadingTriviaList)                
                 .WithTrailingTrivia(trailingTriviaList);
+            */
         }
 
 

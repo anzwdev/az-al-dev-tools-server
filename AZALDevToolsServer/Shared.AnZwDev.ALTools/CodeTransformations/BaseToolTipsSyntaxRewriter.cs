@@ -20,12 +20,17 @@ namespace AnZwDev.ALTools.CodeTransformations
             PropertySyntax propertySyntax = node.GetProperty("ToolTip");
             if (propertySyntax == null)
             {
+                var newPropertySyntax = SyntaxFactoryHelper.ToolTipProperty(newToolTip, "", false);
+
+                /*
                 SyntaxTriviaList leadingTriviaList = node.CreateChildNodeIdentTrivia();
                 SyntaxTriviaList trailingTriviaList = SyntaxFactory.ParseTrailingTrivia("\r\n", 0);
-                return node.AddPropertyListProperties(
-                    SyntaxFactoryHelper.ToolTipProperty(newToolTip, "", false)
-                        .WithLeadingTrivia(leadingTriviaList)
-                        .WithTrailingTrivia(trailingTriviaList));
+                newPropertySyntax = newPropertySyntax
+                    .WithLeadingTrivia(leadingTriviaList)
+                    .WithTrailingTrivia(trailingTriviaList);
+                */
+
+                return node.AddPropertyListProperties(newPropertySyntax);
             }
             else
             {

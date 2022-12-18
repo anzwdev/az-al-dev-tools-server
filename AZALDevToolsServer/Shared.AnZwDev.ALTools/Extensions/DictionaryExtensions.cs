@@ -22,13 +22,17 @@ namespace AnZwDev.ALTools.Extensions
             return ((value.ToLower() == "true") || (value == "1"));
         }
 
-        public static string[] GetStringArrayValue(this Dictionary<string, string> dictionary, string key)
+        public static List<string> GetStringListValue(this Dictionary<string, string> dictionary, string keyPrefix)
         {
-            string value = dictionary.GetStringValue(key);
-            if (String.IsNullOrWhiteSpace(value))
+            List<string> valuesList = new List<string>();
+            foreach (string key in dictionary.Keys)
+            {
+                if ((key.StartsWith(keyPrefix)) && (!String.IsNullOrWhiteSpace(dictionary[key])))
+                    valuesList.Add(dictionary[key]);
+            }
+            if (valuesList.Count == 0)
                 return null;
-            char[] split = { ',' };
-            return value.Split(split);
+            return valuesList;
         }
 
         public static ET FindOrCreate<KT, ET>(this Dictionary<KT, ET> dictionary, KT key) where ET : new()

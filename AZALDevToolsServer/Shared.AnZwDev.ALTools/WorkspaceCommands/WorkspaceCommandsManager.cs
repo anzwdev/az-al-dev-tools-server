@@ -40,8 +40,8 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             this.RegisterCommand(new LockRemovedFieldsCaptionsWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new AddObjectCaptionsWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new MakeFlowFieldsReadOnlyWorkspaceCommand(this.ALDevToolsServer));
-            this.RegisterCommand(new AddTableDataCaptionsWorkspaceCommand(this.ALDevToolsServer));
-            this.RegisterCommand(new AddDropDownGroupsWorkspaceCommand(this.ALDevToolsServer));
+            this.RegisterCommand(new AddTableDataCaptionFieldsWorkspaceCommand(this.ALDevToolsServer));
+            this.RegisterCommand(new AddDropDownFieldGroupsWorkspaceCommand(this.ALDevToolsServer));
 
             this.RegisterCommand(new FixKeywordsCaseWorkspaceCommand(this.ALDevToolsServer));
 

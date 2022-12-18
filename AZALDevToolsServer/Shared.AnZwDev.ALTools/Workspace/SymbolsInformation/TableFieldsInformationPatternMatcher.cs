@@ -1,4 +1,5 @@
 ﻿using AnZwDev.ALTools.ALSymbolReferences.Serialization;
+using AnZwDev.ALTools.Workspace.SymbolsInformation.Sorting;
 using Microsoft.Extensions.FileSystemGlobbing;
 using System;
 using System.Collections;
@@ -24,6 +25,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             List<TableFieldInformaton> collectedFields = new List<TableFieldInformaton>();
             if (tableInformation != null)
             {
+                tableInformation.Fields.Sort(new SymbolWithIdInformationIdComparer());
 
                 HashSet<string> collectedFieldNames = new HashSet<string>();
 
@@ -31,9 +33,10 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
                     for (int i = 0; i < tableInformation.PrimaryKeys.Count; i++)
                         CollectField(tableInformation.PrimaryKeys[i], collectedFieldNames, collectedFields);
 
-                for (int i = 0; i < fieldNamePatternsList.Count; i++)
-                    if (!String.IsNullOrWhiteSpace(fieldNamePatternsList[i]))
-                        MatchField(fieldNamePatternsList[i], tableInformation.Fields, collectedFieldNames, collectedFields);
+                if (fieldNamePatternsList != null)
+                    for (int i = 0; i < fieldNamePatternsList.Count; i++)
+                        if (!String.IsNullOrWhiteSpace(fieldNamePatternsList[i]))
+                            MatchField(fieldNamePatternsList[i], tableInformation.Fields, collectedFieldNames, collectedFields);
             }
 
             return collectedFields;
