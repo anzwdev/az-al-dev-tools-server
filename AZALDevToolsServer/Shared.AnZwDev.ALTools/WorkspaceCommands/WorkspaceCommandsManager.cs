@@ -42,6 +42,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             this.RegisterCommand(new MakeFlowFieldsReadOnlyWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new AddTableDataCaptionFieldsWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new AddDropDownFieldGroupsWorkspaceCommand(this.ALDevToolsServer));
+            this.RegisterCommand(new GenerateCSVXmlPortHeadersWorkspaceCommand(this.ALDevToolsServer));
 
             this.RegisterCommand(new FixKeywordsCaseWorkspaceCommand(this.ALDevToolsServer));
 

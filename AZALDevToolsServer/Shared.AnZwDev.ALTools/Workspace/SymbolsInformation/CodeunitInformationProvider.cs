@@ -2,11 +2,17 @@
 using System.Collections.Generic;
 using System.Text;
 using AnZwDev.ALTools.ALSymbolReferences;
+using AnZwDev.ALTools.ALSymbolReferences.MergedReferences;
 
 namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 {
-    public class CodeunitInformationProvider
+    public class CodeunitInformationProvider : BaseObjectInformationProvider<ALAppCodeunit>
     {
+
+        protected override MergedALAppObjectsCollection<ALAppCodeunit> GetALAppObjectsCollection(ALProject project)
+        {
+            return project.AllSymbols.Codeunits;
+        }
 
         public List<CodeunitInformation> GetCodeunits(ALProject project)
         {

@@ -170,6 +170,9 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                     SafeProcessPageChartPartNode(symbol, node);
                     break;
 #endif
+                case ConvertedSyntaxKind.XmlPortObject:
+                    ProcessXmlPortObjectNode(symbol, node);
+                    break;
                 case ConvertedSyntaxKind.XmlPortFieldElement:
                 case ConvertedSyntaxKind.XmlPortFieldAttribute:
                     ProcessXmlPortFieldNode(symbol, (XmlPortFieldNodeSyntax)node);
@@ -244,8 +247,12 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             this.ProcessNodeContentRange(syntaxTree, symbol, syntax, syntax.OpenBraceToken, syntax.CloseBraceToken);
         }
 
-
 #endif
+
+        protected void ProcessXmlPortObjectNode(ALSymbol symbol, SyntaxNode node)
+        {
+            symbol.format = node.GetPropertyValue("Format")?.ToString()?.ToLower();
+        }
 
         protected void ProcessVarSection(SyntaxTree syntaxTree, ALSymbol symbol, SyntaxNode syntax)
         {

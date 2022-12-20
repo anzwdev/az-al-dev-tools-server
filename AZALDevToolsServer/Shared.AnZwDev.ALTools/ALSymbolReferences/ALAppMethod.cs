@@ -93,14 +93,25 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return builder.ToString();
         }
 
-        public void AppendHeaderSourceCode(StringBuilder builder)
+        public string GetAccessModifier()
         {
             if (this.IsInternal)
-                builder.Append("internal ");
+                return "internal";
             if (this.IsProtected)
-                builder.Append("protected ");
+                return "protected";
             if (this.IsLocal)
-                builder.Append("local ");
+                return "local";
+            return null;
+        }
+
+        public void AppendHeaderSourceCode(StringBuilder builder)
+        {
+            var accessModifier = GetAccessModifier();
+            if (!String.IsNullOrWhiteSpace(accessModifier))
+            {
+                builder.Append(accessModifier);
+                builder.Append(" ");
+            }
 
             builder.Append("procedure ");
             builder.Append(this.Name);

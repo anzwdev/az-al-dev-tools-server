@@ -185,6 +185,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\DirectiveTriviaMergedList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\EnumCaptionSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\FixTextOverflowAssignmentSyntaxRewriter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\GenerateCSVXmlPortHeadersSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\MakeFlowFieldsReadOnlySyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\RemoveRedundandAppAreasSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\RefreshToolTipsSyntaxRewriter.cs" />
@@ -289,6 +290,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\FixIdentifiersCaseWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\FixKeywordsCaseWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\FormatDocumentWorkspaceCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\GenerateCSVXmlPortHeadersWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\LockRemovedFieldsCaptionsWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\MakeFlowFieldsReadOnlyWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\RefreshToolTipsWorkspaceCommand.cs" />

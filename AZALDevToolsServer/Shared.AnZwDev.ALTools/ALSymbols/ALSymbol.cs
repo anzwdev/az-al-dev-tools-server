@@ -20,6 +20,9 @@ namespace AnZwDev.ALTools.ALSymbols
         public string subtype { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public string format { get; set; }
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string elementsubtype { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
