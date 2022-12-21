@@ -5,6 +5,8 @@ using System.Text;
 
 namespace AnZwDev.ALTools.WorkspaceCommands
 {
+#if BC
+
     internal class GenerateCSVXmlPortHeadersWorkspaceCommand : SyntaxRewriterWorkspaceCommand<GenerateCSVXmlPortHeadersSyntaxRewriter>
     {
 
@@ -13,4 +15,6 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         }
 
     }
+
+#endif
 }

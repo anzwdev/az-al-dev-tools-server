@@ -8,6 +8,9 @@ using System.Xml.Linq;
 
 namespace AnZwDev.ALTools.CodeTransformations
 {
+
+#if BC
+
     public class GenerateCSVXmlPortHeadersSyntaxRewriter : ALSyntaxRewriter
     {
 
@@ -220,4 +223,6 @@ namespace AnZwDev.ALTools.CodeTransformations
 
 
     }
+
+#endif
 }
