@@ -1430,6 +1430,12 @@ protected void ProcessSyntaxNodesList(IEnumerable<SyntaxNode> nodesList, List<AL
         {
             if ((node.Variables != null) && (node.Variables.Count > 0))
             {
+                var accessModifier = ALSymbolAccessModifier.Public;
+                if (node.AccessModifier != null)
+                {
+
+                }
+
                 ALAppElementsCollection<ALAppVariable> variables = new ALAppElementsCollection<ALAppVariable>();
                 foreach (VariableDeclarationBaseSyntax variableSyntax in node.Variables)
                 {

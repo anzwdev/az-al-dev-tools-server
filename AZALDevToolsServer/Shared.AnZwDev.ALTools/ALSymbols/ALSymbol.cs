@@ -15,7 +15,10 @@ namespace AnZwDev.ALTools.ALSymbols
         
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string name { get; set; }
-        
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public ALSymbolAccessModifier? access { get; set; }
+
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string subtype { get; set; }
 
@@ -50,6 +53,10 @@ namespace AnZwDev.ALTools.ALSymbols
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public bool? containsDiagnostics { get; set; }
+
+        [JsonIgnore]
+        public ALSymbol ParentSymbol { get; set; }
+
 #pragma warning restore IDE1006
 
         public ALSymbol()
@@ -63,6 +70,7 @@ namespace AnZwDev.ALTools.ALSymbols
             this.extends = null;
             this.contentRange = null;
             this.containsDiagnostics = null;
+            this.access = null;
         }
 
         public ALSymbol(ALSymbolKind kindValue, string nameValue) : this()
@@ -90,6 +98,7 @@ namespace AnZwDev.ALTools.ALSymbols
                 return;
             if (this.childSymbols == null)
                 this.childSymbols = new List<ALSymbol>();
+            symbolInfo.ParentSymbol = this;
             this.childSymbols.Add(symbolInfo);
         }
 
@@ -142,6 +151,32 @@ namespace AnZwDev.ALTools.ALSymbols
                 }
             }
             return symbol;
+        }
+
+        public void RemoveEmptyChildNodes()
+        {
+            if (this.childSymbols != null)
+            {
+                for (int i = this.childSymbols.Count - 1; i >= 0; i--)
+                {
+                    this.childSymbols[i].RemoveEmptyChildNodes();
+                    if (this.childSymbols[i].IsEmptyAndCanBeRemoved())
+                        this.childSymbols.RemoveAt(i);
+                }
+                if (this.childSymbols.Count == 0)
+                    this.childSymbols = null;
+            }
+        }
+
+        public bool IsEmptyAndCanBeRemoved()
+        {
+            switch (kind)
+            {
+                case ALSymbolKind.ParameterList:
+                case ALSymbolKind.PropertyList:
+                    return (childSymbols == null) || (childSymbols.Count == 0);
+            }
+            return false;
         }
 
     }

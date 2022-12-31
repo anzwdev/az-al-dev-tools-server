@@ -25,6 +25,18 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         {
         }
 
+        public override ALSymbolAccessModifier? GetAccessModifier()
+        {
+            if (this.IsInternal)
+                return ALSymbolAccessModifier.Internal;
+            if (this.IsProtected)
+                return ALSymbolAccessModifier.Protected;
+            if (this.IsLocal)
+                return ALSymbolAccessModifier.Local;
+
+            return base.GetAccessModifier();
+        }
+
         public override ALSymbolKind GetALSymbolKind()
         {
             if (this.Attributes != null)
@@ -93,7 +105,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return builder.ToString();
         }
 
-        public string GetAccessModifier()
+        public string GetAccessModifierName()
         {
             if (this.IsInternal)
                 return "internal";
@@ -106,7 +118,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
 
         public void AppendHeaderSourceCode(StringBuilder builder)
         {
-            var accessModifier = GetAccessModifier();
+            var accessModifier = GetAccessModifierName();
             if (!String.IsNullOrWhiteSpace(accessModifier))
             {
                 builder.Append(accessModifier);

@@ -308,6 +308,22 @@ namespace AnZwDev.ALTools.Extensions
             return kind.Contains(nodeKind);
         }
 
+        public static bool GetBoolPropertyValue(this SyntaxNode node, string propertyName, bool defaultValue)
+        {
+            var stringValue = node.GetPropertyValue(propertyName)?.ToString();
+            if (stringValue != null)
+                return (stringValue.Equals("true", StringComparison.CurrentCultureIgnoreCase)) || (stringValue == "1");
+            return defaultValue;
+        }
+
+        public static string GetIdentifierPropertyValue(this SyntaxNode node, string propertyName)
+        {
+            var stringValue = node.GetPropertyValue(propertyName)?.ToString();
+            if (stringValue != null)
+                return ALSyntaxHelper.DecodeName(stringValue);
+            return null;
+        }
+
         #region Nav2018 helpers
 
 #if NAV2018

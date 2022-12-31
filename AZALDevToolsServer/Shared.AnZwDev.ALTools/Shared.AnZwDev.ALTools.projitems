@@ -124,6 +124,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALFullSyntaxTreeNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALMemberAccessExpression.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSymbol.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSymbolAccessModifier.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSymbolKind.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSymbolKindExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSymbolLibrariesCollection.cs" />
@@ -150,6 +151,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\PropertyValue.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\Range.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\SymbolReaders\ALFullSyntaxTreeReader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\SymbolReaders\ALRegionDirective.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\SymbolReaders\ALSymbolInfoSyntaxTreeReader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\SymbolReaders\ALSyntaxTreeSymbolsReader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALToolsConst.cs" />

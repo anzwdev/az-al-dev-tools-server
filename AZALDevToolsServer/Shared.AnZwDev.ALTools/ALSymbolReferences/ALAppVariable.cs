@@ -17,6 +17,13 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         {
         }
 
+        public override ALSymbolAccessModifier? GetAccessModifier()
+        {
+            if (Protected)
+                return ALSymbolAccessModifier.Protected;
+            return base.GetAccessModifier();
+        }
+
         public override ALSymbolKind GetALSymbolKind()
         {
             return ALSymbolKind.VariableDeclaration;
@@ -27,6 +34,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             ALSymbol symbol = base.CreateMainALSymbol();
             if (this.TypeDefinition != null)
                 symbol.fullName = ALSyntaxHelper.EncodeName(this.Name) + ": " + this.TypeDefinition.GetSourceCode();
+            symbol.access = GetAccessModifier();
             return symbol;
         }
 

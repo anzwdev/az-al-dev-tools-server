@@ -44,7 +44,7 @@ namespace AZALDevToolsTestConsoleApp
 
 
             //string filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\small\\Pag50000.MySmallTableList.al";
-            string filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18\\MyTableExt.al";
+            string filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject\\Pag50100.MyPageEvS.al";
             ALSymbolInfoSyntaxTreeReader syntaxTreeReader = new(true);
             ALSymbol symbols = syntaxTreeReader.ProcessSourceFile(filePath);
 
