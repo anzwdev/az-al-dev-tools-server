@@ -78,9 +78,6 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         protected PropertySyntax CreateToolTipProperty(SyntaxNode node, string caption = null, string comment = null, string forceToolTipValue = null)
         {
-            SyntaxTriviaList leadingTriviaList = node.CreateChildNodeIdentTrivia();
-            SyntaxTriviaList trailingTriviaList = SyntaxFactory.ParseTrailingTrivia("\r\n", 0);
-
             string toolTipValue = "";
             string toolTipComment = "";
 
@@ -120,9 +117,17 @@ namespace AnZwDev.ALTools.CodeTransformations
                 toolTipValue = forceToolTipValue;
             }
 
-            return SyntaxFactoryHelper.ToolTipProperty(toolTipValue, toolTipComment, false)
+            var propertySyntax = SyntaxFactoryHelper.ToolTipProperty(toolTipValue, toolTipComment, false);
+
+            /*
+            SyntaxTriviaList leadingTriviaList = node.CreateChildNodeIdentTrivia();
+            SyntaxTriviaList trailingTriviaList = SyntaxFactory.ParseTrailingTrivia("\r\n", 0);
+            propertySyntax = propertySyntax
                 .WithLeadingTrivia(leadingTriviaList)
                 .WithTrailingTrivia(trailingTriviaList);
+            */
+
+            return propertySyntax;
         }
 
         protected string ApplyTextTemplate(string template, string caption, string comment)

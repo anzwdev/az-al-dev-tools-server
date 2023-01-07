@@ -175,7 +175,6 @@ namespace AnZwDev.ALTools.ALSymbols
         //PermissionSetExtensionKeyword
         //PermissionSetKeyword
 
-
         LocalMethodDeclaration = 50001,
         InternalMethodDeclaration = 50064,
         ProtectedMethodDeclaration = 50065,
@@ -251,8 +250,9 @@ namespace AnZwDev.ALTools.ALSymbols
         //Syntax tree
         SyntaxTreeNode = 50056,
         SyntaxTreeToken = 50057,
-        SyntaxTreeTrivia = 50058
+        SyntaxTreeTrivia = 50058,
 
-        //Next available id 50066
+        Region = 50066
+        //Next available id 50067
     }
 }

@@ -43,6 +43,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\HoverResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\ReferencesRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\ReferencesResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetCodeunitMethodsListResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetCodeunitMethodsListRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetDependenciesListRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetDependenciesListResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetInterfaceMethodsListRequest.cs" />
@@ -141,6 +143,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\ProjectSymbolsRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\ReferencesRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\ShutdownRequestHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\SymbolsInformation\GetCodeunitMethodsListRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\SymbolsInformation\GetCodeunitsListRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\SymbolsInformation\GetDependenciesListRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\SymbolsInformation\GetEnumsListRequestHandler.cs" />

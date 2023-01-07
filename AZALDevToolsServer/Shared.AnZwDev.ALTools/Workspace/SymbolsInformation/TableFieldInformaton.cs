@@ -14,7 +14,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
         public string DataType { get; set; }
 
         [JsonProperty("fieldClass")]
-        public string FieldClass { get; set; }
+        public ALAppTableFieldClass FieldClass { get; set; }
 
         [JsonProperty("state")]
         public ALAppTableFieldState State { get; set; }
@@ -40,21 +40,26 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             this.Caption = name;
             this.DataType = dataType;
             this.Description = null;
+            this.FieldClass = ALAppTableFieldClass.Normal;
+            this.State = ALAppTableFieldState.Active;
             this.InitializeLabels();
         }
 
         public TableFieldInformaton(ALProject project, ALAppTableField symbolReference)
         {
             this.InitializeLabels();
+            this.FieldClass = ALAppTableFieldClass.Normal;
+            this.State = ALAppTableFieldState.Active;
             this.Id = symbolReference.Id;
             this.Name = symbolReference.Name;
             if (symbolReference.Properties != null)
             {
                 this.Caption = symbolReference.Properties.GetValue("Caption");
-                this.FieldClass = symbolReference.Properties.GetValue("FieldClass");
                 this.Description = symbolReference.Properties.GetValue("Description");
                 this.CaptionLabel.Update(symbolReference.Properties);
-            } 
+                this.FieldClass = symbolReference.GetFieldClass();
+                this.State = symbolReference.GetFieldState();
+            }
 
             if (String.IsNullOrWhiteSpace(this.Caption))
             {

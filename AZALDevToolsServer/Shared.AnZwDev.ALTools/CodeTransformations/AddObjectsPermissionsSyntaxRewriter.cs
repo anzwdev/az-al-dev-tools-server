@@ -1,4 +1,5 @@
-﻿using AnZwDev.ALTools.ALSymbols;
+﻿using AnZwDev.ALTools.ALSymbolReferences.MergedPermissions;
+using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.ALSymbols.Internal;
 using AnZwDev.ALTools.CodeAnalysis;
 using AnZwDev.ALTools.Extensions;
@@ -7,12 +8,17 @@ using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Xml.Linq;
 
 namespace AnZwDev.ALTools.CodeTransformations
 {
     public class AddObjectsPermissionsSyntaxRewriter : ALSyntaxRewriter
     {
+
+        public bool ExcludePermissionsFromIncludedPermissionSets { get; set; } = true;
+        public bool ExcludePermissionsFromExcludedPermissionSets { get; set; } = true;
 
         public AddObjectsPermissionsSyntaxRewriter()
         {
@@ -24,7 +30,10 @@ namespace AnZwDev.ALTools.CodeTransformations
         {
             if ((this.NodeInSpan(node)) && (!node.ContainsDiagnostics))
             {
-                PropertyListSyntax properties = this.UpdateProperties(node.PropertyList, true);
+                (bool isPermissionSet, string includedPermissionSetNames, string excludedPermissionSetNames) =
+                    GetPermissionSetDetails(node);
+
+                PropertyListSyntax properties = this.UpdateProperties(node.PropertyList, isPermissionSet, includedPermissionSetNames, excludedPermissionSetNames);
                 return node.WithPropertyList(properties);
             }
             return base.VisitPermissionSet(node);
@@ -34,7 +43,10 @@ namespace AnZwDev.ALTools.CodeTransformations
         {
             if ((this.NodeInSpan(node)) && (!node.ContainsDiagnostics))
             {
-                PropertyListSyntax properties = this.UpdateProperties(node.PropertyList, true);
+                (bool isPermissionSet, string includedPermissionSetNames, string excludedPermissionSetNames) =
+                    GetPermissionSetDetails(node);
+
+                PropertyListSyntax properties = this.UpdateProperties(node.PropertyList, isPermissionSet, includedPermissionSetNames, excludedPermissionSetNames);
                 return node.WithPropertyList(properties);
             }
             return base.VisitPermissionSetExtension(node);
@@ -45,52 +57,51 @@ namespace AnZwDev.ALTools.CodeTransformations
         public override SyntaxNode VisitPermissionPropertyValue(PermissionPropertyValueSyntax node)
         {
             if ((this.NodeInSpan(node)) && (!node.ContainsDiagnostics))
-                node = this.UpdatePermissionPropertyValue(node);
+            {
+                ApplicationObjectSyntax applicationObjectSyntax = node.GetContainingApplicationObjectSyntax();
+
+                (bool isPermissionSet, string includedPermissionSetNames, string excludedPermissionSetNames) =
+                    GetPermissionSetDetails(applicationObjectSyntax);
+
+                node = this.UpdatePermissionPropertyValue(node, isPermissionSet, includedPermissionSetNames, excludedPermissionSetNames);
+            }
             return base.VisitPermissionPropertyValue(node);
         }
 
-        protected PropertyListSyntax UpdateProperties(PropertyListSyntax properties, bool isPermissionSet)
+        protected PropertyListSyntax UpdateProperties(PropertyListSyntax properties, bool isPermissionSet, string includedPermissioSetNames, string excludedPermissionSetNames)
         {
             PropertySyntax permissionsPropertySyntax = properties.GetPropertyEntry("Permissions");
             if (permissionsPropertySyntax == null)
             {
-                permissionsPropertySyntax = this.CreatePermissionsProperty(isPermissionSet);
+                permissionsPropertySyntax = this.CreatePermissionsProperty(isPermissionSet, includedPermissioSetNames, excludedPermissionSetNames);
                 properties = properties.AddProperties(permissionsPropertySyntax);
             } 
             else
             {
-                PropertySyntax newProperty = this.UpdatePermissionsProperty(permissionsPropertySyntax, isPermissionSet);
+                PropertySyntax newProperty = this.UpdatePermissionsProperty(permissionsPropertySyntax, isPermissionSet, includedPermissioSetNames, excludedPermissionSetNames);
                 properties = properties.WithProperties(properties.Properties.Replace(permissionsPropertySyntax, newProperty));
             }
             return properties;
         }
 
-        protected PropertySyntax CreatePermissionsProperty(bool isPermissionSet)
+        protected PropertySyntax CreatePermissionsProperty(bool isPermissionSet, string includedPermissioSetNames, string excludedPermissionSetNames)
         {
-            PermissionPropertyValueSyntax propertyValueSyntax = this.CreatePermissionPropertyValue(isPermissionSet);
+            PermissionPropertyValueSyntax propertyValueSyntax = this.CreatePermissionPropertyValue(isPermissionSet, includedPermissioSetNames, excludedPermissionSetNames);
             return SyntaxFactory.Property("Permissions", propertyValueSyntax);
         }
 
-        protected PropertySyntax UpdatePermissionsProperty(PropertySyntax propertySyntax, bool isPermissionSet)
+        protected PropertySyntax UpdatePermissionsProperty(PropertySyntax propertySyntax, bool isPermissionSet, string includedPermissioSetNames, string excludedPermissionSetNames)
         {
             PermissionPropertyValueSyntax propertyValueSyntax = propertySyntax.Value as PermissionPropertyValueSyntax;
             if (propertyValueSyntax != null)
-                propertyValueSyntax = this.UpdatePermissionPropertyValue(propertyValueSyntax);
+                propertyValueSyntax = this.UpdatePermissionPropertyValue(propertyValueSyntax, isPermissionSet, includedPermissioSetNames, excludedPermissionSetNames);
             else
-                propertyValueSyntax = this.CreatePermissionPropertyValue(isPermissionSet);
+                propertyValueSyntax = this.CreatePermissionPropertyValue(isPermissionSet, includedPermissioSetNames, excludedPermissionSetNames);
             return propertySyntax.WithValue(propertyValueSyntax);            
         }
 
-        protected PermissionPropertyValueSyntax UpdatePermissionPropertyValue(PermissionPropertyValueSyntax node)
+        protected PermissionPropertyValueSyntax UpdatePermissionPropertyValue(PermissionPropertyValueSyntax node, bool isPermissionSet, string includedPermissioSetNames, string excludedPermissionSetNames)
         {
-            bool isPermissionSetObject = false;
-            ApplicationObjectSyntax applicationObjectSyntax = node.GetContainingApplicationObjectSyntax();
-            if (applicationObjectSyntax != null)
-            {
-                ConvertedSyntaxKind kind = applicationObjectSyntax.Kind.ConvertToLocalType();
-                isPermissionSetObject = ((kind == ConvertedSyntaxKind.PermissionSet) || (kind == ConvertedSyntaxKind.PermissionSetExtension));
-            }
-
             //collect existing permissions
             HashSet<string> existingPermissions = new HashSet<string>();
             if (node.PermissionProperties != null)
@@ -109,13 +120,16 @@ namespace AnZwDev.ALTools.CodeTransformations
                     }
                 }
             }
-            List<PermissionSyntax> permissionSyntaxList = this.CreatePermissions(existingPermissions, isPermissionSetObject);
+            existingPermissions = CollectIncludedAndExcludedPermissions(existingPermissions, includedPermissioSetNames, excludedPermissionSetNames);
+
+            List<PermissionSyntax> permissionSyntaxList = this.CreatePermissions(existingPermissions, isPermissionSet);
             return node.AddPermissionProperties(permissionSyntaxList.ToArray());
         }
 
-        protected PermissionPropertyValueSyntax CreatePermissionPropertyValue(bool isPermissionSet)
+        protected PermissionPropertyValueSyntax CreatePermissionPropertyValue(bool isPermissionSet, string includedPermissionSetsNames, string excludedPermissionSetsNames)
         {
-            List<PermissionSyntax> permissionSyntaxList = this.CreatePermissions(null, isPermissionSet);
+            HashSet<string> existingPermissions = CollectIncludedAndExcludedPermissions(null, includedPermissionSetsNames, excludedPermissionSetsNames);
+            List<PermissionSyntax> permissionSyntaxList = this.CreatePermissions(existingPermissions, isPermissionSet);
             SeparatedSyntaxList<PermissionSyntax> permissions = new SeparatedSyntaxList<PermissionSyntax>();
             permissions = permissions.AddRange(permissionSyntaxList);
             return SyntaxFactory.PermissionPropertyValue(permissions);
@@ -126,6 +140,44 @@ namespace AnZwDev.ALTools.CodeTransformations
             if ((String.IsNullOrWhiteSpace(type)) || (String.IsNullOrWhiteSpace(name)))
                 return null;
             return type.ToLower() + "_" + name.ToLower();
+        }
+
+        protected HashSet<string> CollectIncludedAndExcludedPermissions(HashSet<string> existingPermissions, string includedPermissionSetsNames, string excludedPermissionSetsNames)
+        {
+            if (
+                ((ExcludePermissionsFromIncludedPermissionSets) && (!String.IsNullOrWhiteSpace(includedPermissionSetsNames))) ||
+                ((ExcludePermissionsFromExcludedPermissionSets) && (!String.IsNullOrWhiteSpace(excludedPermissionSetsNames))))
+            {
+                var informationProvider = new PermissionSetInformationProvider();
+                var permissionSet = informationProvider.GetMergedPermissionSet(Project, includedPermissionSetsNames, excludedPermissionSetsNames);
+                
+                if (ExcludePermissionsFromIncludedPermissionSets)
+                    CollectExistingPermissions(existingPermissions, permissionSet.IncludedPermissions?.GetAllPermissions());
+                if (ExcludePermissionsFromExcludedPermissionSets)
+                    CollectExistingPermissions(existingPermissions, permissionSet.ExcludedPermissions?.GetAllPermissions());
+            }
+
+            return existingPermissions;
+        }
+
+        protected HashSet<string> CollectExistingPermissions(HashSet<string> existingPermissions, IEnumerable<MergedALAppPermission> sourcePermissions)
+        {
+            if (sourcePermissions != null)
+                foreach (var permission in sourcePermissions)
+                    if ((!String.IsNullOrWhiteSpace(permission.ObjectName)) && (permission.ObjectName != "*"))
+                    {
+                        string objectUID = this.CreateObjectUID(
+                                permission.PermissionObject.ToString(),
+                                permission.ObjectName);
+
+                        if (existingPermissions == null)
+                            existingPermissions = new HashSet<string>();
+
+                        if (!existingPermissions.Contains(objectUID))
+                            existingPermissions.Add(objectUID);
+                    }
+
+            return existingPermissions;
         }
 
         protected List<PermissionSyntax> CreatePermissions(HashSet<string> existingPermissions, bool isPermissionSet)
@@ -211,6 +263,27 @@ namespace AnZwDev.ALTools.CodeTransformations
             }
             return SyntaxFactoryHelper.Token("CodeunitKeyword");
         }
+
+        protected (bool, string, string) GetPermissionSetDetails(ApplicationObjectSyntax node)
+        {
+            string includedPermissionSetsNames = null;
+            string excludedPermissionSetsNames = null;
+            bool isPermissionSetObject = false;
+            if (node != null)
+            {
+                ConvertedSyntaxKind kind = node.Kind.ConvertToLocalType();
+                isPermissionSetObject = ((kind == ConvertedSyntaxKind.PermissionSet) || (kind == ConvertedSyntaxKind.PermissionSetExtension));
+#if BC
+                if (isPermissionSetObject)
+                {
+                    includedPermissionSetsNames = node.GetPropertyValue("IncludedPermissionSets")?.ToString();
+                    excludedPermissionSetsNames = node.GetPropertyValue("ExcludedPermissionSets")?.ToString();
+                }
+#endif
+            }
+            return (isPermissionSetObject, includedPermissionSetsNames, excludedPermissionSetsNames);
+        }
+
 
     }
 }

@@ -200,12 +200,17 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         protected PropertySyntax CreateCaptionProperty(SyntaxNode node, string caption, string comment)
         {
+            var propertySyntax = SyntaxFactoryHelper.CaptionProperty(caption, comment, false);
+
+            /*
             SyntaxTriviaList leadingTriviaList = node.CreateChildNodeIdentTrivia();
             SyntaxTriviaList trailingTriviaList = SyntaxFactory.ParseTrailingTrivia("\r\n", 0);
-
-            return SyntaxFactoryHelper.CaptionProperty(caption, comment, false)
+            propertySyntax = propertySyntax
                 .WithLeadingTrivia(leadingTriviaList)
                 .WithTrailingTrivia(trailingTriviaList);
+            */
+
+            return propertySyntax;
         }
 
         private bool CaptionVisible(SyntaxNode node)

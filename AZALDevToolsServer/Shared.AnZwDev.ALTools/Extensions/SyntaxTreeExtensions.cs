@@ -5,6 +5,7 @@ using Microsoft.Dynamics.Nav.CodeAnalysis.Text;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Xml.Linq;
 
 namespace AnZwDev.ALTools.Extensions
 {
@@ -82,6 +83,12 @@ namespace AnZwDev.ALTools.Extensions
             return null;
         }
 
+        public static Range GetLineRange(this SyntaxTree syntaxTree, TextSpan textSpan)
+        {
+            var lineSpan = syntaxTree.GetLineSpan(textSpan);
+            return new Range(lineSpan.StartLinePosition.Line, lineSpan.StartLinePosition.Character,
+                lineSpan.EndLinePosition.Line, lineSpan.EndLinePosition.Character);
+        }
 
     }
 }

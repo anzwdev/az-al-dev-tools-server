@@ -41,6 +41,19 @@ namespace AnZwDev.ALTools.Extensions
                     (!emptyValue.Equals(propertySyntax.Value.ToString(), StringComparison.CurrentCultureIgnoreCase))));
         }
 
+        public static bool CheckIfPropertyValueEquals(this SyntaxNode node, string propertyName, bool value)
+        {
+            if (value)
+                return node.CheckIfPropertyValueEquals(propertyName, "true");
+            return node.CheckIfPropertyValueEquals(propertyName, "false");
+        }
+
+        public static bool CheckIfPropertyValueEquals(this SyntaxNode node, string propertyName, string value)
+        {
+            string propertyValue = node.GetPropertyValue(propertyName)?.ToString()?.Trim();
+            return ((propertyValue != null) && (propertyValue.Equals(value, StringComparison.CurrentCultureIgnoreCase)));
+        }
+
         public static SyntaxTriviaList CreateChildNodeIdentTrivia(this SyntaxNode node)
         {
             //calculate indent
@@ -293,6 +306,22 @@ namespace AnZwDev.ALTools.Extensions
                 return false;
             var nodeKind = node.Kind.ConvertToLocalType();
             return kind.Contains(nodeKind);
+        }
+
+        public static bool GetBoolPropertyValue(this SyntaxNode node, string propertyName, bool defaultValue)
+        {
+            var stringValue = node.GetPropertyValue(propertyName)?.ToString();
+            if (stringValue != null)
+                return (stringValue.Equals("true", StringComparison.CurrentCultureIgnoreCase)) || (stringValue == "1");
+            return defaultValue;
+        }
+
+        public static string GetIdentifierPropertyValue(this SyntaxNode node, string propertyName)
+        {
+            var stringValue = node.GetPropertyValue(propertyName)?.ToString();
+            if (stringValue != null)
+                return ALSyntaxHelper.DecodeName(stringValue);
+            return null;
         }
 
         #region Nav2018 helpers

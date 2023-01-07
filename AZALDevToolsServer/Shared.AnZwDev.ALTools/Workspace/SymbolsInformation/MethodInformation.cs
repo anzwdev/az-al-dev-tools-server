@@ -1,4 +1,5 @@
 ﻿using AnZwDev.ALTools.ALSymbolReferences;
+using AnZwDev.ALTools.ALSymbols;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,9 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
         [JsonProperty("header")]
         public string Header { get; set; }
 
+        [JsonProperty("accessModifier", NullValueHandling = NullValueHandling.Ignore)]
+        public ALSymbolAccessModifier? AccessModifier { get; set; }
+
         public MethodInformation()
         {
         }
@@ -23,6 +27,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
         {
             this.Name = method.Name;
             this.Header = method.GetHeaderSourceCode();
+            this.AccessModifier = method.GetAccessModifier();
         }
 
     }

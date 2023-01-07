@@ -31,9 +31,22 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         protected PropertySyntax CreateReadOnlyProperty(SyntaxNode node)
         {
+            var propertySyntax = SyntaxFactory.Property(
+                "Editable",
+                SyntaxFactory.BooleanPropertyValue(SyntaxFactory.BooleanLiteralValue(
+                    SyntaxFactory.Token(SyntaxKind.FalseKeyword))));
+
+            /*
             SyntaxTriviaList leadingTriviaList = node.CreateChildNodeIdentTrivia();
             SyntaxTriviaList trailingTriviaList = SyntaxFactory.ParseTrailingTrivia("\r\n", 0);
+            propertySyntax = propertySyntax
+                .WithLeadingTrivia(leadingTriviaList)
+                .WithTrailingTrivia(trailingTriviaList);
+            */
 
+            return propertySyntax;
+
+            /*
             return SyntaxFactory.Property(
                 SyntaxFactory.PropertyName(SyntaxFactory.Identifier("Editable"))
                     .WithTrailingTrivia(SyntaxFactory.ParseTrailingTrivia(" ")),
@@ -42,6 +55,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                     .WithLeadingTrivia(SyntaxFactory.ParseLeadingTrivia(" ")))
                 .WithLeadingTrivia(leadingTriviaList)
                 .WithTrailingTrivia(trailingTriviaList);
+            */
         }
 
 
