@@ -23,6 +23,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         public SemanticModel SemanticModel { get; set; }
         public bool RemoveQuotesFromDataTypeIdentifiers { get; set; }
+        public bool RemoveQuotesFromNonDataTypeIdentifiers { get; set; } = true;
 
         private DotNetInformationProvider _dotNetInformationProvider;
         protected DotNetInformationProvider DotNetInformationProvider
@@ -166,11 +167,16 @@ namespace AnZwDev.ALTools.CodeTransformations
                             if (prevName.StartsWith("\""))
                             {
                                 string decodedPrevName = ALSyntaxHelper.DecodeName(prevName);
+
+                                bool isKeyword = KeywordInformation.IsAnyKeyword(newName);
+                                bool isKeywordOrDataType = KeywordInformation.IsAnyKeywordOrDataTypeName(newName);
+
                                 if (
                                     (decodedPrevName.Equals(newName, StringComparison.CurrentCultureIgnoreCase)) && 
                                     (
-                                        ((this.RemoveQuotesFromDataTypeIdentifiers) && (KeywordInformation.IsAnyKeyword(newName))) ||
-                                        ((!this.RemoveQuotesFromDataTypeIdentifiers) && (KeywordInformation.IsAnyKeywordOrDataTypeName(newName)))
+                                        (isKeyword) ||
+                                        ((!this.RemoveQuotesFromDataTypeIdentifiers) && (isKeywordOrDataType)) ||
+                                        ((!this.RemoveQuotesFromNonDataTypeIdentifiers) && (!isKeywordOrDataType))
                                     ))
                                     newName = ALSyntaxHelper.EncodeName(newName, true);
                             }

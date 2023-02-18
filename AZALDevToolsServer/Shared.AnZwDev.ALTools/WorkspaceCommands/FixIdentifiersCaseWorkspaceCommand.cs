@@ -15,7 +15,9 @@ namespace AnZwDev.ALTools.WorkspaceCommands
     public class FixIdentifiersCaseWorkspaceCommand : SemanticModelWorkspaceCommand
     {
 
+        public static string RemoveQuotesFromKeywordsParameterName = "removeQuotesFromKeywords";
         public static string RemoveQuotesFromDataTypeIdentifiersParameterName = "removeQuotesFromDataTypeIdentifiers";
+        public static string RemoveQuotesFromNonDataTypeIdentifiersParameterName = "removeQuotesFromNonDataTypeIdentifiers";
 
         protected int _totalNoOfChanges = 0;
         protected int _noOfChangedFiles = 0;
@@ -45,6 +47,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
                 identifierCaseSyntaxRewriter.SemanticModel = semanticModel;
                 identifierCaseSyntaxRewriter.Project = project;
                 identifierCaseSyntaxRewriter.RemoveQuotesFromDataTypeIdentifiers = parameters.GetBoolValue(RemoveQuotesFromDataTypeIdentifiersParameterName);
+                identifierCaseSyntaxRewriter.RemoveQuotesFromNonDataTypeIdentifiers = parameters.GetBoolValue(RemoveQuotesFromNonDataTypeIdentifiersParameterName);
 
                 node = identifierCaseSyntaxRewriter.Visit(node);
 
