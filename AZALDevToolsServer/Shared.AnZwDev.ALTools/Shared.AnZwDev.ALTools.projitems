@@ -252,6 +252,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\EnumExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\HashSetExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\HashSet_ALSymbolKind_Extensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\IdentifierEqualsLiteralSyntaxExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\IEnumerableExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\IListExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\List_SyntaxNode_Extensions.cs" />

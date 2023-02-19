@@ -9,6 +9,7 @@ using AnZwDev.ALTools.Extensions;
 using AnZwDev.ALTools.ALLanguageInformation;
 using AnZwDev.ALTools.Workspace.SymbolsInformation;
 using AnZwDev.ALTools.ALSymbols;
+using System.Runtime.CompilerServices;
 
 namespace AnZwDev.ALTools.CodeTransformations
 {
@@ -89,6 +90,46 @@ namespace AnZwDev.ALTools.CodeTransformations
             }
 
             return base.VisitDotNetTypeReference(node);
+        }
+
+        public override SyntaxNode VisitIdentifierEqualsLiteral(IdentifierEqualsLiteralSyntax node)
+        {
+            if (node.Identifier != null)
+            {
+                string name = node.Identifier.ValueText;
+                string newName = name;
+
+                var listParent = node.GetCommaSeparatedListParent();
+                if (listParent != null)
+                {
+                    switch (listParent)
+                    {
+                        case LabelSyntax labelSyntax:
+                            newName = FixLabelPropertyCase(name);
+                            break;
+                    }
+                }
+
+                if ((newName != null) && (newName != name))
+                    return node.WithIdentifier(SyntaxFactory.Identifier(newName));
+            }
+
+            return base.VisitIdentifierEqualsLiteral(node);
+        }
+
+        private string FixLabelPropertyCase(string name)
+        {
+            if (name != null)
+            {
+                name = name.ToLower().Trim();
+                switch (name)
+                {
+                    case "comment": return "Comment";
+                    case "locked": return "Locked";
+                    case "maxlength": return "MaxLength";
+                }
+            }
+            return name;
         }
 
         public override SyntaxNode VisitIdentifierName(IdentifierNameSyntax node)
