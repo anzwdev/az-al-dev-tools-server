@@ -34,26 +34,34 @@ namespace AnZwDev.ALTools.CodeCompletion
 
         public override void CollectCompletionItems(ALProject project, SyntaxTree syntaxTree, SyntaxNode syntaxNode, int position, List<CodeCompletionItem> completionItems)
         {
-            (bool validNode, bool addSemicolon) = ValidSyntaxNode(syntaxNode, position);
+            (bool validNode, bool addSemicolon, bool addVarVersions) = ValidSyntaxNode(syntaxNode, position);
 
             if (validNode)
             {
-                CreateCompletionItems(project, project.AllSymbols.Tables.GetObjects(), completionItems, false, addSemicolon);
-                CreateCompletionItems(project, project.AllSymbols.Tables.GetObjects(), completionItems, true, addSemicolon);
-                CreateCompletionItems(project, project.AllSymbols.Codeunits.GetObjects(), completionItems, false, addSemicolon);
-                CreateCompletionItems(project, project.AllSymbols.Pages.GetObjects(), completionItems, false, addSemicolon);
-                CreateCompletionItems(project, project.AllSymbols.Reports.GetObjects(), completionItems, false, addSemicolon);
-                CreateCompletionItems(project, project.AllSymbols.Queries.GetObjects(), completionItems, false, addSemicolon);
-                CreateCompletionItems(project, project.AllSymbols.XmlPorts.GetObjects(), completionItems, false, addSemicolon);
-                CreateCompletionItems(project, project.AllSymbols.EnumTypes.GetObjects(), completionItems, false, addSemicolon);
-                CreateCompletionItems(project, project.AllSymbols.Interfaces.GetObjects(), completionItems, false, addSemicolon);
+                CreateCompletionItems(project, completionItems, addSemicolon, false);
+                if (addVarVersions)
+                    CreateCompletionItems(project, completionItems, addSemicolon, true);
             }
         }
 
-        private (bool, bool) ValidSyntaxNode(SyntaxNode syntaxNode, int position)
+        private void CreateCompletionItems(ALProject project, List<CodeCompletionItem> completionItems, bool addSemicolon, bool addByVarDeclaration)
+        {
+            CreateCompletionItems(project, project.AllSymbols.Tables.GetObjects(), completionItems, false, addSemicolon, addByVarDeclaration);
+            CreateCompletionItems(project, project.AllSymbols.Tables.GetObjects(), completionItems, true, addSemicolon, addByVarDeclaration);
+            CreateCompletionItems(project, project.AllSymbols.Codeunits.GetObjects(), completionItems, false, addSemicolon, addByVarDeclaration);
+            CreateCompletionItems(project, project.AllSymbols.Pages.GetObjects(), completionItems, false, addSemicolon, addByVarDeclaration);
+            CreateCompletionItems(project, project.AllSymbols.Reports.GetObjects(), completionItems, false, addSemicolon, addByVarDeclaration);
+            CreateCompletionItems(project, project.AllSymbols.Queries.GetObjects(), completionItems, false, addSemicolon, addByVarDeclaration);
+            CreateCompletionItems(project, project.AllSymbols.XmlPorts.GetObjects(), completionItems, false, addSemicolon, addByVarDeclaration);
+            CreateCompletionItems(project, project.AllSymbols.EnumTypes.GetObjects(), completionItems, false, addSemicolon, addByVarDeclaration);
+            CreateCompletionItems(project, project.AllSymbols.Interfaces.GetObjects(), completionItems, false, addSemicolon, addByVarDeclaration);
+        }
+
+        private (bool, bool, bool) ValidSyntaxNode(SyntaxNode syntaxNode, int position)
         {
             bool validNode = false;
             bool addSemicolon = false;
+            bool addVarVersions = false;
 
             switch (syntaxNode)
             {
@@ -76,7 +84,7 @@ namespace AnZwDev.ALTools.CodeCompletion
                     break;
                 case ParameterListSyntax parameterListSyntax:
                     if (!this.IsValidParametersOwner(syntaxNode))
-                        return (false, false);
+                        return (false, false, false);
                     var parameterSyntax = FindParameterSyntax(parameterListSyntax, position);
                     validNode = 
                         (
@@ -86,8 +94,13 @@ namespace AnZwDev.ALTools.CodeCompletion
                         ) || (
                             (parameterSyntax != null) &&
                             (ValidDeclarationNode(parameterSyntax, parameterSyntax.Name, position))
-                        );
+                        );                    
+
                     addSemicolon = false;
+                    addVarVersions =
+                        (parameterSyntax == null) ||
+                        (parameterSyntax.VarKeyword == null) ||
+                        (parameterSyntax.VarKeyword.Kind.ConvertToLocalType() != ConvertedSyntaxKind.VarKeyword);
                     break;
                 default:
                     var declarationSyntaxNode = syntaxNode.FindParentByKind(ConvertedSyntaxKind.VariableDeclaration, ConvertedSyntaxKind.Parameter, ConvertedSyntaxKind.ReturnValue);
@@ -97,7 +110,7 @@ namespace AnZwDev.ALTools.CodeCompletion
                         (declarationSyntaxNode.Kind.ConvertToLocalType() == ConvertedSyntaxKind.ReturnValue) &&
                         (!this.IsValidParametersOwner(declarationSyntaxNode))
                     )
-                        return (false, false);
+                        return (false, false, false);
 
                     validNode = 
                         (declarationSyntaxNode != null) && 
@@ -108,7 +121,7 @@ namespace AnZwDev.ALTools.CodeCompletion
                     break;
             }
 
-            return (validNode, addSemicolon);
+            return (validNode, addSemicolon, addVarVersions);
         }
 
         private bool IsValidParametersOwner(SyntaxNode syntaxNode)
@@ -227,7 +240,7 @@ namespace AnZwDev.ALTools.CodeCompletion
             return null;
         }
 
-        private void CreateCompletionItems(ALProject project, IEnumerable<ALAppObject> typesCollection, List<CodeCompletionItem> completionItems, bool asTemporaryVariable, bool addSemicolon)
+        private void CreateCompletionItems(ALProject project, IEnumerable<ALAppObject> typesCollection, List<CodeCompletionItem> completionItems, bool asTemporaryVariable, bool addSemicolon, bool addByVarDeclaration)
         {
             foreach (var type in typesCollection)
             {
@@ -240,6 +253,10 @@ namespace AnZwDev.ALTools.CodeCompletion
                     varName = _tempPrefix + varName;
 
                 var source = varName;
+
+                if (addByVarDeclaration)
+                    source = "var " + source;
+
                 if (IncludeDataType)
                 {
                     source = source + ": " +
